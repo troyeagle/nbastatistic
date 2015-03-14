@@ -22,7 +22,9 @@ public class TeamInMatch {
 	int scores = 0;
 
 	TeamInMatch rival;
-
+	double fieldGoalRatio;
+	double threePointerRatio;
+	double freeThrowRatio;
 	double myRounds;
 	double offensiveEf;
 	double defensiveEf;
@@ -57,6 +59,9 @@ public class TeamInMatch {
 	public void calAll(){
 		System.out.println("Team "+name+" calculating");
 		calOffensiveRounds();
+		calFreeThrowRatio();
+		calThreePointerRatio();
+		calFieldGoalRatio();
 		calOffensiveEf();
 		calDefensiveEf();
 		calReboundEf();
@@ -94,4 +99,14 @@ public class TeamInMatch {
 	void calAssistEf(){
 		assistEf = (double) assist/myRounds;
 	}
+	void calThreePointerRatio(){
+		threePointerRatio = (double)threePointerMade/threePointerAttempted;
+	}
+	void calFieldGoalRatio(){
+		fieldGoalRatio = (double)fieldGoalMade/fieldGoalAttempted;
+	}
+	void calFreeThrowRatio(){
+		freeThrowRatio = (double)freeThrowMade/freeThrowAttempted;
+	}
+
 }

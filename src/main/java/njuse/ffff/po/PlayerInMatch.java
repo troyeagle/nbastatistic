@@ -118,4 +118,7 @@ public class PlayerInMatch implements Serializable{
 	
 	}
 	
+	public PlayerInMatch(){
+		
+	}
 }

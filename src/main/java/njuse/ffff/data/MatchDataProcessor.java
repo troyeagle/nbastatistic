@@ -18,7 +18,7 @@ public class MatchDataProcessor {
 	private static String path = "C:/Users/Mebleyev.G.Longinus/Downloads/CSEIII data/迭代一数据/matches";
 
 	private static String saveLoadPath = "C:/Users/Mebleyev.G.Longinus/Downloads/CSEIII data2/迭代一数据/matches";
-	private static ArrayList<MatchPO> matches;
+	static ArrayList<MatchPO> matches;
 
 	public void readAndAnalysisMatch() {
 		matches = new ArrayList<MatchPO>();

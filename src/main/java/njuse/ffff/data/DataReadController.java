@@ -1,6 +1,7 @@
 package njuse.ffff.data;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import njuse.ffff.dataservice.DataReaderService;
 import njuse.ffff.po.MatchPO;
@@ -15,6 +16,8 @@ public class DataReadController implements DataReaderService{
 	PlayersDataProcessor player=  new PlayersDataProcessor();
 	MatchDataProcessor match = new MatchDataProcessor();
 	TeamDataProcessor team = new TeamDataProcessor();
+	ArrayList<TeamInAverage> teamInAverage;
+	ArrayList<PlayerInAverage> playerInAverage;
 	public PlayerInAverage getPlayerAverage(String name, Filter filter) {
 		// TODO Auto-generated method stub
 		return null;
@@ -47,7 +50,7 @@ public class DataReadController implements DataReaderService{
 	}
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException{
-		new DataReadController().load();
+		new DataReadController().process();
 	}
 
 	public void process() throws IOException{
@@ -71,6 +74,12 @@ public class DataReadController implements DataReaderService{
 		team.loadSerial();
 		match.loadSerial();
 		match.processAll();
+		playerInAverage = new ArrayList<PlayerInAverage>();
+		teamInAverage = new ArrayList<TeamInAverage>();
+		for(PlayerPO p:PlayersDataProcessor.players){
+			playerInAverage.add(new PlayerInAverage(p.getName(),MatchDataProcessor.matches));
+		}
+		
 	}
 
 }

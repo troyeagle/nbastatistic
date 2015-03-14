@@ -19,11 +19,12 @@ public class PlayersDataProcessor {
 	private static String path="C:/Users/Mebleyev.G.Longinus/Downloads/CSEIII data/迭代一数据/players";
 	
 	private static String saveLoadPath = "C:/Users/Mebleyev.G.Longinus/Downloads/CSEIII data2/迭代一数据/players/info";
-	private static ArrayList<PlayerPO> players;
+	static ArrayList<PlayerPO> players;
 	
 	public void readAndAnalysisPlayer() {
 		players = new ArrayList<PlayerPO>();
 		System.out.println("INFO:Player Info Initializing");
+		long a = System.currentTimeMillis();
 		File file = new File(path+"/info");
 		File[] files = file.listFiles();
 		FileReader fr;
@@ -35,24 +36,25 @@ public class PlayersDataProcessor {
 				
 				fr = new FileReader(files[i]);
 				BufferedReader br = new BufferedReader(fr);
+				Pattern p = Pattern.compile("│(.*)║");
 				br.readLine();
-				String name = matchPattern("Name		│(.*)║",br.readLine());
+				String name = matchPattern(p,br.readLine());
 				br.readLine();
-				String number = matchPattern("Number		│(.*)║",br.readLine());
+				String number = matchPattern(p,br.readLine());
 				br.readLine();
-				char position = matchPattern("Position	│(.*)║",br.readLine()).charAt(0);
+				char position = matchPattern(p,br.readLine()).charAt(0);
 				br.readLine();
-				String height = matchPattern("Height		│(.*)║",br.readLine());
+				String height = matchPattern(p,br.readLine());
 				br.readLine();
-				String weight = matchPattern("Weight		│(.*)║",br.readLine());
+				String weight = matchPattern(p,br.readLine());
 				br.readLine();
-				String birth = matchPattern("Birth		│(.*)║",br.readLine());
+				String birth = matchPattern(p,br.readLine());
 				br.readLine();
-				int age = Integer.parseInt(matchPattern("Age		│(.*)║",br.readLine()));
+				int age = Integer.parseInt(matchPattern(p,br.readLine()));
 				br.readLine();
-				String exp = matchPattern("Exp		│(.*)║",br.readLine());
+				String exp = matchPattern(p,br.readLine());
 				br.readLine();
-				String school = matchPattern("School		│(.*)║",br.readLine());
+				String school = matchPattern(p,br.readLine());
 				br.close();
 				tempPlayerPO = new PlayerPO(name,number,position,height,weight,birth,age,exp,school,path);
 				
@@ -71,11 +73,13 @@ public class PlayersDataProcessor {
 			}
 		}
 		System.out.println("INFO:Player Info Initialized!");
+		long b = System.currentTimeMillis();
+		System.out.println(b-a);
 	}
 
 	
-	public String matchPattern(String pattern,String field){
-		Pattern p = Pattern.compile(pattern);
+	public String matchPattern(Pattern p,String field){
+		
 		Matcher m = p.matcher(field);
 
 		while(m.find()){

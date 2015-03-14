@@ -15,6 +15,10 @@ public class MatchPO implements Serializable{
 	ArrayList<Integer> scoreA,scoreB;
 	ArrayList<PlayerInMatch> playerInTeamA;
 	ArrayList<PlayerInMatch> playerInTeamB;
+	TeamInMatch teamStatA=null;
+	TeamInMatch teamStatB=null;
+	ArrayList<PlayerInMatchExtended> playerInAEx = new ArrayList<PlayerInMatchExtended>();
+	ArrayList<PlayerInMatchExtended> playerInBEx = new ArrayList<PlayerInMatchExtended>();
 	public MatchPO(String name,String date, String teamA, String teamB,
 			ArrayList<String> members, ArrayList<Integer> scoreA,
 			ArrayList<Integer> scoreB, ArrayList<PlayerInMatch> playerInTeamA,
@@ -36,23 +40,21 @@ public class MatchPO implements Serializable{
 	
 	public void teamProcess(){
 		System.out.println("Match "+name+" calculating");
-		TeamInMatch teamA=null;
-		TeamInMatch teamB=null;
-		teamA = new TeamInMatch(this.teamA,playerInTeamA,teamB);
-		teamB = new TeamInMatch(this.teamB,playerInTeamB,teamA);
-		teamA.rival=teamB;
-		teamA.calAll();
-		teamB.calAll();
-		ArrayList<PlayerInMatchExtended> playerInAEx = new ArrayList<PlayerInMatchExtended>();
-		ArrayList<PlayerInMatchExtended> playerInBEx = new ArrayList<PlayerInMatchExtended>();
+
+		teamStatA = new TeamInMatch(this.teamA,playerInTeamA,teamStatB);
+		teamStatB = new TeamInMatch(this.teamB,playerInTeamB,teamStatA);
+		teamStatA.rival=teamStatB;
+		teamStatA.calAll();
+		teamStatB.calAll();
+
 		for(PlayerInMatch p : playerInTeamA){
 			PlayerInMatchExtended playerEx = new PlayerInMatchExtended(p);
-			playerEx.calAll(teamA, teamB);
+			playerEx.calAll(teamStatA, teamStatB);
 			playerInAEx.add(playerEx);
 		}
 		for(PlayerInMatch p : playerInTeamB){
 			PlayerInMatchExtended playerEx = new PlayerInMatchExtended(p);
-			playerEx.calAll(teamB, teamA);
+			playerEx.calAll(teamStatB, teamStatA);
 			playerInBEx.add(playerEx);
 		}
 		
