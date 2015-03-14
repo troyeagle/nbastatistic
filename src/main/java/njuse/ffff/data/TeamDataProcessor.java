@@ -76,7 +76,6 @@ public class TeamDataProcessor {
 			
 			
 			tempTeamPO = new TeamPO(split[0],split[1],split[2],split[3],split[4],split[5],split[6],path);
-			System.out.println(tempTeamPO.toString());
 			teams.add(tempTeamPO);
 		}
 		System.out.println("INFO:Team Info Initialized");
@@ -108,7 +107,12 @@ public class TeamDataProcessor {
 	
 	public void loadSerial() throws IOException, ClassNotFoundException{
 		System.out.println("INFO:Team Info Loading");
-		teams.clear();
+		if(teams!=null){
+			teams.clear();
+		}else{
+			teams = new ArrayList<TeamPO>();
+		}
+		
 		FileInputStream fi;
 		ObjectInputStream is;
 		File file = new File(saveLoadPath);

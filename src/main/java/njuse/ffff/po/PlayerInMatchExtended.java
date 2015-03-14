@@ -2,6 +2,10 @@ package njuse.ffff.po;
 
 public class PlayerInMatchExtended extends PlayerInMatch {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	int playerEfficiencyRate;
 	double efficiencyGoalPercentage;
 	double trueShootingPercentage;
@@ -19,6 +23,21 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 		// TODO Auto-generated constructor stub
 	}
 
+	public void calAll(TeamInMatch team, TeamInMatch rival) {
+		System.out.println("Player "+name + " Calculating Advanced Statistics");
+		calPlayerEfficiencyRate();
+		calEfficiencyGoalPercentage();
+		calTrueShootingPercentage();
+		calReboundRatio(team.secondInTotal, team.rebound, rival.rebound);
+		calStealRatio(team.secondInTotal, rival.myRounds);
+		calBlockRatio(team.secondInTotal, rival.fieldGoalAttempted
+				- rival.threePointerAttempted);
+		calTurnoverRatio();
+		calUsingRatio(team.secondInTotal, team.freeThrowAttempted,
+				team.fieldGoalAttempted, team.turnover);
+
+	}
+
 	void calPlayerEfficiencyRate() {
 		playerEfficiencyRate = (points + rebound + assist + steal + block)
 				- (fieldGoalAttempted - fieldGoalMade)
@@ -30,28 +49,28 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 				/ ((double) fieldGoalAttempted);
 	}
 
-	void caltrueShootingPercentage() {
+	void calTrueShootingPercentage() {
 		trueShootingPercentage = (double) points
 				/ ((double) 2 * fieldGoalAttempted + (double) 0.44
 						* freeThrowAttempted);
 	}
 
-	void calReboundRatio(double minuteTotal, int teamReboundsTotal,
+	void calReboundRatio(double secondTotal, int teamReboundsTotal,
 			int rivalReboundsTotal) {
-		reboundRatio = (double) rebound * (minuteTotal / 5) / minute
+		reboundRatio = (double) rebound * secondTotal / 5 / (second)
 				/ (teamReboundsTotal + rivalReboundsTotal);
-		offensiveReboundRatio = (double) offensiveRebound * (minuteTotal / 5)
-				/ minute / (teamReboundsTotal + rivalReboundsTotal);
-		defensiveReboundRatio = (double) defensiveRebound * (minuteTotal / 5)
-				/ minute / (teamReboundsTotal + rivalReboundsTotal);
+		offensiveReboundRatio = (double) offensiveRebound * (secondTotal / 5)
+				/ (second) / (teamReboundsTotal + rivalReboundsTotal);
+		defensiveReboundRatio = (double) defensiveRebound * (secondTotal / 5)
+				/ (second) / (teamReboundsTotal + rivalReboundsTotal);
 	}
 
-	void calStealRatio(double minuteTotal, double rivalRound) {
-		stealRatio = (double) steal * (minuteTotal / 5) / minute / rivalRound;
+	void calStealRatio(double secondTotal, double rivalRound) {
+		stealRatio = (double) steal * secondTotal / 5 / (second) / rivalRound;
 	}
 
-	void calBlockRatio(double minuteTotal, int twoPointAttempts) {
-		blockRatio = (double) block * (minuteTotal / 6) / minute
+	void calBlockRatio(double secondTotal, int twoPointAttempts) {
+		blockRatio = (double) block * secondTotal / 5 / (second)
 				/ twoPointAttempts;
 
 	}
@@ -61,11 +80,12 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 				/ (0.44 * freeThrowAttempted + fieldGoalAttempted + turnover);
 	}
 
-	void calUsingRatio(double minuteTotal, double freeThrowTotal,
+	void calUsingRatio(double secondTotal, double freeThrowTotal,
 			double fieldGoalTotal, double turnoverTotal) {
 		usingRatio = (0.44 * freeThrowAttempted + fieldGoalAttempted + turnover)
-				* (minuteTotal / 5)
-				/ minute
+				* secondTotal
+				/ 5
+				/ (second)
 				/ (0.44 * freeThrowTotal + fieldGoalTotal + turnoverTotal);
 	}
 

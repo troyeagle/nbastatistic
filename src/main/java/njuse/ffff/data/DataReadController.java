@@ -12,7 +12,9 @@ import njuse.ffff.po.TeamPO;
 import njuse.ffff.util.Filter;
 
 public class DataReadController implements DataReaderService{
-
+	PlayersDataProcessor player=  new PlayersDataProcessor();
+	MatchDataProcessor match = new MatchDataProcessor();
+	TeamDataProcessor team = new TeamDataProcessor();
 	public PlayerInAverage getPlayerAverage(String name, Filter filter) {
 		// TODO Auto-generated method stub
 		return null;
@@ -45,9 +47,30 @@ public class DataReadController implements DataReaderService{
 	}
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException{
-		TeamDataProcessor tm = new TeamDataProcessor();
-		tm.readAndAnalysisTeam();
-		tm.saveAsSerial();
-		tm.loadSerial();
+		new DataReadController().load();
 	}
+
+	public void process() throws IOException{
+
+		player.readAndAnalysisPlayer();
+		player.saveAsSerial();
+		
+		team.readAndAnalysisTeam();
+		team.saveAsSerial();
+		
+		match.readAndAnalysisMatch();
+		match.saveAsSerial();
+		
+		match.processAll();
+		
+		
+	}
+	
+	public void load() throws IOException,ClassNotFoundException{
+		player.loadSerial();
+		team.loadSerial();
+		match.loadSerial();
+		match.processAll();
+	}
+
 }

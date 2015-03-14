@@ -29,7 +29,7 @@ public class MatchDataProcessor {
 
 		for (int i = 0; i < files.length; i++) {
 			try {
-
+				System.out.println(files[i].getName());
 				String date;
 				String teamA, teamB;
 				ArrayList<String> members = new ArrayList<String>();
@@ -61,14 +61,14 @@ public class MatchDataProcessor {
 				// TeamA
 				String playerStat;
 				while ((playerStat = br.readLine()).length() > 6) {
-					String[] split = playerStat.split("");
-					playerInTeamA.add(new PlayerInMatch(split));
+					String[] split = playerStat.split(";");
+					playerInTeamA.add(new PlayerInMatch(split,files[i].getPath()));
 					members.add(split[0]);
 				}
 				// TeamB
-				while ((playerStat = br.readLine()).length() > 6) {
-					String[] split = playerStat.split("");
-					playerInTeamB.add(new PlayerInMatch(split));
+				while ((playerStat = br.readLine())!=null) {
+					String[] split = playerStat.split(";");
+					playerInTeamB.add(new PlayerInMatch(split,files[i].getPath()));
 					members.add(split[0]);
 				}
 
@@ -88,6 +88,7 @@ public class MatchDataProcessor {
 	}
 
 	public void saveAsSerial() throws IOException {
+		System.out.println("Info:Match Info Saving");
 		FileOutputStream fo;
 		ObjectOutputStream os;
 		File file = new File(saveLoadPath);
@@ -106,11 +107,17 @@ public class MatchDataProcessor {
 			os.writeObject(p);
 			os.close();
 		}
-
+		System.out.println("Info:Match Info Saved successfully");
 	}
 	
 	public void loadSerial() throws IOException, ClassNotFoundException{
-		matches.clear();
+		System.out.println("INFO:Match Info Loading");
+		if(matches!=null){
+			matches.clear();
+		}else{
+			matches = new ArrayList<MatchPO>();
+		}
+
 		FileInputStream fi;
 		ObjectInputStream is;
 		File file = new File(saveLoadPath);
@@ -120,7 +127,12 @@ public class MatchDataProcessor {
 			is = new ObjectInputStream(fi);
 			matches.add((MatchPO)is.readObject());
 		}
-		
+		System.out.println("INFO:Match Info loaded successfully");
 	}
 
+	public void processAll(){
+		for(MatchPO m:matches){
+			m.teamProcess();
+		}
+	}
 }

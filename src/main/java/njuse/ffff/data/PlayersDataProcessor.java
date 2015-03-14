@@ -32,7 +32,7 @@ public class PlayersDataProcessor {
 		for (int i = 0; i <files.length; i++) {
 			try {
 				PlayerPO tempPlayerPO;
-				System.out.println(files[i].getPath());
+				
 				fr = new FileReader(files[i]);
 				BufferedReader br = new BufferedReader(fr);
 				br.readLine();
@@ -55,7 +55,7 @@ public class PlayersDataProcessor {
 				String school = matchPattern("School		│(.*)║",br.readLine());
 				br.close();
 				tempPlayerPO = new PlayerPO(name,number,position,height,weight,birth,age,exp,school,path);
-				System.out.println(tempPlayerPO.toString());
+				
 				
 				players.add(tempPlayerPO);
 				
@@ -87,6 +87,7 @@ public class PlayersDataProcessor {
 	public void saveAsSerial() throws IOException{
 		FileOutputStream fo;
 		ObjectOutputStream os;
+		System.out.println("INFO:Player Info Saving");
 		File file = new File(saveLoadPath);
 		if(!file.exists()||!file.isDirectory()){
 			if(file.mkdirs()){
@@ -103,11 +104,16 @@ public class PlayersDataProcessor {
 			os.writeObject(p);
 			os.close();
 		}
-		
+		System.out.println("INFO:Player Info Saved Successfully");
 	}
 	
 	public void loadSerial() throws IOException, ClassNotFoundException{
-		players.clear();
+		System.out.println("INFO:Player Info Loading");
+		if(players!=null){
+			players.clear();
+		}else{
+			players = new ArrayList<PlayerPO>();
+		}
 		FileInputStream fi;
 		ObjectInputStream is;
 		File file = new File(saveLoadPath);
@@ -117,7 +123,7 @@ public class PlayersDataProcessor {
 			is = new ObjectInputStream(fi);
 			players.add((PlayerPO)is.readObject());
 		}
-		
+		System.out.println("INFO:Player Info Loaded Successfully");
 	}
 
 }

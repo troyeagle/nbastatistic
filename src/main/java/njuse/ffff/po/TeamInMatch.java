@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class TeamInMatch {
 	String name;
+	double secondInTotal;
 	int fieldGoalMade = 0;
 	int fieldGoalAttempted = 0;
 	int threePointerMade = 0;
@@ -30,8 +31,10 @@ public class TeamInMatch {
 	double stealEf;
 	double assistEf;
 
-	public TeamInMatch(ArrayList<PlayerInMatch> players, TeamInMatch rival) {
+	public TeamInMatch(String name,ArrayList<PlayerInMatch> players, TeamInMatch rival) {
 		for (PlayerInMatch p : players) {
+			this.name = name;
+			secondInTotal +=p.second;
 			fieldGoalMade += p.fieldGoalMade;
 			fieldGoalAttempted += p.fieldGoalAttempted;
 			threePointerMade += p.threePointerMade;
@@ -52,6 +55,7 @@ public class TeamInMatch {
 	}
 
 	public void calAll(){
+		System.out.println("Team "+name+" calculating");
 		calOffensiveRounds();
 		calOffensiveEf();
 		calDefensiveEf();
