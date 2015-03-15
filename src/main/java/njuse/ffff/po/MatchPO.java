@@ -38,6 +38,12 @@ public class MatchPO implements Serializable{
 		return name;
 	}
 	
+	public ArrayList<PlayerInMatchExtended> getPlayerInAEx() {
+		return playerInAEx;
+	}
+	public ArrayList<PlayerInMatchExtended> getPlayerInBEx() {
+		return playerInBEx;
+	}
 	public void teamProcess(){
 		System.out.println("Match "+name+" calculating");
 

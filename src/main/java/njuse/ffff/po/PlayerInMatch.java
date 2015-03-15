@@ -121,4 +121,9 @@ public class PlayerInMatch implements Serializable{
 	public PlayerInMatch(){
 		
 	}
+
+	public String getName() {
+		return name;
+	}
+	
 }

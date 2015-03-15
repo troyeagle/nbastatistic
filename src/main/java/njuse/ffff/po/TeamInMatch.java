@@ -34,8 +34,8 @@ public class TeamInMatch {
 	double assistEf;
 
 	public TeamInMatch(String name,ArrayList<PlayerInMatch> players, TeamInMatch rival) {
+		this.name = name;
 		for (PlayerInMatch p : players) {
-			this.name = name;
 			secondInTotal +=p.second;
 			fieldGoalMade += p.fieldGoalMade;
 			fieldGoalAttempted += p.fieldGoalAttempted;

@@ -41,7 +41,18 @@ public class PlayerInAverage {
 	double GmSc;
 
 	ArrayList<PlayerInMatchExtended> playerStats;
-
+	public PlayerInAverage(String name){
+		this.name = name;
+		
+		playerStats = new ArrayList<PlayerInMatchExtended>();
+	}
+	/**
+	 * This Constructor is used as follows:
+	 * For each player,find its statistics in every match.
+	 * Because of too many matches, this method is very stupid.
+	 * @param name
+	 * @param matches
+	 */
 	public PlayerInAverage(String name, ArrayList<MatchPO> matches) {
 		this.name = name;
 		E: for (MatchPO m : matches) {
@@ -59,6 +70,11 @@ public class PlayerInAverage {
 			}
 		}
 		calAverage();
+	}
+	
+	public void addOneMatchStat(PlayerInMatchExtended p){
+		
+		playerStats.add(p);
 	}
 
 	public void calAverage() {
@@ -138,4 +154,13 @@ public class PlayerInAverage {
 		GmSc/=effective;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public ArrayList<PlayerInMatchExtended> getPlayerStats() {
+		return playerStats;
+	}
+
+	
 }

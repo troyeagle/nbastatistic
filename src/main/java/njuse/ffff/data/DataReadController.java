@@ -9,38 +9,45 @@ import njuse.ffff.po.PlayerInAverage;
 import njuse.ffff.po.PlayerInMatchExtended;
 import njuse.ffff.po.PlayerPO;
 import njuse.ffff.po.TeamInAverage;
+import njuse.ffff.po.TeamInMatch;
 import njuse.ffff.po.TeamPO;
 import njuse.ffff.util.Filter;
 
-public class DataReadController implements DataReaderService{
-	PlayersDataProcessor player=  new PlayersDataProcessor();
+public class DataReadController implements DataReaderService {
+	PlayersDataProcessor player = new PlayersDataProcessor();
 	MatchDataProcessor match = new MatchDataProcessor();
 	TeamDataProcessor team = new TeamDataProcessor();
 	ArrayList<TeamInAverage> teamInAverage;
 	ArrayList<PlayerInAverage> playerInAverage;
+
 	public PlayerInAverage getPlayerAverage(String name, Filter filter) {
 		// TODO Auto-generated method stub
-		return null;
-	}
+		for (PlayerInAverage p : playerInAverage) {
+			if (p.getName().equals(name)) {
+				return p;
 
-	public PlayerInMatchExtended[] getPlayerStatistics(String name,
-			Filter filter) {
-		// TODO Auto-generated method stub
+			}
+		}
 		return null;
 	}
 
 	public PlayerPO getPlayerInfo(String name, Filter filter) {
 		// TODO Auto-generated method stub
+		for (PlayerPO p : PlayersDataProcessor.players) {
+			if (p.getName().equals(name)) {
+				return p;
+			}
+		}
 		return null;
 	}
 
 	public TeamInAverage getTeamAverage(String name, Filter filter) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public MatchPO[] getTeamStatistics(String name, Filter filter) {
-		// TODO Auto-generated method stub
+		for (TeamInAverage t : teamInAverage) {
+			if (t.getName().equals(name)) {
+				return t;
+			}
+		}
 		return null;
 	}
 
@@ -49,37 +56,85 @@ public class DataReadController implements DataReaderService{
 		return null;
 	}
 
-	public static void main(String[] args) throws IOException, ClassNotFoundException{
-		new DataReadController().process();
+	public ArrayList<PlayerInMatchExtended> getPlayerStatistics(String name,
+			Filter filter) {
+		for (PlayerInAverage p : playerInAverage) {
+			if (p.getName().equals(name)) {
+				return p.getPlayerStats();
+
+			}
+		}
+		return null;
 	}
 
-	public void process() throws IOException{
+	public ArrayList<TeamInMatch> getTeamStatistics(String name, Filter filter) {
+		// TODO Auto-generated method stub
+		for (TeamInAverage t : teamInAverage) {
+			if (t.getName().equals(name)) {
+				return t.getTeamStats();
+			}
+		}
+		return null;
+	}
 
+	public void process() throws IOException {
+		long a = System.currentTimeMillis();
 		player.readAndAnalysisPlayer();
 		player.saveAsSerial();
-		
+
 		team.readAndAnalysisTeam();
 		team.saveAsSerial();
-		
+
 		match.readAndAnalysisMatch();
 		match.saveAsSerial();
-		
+		long b = System.currentTimeMillis();
+		System.out.println(b-a);
 		match.processAll();
-		
-		
+		long c = System.currentTimeMillis();
+		System.out.println(c-b);
 	}
-	
-	public void load() throws IOException,ClassNotFoundException{
+
+	public void load() throws IOException, ClassNotFoundException {
 		player.loadSerial();
 		team.loadSerial();
 		match.loadSerial();
 		match.processAll();
 		playerInAverage = new ArrayList<PlayerInAverage>();
 		teamInAverage = new ArrayList<TeamInAverage>();
-		for(PlayerPO p:PlayersDataProcessor.players){
-			playerInAverage.add(new PlayerInAverage(p.getName(),MatchDataProcessor.matches));
-		}
 		
+		/*for (PlayerPO p : PlayersDataProcessor.players) {
+			playerInAverage.add(new PlayerInAverage(p.getName(),
+					MatchDataProcessor.matches));
+		}*/	//This method is too stupid.
+		
+		for (PlayerPO p :PlayersDataProcessor.players){
+			playerInAverage.add(new PlayerInAverage(p.getName()));
+		}
+		for (MatchPO m: MatchDataProcessor.matches){
+			for(PlayerInMatchExtended p:m.getPlayerInAEx()){
+				for(PlayerInAverage pa:playerInAverage){
+					if(pa.getName().equals(p.getName())){
+						pa.addOneMatchStat(p);
+					}
+				}
+			}
+			for(PlayerInMatchExtended p:m.getPlayerInBEx()){
+				for(PlayerInAverage pa:playerInAverage){
+					if(pa.getName().equals(p.getName())){
+						pa.addOneMatchStat(p);
+					}
+				}
+			}
+		}
+		for(PlayerInAverage pa:playerInAverage){
+			pa.calAverage();
+		}
+
+	}
+
+	public static void main(String[] args) throws IOException,
+			ClassNotFoundException {
+		new DataReadController().load();
 	}
 
 }

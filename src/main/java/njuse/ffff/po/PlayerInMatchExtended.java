@@ -63,8 +63,8 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 	}
 
 	public void calAll(TeamInMatch team, TeamInMatch rival) {
-		System.out.println("Player " + name
-				+ " Calculating Advanced Statistics");
+//		System.out.println("Player " + name
+//				+ " Calculating Advanced Statistics");
 		calPlayerEfficiencyRate();
 		calEfficiencyGoalPercentage();
 		calTrueShootingPercentage();

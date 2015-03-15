@@ -29,7 +29,6 @@ public class MatchDataProcessor {
 
 		for (int i = 0; i < files.length; i++) {
 			try {
-				System.out.println(files[i].getName());
 				String date;
 				String teamA, teamB;
 				ArrayList<String> members = new ArrayList<String>();
