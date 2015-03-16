@@ -232,7 +232,8 @@ public class PlayerDataPanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				// TODO 跳转到球员介绍界面
-				uiController.setPlayerProfilePanel();
+				
+				
 			}
 		});
         

@@ -91,9 +91,10 @@ public class SearchPanel extends JPanel{
 				label_search.setIcon(image_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO 跳转到搜索结果界面
-//				uiController.setPlayerProfilePanel();
-				uiController.setTeamProfilePanel();
+				//获得搜索的项
+				String search = text_searchInfo.getText();
+				//TODO 获取球员/球队的信息
+				
 			}
 		});
 		
@@ -119,7 +120,7 @@ public class SearchPanel extends JPanel{
 				label_arrow_down_left.setIcon(icon_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO 跳转到“球队信息横向比较”界面
+				//跳转到球队信息横向比较界面
 				uiController.setTeamComparePanel();
 			}
 		});
@@ -150,8 +151,9 @@ public class SearchPanel extends JPanel{
 				label_arrow_down_middle.setIcon(icon_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO 跳转到“球队信息横向比较”界面
-				uiController.setTeamComparePanel();
+				// TODO 跳转到"高级搜索"界面
+				
+				
 			}
 		});
 		
