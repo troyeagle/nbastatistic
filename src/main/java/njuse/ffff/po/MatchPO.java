@@ -2,6 +2,7 @@ package njuse.ffff.po;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MatchPO implements Serializable{
 	/**
@@ -9,7 +10,7 @@ public class MatchPO implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	String name;
-	String date;
+	Date date;
 	String teamA,teamB;
 	ArrayList<String> members;
 	ArrayList<Integer> scoreA,scoreB;
@@ -19,7 +20,7 @@ public class MatchPO implements Serializable{
 	TeamInMatch teamStatB=null;
 	ArrayList<PlayerInMatchExtended> playerInAEx = new ArrayList<PlayerInMatchExtended>();
 	ArrayList<PlayerInMatchExtended> playerInBEx = new ArrayList<PlayerInMatchExtended>();
-	public MatchPO(String name,String date, String teamA, String teamB,
+	public MatchPO(String name,Date date, String teamA, String teamB,
 			ArrayList<String> members, ArrayList<Integer> scoreA,
 			ArrayList<Integer> scoreB, ArrayList<PlayerInMatch> playerInTeamA,
 			ArrayList<PlayerInMatch> playerInTeamB) {
@@ -47,8 +48,8 @@ public class MatchPO implements Serializable{
 	public void teamProcess(){
 		System.out.println("Match "+name+" calculating");
 
-		teamStatA = new TeamInMatch(this.teamA,playerInTeamA,teamStatB);
-		teamStatB = new TeamInMatch(this.teamB,playerInTeamB,teamStatA);
+		teamStatA = new TeamInMatch(this.teamA,playerInTeamA,teamStatB,scoreA,scoreB);
+		teamStatB = new TeamInMatch(this.teamB,playerInTeamB,teamStatA,scoreA,scoreB);
 		teamStatA.rival=teamStatB;
 		teamStatA.calAll();
 		teamStatB.calAll();
@@ -66,5 +67,8 @@ public class MatchPO implements Serializable{
 		
 		
 	}
-	
+
+	public void dirtyProcess(){
+		
+	}
 }

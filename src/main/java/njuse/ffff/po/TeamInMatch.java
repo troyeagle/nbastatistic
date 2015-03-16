@@ -3,8 +3,9 @@ package njuse.ffff.po;
 import java.util.ArrayList;
 
 public class TeamInMatch {
+	boolean win;
 	String name;
-	double secondInTotal;
+	int secondInTotal;
 	int fieldGoalMade = 0;
 	int fieldGoalAttempted = 0;
 	int threePointerMade = 0;
@@ -21,6 +22,8 @@ public class TeamInMatch {
 	int foul = 0;
 	int scores = 0;
 
+	int tempScores = 0;
+
 	TeamInMatch rival;
 	double fieldGoalRatio;
 	double threePointerRatio;
@@ -33,10 +36,15 @@ public class TeamInMatch {
 	double stealEf;
 	double assistEf;
 
-	public TeamInMatch(String name,ArrayList<PlayerInMatch> players, TeamInMatch rival) {
+	public TeamInMatch(String name, ArrayList<PlayerInMatch> players,
+			TeamInMatch rival, ArrayList<Integer> score,
+			ArrayList<Integer> rivalScore) {
 		this.name = name;
+		if(score.get(0)>rivalScore.get(0)){
+			win = true;
+		}
 		for (PlayerInMatch p : players) {
-			secondInTotal +=p.second;
+			secondInTotal += p.second;
 			fieldGoalMade += p.fieldGoalMade;
 			fieldGoalAttempted += p.fieldGoalAttempted;
 			threePointerMade += p.threePointerMade;
@@ -51,13 +59,13 @@ public class TeamInMatch {
 			block += p.block;
 			turnover += p.turnover;
 			foul += p.foul;
-			scores += p.points;
+			tempScores += p.points;
 			this.rival = rival;
 		}
 	}
 
-	public void calAll(){
-		System.out.println("Team "+name+" calculating");
+	public void calAll() {
+		System.out.println("Team " + name + " calculating");
 		calOffensiveRounds();
 		calFreeThrowRatio();
 		calThreePointerRatio();
@@ -68,6 +76,7 @@ public class TeamInMatch {
 		calStealEf();
 		calAssistEf();
 	}
+
 	void calOffensiveRounds() {
 		myRounds = 0.4
 				* freeThrowAttempted
@@ -93,20 +102,33 @@ public class TeamInMatch {
 				/ (defensiveRebound + rival.offensiveRebound);
 	}
 
+	void setPoints(ArrayList<PlayerInMatch> players) {
+		for (PlayerInMatch p : players) {
+			if (p.getDirty().contains(17)) {
+				int points = scores - tempScores;
+				p.setPoints(points);
+			}
+		}
+	}
+
 	void calStealEf() {
 		stealEf = (double) steal / rival.myRounds;
 	}
-	void calAssistEf(){
-		assistEf = (double) assist/myRounds;
+
+	void calAssistEf() {
+		assistEf = (double) assist / myRounds;
 	}
-	void calThreePointerRatio(){
-		threePointerRatio = (double)threePointerMade/threePointerAttempted;
+
+	void calThreePointerRatio() {
+		threePointerRatio = (double) threePointerMade / threePointerAttempted;
 	}
-	void calFieldGoalRatio(){
-		fieldGoalRatio = (double)fieldGoalMade/fieldGoalAttempted;
+
+	void calFieldGoalRatio() {
+		fieldGoalRatio = (double) fieldGoalMade / fieldGoalAttempted;
 	}
-	void calFreeThrowRatio(){
-		freeThrowRatio = (double)freeThrowMade/freeThrowAttempted;
+
+	void calFreeThrowRatio() {
+		freeThrowRatio = (double) freeThrowMade / freeThrowAttempted;
 	}
 
 }

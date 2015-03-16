@@ -35,6 +35,11 @@ public class TeamInAverage implements Serializable{
 	double defensiveReboundEf;
 	double stealEf;
 	double assistEf;
+	
+	int numOfMatches =0;
+	int numOfWins=0;
+	double winningRatio;
+	
 	ArrayList<TeamInMatch> teamStats;
 	
 	public TeamInAverage(String name,ArrayList<MatchPO> matches){
@@ -48,9 +53,10 @@ public class TeamInAverage implements Serializable{
 		}
 		calAverage();
 	}
-	void calAverage(){
+	public void calAverage(){
 		for(TeamInMatch p:teamStats){
-			
+			numOfMatches++;
+			if(p.win){numOfWins++;}
 			fieldGoalMade += p.fieldGoalMade;
 			fieldGoalAttempted += p.fieldGoalAttempted;
 			threePointerMade += p.threePointerMade;
@@ -103,6 +109,7 @@ public class TeamInAverage implements Serializable{
 		defensiveReboundEf/=teamStats.size();
 		stealEf/=teamStats.size();
 		assistEf/=teamStats.size();
+		winningRatio = (double)numOfWins/numOfMatches;
 		
 	}
 	public String getName() {

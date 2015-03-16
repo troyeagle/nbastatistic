@@ -9,18 +9,26 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import njuse.ffff.po.MatchPO;
 import njuse.ffff.po.PlayerInMatch;
-
+/**
+ * Read Match info
+ * @author Mebleyev.G.Longinus
+ *
+ */
 public class MatchDataProcessor {
 	private static String path = "C:/Users/Mebleyev.G.Longinus/Downloads/CSEIII data/迭代一数据/matches";
 
 	private static String saveLoadPath = "C:/Users/Mebleyev.G.Longinus/Downloads/CSEIII data2/迭代一数据/matches";
 	static ArrayList<MatchPO> matches;
 
-	public void readAndAnalysisMatch() {
+	public void readAndAnalysisMatch(){
 		matches = new ArrayList<MatchPO>();
 		System.out.println("INFO:MatchPO Info Initializing");
 		File file = new File(path);
@@ -29,7 +37,7 @@ public class MatchDataProcessor {
 
 		for (int i = 0; i < files.length; i++) {
 			try {
-				String date;
+				Date date;
 				String teamA, teamB;
 				ArrayList<String> members = new ArrayList<String>();
 				ArrayList<Integer> scoreA, scoreB;
@@ -43,8 +51,9 @@ public class MatchDataProcessor {
 				fr = new FileReader(files[i]);
 				BufferedReader br = new BufferedReader(fr);
 				String[] total = br.readLine().split(";");
-
-				date = total[0];
+				
+				DateFormat df = new SimpleDateFormat("MM-dd");
+				date = df.parse(total[0]);
 				teamA = total[1].split("-")[0];
 				teamB = total[1].split("-")[1];
 				scoreA.add(Integer.parseInt(total[2].split("-")[0]));
@@ -80,6 +89,9 @@ public class MatchDataProcessor {
 				System.out.println("FileNotFound!");
 				e.printStackTrace();
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -133,5 +145,9 @@ public class MatchDataProcessor {
 		for(MatchPO m:matches){
 			m.teamProcess();
 		}
+	}
+	//Iteration 2
+	public void processNew(){
+		
 	}
 }

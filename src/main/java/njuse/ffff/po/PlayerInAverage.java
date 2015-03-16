@@ -2,16 +2,22 @@ package njuse.ffff.po;
 
 import java.util.ArrayList;
 
-public class PlayerInAverage {
+import sun.misc.Queue;
 
+public class PlayerInAverage {
+	double[] statsAverage;
+	int[] statsDirty;
+	double[] statsTotal;
+	
 	String name;
 	char position;
 	String minute;
-	double second;
+	double second;// Advanced
+
 	double fieldGoalMade;
 	double fieldGoalAttempted;
-	double threePodoubleerMade;
-	double threePodoubleerAttempted;
+	double threePointerMade;
+	double threePointerAttempted;
 	double freeThrowMade;
 	double freeThrowAttempted;
 	double offensiveRebound;
@@ -41,15 +47,17 @@ public class PlayerInAverage {
 	double GmSc;
 
 	ArrayList<PlayerInMatchExtended> playerStats;
-	public PlayerInAverage(String name){
+
+	public PlayerInAverage(String name) {
 		this.name = name;
-		
+
 		playerStats = new ArrayList<PlayerInMatchExtended>();
 	}
+
 	/**
-	 * This Constructor is used as follows:
-	 * For each player,find its statistics in every match.
-	 * Because of too many matches, this method is very stupid.
+	 * This Constructor is used as follows: For each player,find its statistics
+	 * in every match. Because of too many matches, this method is very stupid.
+	 * 
 	 * @param name
 	 * @param matches
 	 */
@@ -71,22 +79,88 @@ public class PlayerInAverage {
 		}
 		calAverage();
 	}
-	
-	public void addOneMatchStat(PlayerInMatchExtended p){
-		
+
+	public void addOneMatchStat(PlayerInMatchExtended p) {
+
 		playerStats.add(p);
+	}
+
+	public void calAverageAsArray() {
+		int effective = 0;
+		statsAverage = new double[31];
+		statsTotal = new double[31];
+		statsDirty = new int[31];
+
+		for (PlayerInMatchExtended p : playerStats) {
+			if (p.second != 0) {
+				effective++;
+				Queue<Double> queue = new Queue<Double>();
+				/**
+				 * Number 3: for the dirty number starts from number 3
+				 * @see PlayerInMatch
+				 * 
+				 */
+				for (int j : p.dirty) {
+					statsDirty[j - 3]++;
+					queue.enqueue(statsTotal[j - 3]);
+				}
+
+				statsTotal[0] += p.fieldGoalMade;
+				statsTotal[1] += p.fieldGoalAttempted;
+				statsTotal[2] += p.threePointerMade;
+				statsTotal[3] += p.threePointerAttempted;
+				statsTotal[4] += p.freeThrowMade;
+				statsTotal[5] += p.freeThrowAttempted;
+				statsTotal[6] += p.offensiveRebound;
+				statsTotal[7] += p.defensiveRebound;
+				statsTotal[8] += p.rebound;
+				statsTotal[9] += p.assist;
+				statsTotal[10] += p.steal;
+				statsTotal[11] += p.block;
+				statsTotal[12] += p.turnover;
+				statsTotal[13] += p.foul;
+				statsTotal[14] += p.points;
+
+				statsTotal[15] += p.playerEfficiencyRate;
+				statsTotal[16] += p.fieldGoalRatio;
+				statsTotal[17] += p.threePointerRatio;
+				statsTotal[18] += p.freeThrowRatio;
+				statsTotal[19] += p.efficiencyGoalPercentage;
+				statsTotal[20] += p.trueShootingPercentage;
+				statsTotal[21] += p.reboundRatio;
+				statsTotal[22] += p.offensiveReboundRatio;
+				statsTotal[23] += p.defensiveReboundRatio;
+				statsTotal[24] += p.assistRatio;
+				statsTotal[25] += p.stealRatio;
+				statsTotal[26] += p.blockRatio;
+				statsTotal[27] += p.turnoverRatio;
+				statsTotal[28] += p.usingRatio;
+				statsTotal[29] += p.GmSc;
+				for (int j : p.dirty) {
+
+					try {
+						statsTotal[j - 3] = queue.dequeue();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		for(int i = 0;i<30;i++){
+			statsAverage[i]=statsTotal[i]/(effective-statsDirty[i]);
+		}
 	}
 
 	public void calAverage() {
 		int effective = 0;
 		for (PlayerInMatchExtended p : playerStats) {
-			if(p.second!=0){
+			if (p.second != 0) {
 				effective++;
 
 				fieldGoalMade += p.fieldGoalMade;
 				fieldGoalAttempted += p.fieldGoalAttempted;
-				threePodoubleerMade += p.threePointerMade;
-				threePodoubleerAttempted += p.threePointerAttempted;
+				threePointerMade += p.threePointerMade;
+				threePointerAttempted += p.threePointerAttempted;
 				freeThrowMade += p.freeThrowMade;
 				freeThrowAttempted += p.freeThrowAttempted;
 				offensiveRebound += p.offensiveRebound;
@@ -115,43 +189,41 @@ public class PlayerInAverage {
 				usingRatio += p.usingRatio;
 				GmSc += p.GmSc;
 			}
-			
-			
 
 		}
-		
-		second/=effective;
-		fieldGoalMade/=effective;
-		fieldGoalAttempted/=effective;
-		threePodoubleerMade/=effective;
-		threePodoubleerAttempted/=effective;
-		freeThrowMade/=effective;
-		freeThrowAttempted/=effective;
-		offensiveRebound/=effective;
-		defensiveRebound/=effective;
-		rebound/=effective;
-		assist/=effective;
-		steal/=effective;
-		block/=effective;
-		turnover/=effective;
-		foul/=effective;
-		points/=effective;
 
-		playerEfficiencyRate/=effective;
-		fieldGoalRatio/=effective;
-		threePointerRatio/=effective;
-		freeThrowRatio/=effective;
-		efficiencyGoalPercentage/=effective;
-		trueShootingPercentage/=effective;
-		reboundRatio/=effective;
-		offensiveReboundRatio/=effective;
-		defensiveReboundRatio/=effective;
-		assistRatio/=effective;
-		stealRatio/=effective;
-		blockRatio/=effective;
-		turnoverRatio/=effective;
-		usingRatio/=effective;
-		GmSc/=effective;
+		second /= effective;
+		fieldGoalMade /= effective;
+		fieldGoalAttempted /= effective;
+		threePointerMade /= effective;
+		threePointerAttempted /= effective;
+		freeThrowMade /= effective;
+		freeThrowAttempted /= effective;
+		offensiveRebound /= effective;
+		defensiveRebound /= effective;
+		rebound /= effective;
+		assist /= effective;
+		steal /= effective;
+		block /= effective;
+		turnover /= effective;
+		foul /= effective;
+		points /= effective;
+
+		playerEfficiencyRate /= effective;
+		fieldGoalRatio /= effective;
+		threePointerRatio /= effective;
+		freeThrowRatio /= effective;
+		efficiencyGoalPercentage /= effective;
+		trueShootingPercentage /= effective;
+		reboundRatio /= effective;
+		offensiveReboundRatio /= effective;
+		defensiveReboundRatio /= effective;
+		assistRatio /= effective;
+		stealRatio /= effective;
+		blockRatio /= effective;
+		turnoverRatio /= effective;
+		usingRatio /= effective;
+		GmSc /= effective;
 	}
 
 	public String getName() {
@@ -162,5 +234,4 @@ public class PlayerInAverage {
 		return playerStats;
 	}
 
-	
 }

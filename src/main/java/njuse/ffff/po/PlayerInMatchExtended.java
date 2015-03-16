@@ -61,7 +61,13 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 				p.assistRatio, p.stealRatio, p.blockRatio, p.turnoverRatio,
 				p.usingRatio, p.GmSc);
 	}
-
+	/**
+	 * calAll<br>
+	 * Calculate all advanced statistics of a player.<br>
+	 * Based on all dirty statistics are properly dealed with;<br>
+	 * @param team
+	 * @param rival
+	 */
 	public void calAll(TeamInMatch team, TeamInMatch rival) {
 //		System.out.println("Player " + name
 //				+ " Calculating Advanced Statistics");
