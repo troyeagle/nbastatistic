@@ -23,7 +23,7 @@ public class DataReadController implements DataReaderService {
 	public PlayerInAverage getPlayerAverage(String name, Filter filter) {
 		// TODO Auto-generated method stub
 		for (PlayerInAverage p : playerInAverage) {
-			if (p.getName().equals(name)||filter.filt(p)) {
+			if (p.getName().equals(name) || filter.filt(p)) {
 				return p;
 
 			}
@@ -34,7 +34,7 @@ public class DataReadController implements DataReaderService {
 	public PlayerPO getPlayerInfo(String name, Filter filter) {
 		// TODO Auto-generated method stub
 		for (PlayerPO p : PlayersDataProcessor.players) {
-			if (p.getName().equals(name)||filter.filt(p)) {
+			if (p.getName().equals(name) || filter.filt(p)) {
 				return p;
 			}
 		}
@@ -44,7 +44,7 @@ public class DataReadController implements DataReaderService {
 	public TeamInAverage getTeamAverage(String name, Filter filter) {
 		// TODO Auto-generated method stub
 		for (TeamInAverage t : teamInAverage) {
-			if (t.getName().equals(name)||filter.filt(t)) {
+			if (t.getName().equals(name) || filter.filt(t)) {
 				return t;
 			}
 		}
@@ -59,7 +59,7 @@ public class DataReadController implements DataReaderService {
 	public ArrayList<PlayerInMatchExtended> getPlayerStatistics(String name,
 			Filter filter) {
 		for (PlayerInAverage p : playerInAverage) {
-			if (p.getName().equals(name)||filter.filt(p)) {
+			if (p.getName().equals(name) || filter.filt(p)) {
 				return p.getPlayerStats();
 
 			}
@@ -70,21 +70,31 @@ public class DataReadController implements DataReaderService {
 	public ArrayList<TeamInMatch> getTeamStatistics(String name, Filter filter) {
 		// TODO Auto-generated method stub
 		for (TeamInAverage t : teamInAverage) {
-			if (t.getName().equals(name)||filter.filt(t)) {
+			if (t.getName().equals(name) || filter.filt(t)) {
 				return t.getTeamStats();
 			}
 		}
 		return null;
 	}
 
-	public void process() throws IOException {
+	public void initialize() throws IOException {
 		long a = System.currentTimeMillis();
 		player.readAndAnalysisPlayer();
-		
 
-		new Thread(){
-			public void run(){
-				
+		team.readAndAnalysisTeam();
+
+		match.readAndAnalysisMatch();
+		
+		long b = System.currentTimeMillis();
+		System.out.println(b - a);
+		match.processAll();
+		long c = System.currentTimeMillis();
+		System.out.println(c - b);
+
+		average();
+		new Thread() {
+			public void run() {
+
 				try {
 					player.saveAsSerial();
 					team.saveAsSerial();
@@ -93,72 +103,61 @@ public class DataReadController implements DataReaderService {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 			}
 		}.start();
-		team.readAndAnalysisTeam();
-		
-
-		match.readAndAnalysisMatch();
-		
-		long b = System.currentTimeMillis();
-		System.out.println(b-a);
-		match.processAll();
-		long c = System.currentTimeMillis();
-		System.out.println(c-b);
-		
-		average();
 	}
 
-	public void load() throws IOException, ClassNotFoundException {
+	public void load() throws ClassNotFoundException, IOException {
 		player.loadSerial();
 		team.loadSerial();
 		match.loadSerial();
 		match.processAll();
-		
+
 		average();
-		
 
 	}
-	public void average(){
+
+	public void average() {
 		playerInAverage = new ArrayList<PlayerInAverage>();
 		teamInAverage = new ArrayList<TeamInAverage>();
-		
-		/*for (PlayerPO p : PlayersDataProcessor.players) {
-			playerInAverage.add(new PlayerInAverage(p.getName(),
-					MatchDataProcessor.matches));
-		}*/	//This method is too stupid.
-		
-		for (PlayerPO p :PlayersDataProcessor.players){
+
+		/*
+		 * for (PlayerPO p : PlayersDataProcessor.players) {
+		 * playerInAverage.add(new PlayerInAverage(p.getName(),
+		 * MatchDataProcessor.matches)); }
+		 */// This method is too stupid.
+
+		for (PlayerPO p : PlayersDataProcessor.players) {
 			playerInAverage.add(new PlayerInAverage(p.getName()));
 		}
-		for (MatchPO m: MatchDataProcessor.matches){
-			for(PlayerInMatchExtended p:m.getPlayerInAEx()){
-				for(PlayerInAverage pa:playerInAverage){
-					if(pa.getName().equals(p.getName())){
+		for (MatchPO m : MatchDataProcessor.matches) {
+			for (PlayerInMatchExtended p : m.getPlayerInAEx()) {
+				for (PlayerInAverage pa : playerInAverage) {
+					if (pa.getName().equals(p.getName())) {
 						pa.addOneMatchStat(p);
 					}
 				}
 			}
-			for(PlayerInMatchExtended p:m.getPlayerInBEx()){
-				for(PlayerInAverage pa:playerInAverage){
-					if(pa.getName().equals(p.getName())){
+			for (PlayerInMatchExtended p : m.getPlayerInBEx()) {
+				for (PlayerInAverage pa : playerInAverage) {
+					if (pa.getName().equals(p.getName())) {
 						pa.addOneMatchStat(p);
 					}
 				}
 			}
 		}
-		for(PlayerInAverage pa:playerInAverage){
+		for (PlayerInAverage pa : playerInAverage) {
 			pa.calAverageAsArray();
 		}
-		for(TeamInAverage pa:teamInAverage){
+		for (TeamInAverage pa : teamInAverage) {
 			pa.calAverage();
 		}
 	}
 
 	public static void main(String[] args) throws IOException,
 			ClassNotFoundException {
-		new DataReadController().load();
+		new DataReadController().initialize();
 	}
 
 }

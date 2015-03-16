@@ -1,8 +1,13 @@
 package njuse.ffff.po;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TeamInMatch {
+public class TeamInMatch implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	boolean win;
 	String name;
 	int secondInTotal;

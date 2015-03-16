@@ -1,5 +1,6 @@
 package njuse.ffff.dataservice;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import njuse.ffff.po.PlayerInAverage;
@@ -18,4 +19,6 @@ public interface DataReaderService {
 	public TeamInAverage getTeamAverage(String name,Filter filter);
 	public ArrayList<TeamInMatch> getTeamStatistics(String name,Filter filter);
 	public TeamPO getTeamInfo(String name,Filter filter);
+	public void initialize() throws IOException;
+	public void load() throws ClassNotFoundException, IOException;
 }

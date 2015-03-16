@@ -101,6 +101,7 @@ public class PlayerInAverage {
 				 * 
 				 */
 				for (int j : p.dirty) {
+					System.out.println(p.getName());
 					statsDirty[j - 3]++;
 					queue.enqueue(statsTotal[j - 3]);
 				}

@@ -62,6 +62,7 @@ public class PlayerInMatch implements Serializable {
 		this.turnover = turnover;
 		this.foul = foul;
 		this.points = points;
+		this.dirty = dirty;//Debugged
 	}
 
 	public PlayerInMatch(PlayerInMatch p) {
