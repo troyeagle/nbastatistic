@@ -80,18 +80,34 @@ public class DataReadController implements DataReaderService {
 	public void process() throws IOException {
 		long a = System.currentTimeMillis();
 		player.readAndAnalysisPlayer();
-		player.saveAsSerial();
+		
 
+		new Thread(){
+			public void run(){
+				
+				try {
+					player.saveAsSerial();
+					team.saveAsSerial();
+					match.saveAsSerial();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		}.start();
 		team.readAndAnalysisTeam();
-		team.saveAsSerial();
+		
 
 		match.readAndAnalysisMatch();
-		match.saveAsSerial();
+		
 		long b = System.currentTimeMillis();
 		System.out.println(b-a);
 		match.processAll();
 		long c = System.currentTimeMillis();
 		System.out.println(c-b);
+		
+		average();
 	}
 
 	public void load() throws IOException, ClassNotFoundException {
@@ -99,6 +115,12 @@ public class DataReadController implements DataReaderService {
 		team.loadSerial();
 		match.loadSerial();
 		match.processAll();
+		
+		average();
+		
+
+	}
+	public void average(){
 		playerInAverage = new ArrayList<PlayerInAverage>();
 		teamInAverage = new ArrayList<TeamInAverage>();
 		
@@ -132,7 +154,6 @@ public class DataReadController implements DataReaderService {
 		for(TeamInAverage pa:teamInAverage){
 			pa.calAverage();
 		}
-
 	}
 
 	public static void main(String[] args) throws IOException,

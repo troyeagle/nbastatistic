@@ -16,10 +16,10 @@ public class TeamDataProcessor {
 	private static String path;
 	static ArrayList<TeamPO> teams;
 	private final int numberOfTeams = 30;
-	private static String saveLoadPath = "C:/Users/Mebleyev.G.Longinus/Downloads/CSEIII data2/迭代一数据/team";
+	private static String saveLoadPath = "./CSEIII data2/迭代一数据/team";
 	public void readAndAnalysisTeam() throws IOException{
 		System.out.println("INFO:Team Info Initializing");
-		path = "C:/Users/Mebleyev.G.Longinus/Downloads/CSEIII data/迭代一数据/teams";
+		path = "./CSEIII data/迭代一数据/teams";
 		FileReader fr = new FileReader(path+"/teams");
 		BufferedReader br = new BufferedReader(fr);
 		

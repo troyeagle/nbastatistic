@@ -16,9 +16,9 @@ import java.util.regex.Pattern;
 import njuse.ffff.po.PlayerPO;
 
 public class PlayersDataProcessor {
-	private static String path="C:/Users/Mebleyev.G.Longinus/Downloads/CSEIII data/迭代一数据/players";
+	private static String path="./CSEIII data/迭代一数据/players";
 	
-	private static String saveLoadPath = "C:/Users/Mebleyev.G.Longinus/Downloads/CSEIII data2/迭代一数据/players/info";
+	private static String saveLoadPath = "./CSEIII data2/迭代一数据/players/info";
 	static ArrayList<PlayerPO> players;
 	
 	public void readAndAnalysisPlayer() {

@@ -23,9 +23,9 @@ import njuse.ffff.po.PlayerInMatch;
  *
  */
 public class MatchDataProcessor {
-	private static String path = "C:/Users/Mebleyev.G.Longinus/Downloads/CSEIII data/迭代一数据/matches";
+	private static String path = "./CSEIII data/迭代一数据/matches";
 
-	private static String saveLoadPath = "C:/Users/Mebleyev.G.Longinus/Downloads/CSEIII data2/迭代一数据/matches";
+	private static String saveLoadPath = "./CSEIII data2/迭代一数据/matches";
 	static ArrayList<MatchPO> matches;
 
 	public void readAndAnalysisMatch(){
