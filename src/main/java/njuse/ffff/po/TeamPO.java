@@ -2,7 +2,7 @@ package njuse.ffff.po;
 
 import java.io.Serializable;
 
-public class TeamPO implements Serializable{
+public class TeamPO implements Serializable {
 	/**
 	 * 
 	 */
@@ -15,8 +15,9 @@ public class TeamPO implements Serializable{
 	String homeCourt;
 	String timeOfFoundation;
 	String pathOfLogo;
-	public TeamPO(String name, String abbr, String state, String league,
-			String subLeague, String homeCourt, String timeOfFoundation,String dirOfLogos) {
+
+	public TeamPO(String name, String abbr, String state, String league, String subLeague,
+			String homeCourt, String timeOfFoundation, String dirOfLogos) {
 		super();
 		this.name = name;
 		this.abbr = abbr;
@@ -25,19 +26,46 @@ public class TeamPO implements Serializable{
 		this.subLeague = subLeague;
 		this.homeCourt = homeCourt;
 		this.timeOfFoundation = timeOfFoundation;
-		this.pathOfLogo = dirOfLogos+"/"+abbr+".svg";
+		this.pathOfLogo = dirOfLogos + "/" + abbr + ".svg";
 	}
+
 	@Override
 	public String toString() {
-		return "TeamPO [name=" + name + ", abbr=" + abbr + ", state=" + state
-				+ ", league=" + league + ", subLeague=" + subLeague
-				+ ", homeCourt=" + homeCourt + ", timeOfFoundation="
-				+ timeOfFoundation + "]";
+		return "TeamPO [name=" + name + ", abbr=" + abbr + ", state=" + state + ", league="
+				+ league + ", subLeague=" + subLeague + ", homeCourt=" + homeCourt
+				+ ", timeOfFoundation=" + timeOfFoundation + "]";
 	}
+
 	public String getName() {
 		return name;
 	}
-	
-	
-	
+
+	public String getAbbr() {
+		return abbr;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public String getLeague() {
+		return league;
+	}
+
+	public String getSubLeague() {
+		return subLeague;
+	}
+
+	public String getHomeCourt() {
+		return homeCourt;
+	}
+
+	public String getTimeOfFoundation() {
+		return timeOfFoundation;
+	}
+
+	public String getPathOfLogo() {
+		return pathOfLogo;
+	}
+
 }
