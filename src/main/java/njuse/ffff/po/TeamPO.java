@@ -7,14 +7,14 @@ public class TeamPO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	String name;
-	String abbr;
-	String state;
-	String league;
-	String subLeague;
-	String homeCourt;
-	String timeOfFoundation;
-	String pathOfLogo;
+	String name;//名称
+	String abbr;//简称
+	String state;//所在地
+	String league;//联盟（东，西）
+	String subLeague;//次级联盟
+	String homeCourt;//主场
+	String timeOfFoundation;//成立时间
+	String pathOfLogo;//队徽的文件路径
 
 	public TeamPO(String name, String abbr, String state, String league, String subLeague,
 			String homeCourt, String timeOfFoundation, String dirOfLogos) {
