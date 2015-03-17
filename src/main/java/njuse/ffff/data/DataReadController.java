@@ -21,7 +21,7 @@ public class DataReadController implements DataReaderService {
 	ArrayList<PlayerInAverage> playerInAverage;
 
 	public PlayerInAverage getPlayerAverage(String name, Filter filter) {
-		// TODO Auto-generated method stub
+		if(filter==null){filter = new Filter();}
 		for (PlayerInAverage p : playerInAverage) {
 			if (p.getName().equals(name) || filter.filt(p)) {
 				return p;
@@ -32,7 +32,7 @@ public class DataReadController implements DataReaderService {
 	}
 
 	public PlayerPO getPlayerInfo(String name, Filter filter) {
-		// TODO Auto-generated method stub
+		if(filter==null){filter = new Filter();}
 		for (PlayerPO p : PlayersDataProcessor.players) {
 			if (p.getName().equals(name) || filter.filt(p)) {
 				return p;
@@ -43,6 +43,7 @@ public class DataReadController implements DataReaderService {
 
 	public TeamInAverage getTeamAverage(String name, Filter filter) {
 		// TODO Auto-generated method stub
+		if(filter==null){filter = new Filter();}
 		for (TeamInAverage t : teamInAverage) {
 			if (t.getName().equals(name) || filter.filt(t)) {
 				return t;
@@ -52,12 +53,19 @@ public class DataReadController implements DataReaderService {
 	}
 
 	public TeamPO getTeamInfo(String name, Filter filter) {
-		// TODO Auto-generated method stub
+		if(filter==null){filter = new Filter();}
+		for (TeamPO t : TeamDataProcessor.teams) {
+			if (t.getName().equals(name) || filter.filt(t)) {
+				return t;
+			}
+		}
 		return null;
+
 	}
 
 	public ArrayList<PlayerInMatchExtended> getPlayerStatistics(String name,
 			Filter filter) {
+		if(filter==null){filter = new Filter();}
 		for (PlayerInAverage p : playerInAverage) {
 			if (p.getName().equals(name) || filter.filt(p)) {
 				return p.getPlayerStats();
@@ -68,7 +76,7 @@ public class DataReadController implements DataReaderService {
 	}
 
 	public ArrayList<TeamInMatch> getTeamStatistics(String name, Filter filter) {
-		// TODO Auto-generated method stub
+		if(filter==null){filter = new Filter();}
 		for (TeamInAverage t : teamInAverage) {
 			if (t.getName().equals(name) || filter.filt(t)) {
 				return t.getTeamStats();
@@ -78,6 +86,7 @@ public class DataReadController implements DataReaderService {
 	}
 
 	public void initialize() throws IOException {
+		
 		long a = System.currentTimeMillis();
 		player.readAndAnalysisPlayer();
 
@@ -158,6 +167,28 @@ public class DataReadController implements DataReaderService {
 	public static void main(String[] args) throws IOException,
 			ClassNotFoundException {
 		new DataReadController().initialize();
+	}
+
+	public ArrayList<PlayerPO> getPlayerInfoAll(Filter filter) {
+		if(filter==null){filter = new Filter();}
+		ArrayList<PlayerPO> arr = new ArrayList<PlayerPO>();
+		for (PlayerPO p : PlayersDataProcessor.players) {
+			if (filter.filt(p)) {
+				arr.add(p);
+			}
+		}
+		return arr;
+	}
+
+	public ArrayList<TeamPO> getTeamInfoAll(Filter filter) {
+		if(filter==null){filter = new Filter();}
+		ArrayList<TeamPO> arr = new ArrayList<TeamPO>();
+		for (TeamPO t : TeamDataProcessor.teams) {
+			if (filter.filt(t)) {
+				arr.add(t);
+			}
+		}
+		return arr;
 	}
 
 }

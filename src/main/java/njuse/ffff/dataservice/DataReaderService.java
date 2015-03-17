@@ -15,7 +15,8 @@ public interface DataReaderService {
 	public PlayerInAverage getPlayerAverage(String name,Filter filter);
 	public ArrayList<PlayerInMatchExtended> getPlayerStatistics(String name,Filter filter);
 	public PlayerPO getPlayerInfo(String name,Filter filter);
-	
+	public ArrayList<PlayerPO> getPlayerInfoAll(Filter filter);
+	public ArrayList<TeamPO> getTeamInfoAll(Filter filter);
 	public TeamInAverage getTeamAverage(String name,Filter filter);
 	public ArrayList<TeamInMatch> getTeamStatistics(String name,Filter filter);
 	public TeamPO getTeamInfo(String name,Filter filter);

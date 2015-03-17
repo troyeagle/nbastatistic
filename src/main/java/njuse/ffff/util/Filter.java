@@ -20,7 +20,8 @@ import java.util.ArrayList;
  * 
  * eg: <br>
  * attributes:["fieldsGoalMade","freeThrowMade","position"] <br>
- * condition:[">12,<14","!7","G"]
+ * condition:[">12,<14","!7","G"]<br>
+ * 
  */
 public class Filter {
 
@@ -32,8 +33,13 @@ public class Filter {
 		this.attributes = attributes;
 		this.condition = condition;
 	}
+	public Filter(){
+	}
 
 	public <T> boolean filt(T p) {
+		if(attributes==null||condition==null){
+			return true;
+		}
 		for (int i = 0; i < attributes.size(); i++) {
 			Field field;
 			try {
