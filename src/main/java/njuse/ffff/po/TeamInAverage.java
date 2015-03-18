@@ -118,5 +118,92 @@ public class TeamInAverage implements Serializable{
 	public ArrayList<TeamInMatch> getTeamStats() {
 		return teamStats;
 	}
+	public double getSecondInTotal() {
+		return secondInTotal;
+	}
+	public int getFieldGoalMade() {
+		return fieldGoalMade;
+	}
+	public int getFieldGoalAttempted() {
+		return fieldGoalAttempted;
+	}
+	public int getThreePointerMade() {
+		return threePointerMade;
+	}
+	public int getThreePointerAttempted() {
+		return threePointerAttempted;
+	}
+	public int getFreeThrowMade() {
+		return freeThrowMade;
+	}
+	public int getFreeThrowAttempted() {
+		return freeThrowAttempted;
+	}
+	public int getOffensiveRebound() {
+		return offensiveRebound;
+	}
+	public int getDefensiveRebound() {
+		return defensiveRebound;
+	}
+	public int getRebound() {
+		return rebound;
+	}
+	public int getAssist() {
+		return assist;
+	}
+	public int getSteal() {
+		return steal;
+	}
+	public int getBlock() {
+		return block;
+	}
+	public int getTurnover() {
+		return turnover;
+	}
+	public int getFoul() {
+		return foul;
+	}
+	public int getScores() {
+		return scores;
+	}
+	public double getFieldGoalRatio() {
+		return fieldGoalRatio;
+	}
+	public double getThreePointerRatio() {
+		return threePointerRatio;
+	}
+	public double getFreeThrowRatio() {
+		return freeThrowRatio;
+	}
+	public double getMyRounds() {
+		return myRounds;
+	}
+	public double getOffensiveEf() {
+		return offensiveEf;
+	}
+	public double getDefensiveEf() {
+		return defensiveEf;
+	}
+	public double getOffensiveReboundEf() {
+		return offensiveReboundEf;
+	}
+	public double getDefensiveReboundEf() {
+		return defensiveReboundEf;
+	}
+	public double getStealEf() {
+		return stealEf;
+	}
+	public double getAssistEf() {
+		return assistEf;
+	}
+	public int getNumOfMatches() {
+		return numOfMatches;
+	}
+	public int getNumOfWins() {
+		return numOfWins;
+	}
+	public double getWinningRatio() {
+		return winningRatio;
+	}
 	
 }

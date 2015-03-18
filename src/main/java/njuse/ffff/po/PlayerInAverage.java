@@ -235,4 +235,12 @@ public class PlayerInAverage {
 		return playerStats;
 	}
 
+	public double[] getStatsAverage() {
+		return statsAverage;
+	}
+
+	public double[] getStatsTotal() {
+		return statsTotal;
+	}
+
 }
