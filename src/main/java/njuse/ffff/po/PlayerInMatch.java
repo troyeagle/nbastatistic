@@ -32,6 +32,7 @@ public class PlayerInMatch implements Serializable {
 	int foul;
 	int points;
 
+	boolean firstOnMatch;
 	ArrayList<Integer> dirty;
 	int second;// Calculate by Minute;
 
@@ -40,7 +41,7 @@ public class PlayerInMatch implements Serializable {
 			int threePointerAttempted, int freeThrowMade,
 			int freeThrowAttempted, int offensiveRebound, int defensiveRebound,
 			int rebound, int assist, int steal, int block, int turnover,
-			int foul, int points, ArrayList<Integer> dirty) {
+			int foul, int points, ArrayList<Integer> dirty,boolean firstOnMatch) {
 		super();
 		this.name = name;
 		this.position = position;
@@ -63,6 +64,7 @@ public class PlayerInMatch implements Serializable {
 		this.foul = foul;
 		this.points = points;
 		this.dirty = dirty;//Debugged
+		this.firstOnMatch = firstOnMatch;
 	}
 
 	public PlayerInMatch(PlayerInMatch p) {
@@ -70,7 +72,7 @@ public class PlayerInMatch implements Serializable {
 				p.fieldGoalAttempted, p.threePointerMade,
 				p.threePointerAttempted, p.freeThrowMade, p.freeThrowAttempted,
 				p.offensiveRebound, p.defensiveRebound, p.rebound, p.assist,
-				p.steal, p.block, p.turnover, p.foul, p.points, p.dirty);
+				p.steal, p.block, p.turnover, p.foul, p.points, p.dirty,p.firstOnMatch);
 		second = Integer.parseInt(minute.split(":")[0]) * 60
 				+ Integer.parseInt(minute.split(":")[1]);
 
@@ -81,9 +83,9 @@ public class PlayerInMatch implements Serializable {
 	 * @param split
 	 * @param path
 	 */
-	public PlayerInMatch(String[] split, String path) {
+	public PlayerInMatch(String[] split, String path,boolean firstOnMatch) {
 		// TODO Auto-generated method stub
-
+		this.firstOnMatch = firstOnMatch;
 		emptyStatProcess(split, path);
 
 		name = split[0];
@@ -229,6 +231,82 @@ public class PlayerInMatch implements Serializable {
 
 	public int getPoints() {
 		return points;
+	}
+
+	public char getPosition() {
+		return position;
+	}
+
+	public String getMinute() {
+		return minute;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public int getFieldGoalMade() {
+		return fieldGoalMade;
+	}
+
+	public int getFieldGoalAttempted() {
+		return fieldGoalAttempted;
+	}
+
+	public int getThreePointerMade() {
+		return threePointerMade;
+	}
+
+	public int getThreePointerAttempted() {
+		return threePointerAttempted;
+	}
+
+	public int getFreeThrowMade() {
+		return freeThrowMade;
+	}
+
+	public int getFreeThrowAttempted() {
+		return freeThrowAttempted;
+	}
+
+	public int getOffensiveRebound() {
+		return offensiveRebound;
+	}
+
+	public int getDefensiveRebound() {
+		return defensiveRebound;
+	}
+
+	public int getRebound() {
+		return rebound;
+	}
+
+	public int getAssist() {
+		return assist;
+	}
+
+	public int getSteal() {
+		return steal;
+	}
+
+	public int getBlock() {
+		return block;
+	}
+
+	public int getTurnover() {
+		return turnover;
+	}
+
+	public int getFoul() {
+		return foul;
+	}
+
+	public boolean isFirstOnMatch() {
+		return firstOnMatch;
+	}
+
+	public int getSecond() {
+		return second;
 	}
 
 }

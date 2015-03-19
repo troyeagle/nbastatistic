@@ -8,11 +8,12 @@ public class PlayerInAverage {
 	double[] statsAverage;
 	int[] statsDirty;
 	double[] statsTotal;
-	
+	int effective;	//有效记录数，即出场数
 	String name;
 	char position;
 	String minute;
 	double second;// Advanced
+	int firstOnMatch;
 
 	double fieldGoalMade;
 	double fieldGoalAttempted;
@@ -86,7 +87,7 @@ public class PlayerInAverage {
 	}
 
 	public void calAverageAsArray() {
-		int effective = 0;
+		
 		statsAverage = new double[31];
 		statsTotal = new double[31];
 		statsDirty = new int[31];
@@ -94,6 +95,9 @@ public class PlayerInAverage {
 		for (PlayerInMatchExtended p : playerStats) {
 			if (p.second != 0) {
 				effective++;
+				if(p.firstOnMatch){
+					this.firstOnMatch++;
+				}
 				Queue<Double> queue = new Queue<Double>();
 				/**
 				 * Number 3: for the dirty number starts from number 3
@@ -153,7 +157,7 @@ public class PlayerInAverage {
 	}
 
 	public void calAverage() {
-		int effective = 0;
+		effective = 0;
 		for (PlayerInMatchExtended p : playerStats) {
 			if (p.second != 0) {
 				effective++;
@@ -241,6 +245,22 @@ public class PlayerInAverage {
 
 	public double[] getStatsTotal() {
 		return statsTotal;
+	}
+
+	public int getEffective() {
+		return effective;
+	}
+
+	public String getMinute() {
+		return minute;
+	}
+
+	public double getSecond() {
+		return second;
+	}
+
+	public int getFirstOnMatch() {
+		return firstOnMatch;
 	}
 
 }

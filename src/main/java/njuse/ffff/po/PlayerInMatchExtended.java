@@ -21,8 +21,10 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 	double turnoverRatio;
 	double usingRatio;
 	double GmSc;
+	
+	TeamInMatch team;
 
-	public PlayerInMatchExtended(PlayerInMatch p) {
+	public PlayerInMatchExtended(PlayerInMatch p,TeamInMatch team) {
 		super(p);
 		// TODO Auto-generated constructor stub
 	}
@@ -33,7 +35,7 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 			double trueShootingPercentage, double reboundRatio,
 			double offensiveReboundRatio, double defensiveReboundRatio,
 			double assistRatio, double stealRatio, double blockRatio,
-			double turnoverRatio, double usingRatio, double gmSc) {
+			double turnoverRatio, double usingRatio, double gmSc,TeamInMatch team) {
 		super(p);
 		this.playerEfficiencyRate = playerEfficiencyRate;
 		this.fieldGoalRatio = fieldGoalRatio;
@@ -50,6 +52,7 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 		this.turnoverRatio = turnoverRatio;
 		this.usingRatio = usingRatio;
 		GmSc = gmSc;
+		this.team = team;
 	}
 
 	public PlayerInMatchExtended(PlayerInMatchExtended p) {
@@ -59,7 +62,7 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 				p.trueShootingPercentage, p.reboundRatio,
 				p.offensiveReboundRatio, p.defensiveReboundRatio,
 				p.assistRatio, p.stealRatio, p.blockRatio, p.turnoverRatio,
-				p.usingRatio, p.GmSc);
+				p.usingRatio, p.GmSc,p.team);
 	}
 	/**
 	 * calAll<br>
@@ -156,6 +159,70 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 				* (freeThrowAttempted - freeThrowMade) + 0.7 * offensiveRebound
 				+ 0.3 * defensiveRebound + steal + 0.7 * assist + 0.7 * block
 				- 0.4 * foul - turnover;
+	}
+
+	public int getPlayerEfficiencyRate() {
+		return playerEfficiencyRate;
+	}
+
+	public double getFieldGoalRatio() {
+		return fieldGoalRatio;
+	}
+
+	public double getThreePointerRatio() {
+		return threePointerRatio;
+	}
+
+	public double getFreeThrowRatio() {
+		return freeThrowRatio;
+	}
+
+	public double getEfficiencyGoalPercentage() {
+		return efficiencyGoalPercentage;
+	}
+
+	public double getTrueShootingPercentage() {
+		return trueShootingPercentage;
+	}
+
+	public double getReboundRatio() {
+		return reboundRatio;
+	}
+
+	public double getOffensiveReboundRatio() {
+		return offensiveReboundRatio;
+	}
+
+	public double getDefensiveReboundRatio() {
+		return defensiveReboundRatio;
+	}
+
+	public double getAssistRatio() {
+		return assistRatio;
+	}
+
+	public double getStealRatio() {
+		return stealRatio;
+	}
+
+	public double getBlockRatio() {
+		return blockRatio;
+	}
+
+	public double getTurnoverRatio() {
+		return turnoverRatio;
+	}
+
+	public double getUsingRatio() {
+		return usingRatio;
+	}
+
+	public double getGmSc() {
+		return GmSc;
+	}
+
+	public TeamInMatch getTeam() {
+		return team;
 	}
 
 }

@@ -68,15 +68,30 @@ public class MatchDataProcessor {
 				br.readLine();
 				// TeamA
 				String playerStat;
+				int firstFive = 0;
+				boolean firstOnMatch = true;
 				while ((playerStat = br.readLine()).length() > 6) {
 					String[] split = playerStat.split(";");
-					playerInTeamA.add(new PlayerInMatch(split,files[i].getPath()));
+					firstFive++;
+					if(firstFive <5){
+						firstOnMatch = true;
+					}else{
+						firstOnMatch = false;
+					}
+					playerInTeamA.add(new PlayerInMatch(split,files[i].getPath(),firstOnMatch));
 					members.add(split[0]);
 				}
 				// TeamB
+				firstFive = 0;
 				while ((playerStat = br.readLine())!=null) {
 					String[] split = playerStat.split(";");
-					playerInTeamB.add(new PlayerInMatch(split,files[i].getPath()));
+					firstFive++;
+					if(firstFive <5){
+						firstOnMatch = true;
+					}else{
+						firstOnMatch = false;
+					}
+					playerInTeamB.add(new PlayerInMatch(split,files[i].getPath(),firstOnMatch));
 					members.add(split[0]);
 				}
 

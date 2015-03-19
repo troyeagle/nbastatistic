@@ -55,12 +55,12 @@ public class MatchPO implements Serializable{
 		teamStatB.calAll();
 
 		for(PlayerInMatch p : playerInTeamA){
-			PlayerInMatchExtended playerEx = new PlayerInMatchExtended(p);
+			PlayerInMatchExtended playerEx = new PlayerInMatchExtended(p,teamStatA);
 			playerEx.calAll(teamStatA, teamStatB);
 			playerInAEx.add(playerEx);
 		}
 		for(PlayerInMatch p : playerInTeamB){
-			PlayerInMatchExtended playerEx = new PlayerInMatchExtended(p);
+			PlayerInMatchExtended playerEx = new PlayerInMatchExtended(p,teamStatA);
 			playerEx.calAll(teamStatB, teamStatA);
 			playerInBEx.add(playerEx);
 		}
