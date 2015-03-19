@@ -41,7 +41,7 @@ public class PlayerFilterPanel extends JPanel{
 	private JLabel label_searchIcon;
 	private JLabel label_add_item;
 	private JComboBox<String> filter_position;
-	private JComboBox<String> filter_alliance;
+	private JComboBox<String> filter_league;
 	private JLabel label_sort_condition;
 	
 	//表格属性
@@ -86,7 +86,7 @@ public class PlayerFilterPanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				// TODO 跳转到"球员信息横向比较"界面
-				uiController.setTeamComparePanel();
+				uiController.setPlayerComparePanel();
 			}
 		});
 		
@@ -149,9 +149,9 @@ public class PlayerFilterPanel extends JPanel{
 			public void mouseClicked(MouseEvent arg0) {
 				// TODO 获得搜索条件，开始搜索
 				String position = filter_position.getSelectedItem().toString();
-				String alliance = filter_alliance.getSelectedItem().toString();
+				String league = filter_league.getSelectedItem().toString();
 				String sortCondition = label_sort_condition.getText();
-				
+				uiController.setPlayerFilterResult(position, league, sortCondition);
 			}
 		});
 		
@@ -172,12 +172,12 @@ public class PlayerFilterPanel extends JPanel{
 		filter_position.setBounds(270, 99, 60, 28);
 		
 		//球员联盟
-		String[] list_alliance = {"联盟","东部","西部"};
-		filter_alliance = new JComboBox<String>(list_alliance);
-		filter_alliance.setOpaque(true);
-		filter_alliance.setBackground(background);
-		filter_alliance.setForeground(Color.CYAN);
-		filter_alliance.setBounds(370, 99, 60, 28);
+		String[] list_league = {"联盟","东部","西部"};
+		filter_league = new JComboBox<String>(list_league);
+		filter_league.setOpaque(true);
+		filter_league.setBackground(background);
+		filter_league.setForeground(Color.CYAN);
+		filter_league.setBounds(370, 99, 60, 28);
 		
 		//小标题——排序项
 		JLabel label_filter_sort = new JLabel("排序项");
@@ -240,7 +240,7 @@ public class PlayerFilterPanel extends JPanel{
 		this.add(label_searchIcon);
 		this.add(label_preference);
 		this.add(filter_position);
-		this.add(filter_alliance);
+		this.add(filter_league);
 		this.add(label_filter_sort);
 		this.add(label_add_item);
 		this.add(label_sort_condition);

@@ -235,4 +235,12 @@ public class TeamProfilePanel extends JPanel{
 		this.add(label_player_data3);
 		this.add(label_player_data4);
 	}
+	
+	public void setProfile(String name,String[][] properties){
+		
+	}
+	
+	public void setIcon(ImageIcon icon){
+		
+	}
 }

@@ -35,11 +35,16 @@ public class SearchPanel extends JPanel{
 	private String img_label_search_changed_URL = "picture/transfer/label_search_changed.jpg";
 	private String img_arrow_down_URL = "picture/arrow/arrow_down.jpg";
 	private String img_arrow_down_changed_URL = "picture/arrow/arrow_down_changed.jpg";
+	private String img_menu_URL = "picture/menu.jpg";
+	private String img_menu_changed_URL = "picture/menu_changed.jpg";
 	
 	private JTextField text_searchInfo;
 	private JLabel label_search;
 	private JLabel label_arrow_down_left;
 	private JLabel label_arrow_down_middle;
+	private JLabel label_menu;
+	private MenuPanel menuPanel;
+	private int menuDisplay;
 	
 	public SearchPanel(){
 		this.setSize(searchPanel_width, searchPanel_height);
@@ -47,6 +52,9 @@ public class SearchPanel extends JPanel{
 		this.setVisible(true);
 		
 		uiController = UIController.getInstance();
+		menuPanel = new MenuPanel();
+		menuPanel.setLocation(920, 400);
+		menuDisplay = 0;
 		
 		//搜索框
 		JLabel label_searchDialog = new JLabel();
@@ -93,7 +101,8 @@ public class SearchPanel extends JPanel{
 			public void mouseClicked(MouseEvent arg0) {
 				//获得搜索的项
 				String search = text_searchInfo.getText();
-				//TODO 获取球员/球队的信息
+				//TODO 调用查找
+				
 				
 			}
 		});
@@ -136,7 +145,7 @@ public class SearchPanel extends JPanel{
 		//向下翻页标志————转换到高级搜索界面
 		label_arrow_down_middle = new JLabel();
 		label_arrow_down_middle.setOpaque(true);
-		label_arrow_down_middle.setBounds(450, 617, 40, 40);
+		label_arrow_down_middle.setBounds(500, 617, 40, 40);
 		icon_arrow = new ImageIcon(img_arrow_down_URL);
 		label_arrow_down_middle.setIcon(icon_arrow);
 		label_arrow_down_middle.addMouseListener(new MouseListener() {
@@ -163,8 +172,37 @@ public class SearchPanel extends JPanel{
 		label_detailSearch.setBackground(background);
 		label_detailSearch.setForeground(Color.WHITE);
 		label_detailSearch.setFont(new FontUIResource("DialogInput", Font.BOLD, 20));
-		label_detailSearch.setBounds(500, 629, 220, 24);
+		label_detailSearch.setBounds(550, 629, 220, 24);
 		
+		//菜单按钮
+		label_menu = new JLabel();
+		label_menu.setOpaque(true);
+		ImageIcon icon_menu = new ImageIcon(img_menu_URL);
+		label_menu.setIcon(icon_menu);
+		label_menu.setBounds(968, 601, 70, 70);
+		label_menu.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {
+				ImageIcon icon_menu = new ImageIcon(img_menu_URL);
+				label_menu.setIcon(icon_menu);
+			}
+			public void mouseEntered(MouseEvent arg0) {
+				ImageIcon icon_menu_changed = new ImageIcon(img_menu_changed_URL);
+				label_menu.setIcon(icon_menu_changed);
+			}
+			public void mouseClicked(MouseEvent arg0) {
+				//显示菜单
+				if(menuDisplay==0){
+					displayMenu();
+					menuDisplay = 1;
+				}
+				else{
+					removeMenu();
+					menuDisplay = 0;
+				}
+			}
+		});
 		
 		this.setLayout(null);
 		this.add(label_searchDialog);
@@ -173,6 +211,7 @@ public class SearchPanel extends JPanel{
 		this.add(label_info);
 		this.add(label_arrow_down_middle);
 		this.add(label_detailSearch);
+		this.add(label_menu);
 		this.repaint();
 	}
 	
@@ -182,5 +221,15 @@ public class SearchPanel extends JPanel{
 		ImageIcon icon_sign = new ImageIcon(img_sign_URL);
 		Image img_sign = icon_sign.getImage();
 		g.drawImage(img_sign, 370, 142, null);
+	}
+	
+	public void displayMenu(){
+		this.add(menuPanel);
+		this.repaint();
+	}
+	
+	public void removeMenu(){
+		this.remove(menuPanel);
+		this.repaint();
 	}
 }

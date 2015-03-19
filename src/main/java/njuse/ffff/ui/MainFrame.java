@@ -14,7 +14,7 @@ import njuse.ffff.uiservice.FrameService;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame implements FrameService{
-	private final int mainFrame_width = 1200;
+	private final int mainFrame_width = 1100;
 	private final int mainFrame_height = 700;
 	private int mainFrame_x;
 	private int mainFrame_y;
@@ -65,13 +65,8 @@ public class MainFrame extends JFrame implements FrameService{
 		SearchPanel s_panel = new SearchPanel();
 		s_panel.setLocation(0, 0);
 		
-		//主题界面
-		TitlePanel t_panel = new TitlePanel();
-		t_panel.setLocation(1100, 0);
-		
 		this.setLayout(null);
 		this.add(s_panel);
-		this.add(t_panel);
 		this.repaint();
 		
 		panel_current = s_panel;

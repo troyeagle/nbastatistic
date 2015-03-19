@@ -35,6 +35,18 @@ public class PlayerProfilePanel extends JPanel{
 	private JLabel label_arrow_left;
 	private JTextField text_searchInfo;
 	private JLabel label_search;
+	private JLabel label_player_name;
+	private JLabel label_player_position;
+	private JLabel label_player_protrait;
+	
+	private JLabel label_height_field;
+	private JLabel label_weight_field;
+	private JLabel label_birth_field;
+	private JLabel label_age_field;
+	private JLabel label_career_field;
+	private JLabel label_code_field;
+	private JLabel label_graduateSchool_field;
+	
 	private JLabel label_player_data1;
 	private JLabel label_player_data2;
 	private JLabel label_player_data3;
@@ -70,7 +82,7 @@ public class PlayerProfilePanel extends JPanel{
 		});
 		
 		//球员姓名
-		JLabel label_player_name = new JLabel("Aaron Brooks");
+		label_player_name = new JLabel();
 		label_player_name.setOpaque(true);
 		label_player_name.setBackground(background);
 		label_player_name.setForeground(Color.WHITE);
@@ -129,7 +141,7 @@ public class PlayerProfilePanel extends JPanel{
         label_searchDialog.add(label_search);
         
         //球员位置
-        JLabel label_player_position = new JLabel("后卫");
+        label_player_position = new JLabel();
         label_player_position.setOpaque(true);
         label_player_position.setBackground(background);
         label_player_position.setForeground(Color.WHITE);
@@ -137,12 +149,110 @@ public class PlayerProfilePanel extends JPanel{
         label_player_position.setBounds(194, 146, 94, 44);
         
         //左侧球员头像
-        JLabel label_player_protrait = new JLabel();
+        label_player_protrait = new JLabel();
         label_player_protrait.setOpaque(true);
         label_player_protrait.setBounds(44, 252, 214, 174);
         
         //中间球员信息
         //TODO
+        JLabel label_height = new JLabel("身高");
+        label_height.setOpaque(true);
+        label_height.setBackground(background);
+        label_height.setForeground(Color.WHITE);
+        label_height.setFont(new FontUIResource("DialogInput", Font.BOLD, 30));
+        label_height.setBounds(418, 265, 88, 35);
+        
+        label_height_field = new JLabel();
+        label_height_field.setOpaque(true);
+        label_height_field.setBackground(background);
+        label_height_field.setForeground(Color.WHITE);
+        label_height_field.setFont(new FontUIResource("DialogInput", Font.BOLD, 30));
+        label_height_field.setBounds(605, 265, 275, 35);
+        
+        JLabel label_weight = new JLabel("体重");
+        label_weight.setOpaque(true);
+        label_weight.setBackground(background);
+        label_weight.setForeground(Color.WHITE);
+        label_weight.setFont(new FontUIResource("DialogInput", Font.BOLD, 30));
+        label_weight.setBounds(418, 315, 88, 35);
+        
+        label_weight_field = new JLabel();
+        label_weight_field.setOpaque(true);
+        label_weight_field.setBackground(background);
+        label_weight_field.setForeground(Color.WHITE);
+        label_weight_field.setFont(new FontUIResource("DialogInput", Font.BOLD, 30));
+        label_weight_field.setBounds(605, 315, 275, 35);
+        
+        JLabel label_birth = new JLabel("生日");
+        label_birth.setOpaque(true);
+        label_birth.setBackground(background);
+        label_birth.setForeground(Color.WHITE);
+        label_birth.setFont(new FontUIResource("DialogInput", Font.BOLD, 30));
+        label_birth.setBounds(418, 365, 88, 35);
+        
+        label_birth_field = new JLabel();
+        label_birth_field.setOpaque(true);
+        label_birth_field.setBackground(background);
+        label_birth_field.setForeground(Color.WHITE);
+        label_birth_field.setFont(new FontUIResource("DialogInput", Font.BOLD, 30));
+        label_birth_field.setBounds(605, 365, 275, 35);
+
+        JLabel label_age = new JLabel("年龄");
+        label_age.setOpaque(true);
+        label_age.setBackground(background);
+        label_age.setForeground(Color.WHITE);
+        label_age.setFont(new FontUIResource("DialogInput", Font.BOLD, 30));
+        label_age.setBounds(418, 415, 88, 35);
+        
+        label_age_field = new JLabel();
+        label_age_field.setOpaque(true);
+        label_age_field.setBackground(background);
+        label_age_field.setForeground(Color.WHITE);
+        label_age_field.setFont(new FontUIResource("DialogInput", Font.BOLD, 30));
+        label_age_field.setBounds(605, 415, 275, 35);
+        
+        JLabel label_career = new JLabel("联赛球龄");
+        label_career.setOpaque(true);
+        label_career.setBackground(background);
+        label_career.setForeground(Color.WHITE);
+        label_career.setFont(new FontUIResource("DialogInput", Font.BOLD, 30));
+        label_career.setBounds(418, 465, 170, 35);
+        
+        label_career_field = new JLabel();
+        label_career_field.setOpaque(true);
+        label_career_field.setBackground(background);
+        label_career_field.setForeground(Color.WHITE);
+        label_career_field.setFont(new FontUIResource("DialogInput", Font.BOLD, 30));
+        label_career_field.setBounds(605, 465, 275, 35);
+
+        JLabel label_code = new JLabel("编号");
+        label_code.setOpaque(true);
+        label_code.setBackground(background);
+        label_code.setForeground(Color.WHITE);
+        label_code.setFont(new FontUIResource("DialogInput", Font.BOLD, 30));
+        label_code.setBounds(418, 515, 88, 35);
+
+        label_code_field = new JLabel();
+        label_code_field.setOpaque(true);
+        label_code_field.setBackground(background);
+        label_code_field.setForeground(Color.WHITE);
+        label_code_field.setFont(new FontUIResource("DialogInput", Font.BOLD, 30));
+        label_code_field.setBounds(605, 515, 275, 35);
+
+        JLabel label_guaduateSchool = new JLabel("毕业学校");
+        label_guaduateSchool.setOpaque(true);
+        label_guaduateSchool.setBackground(background);
+        label_guaduateSchool.setForeground(Color.WHITE);
+        label_guaduateSchool.setFont(new FontUIResource("DialogInput", Font.BOLD, 30));
+        label_guaduateSchool.setBounds(418, 565, 170, 35);
+
+        label_graduateSchool_field = new JLabel();
+        label_graduateSchool_field.setOpaque(true);
+        label_graduateSchool_field.setBackground(background);
+        label_graduateSchool_field.setForeground(Color.WHITE);
+        label_graduateSchool_field.setFont(new FontUIResource("DialogInput", Font.BOLD, 30));
+        label_graduateSchool_field.setBounds(605, 565, 275, 35);
+        
         
         //右侧数据引导框1
         label_player_data1 = new JLabel(" 各种数据1");
@@ -239,9 +349,60 @@ public class PlayerProfilePanel extends JPanel{
 		this.add(label_searchDialog);
 		this.add(label_player_position);
 		this.add(label_player_protrait);
+		this.add(label_height);
+		this.add(label_height_field);
+		this.add(label_weight);
+		this.add(label_weight_field);
+		this.add(label_birth);
+		this.add(label_birth_field);
+		this.add(label_age);
+		this.add(label_age_field);
+		this.add(label_career);
+		this.add(label_career_field);
+		this.add(label_code);
+		this.add(label_guaduateSchool);
+		this.add(label_graduateSchool_field);
 		this.add(label_player_data1);
 		this.add(label_player_data2);
 		this.add(label_player_data3);
 		this.add(label_player_data4);
+	}
+	
+	//设置属性
+	public void setProfile(String name,String position,String[][] properties){
+		label_player_name.setText(name);
+		label_player_position.setText(position);
+		for(int i=0;i<properties.length;i++){
+			String property = properties[i][0];
+			String value = properties[i][1];
+			if(property.equals("身高")){
+				label_height_field.setText(value);
+			}
+			else if(property.equals("生日")){
+				label_birth_field.setText(value);
+			}
+			else if(property.equals("体重")){
+				label_weight_field.setText(value);
+			}
+			else if(property.equals("年龄")){
+				label_age_field.setText(value);
+			}
+			else if(property.equals("联赛球龄")){
+				label_career_field.setText(value);
+			}
+			else if(property.equals("编号")){
+				label_code_field.setText(value);
+			}
+			else if(property.equals("毕业学校")){
+				label_graduateSchool_field.setText(value);
+			}
+		}
+		this.repaint();
+	}
+	
+	public void setPhoto(String img_URL){
+		ImageIcon icon = new ImageIcon(img_URL);
+		label_player_protrait.setIcon(icon);
+		this.repaint();
 	}
 }
