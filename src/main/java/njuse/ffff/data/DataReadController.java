@@ -23,7 +23,7 @@ public class DataReadController implements DataReaderService {
 	public PlayerInAverage getPlayerAverage(String name, Filter filter) {
 		if(filter==null){filter = new Filter();}
 		for (PlayerInAverage p : playerInAverage) {
-			if (p.getName().equals(name) || filter.filt(p)) {
+			if (p.getName().equals(name) && filter.filt(p)) {
 				return p;
 
 			}
@@ -34,7 +34,7 @@ public class DataReadController implements DataReaderService {
 	public PlayerPO getPlayerInfo(String name, Filter filter) {
 		if(filter==null){filter = new Filter();}
 		for (PlayerPO p : PlayersDataProcessor.players) {
-			if (p.getName().equals(name) || filter.filt(p)) {
+			if (p.getName().equals(name) && filter.filt(p)) {
 				return p;
 			}
 		}
@@ -45,7 +45,7 @@ public class DataReadController implements DataReaderService {
 		// TODO Auto-generated method stub
 		if(filter==null){filter = new Filter();}
 		for (TeamInAverage t : teamInAverage) {
-			if (t.getName().equals(name) || filter.filt(t)) {
+			if (t.getName().equals(name) && filter.filt(t)) {
 				return t;
 			}
 		}
@@ -55,7 +55,7 @@ public class DataReadController implements DataReaderService {
 	public TeamPO getTeamInfo(String name, Filter filter) {
 		if(filter==null){filter = new Filter();}
 		for (TeamPO t : TeamDataProcessor.teams) {
-			if (t.getName().equals(name) || filter.filt(t)) {
+			if (t.getName().equals(name) && filter.filt(t)) {
 				return t;
 			}
 		}
@@ -67,7 +67,7 @@ public class DataReadController implements DataReaderService {
 			Filter filter) {
 		if(filter==null){filter = new Filter();}
 		for (PlayerInAverage p : playerInAverage) {
-			if (p.getName().equals(name) || filter.filt(p)) {
+			if (p.getName().equals(name) && filter.filt(p)) {
 				return p.getPlayerStats();
 
 			}
@@ -78,7 +78,7 @@ public class DataReadController implements DataReaderService {
 	public ArrayList<TeamInMatch> getTeamStatistics(String name, Filter filter) {
 		if(filter==null){filter = new Filter();}
 		for (TeamInAverage t : teamInAverage) {
-			if (t.getName().equals(name) || filter.filt(t)) {
+			if (t.getName().equals(name) && filter.filt(t)) {
 				return t.getTeamStats();
 			}
 		}
@@ -140,7 +140,16 @@ public class DataReadController implements DataReaderService {
 		for (PlayerPO p : PlayersDataProcessor.players) {
 			playerInAverage.add(new PlayerInAverage(p.getName()));
 		}
+		for(TeamPO p:TeamDataProcessor.teams){
+			teamInAverage.add(new TeamInAverage(p.getName(),p.getAbbr()));
+		}
 		for (MatchPO m : MatchDataProcessor.matches) {
+			for(TeamInAverage ta:teamInAverage){
+				if(ta.getAbbr().equals(m.getName())||ta.getAbbr().equals(m.getTeamB())){
+					ta.addMatch(m);
+				}
+			}
+			
 			for (PlayerInMatchExtended p : m.getPlayerInAEx()) {
 				for (PlayerInAverage pa : playerInAverage) {
 					if (pa.getName().equals(p.getName())) {

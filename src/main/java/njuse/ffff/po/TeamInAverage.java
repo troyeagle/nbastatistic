@@ -9,6 +9,7 @@ public class TeamInAverage implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String name;
+	private String abbr;
 	private double secondInTotal;
 	private int fieldGoalMade = 0;
 	private int fieldGoalAttempted = 0;
@@ -42,7 +43,7 @@ public class TeamInAverage implements Serializable{
 	
 	ArrayList<TeamInMatch> teamStats;
 	
-	public TeamInAverage(String name,ArrayList<MatchPO> matches){
+/*	public TeamInAverage(String name,ArrayList<MatchPO> matches){
 
 		for(MatchPO m:matches){
 			if(m.teamA.equals(name)){
@@ -52,7 +53,21 @@ public class TeamInAverage implements Serializable{
 			}
 		}
 		calAverage();
+		
+	}*/
+	public TeamInAverage(String name2,String abbr) {
+		teamStats = new ArrayList<TeamInMatch>();
+		this.name = name2;
+		this.abbr = abbr;
 	}
+	public void addMatch(MatchPO m){
+		if(m.teamA.equals(abbr)){
+			teamStats.add(m.teamStatA);
+		}else if(m.teamB.equals(abbr)){
+			teamStats.add(m.teamStatB);
+		}
+	}
+	
 	public void calAverage(){
 		for(TeamInMatch p:teamStats){
 			numOfMatches++;
@@ -110,7 +125,7 @@ public class TeamInAverage implements Serializable{
 		stealEf/=teamStats.size();
 		assistEf/=teamStats.size();
 		winningRatio = (double)numOfWins/numOfMatches;
-		
+		System.out.println(toString());
 	}
 	public String getName() {
 		return name;
@@ -204,6 +219,31 @@ public class TeamInAverage implements Serializable{
 	}
 	public double getWinningRatio() {
 		return winningRatio;
+	}
+	public String getAbbr() {
+		return abbr;
+	}
+	@Override
+	public String toString() {
+		return "TeamInAverage [name=" + name + ", secondInTotal="
+				+ secondInTotal + ", fieldGoalMade=" + fieldGoalMade
+				+ ", fieldGoalAttempted=" + fieldGoalAttempted
+				+ ", threePointerMade=" + threePointerMade
+				+ ", threePointerAttempted=" + threePointerAttempted
+				+ ", freeThrowMade=" + freeThrowMade + ", freeThrowAttempted="
+				+ freeThrowAttempted + ", offensiveRebound=" + offensiveRebound
+				+ ", defensiveRebound=" + defensiveRebound + ", rebound="
+				+ rebound + ", assist=" + assist + ", steal=" + steal
+				+ ", block=" + block + ", turnover=" + turnover + ", foul="
+				+ foul + ", scores=" + scores + ", fieldGoalRatio="
+				+ fieldGoalRatio + ", threePointerRatio=" + threePointerRatio
+				+ ", freeThrowRatio=" + freeThrowRatio + ", myRounds="
+				+ myRounds + ", offensiveEf=" + offensiveEf + ", defensiveEf="
+				+ defensiveEf + ", offensiveReboundEf=" + offensiveReboundEf
+				+ ", defensiveReboundEf=" + defensiveReboundEf + ", stealEf="
+				+ stealEf + ", assistEf=" + assistEf + ", numOfMatches="
+				+ numOfMatches + ", numOfWins=" + numOfWins + ", winningRatio="
+				+ winningRatio +  "]";
 	}
 	
 }

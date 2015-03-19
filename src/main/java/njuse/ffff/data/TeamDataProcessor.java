@@ -45,32 +45,32 @@ public class TeamDataProcessor {
 				split[j]=split[j].trim();
 			}
 			
-//			Pattern p = Pattern.compile("║(.*)	│");
-//			Matcher m = p.matcher(info);
-//			
-//			while(m.find()){
-//				name = m.group(1).trim();
-//			}
-//			p = Pattern.compile("│(.*)│");
-//			
-//			while(m.find()){
-//				abbr = m.group(1);
-//				league = m.group(2);
-//			}
-//			p = Pattern.compile("│(.*)	│");
-//			
-//			
-//			while(m.find()){
-//				state = m.group(1).trim();
-//				subLeague = m.group(2).trim();
-//				homeCourt = m.group(3).trim();
-//				
-//			}
-//			
-//			p = Pattern.compile("│(.*)║");
-//			while(m.find()){
-//				timeOfFoundation = m.group(1);
-//			}
+/*			Pattern p = Pattern.compile("║(.*)	│");
+			Matcher m = p.matcher(info);
+			
+			while(m.find()){
+				name = m.group(1).trim();
+			}
+			p = Pattern.compile("│(.*)│");
+			
+			while(m.find()){
+				abbr = m.group(1);
+				league = m.group(2);
+			}
+			p = Pattern.compile("│(.*)	│");
+			
+			
+			while(m.find()){
+				state = m.group(1).trim();
+				subLeague = m.group(2).trim();
+				homeCourt = m.group(3).trim();
+				
+			}
+			
+			p = Pattern.compile("│(.*)║");
+			while(m.find()){
+				timeOfFoundation = m.group(1);
+			}*/
 			
 //			tempTeamPO = new TeamPO(name,abbr,state,league,subLeague,homeCourt,timeOfFoundation);
 			

@@ -47,7 +47,8 @@ public class TeamInMatch implements Serializable{
 		this.name = name;
 		if(score.get(0)>rivalScore.get(0)){
 			win = true;
-		}
+			
+		}this.scores+=score.get(0);
 		for (PlayerInMatch p : players) {
 			secondInTotal += p.second;
 			fieldGoalMade += p.fieldGoalMade;
@@ -70,7 +71,6 @@ public class TeamInMatch implements Serializable{
 	}
 
 	public void calAll() {
-		System.out.println("Team " + name + " calculating");
 		calOffensiveRounds();
 		calFreeThrowRatio();
 		calThreePointerRatio();
@@ -80,6 +80,38 @@ public class TeamInMatch implements Serializable{
 		calReboundEf();
 		calStealEf();
 		calAssistEf();
+		//FIXME
+		//System.out.println(this.toString());
+	}
+
+
+
+
+
+
+
+
+
+	@Override
+	public String toString() {
+		return "TeamInMatch [win=" + win + ", name=" + name
+				+ ", secondInTotal=" + secondInTotal + ", fieldGoalMade="
+				+ fieldGoalMade + ", fieldGoalAttempted=" + fieldGoalAttempted
+				+ ", threePointerMade=" + threePointerMade
+				+ ", threePointerAttempted=" + threePointerAttempted
+				+ ", freeThrowMade=" + freeThrowMade + ", freeThrowAttempted="
+				+ freeThrowAttempted + ", offensiveRebound=" + offensiveRebound
+				+ ", defensiveRebound=" + defensiveRebound + ", rebound="
+				+ rebound + ", assist=" + assist + ", steal=" + steal
+				+ ", block=" + block + ", turnover=" + turnover + ", foul="
+				+ foul + ", scores=" + scores + ", tempScores=" + tempScores
+				 + ", fieldGoalRatio=" + fieldGoalRatio
+				+ ", threePointerRatio=" + threePointerRatio
+				+ ", freeThrowRatio=" + freeThrowRatio + ", myRounds="
+				+ myRounds + ", offensiveEf=" + offensiveEf + ", defensiveEf="
+				+ defensiveEf + ", offensiveReboundEf=" + offensiveReboundEf
+				+ ", defensiveReboundEf=" + defensiveReboundEf + ", stealEf="
+				+ stealEf + ", assistEf=" + assistEf + "]";
 	}
 
 	void calOffensiveRounds() {

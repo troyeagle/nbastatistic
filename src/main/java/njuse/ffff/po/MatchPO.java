@@ -39,6 +39,18 @@ public class MatchPO implements Serializable{
 		return name;
 	}
 	
+	public String getTeamA() {
+		return teamA;
+	}
+	public void setTeamA(String teamA) {
+		this.teamA = teamA;
+	}
+	public String getTeamB() {
+		return teamB;
+	}
+	public void setTeamB(String teamB) {
+		this.teamB = teamB;
+	}
 	public ArrayList<PlayerInMatchExtended> getPlayerInAEx() {
 		return playerInAEx;
 	}
@@ -46,7 +58,7 @@ public class MatchPO implements Serializable{
 		return playerInBEx;
 	}
 	public void teamProcess(){
-		System.out.println("Match "+name+" calculating");
+		//System.out.println("Match "+name+" calculating");
 
 		teamStatA = new TeamInMatch(this.teamA,playerInTeamA,teamStatB,scoreA,scoreB);
 		teamStatB = new TeamInMatch(this.teamB,playerInTeamB,teamStatA,scoreA,scoreB);

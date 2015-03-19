@@ -94,6 +94,8 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 		calUsingRatio(team.secondInTotal, team.freeThrowAttempted,
 				team.fieldGoalAttempted, team.turnover);
 		calDoubledouble();
+		//FIXME
+		//System.out.println(this.toString());
 	}
 
 	void calDoubledouble() {
@@ -247,4 +249,21 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 		return team;
 	}
 
+	@Override
+	public String toString() {
+		return "PlayerInMatchExtended [playerEfficiencyRate="
+				+ playerEfficiencyRate + ", fieldGoalRatio=" + fieldGoalRatio
+				+ ", threePointerRatio=" + threePointerRatio
+				+ ", freeThrowRatio=" + freeThrowRatio
+				+ ", efficiencyGoalPercentage=" + efficiencyGoalPercentage
+				+ ", trueShootingPercentage=" + trueShootingPercentage
+				+ ", reboundRatio=" + reboundRatio + ", offensiveReboundRatio="
+				+ offensiveReboundRatio + ", defensiveReboundRatio="
+				+ defensiveReboundRatio + ", assistRatio=" + assistRatio
+				+ ", stealRatio=" + stealRatio + ", blockRatio=" + blockRatio
+				+ ", turnoverRatio=" + turnoverRatio + ", usingRatio="
+				+ usingRatio + ", GmSc=" + GmSc + ", doubledouble="
+				+ doubledouble + "]";
+	}
+	
 }

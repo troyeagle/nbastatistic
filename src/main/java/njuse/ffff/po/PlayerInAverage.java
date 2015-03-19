@@ -105,7 +105,8 @@ public class PlayerInAverage {
 				 * 
 				 */
 				for (int j : p.dirty) {
-					System.out.println(p.getName());
+					//FIXME
+					//System.out.println(p.getName());
 					statsDirty[j - 3]++;
 					queue.enqueue(statsTotal[j - 3]);
 				}
@@ -155,6 +156,12 @@ public class PlayerInAverage {
 			statsAverage[i]=statsTotal[i]/(effective-statsDirty[i]);
 		}
 		statsAverage[30] = statsAverage[14]+statsAverage[8]+statsAverage[9];//得分+篮板+助攻
+		//FIXME
+		System.out.println(name);
+		for(double i:statsAverage){
+			System.out.print(i+"  ");
+			
+		}System.out.println();
 	}
 	/*
 	public void calAverage() {
