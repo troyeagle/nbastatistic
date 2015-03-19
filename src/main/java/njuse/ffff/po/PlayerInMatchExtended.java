@@ -26,6 +26,7 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 
 	public PlayerInMatchExtended(PlayerInMatch p,TeamInMatch team) {
 		super(p);
+		this.team = team;
 		// TODO Auto-generated constructor stub
 	}
 

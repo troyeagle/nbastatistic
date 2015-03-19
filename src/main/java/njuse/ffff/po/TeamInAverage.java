@@ -8,37 +8,37 @@ public class TeamInAverage implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	String name;
-	double secondInTotal;
-	int fieldGoalMade = 0;
-	int fieldGoalAttempted = 0;
-	int threePointerMade = 0;
-	int threePointerAttempted = 0;
-	int freeThrowMade = 0;
-	int freeThrowAttempted = 0;
-	int offensiveRebound = 0;
-	int defensiveRebound = 0;
-	int rebound = 0;
-	int assist = 0;
-	int steal = 0;
-	int block = 0;
-	int turnover = 0;
-	int foul = 0;
-	int scores = 0;
-	double fieldGoalRatio;
-	double threePointerRatio;
-	double freeThrowRatio;
-	double myRounds;
-	double offensiveEf;
-	double defensiveEf;
-	double offensiveReboundEf;
-	double defensiveReboundEf;
-	double stealEf;
-	double assistEf;
-	
-	int numOfMatches =0;
-	int numOfWins=0;
-	double winningRatio;
+	private String name;
+	private double secondInTotal;
+	private int fieldGoalMade = 0;
+	private int fieldGoalAttempted = 0;
+	private int threePointerMade = 0;
+	private int threePointerAttempted = 0;
+	private int freeThrowMade = 0;
+	private int freeThrowAttempted = 0;
+	private int offensiveRebound = 0;
+	private int defensiveRebound = 0;
+	private int rebound = 0;
+	private int assist = 0;
+	private int steal = 0;
+	private int block = 0;
+	private int turnover = 0;
+	private int foul = 0;
+	private int scores = 0;
+	private double fieldGoalRatio;
+	private double threePointerRatio;
+	private double freeThrowRatio;
+	private double myRounds;
+	private double offensiveEf;
+	private double defensiveEf;
+	private double offensiveReboundEf;
+	private double defensiveReboundEf;
+	private double stealEf;
+	private double assistEf; 
+
+	private int numOfMatches =0;
+	private int numOfWins=0;
+	private double winningRatio;
 	
 	ArrayList<TeamInMatch> teamStats;
 	

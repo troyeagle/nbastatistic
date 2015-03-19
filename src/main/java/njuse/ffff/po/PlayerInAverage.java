@@ -15,37 +15,37 @@ public class PlayerInAverage {
 	double second;// Advanced
 	int firstOnMatch;
 
-	double fieldGoalMade;
-	double fieldGoalAttempted;
-	double threePointerMade;
-	double threePointerAttempted;
-	double freeThrowMade;
-	double freeThrowAttempted;
-	double offensiveRebound;
-	double defensiveRebound;
-	double rebound;
-	double assist;
-	double steal;
-	double block;
-	double turnover;
-	double foul;
-	double points;
-
-	double playerEfficiencyRate;
-	double fieldGoalRatio;
-	double threePointerRatio;
-	double freeThrowRatio;
-	double efficiencyGoalPercentage;
-	double trueShootingPercentage;
-	double reboundRatio;
-	double offensiveReboundRatio;
-	double defensiveReboundRatio;
-	double assistRatio;
-	double stealRatio;
-	double blockRatio;
-	double turnoverRatio;
-	double usingRatio;
-	double GmSc;
+//	private double fieldGoalMade;
+//	private double fieldGoalAttempted;
+//	private double threePointerMade;
+//	private double threePointerAttempted;
+//	private double freeThrowMade;
+//	private double freeThrowAttempted;
+//	private double offensiveRebound;
+//	private double defensiveRebound;
+//	private double rebound;
+//	private double assist;
+//	private double steal;
+//	private double block;
+//	private double turnover;
+//	private double foul;
+//	private double points;
+//     
+//	private double playerEfficiencyRate;
+//	private double fieldGoalRatio;
+//	private double threePointerRatio;
+//	private double freeThrowRatio;
+//	private double efficiencyGoalPercentage;
+//	private double trueShootingPercentage;
+//	private double reboundRatio;
+//	private double offensiveReboundRatio;
+//	private double defensiveReboundRatio;
+//	private double assistRatio;
+//	private double stealRatio;
+//	private double blockRatio;
+//	private double turnoverRatio;
+//	private double usingRatio;
+//	private double GmSc;
 
 	ArrayList<PlayerInMatchExtended> playerStats;
 
@@ -62,7 +62,7 @@ public class PlayerInAverage {
 	 * @param name
 	 * @param matches
 	 */
-	public PlayerInAverage(String name, ArrayList<MatchPO> matches) {
+/*	public PlayerInAverage(String name, ArrayList<MatchPO> matches) {
 		this.name = name;
 		E: for (MatchPO m : matches) {
 			for (PlayerInMatchExtended p : m.playerInAEx) {
@@ -79,7 +79,7 @@ public class PlayerInAverage {
 			}
 		}
 		calAverage();
-	}
+	}*/
 
 	public void addOneMatchStat(PlayerInMatchExtended p) {
 
@@ -155,7 +155,7 @@ public class PlayerInAverage {
 			statsAverage[i]=statsTotal[i]/(effective-statsDirty[i]);
 		}
 	}
-
+	/*
 	public void calAverage() {
 		effective = 0;
 		for (PlayerInMatchExtended p : playerStats) {
@@ -230,7 +230,7 @@ public class PlayerInAverage {
 		usingRatio /= effective;
 		GmSc /= effective;
 	}
-
+	*/
 	public String getName() {
 		return name;
 	}

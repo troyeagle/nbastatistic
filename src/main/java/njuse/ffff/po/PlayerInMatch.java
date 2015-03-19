@@ -16,21 +16,21 @@ public class PlayerInMatch implements Serializable {
 	
 	Date date;
 
-	int fieldGoalMade;
-	int fieldGoalAttempted;
-	int threePointerMade;
-	int threePointerAttempted;
-	int freeThrowMade;
-	int freeThrowAttempted;
-	int offensiveRebound;
-	int defensiveRebound;
-	int rebound;
-	int assist;
-	int steal;
-	int block;
-	int turnover;
-	int foul;
-	int points;
+	protected int fieldGoalMade;
+	protected int fieldGoalAttempted;
+	protected int threePointerMade;
+	protected int threePointerAttempted;
+	protected int freeThrowMade;
+	protected int freeThrowAttempted;
+	protected int offensiveRebound;
+	protected int defensiveRebound;
+	protected int rebound;
+	protected int assist;
+	protected int steal;
+	protected int block;
+	protected int turnover;
+	protected int foul;
+	protected int points;
 
 	boolean firstOnMatch;
 	ArrayList<Integer> dirty;
