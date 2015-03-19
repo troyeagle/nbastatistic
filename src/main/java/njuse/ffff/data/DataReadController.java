@@ -154,6 +154,12 @@ public class DataReadController implements DataReaderService {
 				for (PlayerInAverage pa : playerInAverage) {
 					if (pa.getName().equals(p.getName())) {
 						pa.addOneMatchStat(p);
+						for(TeamPO tpo:TeamDataProcessor.teams){
+							if(tpo.getName().equals(p.getTeam().getName())){
+								pa.setLeague(tpo.getLeague());
+							}
+						}
+						
 					}
 				}
 			}

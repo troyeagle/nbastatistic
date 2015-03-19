@@ -14,24 +14,25 @@ public class PlayerInAverage {
 	String minute;
 	double second;// Advanced
 	int firstOnMatch;
+	String league;
 
-//	private double fieldGoalMade;
+	private double fieldGoalMade;
 //	private double fieldGoalAttempted;
-//	private double threePointerMade;
+	private double threePointerMade;
 //	private double threePointerAttempted;
-//	private double freeThrowMade;
+	private double freeThrowMade;
 //	private double freeThrowAttempted;
 //	private double offensiveRebound;
 //	private double defensiveRebound;
-//	private double rebound;
-//	private double assist;
-//	private double steal;
-//	private double block;
-//	private double turnover;
-//	private double foul;
-//	private double points;
+	private double rebound;
+	private double assist;
+	private double steal;
+	private double block;
+	private double turnover;
+	private double foul;
+	private double points;
 //     
-//	private double playerEfficiencyRate;
+	private double playerEfficiencyRate;
 //	private double fieldGoalRatio;
 //	private double threePointerRatio;
 //	private double freeThrowRatio;
@@ -46,6 +47,7 @@ public class PlayerInAverage {
 //	private double turnoverRatio;
 //	private double usingRatio;
 //	private double GmSc;
+
 
 	ArrayList<PlayerInMatchExtended> playerStats;
 
@@ -84,10 +86,11 @@ public class PlayerInAverage {
 	public void addOneMatchStat(PlayerInMatchExtended p) {
 
 		playerStats.add(p);
+		
 	}
 
+	@SuppressWarnings("restriction")
 	public void calAverageAsArray() {
-		
 		statsAverage = new double[31];
 		statsTotal = new double[31];
 		statsDirty = new int[31];
@@ -156,6 +159,23 @@ public class PlayerInAverage {
 			statsAverage[i]=statsTotal[i]/(effective-statsDirty[i]);
 		}
 		statsAverage[30] = statsAverage[14]+statsAverage[8]+statsAverage[9];//得分+篮板+助攻
+		
+		fieldGoalMade=statsAverage[0];
+
+		threePointerMade=statsAverage[2];
+
+		freeThrowMade=statsAverage[4];
+
+		rebound=statsAverage[8];
+		assist=statsAverage[9];
+		steal=statsAverage[10];
+		block=statsAverage[11];
+		turnover=statsAverage[12];
+		foul=statsAverage[13];
+		points=statsAverage[14];
+//	     
+		playerEfficiencyRate=statsAverage[15];
+		
 		//FIXME
 		System.out.println(name);
 		for(double i:statsAverage){
@@ -269,6 +289,14 @@ public class PlayerInAverage {
 
 	public int getFirstOnMatch() {
 		return firstOnMatch;
+	}
+
+	public void setLeague(String league) {
+		this.league = league;
+	}
+
+	public String getLeague() {
+		return league;
 	}
 
 }

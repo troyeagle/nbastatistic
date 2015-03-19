@@ -168,4 +168,8 @@ public class TeamInMatch implements Serializable{
 		freeThrowRatio = (double) freeThrowMade / freeThrowAttempted;
 	}
 
+	public String getName() {
+		return name;
+	}
+
 }
