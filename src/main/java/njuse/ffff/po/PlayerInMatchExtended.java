@@ -1,5 +1,8 @@
 package njuse.ffff.po;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class PlayerInMatchExtended extends PlayerInMatch {
 
 	/**
@@ -21,6 +24,7 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 	double turnoverRatio;
 	double usingRatio;
 	double GmSc;
+	boolean doubledouble;
 	
 	TeamInMatch team;
 
@@ -89,7 +93,24 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 		calTurnoverRatio();
 		calUsingRatio(team.secondInTotal, team.freeThrowAttempted,
 				team.fieldGoalAttempted, team.turnover);
+		calDoubledouble();
+	}
 
+	void calDoubledouble() {
+		ArrayList<Integer> arr = new ArrayList<Integer>();
+		arr.add(points);
+		arr.add(assist);
+		arr.add(rebound);
+		arr.add(steal);
+		arr.add(block);
+		Collections.sort(arr);
+		if(arr.get(3)>=10&&arr.get(2)<10){
+			doubledouble = true;
+		}else{
+			doubledouble = false;
+		}
+		
+		
 	}
 
 	void calPlayerEfficiencyRate() {

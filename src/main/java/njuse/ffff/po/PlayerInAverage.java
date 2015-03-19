@@ -154,6 +154,7 @@ public class PlayerInAverage {
 		for(int i = 0;i<30;i++){
 			statsAverage[i]=statsTotal[i]/(effective-statsDirty[i]);
 		}
+		statsAverage[30] = statsAverage[14]+statsAverage[8]+statsAverage[9];//得分+篮板+助攻
 	}
 	/*
 	public void calAverage() {
