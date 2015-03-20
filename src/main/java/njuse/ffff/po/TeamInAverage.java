@@ -125,7 +125,7 @@ public class TeamInAverage implements Serializable{
 		stealEf/=teamStats.size();
 		assistEf/=teamStats.size();
 		winningRatio = (double)numOfWins/numOfMatches;
-		System.out.println(toString());
+		//System.out.println(toString());
 	}
 	public String getName() {
 		return name;

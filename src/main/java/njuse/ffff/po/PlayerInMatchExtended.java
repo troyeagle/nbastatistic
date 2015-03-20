@@ -72,7 +72,7 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 	/**
 	 * calAll<br>
 	 * Calculate all advanced statistics of a player.<br>
-	 * Based on all dirty statistics are properly dealed with;<br>
+	 * Based on all dirty statistics are properly dealt with;<br>
 	 * @param team
 	 * @param rival
 	 */
@@ -82,7 +82,10 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 		calPlayerEfficiencyRate();
 		calEfficiencyGoalPercentage();
 		calTrueShootingPercentage();
+
+		//FIXME Print ratio
 		calFreeThrowRatio();
+
 		calThreePointerRatio();
 		calFieldGoalRatio();
 		calGmSc();
@@ -94,8 +97,14 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 		calUsingRatio(team.secondInTotal, team.freeThrowAttempted,
 				team.fieldGoalAttempted, team.turnover);
 		calDoubledouble();
+		calAssistRatio(team.secondInTotal,team.scores);
 		//FIXME
 		//System.out.println(this.toString());
+	}
+
+	void calAssistRatio(double secondInTotal,double totalScores) {
+		assistRatio = (double)assist/((double)second/(secondInTotal/5)*totalScores-points);
+		
 	}
 
 	void calDoubledouble() {
@@ -124,37 +133,45 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 	void calEfficiencyGoalPercentage() {
 		efficiencyGoalPercentage = ((double) fieldGoalMade)
 				/ ((double) fieldGoalAttempted);
+		if(Double.valueOf(efficiencyGoalPercentage).isNaN()){(efficiencyGoalPercentage)=0;}
 	}
 
 	void calTrueShootingPercentage() {
 		trueShootingPercentage = (double) points
 				/ ((double) 2 * fieldGoalAttempted + (double) 0.44
 						* freeThrowAttempted);
+		if(Double.valueOf(trueShootingPercentage).isNaN()){(trueShootingPercentage)=0;}
 	}
 
 	void calReboundRatio(double secondTotal, int teamReboundsTotal,
 			int rivalReboundsTotal) {
 		reboundRatio = (double) rebound * secondTotal / 5 / (second)
 				/ (teamReboundsTotal + rivalReboundsTotal);
+		if(Double.valueOf(reboundRatio).isNaN()){(reboundRatio)=0;}
 		offensiveReboundRatio = (double) offensiveRebound * (secondTotal / 5)
 				/ (second) / (teamReboundsTotal + rivalReboundsTotal);
+		if(Double.valueOf(offensiveReboundRatio).isNaN()){(offensiveReboundRatio)=0;}
 		defensiveReboundRatio = (double) defensiveRebound * (secondTotal / 5)
 				/ (second) / (teamReboundsTotal + rivalReboundsTotal);
+		if(Double.valueOf(defensiveReboundRatio).isNaN()){(defensiveReboundRatio)=0;}
+		
 	}
 
 	void calStealRatio(double secondTotal, double rivalRound) {
 		stealRatio = (double) steal * secondTotal / 5 / (second) / rivalRound;
+		if(Double.valueOf(stealRatio).isNaN()){(stealRatio)=0;}
 	}
 
 	void calBlockRatio(double secondTotal, int twoPointAttempts) {
 		blockRatio = (double) block * secondTotal / 5 / (second)
 				/ twoPointAttempts;
-
+		if(Double.valueOf(blockRatio).isNaN()){(blockRatio)=0;}
 	}
 
 	void calTurnoverRatio() {
 		turnoverRatio = (double) turnover
 				/ (0.44 * freeThrowAttempted + fieldGoalAttempted + turnover);
+		if(Double.valueOf(turnoverRatio).isNaN()){(turnoverRatio)=0;}
 	}
 
 	void calUsingRatio(double secondTotal, double freeThrowTotal,
@@ -164,18 +181,23 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 				/ 5
 				/ (second)
 				/ (0.44 * freeThrowTotal + fieldGoalTotal + turnoverTotal);
+		if(Double.valueOf(usingRatio).isNaN()){(usingRatio)=0;}
 	}
 
 	void calThreePointerRatio() {
 		threePointerRatio = (double) threePointerMade / threePointerAttempted;
+		if(Double.valueOf(threePointerRatio).isNaN()){(threePointerRatio)=0;}
 	}
 
 	void calFieldGoalRatio() {
 		fieldGoalRatio = (double) fieldGoalMade / fieldGoalAttempted;
+		if(Double.valueOf(fieldGoalRatio).isNaN()){(fieldGoalRatio)=0;}
 	}
 
 	void calFreeThrowRatio() {
 		freeThrowRatio = (double) freeThrowMade / freeThrowAttempted;
+		if(Double.valueOf(freeThrowRatio).isNaN()){(freeThrowRatio)=0;}
+
 	}
 
 	void calGmSc() {
@@ -183,8 +205,16 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 				* (freeThrowAttempted - freeThrowMade) + 0.7 * offensiveRebound
 				+ 0.3 * defensiveRebound + steal + 0.7 * assist + 0.7 * block
 				- 0.4 * foul - turnover;
+		if ((GmSc) == Double.NaN) {
+			(GmSc) = 0;
+		}
 	}
 
+	void JudgeNaN(double num){
+		if(num==Double.NaN){
+			num=0;
+		}
+	}
 	public int getPlayerEfficiencyRate() {
 		return playerEfficiencyRate;
 	}

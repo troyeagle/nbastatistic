@@ -3,7 +3,7 @@ package njuse.ffff.po;
 import java.util.ArrayList;
 
 import sun.misc.Queue;
-
+@SuppressWarnings("unused")
 public class PlayerInAverage {
 	double[] statsAverage;
 	int[] statsDirty;
@@ -16,14 +16,15 @@ public class PlayerInAverage {
 	int firstOnMatch;
 	String league;
 
+
 	private double fieldGoalMade;
-//	private double fieldGoalAttempted;
+	private double fieldGoalAttempted;
 	private double threePointerMade;
-//	private double threePointerAttempted;
+	private double threePointerAttempted;
 	private double freeThrowMade;
-//	private double freeThrowAttempted;
-//	private double offensiveRebound;
-//	private double defensiveRebound;
+	private double freeThrowAttempted;
+	private double offensiveRebound;
+	private double defensiveRebound;
 	private double rebound;
 	private double assist;
 	private double steal;
@@ -33,20 +34,20 @@ public class PlayerInAverage {
 	private double points;
 //     
 	private double playerEfficiencyRate;
-//	private double fieldGoalRatio;
-//	private double threePointerRatio;
-//	private double freeThrowRatio;
-//	private double efficiencyGoalPercentage;
-//	private double trueShootingPercentage;
-//	private double reboundRatio;
-//	private double offensiveReboundRatio;
-//	private double defensiveReboundRatio;
-//	private double assistRatio;
-//	private double stealRatio;
-//	private double blockRatio;
-//	private double turnoverRatio;
-//	private double usingRatio;
-//	private double GmSc;
+	private double fieldGoalRatio;
+	private double threePointerRatio;
+	private double freeThrowRatio;
+	private double efficiencyGoalPercentage;
+	private double trueShootingPercentage;
+	private double reboundRatio;
+	private double offensiveReboundRatio;
+	private double defensiveReboundRatio;
+	private double assistRatio;
+	private double stealRatio;
+	private double blockRatio;
+	private double turnoverRatio;
+	private double usingRatio;
+	private double GmSc;
 
 
 	ArrayList<PlayerInMatchExtended> playerStats;
@@ -94,7 +95,7 @@ public class PlayerInAverage {
 		statsAverage = new double[31];
 		statsTotal = new double[31];
 		statsDirty = new int[31];
-
+		//For each PlayerInMatchExtended, add basic statistics.
 		for (PlayerInMatchExtended p : playerStats) {
 			if (p.second != 0) {
 				effective++;
@@ -129,9 +130,14 @@ public class PlayerInAverage {
 				statsTotal[12] += p.turnover;
 				statsTotal[13] += p.foul;
 				statsTotal[14] += p.points;
+//				statsTotal[15] +=p.second;
 
 				statsTotal[15] += p.playerEfficiencyRate;
 				statsTotal[16] += p.fieldGoalRatio;
+				//FIXME
+				
+				
+				
 				statsTotal[17] += p.threePointerRatio;
 				statsTotal[18] += p.freeThrowRatio;
 				statsTotal[19] += p.efficiencyGoalPercentage;
@@ -145,6 +151,7 @@ public class PlayerInAverage {
 				statsTotal[27] += p.turnoverRatio;
 				statsTotal[28] += p.usingRatio;
 				statsTotal[29] += p.GmSc;
+				//Get off dirty statistics
 				for (int j : p.dirty) {
 
 					try {
@@ -158,30 +165,55 @@ public class PlayerInAverage {
 		for(int i = 0;i<30;i++){
 			statsAverage[i]=statsTotal[i]/(effective-statsDirty[i]);
 		}
+		
+		fieldGoalMade=statsTotal[0];
+		fieldGoalAttempted= statsTotal[1];
+		threePointerMade=statsTotal[2];
+		threePointerAttempted=statsTotal[3];
+		freeThrowMade=statsTotal[4];
+		freeThrowAttempted=statsTotal[5];
+		offensiveRebound=statsTotal[6];
+		defensiveRebound=statsTotal[7];
+		rebound=statsTotal[8];
+		assist=statsTotal[9];
+		steal=statsTotal[10];
+		block=statsTotal[11];
+		turnover=statsTotal[12];
+		foul=statsTotal[13];
+		points=statsTotal[14];
+		second = statsTotal[15];
+		
+		
+		
+		
 		statsAverage[30] = statsAverage[14]+statsAverage[8]+statsAverage[9];//得分+篮板+助攻
 		
-		fieldGoalMade=statsAverage[0];
-
-		threePointerMade=statsAverage[2];
-
-		freeThrowMade=statsAverage[4];
-
-		rebound=statsAverage[8];
-		assist=statsAverage[9];
-		steal=statsAverage[10];
-		block=statsAverage[11];
-		turnover=statsAverage[12];
-		foul=statsAverage[13];
-		points=statsAverage[14];
+//		fieldGoalMade=statsAverage[0];
+//		fieldGoalAttempted= statsAverage[1];
+//		threePointerMade=statsAverage[2];
+//		threePointerAttempted=statsAverage[3];
+//		freeThrowMade=statsAverage[4];
+//		freeThrowAttempted=statsAverage[5];
+//		offensiveRebound=statsAverage[6];
+//		defensiveRebound=statsAverage[7];
+//		rebound=statsAverage[8];
+//		assist=statsAverage[9];
+//		steal=statsAverage[10];
+//		block=statsAverage[11];
+//		turnover=statsAverage[12];
+//		foul=statsAverage[13];
+//		points=statsAverage[14];
+//		second = statsAverage[15];
 //	     
-		playerEfficiencyRate=statsAverage[15];
+
 		
 		//FIXME
-		System.out.println(name);
-		for(double i:statsAverage){
-			System.out.print(i+"  ");
-			
-		}System.out.println();
+//		System.out.println(name);
+//		for(double i:statsAverage){
+//			System.out.print(i+"  ");
+//			
+//		}
+//		System.out.println();
 	}
 	/*
 	public void calAverage() {
@@ -259,6 +291,9 @@ public class PlayerInAverage {
 		GmSc /= effective;
 	}
 	*/
+	
+	
+	
 	public String getName() {
 		return name;
 	}
