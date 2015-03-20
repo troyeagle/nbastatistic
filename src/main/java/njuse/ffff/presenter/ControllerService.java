@@ -1,5 +1,7 @@
 package njuse.ffff.presenter;
 
+import njuse.ffff.ui.PlayerFilterPanel;
+
 public interface ControllerService {
 	public void initSystem();
 	//设置搜索界面
@@ -11,7 +13,7 @@ public interface ControllerService {
 	//设置界面为球员筛选界面
 	public void setPlayerFilterPanel();
 	//传送球员筛选条件
-	public void setPlayerFilterResult(String position,String league,String sort);
+	public void setPlayerFilterResult(PlayerFilterPanel panel,String position,String league,String sort);
 	//设置界面为球员简介界面
 	public void setPlayerProfilePanel(String playerName);
 	//设置界面为球员数据界面

@@ -12,6 +12,7 @@ import njuse.ffff.po.TeamPO;
 import njuse.ffff.util.Filter;
 
 public interface DataReaderService {
+	public ArrayList<PlayerInAverage> getPlayerInAverage();
 	public PlayerInAverage getPlayerAverage(String name,Filter filter);
 	public ArrayList<PlayerInMatchExtended> getPlayerStatistics(String name,Filter filter);
 	public PlayerPO getPlayerInfo(String name,Filter filter);

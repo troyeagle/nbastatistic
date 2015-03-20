@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import njuse.ffff.presenter.ControllerService;
 import njuse.ffff.presenter.UIController;
@@ -220,10 +221,10 @@ public class TeamComparePanel extends JPanel{
 //				for (int i = 0; i < cmodel.getColumnCount(); i++) {
 //				    cmodel.getColumn(i).setHeaderRenderer(renderer);
 //				}
-//				TableColumn firstColumn = table_teamCompare_total.getColumnModel().getColumn(0);
-//				firstColumn.setPreferredWidth(50);
-//				firstColumn.setMaxWidth(50);
-//				firstColumn.setMinWidth(50);
+		TableColumn firstColumn = table_teamCompare_total.getColumnModel().getColumn(0);
+		firstColumn.setPreferredWidth(100);
+		firstColumn.setMaxWidth(100);
+		firstColumn.setMinWidth(100);
 
 		table_teamCompare_total.getTableHeader().setFont(new FontUIResource("DialogInput", Font.PLAIN, 11));
 		table_teamCompare_total.getTableHeader().setBackground(background);
@@ -277,10 +278,10 @@ public class TeamComparePanel extends JPanel{
 //		for (int i = 0; i < cmodel2.getColumnCount(); i++) {
 //		    cmodel2.getColumn(i).setHeaderRenderer(renderer2);
 //		}
-//		TableColumn firstColumn = table_teamCompare_total.getColumnModel().getColumn(0);
-//		firstColumn.setPreferredWidth(50);
-//		firstColumn.setMaxWidth(50);
-//		firstColumn.setMinWidth(50);
+		TableColumn firstColumn_average = table_teamCompare_average.getColumnModel().getColumn(0);
+		firstColumn_average.setPreferredWidth(100);
+		firstColumn_average.setMaxWidth(100);
+		firstColumn_average.setMinWidth(100);
 
 		table_teamCompare_average.getTableHeader().setFont(new FontUIResource("DialogInput", Font.PLAIN, 11));
 		table_teamCompare_average.getTableHeader().setBackground(background);

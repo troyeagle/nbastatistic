@@ -16,7 +16,7 @@ import javax.swing.JTable;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableColumn;
 
 import njuse.ffff.presenter.ControllerService;
 import njuse.ffff.presenter.UIController;
@@ -257,6 +257,10 @@ public class PlayerComparePanel extends JPanel{
 //		for (int i = 0; i < cmodel.getColumnCount(); i++) {
 //		    cmodel.getColumn(i).setHeaderRenderer(renderer);
 //		}
+		TableColumn firstColumn_total = table_playerCompare_total.getColumnModel().getColumn(0);
+		firstColumn_total.setPreferredWidth(150);
+		firstColumn_total.setMaxWidth(150);
+		firstColumn_total.setMinWidth(150);
 
 		table_playerCompare_total.setColumnSelectionAllowed (true);
 		table_playerCompare_total.setRowSelectionAllowed (false);
@@ -307,6 +311,10 @@ public class PlayerComparePanel extends JPanel{
 //		for (int i = 0; i < cmodel2.getColumnCount(); i++) {
 //		    cmodel2.getColumn(i).setHeaderRenderer(renderer2);
 //		}
+		TableColumn firstColumn_average = table_playerCompare_average.getColumnModel().getColumn(0);
+		firstColumn_average.setPreferredWidth(150);
+		firstColumn_average.setMaxWidth(150);
+		firstColumn_average.setMinWidth(150);
 
 		table_playerCompare_average.setColumnSelectionAllowed (true);
 		table_playerCompare_average.setRowSelectionAllowed (false);

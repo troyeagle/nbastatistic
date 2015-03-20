@@ -35,7 +35,8 @@ public class PlayerPanel extends JPanel{
 		playerProfile.setPhoto(img_portrait_URL);
 	}
 	
-	public void setData(){
+	public void setData(String[] properties1,String[] properties2,String[] properties3,String[] properties4
+			,Object[] values_total,Object[] values_average){
 		
 	}
 }

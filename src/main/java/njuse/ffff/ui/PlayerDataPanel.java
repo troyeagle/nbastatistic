@@ -10,9 +10,12 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.table.DefaultTableModel;
 
 import njuse.ffff.presenter.ControllerService;
 import njuse.ffff.presenter.UIController;
@@ -41,6 +44,38 @@ public class PlayerDataPanel extends JPanel{
 	private JLabel label_player_data3;
 	private JLabel label_player_data4;
 	private JLabel label_player_return;
+	
+	private DefaultTableModel tableModel_playerInfo1_total;
+	private JTable table_playerInfo1_total;
+	private JScrollPane scrollPane_playerInfo1_total;
+	
+	private DefaultTableModel tableModel_playerInfo1_average;
+	private JTable table_playerInfo1_average;
+	private JScrollPane scrollPane_playerInfo1_average;
+	
+	private DefaultTableModel tableModel_playerInfo2_total;
+	private JTable table_playerInfo2_total;
+	private JScrollPane scrollPane_playerInfo2_total;
+	
+	private DefaultTableModel tableModel_playerInfo2_average;
+	private JTable table_playerInfo2_average;
+	private JScrollPane scrollPane_playerInfo2_average;
+	
+	private DefaultTableModel tableModel_playerInfo3_total;
+	private JTable table_playerInfo3_total;
+	private JScrollPane scrollPane_playerInfo3_total;
+
+	private DefaultTableModel tableModel_playerInfo3_average;
+	private JTable table_playerInfo3_average;
+	private JScrollPane scrollPane_playerInfo3_average;
+	
+	private DefaultTableModel tableModel_playerInfo4_total;
+	private JTable table_playerInfo4_total;
+	private JScrollPane scrollPane_playerInfo4_total;
+
+	private DefaultTableModel tableModel_playerInfo4_average;
+	private JTable table_playerInfo4_average;
+	private JScrollPane scrollPane_playerInfo4_average;
 	
 	public PlayerDataPanel(int number){
 		this.setSize(playerDataPanel_width, playerDataPanel_height);
@@ -257,5 +292,10 @@ public class PlayerDataPanel extends JPanel{
 		this.add(label_player_data4);
 		this.add(label_player_return);
 		this.add(label_data_arrow);
+	}
+	
+	//设置表格数据
+	public void setData(){
+		
 	}
 }

@@ -20,6 +20,10 @@ public class DataReadController implements DataReaderService {
 	ArrayList<TeamInAverage> teamInAverage;
 	ArrayList<PlayerInAverage> playerInAverage;
 
+	public ArrayList<PlayerInAverage> getPlayerInAverage() {
+		return playerInAverage;
+	}
+
 	public PlayerInAverage getPlayerAverage(String name, Filter filter) {
 		if(filter==null){filter = new Filter();}
 		for (PlayerInAverage p : playerInAverage) {

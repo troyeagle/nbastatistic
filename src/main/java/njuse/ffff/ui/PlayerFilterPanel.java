@@ -1,18 +1,24 @@
 package njuse.ffff.ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import njuse.ffff.presenter.ControllerService;
 import njuse.ffff.presenter.UIController;
@@ -25,6 +31,7 @@ public class PlayerFilterPanel extends JPanel{
 	private ControllerService uiController;
 	
 	private SelectPanel p;
+	private PlayerFilterPanel panel;
 
 	//颜色及图片引用
 	private Color background = new Color(99,43,142);
@@ -49,6 +56,7 @@ public class PlayerFilterPanel extends JPanel{
 	private String[] table_filter_header;
 	private Object[][] table_filter_body;
 	private DefaultTableModel tableModel_filter_total;
+	private JScrollPane scrollPane_filter_total;
 	
 	public PlayerFilterPanel(){
 		this.setSize(teamComparePanel_width, teamComparePanel_height);
@@ -58,6 +66,7 @@ public class PlayerFilterPanel extends JPanel{
 		uiController = UIController.getInstance();
 		p = new SelectPanel();
 		p.setLocation(264, 168);
+		panel = this;
 		
 		//球员筛选标题
 		JLabel label_filter_title = new JLabel("球员筛选");
@@ -151,7 +160,7 @@ public class PlayerFilterPanel extends JPanel{
 				String position = filter_position.getSelectedItem().toString();
 				String league = filter_league.getSelectedItem().toString();
 				String sortCondition = label_sort_condition.getText();
-				uiController.setPlayerFilterResult(position, league, sortCondition);
+				uiController.setPlayerFilterResult(panel ,position, league, sortCondition);
 			}
 		});
 		
@@ -222,7 +231,10 @@ public class PlayerFilterPanel extends JPanel{
 					StringBuffer buffer = new StringBuffer();
 					for(String str:l){
 						buffer.append(str);
-						buffer.append("  ");
+						buffer.append(";");
+					}
+					if(buffer.length()!=0){
+						buffer.deleteCharAt(buffer.length()-1);
 					}
 					label_sort_condition.setText(buffer.toString());
 					repaint();
@@ -253,6 +265,61 @@ public class PlayerFilterPanel extends JPanel{
 	
 	public void removeSelectPanel(){
 		this.remove(p);
+		this.repaint();
+	}
+	
+	public void setFilterInfo(String[] properties_average,Object[][] values_average){
+		tableModel_filter_total = new DefaultTableModel(values_average,properties_average);
+		table_filter = new JTable(tableModel_filter_total){
+			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
+				Component c=super.prepareRenderer(renderer,row,column);
+				if(c instanceof JComponent){
+					((JComponent)c).setOpaque(false);
+				}
+				return c;
+			}
+		};
+		//设置点击表头自动排序
+		table_filter.setAutoCreateRowSorter(true);
+		table_filter.setOpaque(false);
+		table_filter.setForeground(Color.WHITE);
+		table_filter.setFont(new FontUIResource("DialogInput", Font.PLAIN, 12));
+		table_filter.setSelectionForeground(Color.CYAN);
+		//表格显示
+		table_filter.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//		//实现表头折行显示
+//		HeaderRendererHh renderer = new HeaderRendererHh();
+//		TableColumnModel cmodel = table_playerCompare_total.getColumnModel();  
+//		for (int i = 0; i < cmodel.getColumnCount(); i++) {
+//		    cmodel.getColumn(i).setHeaderRenderer(renderer);
+//		}
+		TableColumn firstColumn_total = table_filter.getColumnModel().getColumn(0);
+		firstColumn_total.setPreferredWidth(150);
+		firstColumn_total.setMaxWidth(150);
+		firstColumn_total.setMinWidth(150);
+
+		table_filter.setColumnSelectionAllowed (true);
+		table_filter.setRowSelectionAllowed (false);
+		table_filter.getTableHeader().setFont(new FontUIResource("DialogInput", Font.PLAIN, 11));
+		table_filter.getTableHeader().setBackground(background);
+		table_filter.getTableHeader().setForeground(Color.WHITE);
+		table_filter.getTableHeader().addMouseListener (new MouseAdapter() {  
+             public void mouseReleased (MouseEvent e) {  
+                 if (! e.isShiftDown())  
+                	 table_filter.clearSelection();  
+                 //获取点击的列索引  
+                 int pick = table_filter.getTableHeader().columnAtPoint(e.getPoint());  
+                 //设置选择模型 
+                 table_filter.addColumnSelectionInterval (pick, pick);
+             }  
+         });
+		
+		scrollPane_filter_total = new JScrollPane(table_filter);
+		scrollPane_filter_total.setOpaque(false);
+		scrollPane_filter_total.getViewport().setOpaque(false);
+		scrollPane_filter_total.setBounds(25, 260, 1050, 415);
+		
+		this.add(scrollPane_filter_total);
 		this.repaint();
 	}
 }
