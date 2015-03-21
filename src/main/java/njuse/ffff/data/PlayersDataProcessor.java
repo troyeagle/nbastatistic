@@ -14,7 +14,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import njuse.ffff.po.PlayerPO;
-
+/**
+ * 读取所有球员基本信息
+ * 
+ * @author Mebleyev.G.Longinus
+ *
+ */
 public class PlayersDataProcessor {
 	private static String path="./CSEIII data/迭代一数据/players";
 	

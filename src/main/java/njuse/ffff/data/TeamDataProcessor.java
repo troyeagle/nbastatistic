@@ -11,7 +11,11 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import njuse.ffff.po.TeamPO;
-
+/**
+ * 读取所有队伍数据（在一个文件中
+ * @author Mebleyev.G.Longinus
+ *
+ */
 public class TeamDataProcessor {
 	private static String path;
 	static ArrayList<TeamPO> teams;

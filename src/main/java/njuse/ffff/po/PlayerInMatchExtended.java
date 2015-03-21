@@ -2,7 +2,12 @@ package njuse.ffff.po;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
+/**
+ * 处理一场比赛中某一球员的进阶数据
+ * 由MatchPO构建
+ * @author Mebleyev.G.Longinus
+ *@see MatchPO
+ */
 public class PlayerInMatchExtended extends PlayerInMatch {
 
 	/**

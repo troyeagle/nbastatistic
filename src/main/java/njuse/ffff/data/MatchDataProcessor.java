@@ -19,6 +19,7 @@ import njuse.ffff.po.MatchPO;
 import njuse.ffff.po.PlayerInMatch;
 /**
  * Read Match info
+ * 在迭代二需要进行增量读取的修改
  * @author Mebleyev.G.Longinus
  *
  */

@@ -3,7 +3,11 @@ package njuse.ffff.po;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-
+/**
+ * 储存和处理一场比赛的诸多数据
+ * @author Mebleyev.G.Longinus
+ *
+ */
 public class MatchPO implements Serializable{
 	/**
 	 * 
@@ -63,7 +67,7 @@ public class MatchPO implements Serializable{
 		teamStatA = new TeamInMatch(this.teamA,playerInTeamA,teamStatB,scoreA,scoreB);
 		teamStatB = new TeamInMatch(this.teamB,playerInTeamB,teamStatA,scoreA,scoreB);
 		teamStatA.rival=teamStatB;
-		teamStatA.calAll();
+		teamStatA.calAll();//计算球队的进阶数据
 		teamStatB.calAll();
 
 		for(PlayerInMatch p : playerInTeamA){

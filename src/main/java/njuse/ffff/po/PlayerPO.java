@@ -1,7 +1,12 @@
 package njuse.ffff.po;
 
 import java.io.Serializable;
-
+/**
+ * 球员基本信息，由<code>PlayersDataProcessor</code>构建
+ * @author Mebleyev.G.Longinus
+ * @see PlayersDataProcessor
+ *
+ */
 public class PlayerPO implements Serializable {
 	/**
 	 * 

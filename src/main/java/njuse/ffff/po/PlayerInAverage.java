@@ -4,9 +4,14 @@ import java.util.ArrayList;
 
 import sun.misc.Queue;
 @SuppressWarnings("unused")
+/**
+ * 负责储存球员所有比赛的平均数据
+ * @author Mebleyev.G.Longinus
+ *
+ */
 public class PlayerInAverage {
-	double[] statsAverage;
-	int[] statsDirty;
+	double[] statsAverage;//记录并处理
+	int[] statsDirty;//记录每一项数据属性，在遍历所有球员单场数据时，有几个是脏数据
 	double[] statsTotal;
 	int effective;	//有效记录数，即出场数
 	String name;
@@ -16,7 +21,7 @@ public class PlayerInAverage {
 	int firstOnMatch;
 	String league;
 
-
+	//这些并不作为处理的数据，只是处理完之后保存而已
 	private double fieldGoalMade;
 	private double fieldGoalAttempted;
 	private double threePointerMade;
@@ -92,7 +97,9 @@ public class PlayerInAverage {
 		playerStats.add(p);
 		
 	}
-
+	/**
+	 * 计算平均数据，包括脏数据处理
+	 */
 	@SuppressWarnings("restriction")
 	public void calAverageAsArray() {
 		statsAverage = new double[31];

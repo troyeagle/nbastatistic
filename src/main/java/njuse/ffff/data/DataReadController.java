@@ -12,7 +12,12 @@ import njuse.ffff.po.TeamInAverage;
 import njuse.ffff.po.TeamInMatch;
 import njuse.ffff.po.TeamPO;
 import njuse.ffff.util.Filter;
-
+/**
+ * 数据层读取处理入口和中心控制
+ * 
+ * @author Mebleyev.G.Longinus
+ *
+ */
 public class DataReadController implements DataReaderService {
 	PlayersDataProcessor player = new PlayersDataProcessor();
 	MatchDataProcessor match = new MatchDataProcessor();
@@ -88,7 +93,9 @@ public class DataReadController implements DataReaderService {
 		}
 		return null;
 	}
-
+	/**
+	 * 数据首次读取入口
+	 */
 	public void initialize() throws IOException {
 		
 		long a = System.currentTimeMillis();
@@ -130,7 +137,9 @@ public class DataReadController implements DataReaderService {
 		average();
 
 	}
-
+	/**
+	 * 所有平均值计算
+	 */
 	public void average() {
 		playerInAverage = new ArrayList<PlayerInAverage>();
 		teamInAverage = new ArrayList<TeamInAverage>();

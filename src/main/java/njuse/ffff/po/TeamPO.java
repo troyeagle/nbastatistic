@@ -1,7 +1,11 @@
 package njuse.ffff.po;
 
 import java.io.Serializable;
-
+/**
+ * 负责储存队伍的基本信息，通过TeamDataProcessor构建
+ * @author Mebleyev.G.Longinus
+ *
+ */
 public class TeamPO implements Serializable {
 	/**
 	 * 

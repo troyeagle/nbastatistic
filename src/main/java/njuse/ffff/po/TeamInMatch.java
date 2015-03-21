@@ -2,7 +2,12 @@ package njuse.ffff.po;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
+/**
+ * 处理一支球队在一场比赛中的数据
+ * 由MatchPO构建
+ * @author Mebleyev.G.Longinus
+ *@see MatchPO
+ */
 public class TeamInMatch implements Serializable{
 	/**
 	 * 
@@ -69,7 +74,9 @@ public class TeamInMatch implements Serializable{
 			this.rival = rival;
 		}
 	}
-
+	/**
+	 * 计算所有进阶数据
+	 */
 	public void calAll() {
 		calOffensiveRounds();
 		calFreeThrowRatio();

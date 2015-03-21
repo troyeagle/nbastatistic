@@ -2,7 +2,12 @@ package njuse.ffff.po;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
+/**
+ * 计算并储存一支球队的赛季总数据和平均数据
+ * 由DataReadController构建
+ * @author Mebleyev.G.Longinus
+ *@see DataReadController
+ */
 public class TeamInAverage implements Serializable{
 	/**
 	 * 

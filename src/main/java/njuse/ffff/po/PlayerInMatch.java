@@ -4,7 +4,12 @@ import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
+/**
+ * 储存一场比赛中某一球员的基础数据
+ * 由MatchDataProcessor构建
+ * @author Mebleyev.G.Longinus
+ *
+ */
 public class PlayerInMatch implements Serializable {
 	/**
 	 * 
