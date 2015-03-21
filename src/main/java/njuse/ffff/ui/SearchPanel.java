@@ -41,7 +41,7 @@ public class SearchPanel extends JPanel{
 	private JTextField text_searchInfo;
 	private JLabel label_search;
 	private JLabel label_arrow_down_left;
-	private JLabel label_arrow_down_middle;
+//	private JLabel label_arrow_down_middle;
 	private JLabel label_menu;
 	private MenuPanel menuPanel;
 	private int menuDisplay;
@@ -143,36 +143,36 @@ public class SearchPanel extends JPanel{
 		label_info.setBounds(144, 629, 220, 24);
 		
 		//向下翻页标志————转换到高级搜索界面
-		label_arrow_down_middle = new JLabel();
-		label_arrow_down_middle.setOpaque(true);
-		label_arrow_down_middle.setBounds(500, 617, 40, 40);
-		icon_arrow = new ImageIcon(img_arrow_down_URL);
-		label_arrow_down_middle.setIcon(icon_arrow);
-		label_arrow_down_middle.addMouseListener(new MouseListener() {
-			public void mouseReleased(MouseEvent arg0) {}
-			public void mousePressed(MouseEvent arg0) {}
-			public void mouseExited(MouseEvent arg0) {
-				ImageIcon icon_arrow = new ImageIcon(img_arrow_down_URL);
-				label_arrow_down_middle.setIcon(icon_arrow);
-			}
-			public void mouseEntered(MouseEvent arg0) {
-				ImageIcon icon_changed = new ImageIcon(img_arrow_down_changed_URL);
-				label_arrow_down_middle.setIcon(icon_changed);
-			}
-			public void mouseClicked(MouseEvent arg0) {
-				// TODO 跳转到"高级搜索"界面
-				
-				
-			}
-		});
+//		label_arrow_down_middle = new JLabel();
+//		label_arrow_down_middle.setOpaque(true);
+//		label_arrow_down_middle.setBounds(500, 617, 40, 40);
+//		icon_arrow = new ImageIcon(img_arrow_down_URL);
+//		label_arrow_down_middle.setIcon(icon_arrow);
+//		label_arrow_down_middle.addMouseListener(new MouseListener() {
+//			public void mouseReleased(MouseEvent arg0) {}
+//			public void mousePressed(MouseEvent arg0) {}
+//			public void mouseExited(MouseEvent arg0) {
+//				ImageIcon icon_arrow = new ImageIcon(img_arrow_down_URL);
+//				label_arrow_down_middle.setIcon(icon_arrow);
+//			}
+//			public void mouseEntered(MouseEvent arg0) {
+//				ImageIcon icon_changed = new ImageIcon(img_arrow_down_changed_URL);
+//				label_arrow_down_middle.setIcon(icon_changed);
+//			}
+//			public void mouseClicked(MouseEvent arg0) {
+//				// TODO 跳转到"高级搜索"界面
+//				
+//				
+//			}
+//		});
 		
 		//高级搜索链接
-		JLabel label_detailSearch = new JLabel("高级搜索");
-		label_detailSearch.setOpaque(true);
-		label_detailSearch.setBackground(background);
-		label_detailSearch.setForeground(Color.WHITE);
-		label_detailSearch.setFont(new FontUIResource("DialogInput", Font.BOLD, 20));
-		label_detailSearch.setBounds(550, 629, 220, 24);
+//		JLabel label_detailSearch = new JLabel("高级搜索");
+//		label_detailSearch.setOpaque(true);
+//		label_detailSearch.setBackground(background);
+//		label_detailSearch.setForeground(Color.WHITE);
+//		label_detailSearch.setFont(new FontUIResource("DialogInput", Font.BOLD, 20));
+//		label_detailSearch.setBounds(550, 629, 220, 24);
 		
 		//菜单按钮
 		label_menu = new JLabel();
@@ -206,11 +206,10 @@ public class SearchPanel extends JPanel{
 		
 		this.setLayout(null);
 		this.add(label_searchDialog);
-		this.add(label_detailSearch);
 		this.add(label_arrow_down_left);
 		this.add(label_info);
-		this.add(label_arrow_down_middle);
-		this.add(label_detailSearch);
+//		this.add(label_arrow_down_middle);
+//		this.add(label_detailSearch);
 		this.add(label_menu);
 		this.repaint();
 	}

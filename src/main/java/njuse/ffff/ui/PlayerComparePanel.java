@@ -29,6 +29,8 @@ public class PlayerComparePanel extends JPanel{
 	private ControllerService uiController;
 	private JPanel panel;
 	private int tableDisplay;//0代表总数据，1代表平均数据
+	private MenuPanel menuPanel;
+	private int menuDisplay;//0代表不显示，1代表显示
 
 	private Color background = new Color(99,43,142);
 	private Color blue_light = new Color(46,117,182);
@@ -39,6 +41,8 @@ public class PlayerComparePanel extends JPanel{
 	private String img_arrow_left_changed_URL = "picture/arrow/arrow_left_changed.jpg";
 	private String img_arrow_right_URL = "picture/arrow/arrow_right.jpg";
 	private String img_arrow_right_changed_URL = "picture/arrow/arrow_right_changed.jpg";
+	private String img_menu_URL = "picture/menu.jpg";
+	private String img_menu_changed_URL = "picture/menu_changed.jpg";
 	
 	private DefaultTableModel tableModel_playerCompare_total;
 	private JTable table_playerCompare_total;
@@ -51,6 +55,7 @@ public class PlayerComparePanel extends JPanel{
 	private JLabel label_arrow_up;
 	private JLabel label_arrow_left;
 	private JLabel label_arrow_right;
+	private JLabel label_menu;
 	
 	private JLabel label_data_total;
 	private JLabel label_data_average;
@@ -62,11 +67,14 @@ public class PlayerComparePanel extends JPanel{
 		
 		uiController = UIController.getInstance();
 		panel = this;
+		menuPanel = new MenuPanel();
+		menuPanel.setLocation(930, 110);
+		menuDisplay = 0;
 		
 		//向左翻页标志
 		label_arrow_left = new JLabel();
 		label_arrow_left.setOpaque(true);
-		label_arrow_left.setBounds(1026, 62, 40, 40);
+		label_arrow_left.setBounds(946, 62, 40, 40);
 		ImageIcon icon_left = new ImageIcon(img_arrow_left_URL);
 		label_arrow_left.setIcon(icon_left);
 		label_arrow_left.addMouseListener(new MouseListener() {
@@ -92,7 +100,7 @@ public class PlayerComparePanel extends JPanel{
 		label_left_info.setBackground(background);
 		label_left_info.setForeground(Color.WHITE);
 		label_left_info.setFont(new FontUIResource("DialogInput", Font.BOLD, 20));
-		label_left_info.setBounds(850, 68, 176, 28);
+		label_left_info.setBounds(770, 68, 176, 28);
 		
 		//上方标题栏
 		JLabel label_title = new JLabel("球员信息横向比较");
@@ -108,12 +116,12 @@ public class PlayerComparePanel extends JPanel{
 		label_up_info.setBackground(background);
 		label_up_info.setForeground(Color.WHITE);
 		label_up_info.setFont(new FontUIResource("DialogInput", Font.BOLD, 20));
-		label_up_info.setBounds(935, 20, 100, 28);
+		label_up_info.setBounds(855, 20, 100, 28);
 		
 		//上指向箭头，返回搜索界面
 		label_arrow_up = new JLabel();
 		label_arrow_up.setOpaque(true);
-		label_arrow_up.setBounds(1026, 14, 40, 40);
+		label_arrow_up.setBounds(946, 14, 40, 40);
 		ImageIcon icon_up = new ImageIcon(img_arrow_up_URL);
 		label_arrow_up.setIcon(icon_up);
 		label_arrow_up.addMouseListener(new MouseListener() {
@@ -161,6 +169,36 @@ public class PlayerComparePanel extends JPanel{
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到球员筛选界面
 				uiController.setPlayerFilterPanel();
+			}
+		});
+		
+		//菜单按钮
+		label_menu = new JLabel();
+		label_menu.setOpaque(true);
+		ImageIcon icon_menu = new ImageIcon(img_menu_URL);
+		label_menu.setIcon(icon_menu);
+		label_menu.setBounds(996, 30, 70, 70);
+		label_menu.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {
+				ImageIcon icon_menu = new ImageIcon(img_menu_URL);
+				label_menu.setIcon(icon_menu);
+			}
+			public void mouseEntered(MouseEvent arg0) {
+				ImageIcon icon_menu_changed = new ImageIcon(img_menu_changed_URL);
+				label_menu.setIcon(icon_menu_changed);
+			}
+			public void mouseClicked(MouseEvent arg0) {
+				//显示菜单
+				if(menuDisplay==0){
+					displayMenu();
+					menuDisplay = 1;
+				}
+				else{
+					removeMenu();
+					menuDisplay = 0;
+				}
 			}
 		});
 		
@@ -222,6 +260,7 @@ public class PlayerComparePanel extends JPanel{
 		this.add(label_up_info);
 		this.add(label_arrow_right);
 		this.add(label_right_info);
+		this.add(label_menu);
 	}
 	
 	/**
@@ -332,7 +371,7 @@ public class PlayerComparePanel extends JPanel{
 		table_playerCompare_average.getTableHeader().setBackground(background);
 		table_playerCompare_average.getTableHeader().setForeground(Color.WHITE);
 		table_playerCompare_average.getTableHeader().addMouseListener (new MouseAdapter() {  
-             public void mouseReleased (MouseEvent e) {  
+             public void mouseReleased (MouseEvent e) {
                  if (! e.isShiftDown())  
                 	 table_playerCompare_average.clearSelection();  
                  //获取点击的列索引  
@@ -346,5 +385,15 @@ public class PlayerComparePanel extends JPanel{
 		scrollPane_playerCompare_average.setOpaque(false);
 		scrollPane_playerCompare_average.getViewport().setOpaque(false);
 		scrollPane_playerCompare_average.setBounds(25, 160, 1050, 515);
+	}
+	
+	public void displayMenu(){
+		this.add(menuPanel);
+		this.repaint();
+	}
+	
+	public void removeMenu(){
+		this.remove(menuPanel);
+		this.repaint();
 	}
 }

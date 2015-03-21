@@ -32,6 +32,8 @@ public class PlayerFilterPanel extends JPanel{
 	
 	private SelectPanel p;
 	private PlayerFilterPanel panel;
+	private MenuPanel menuPanel;
+	private int menuDisplay;//0代表不显示，1代表显示
 
 	//颜色及图片引用
 	private Color background = new Color(99,43,142);
@@ -42,11 +44,14 @@ public class PlayerFilterPanel extends JPanel{
 	private String img_arrow_left_changed_URL = "picture/arrow/arrow_left_changed.jpg";
 	private String img_searchIcon_URL = "picture/searchIcon.jpg";
 	private String img_searchIcon_changed_URL = "picture/searchIcon_changed.jpg";
+	private String img_menu_URL = "picture/menu.jpg";
+	private String img_menu_changed_URL = "picture/menu_changed.jpg";
 	
 	private JLabel label_arrow_left;
 	private JLabel label_arrow_up;
 	private JLabel label_searchIcon;
 	private JLabel label_add_item;
+	private JLabel label_menu;
 	private JComboBox<String> filter_position;
 	private JComboBox<String> filter_league;
 	private JLabel label_sort_condition;
@@ -66,6 +71,9 @@ public class PlayerFilterPanel extends JPanel{
 		p = new SelectPanel();
 		p.setLocation(264, 168);
 		panel = this;
+		menuPanel = new MenuPanel();
+		menuPanel.setLocation(930, 110);
+		menuDisplay = 0;
 		
 		//球员筛选标题
 		JLabel label_filter_title = new JLabel("球员筛选");
@@ -78,7 +86,7 @@ public class PlayerFilterPanel extends JPanel{
 		//向左翻页标志
 		label_arrow_left = new JLabel();
 		label_arrow_left.setOpaque(true);
-		label_arrow_left.setBounds(1026, 62, 40, 40);
+		label_arrow_left.setBounds(946, 62, 40, 40);
 		ImageIcon icon_left = new ImageIcon(img_arrow_left_URL);
 		label_arrow_left.setIcon(icon_left);
 		label_arrow_left.addMouseListener(new MouseListener() {
@@ -104,7 +112,7 @@ public class PlayerFilterPanel extends JPanel{
 		label_left_info.setBackground(background);
 		label_left_info.setForeground(Color.WHITE);
 		label_left_info.setFont(new FontUIResource("DialogInput", Font.BOLD, 20));
-		label_left_info.setBounds(850, 68, 176, 28);
+		label_left_info.setBounds(770, 68, 176, 28);
 		
 		//向上翻页提示
 		JLabel label_up_info = new JLabel("搜索界面");
@@ -112,12 +120,12 @@ public class PlayerFilterPanel extends JPanel{
 		label_up_info.setBackground(background);
 		label_up_info.setForeground(Color.WHITE);
 		label_up_info.setFont(new FontUIResource("DialogInput", Font.BOLD, 20));
-		label_up_info.setBounds(935, 20, 100, 28);
+		label_up_info.setBounds(855, 20, 100, 28);
 		
 		//上指向箭头，返回搜索界面
 		label_arrow_up = new JLabel();
 		label_arrow_up.setOpaque(true);
-		label_arrow_up.setBounds(1026, 14, 40, 40);
+		label_arrow_up.setBounds(946, 14, 40, 40);
 		ImageIcon icon_up = new ImageIcon(img_arrow_up_URL);
 		label_arrow_up.setIcon(icon_up);
 		label_arrow_up.addMouseListener(new MouseListener() {
@@ -134,6 +142,36 @@ public class PlayerFilterPanel extends JPanel{
 			public void mouseClicked(MouseEvent arg0) {
 				// TODO 跳转到搜索界面
 				uiController.setSearchPanel();
+			}
+		});
+		
+		//菜单按钮
+		label_menu = new JLabel();
+		label_menu.setOpaque(true);
+		ImageIcon icon_menu = new ImageIcon(img_menu_URL);
+		label_menu.setIcon(icon_menu);
+		label_menu.setBounds(996, 30, 70, 70);
+		label_menu.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {
+				ImageIcon icon_menu = new ImageIcon(img_menu_URL);
+				label_menu.setIcon(icon_menu);
+			}
+			public void mouseEntered(MouseEvent arg0) {
+				ImageIcon icon_menu_changed = new ImageIcon(img_menu_changed_URL);
+				label_menu.setIcon(icon_menu_changed);
+			}
+			public void mouseClicked(MouseEvent arg0) {
+				//显示菜单
+				if(menuDisplay==0){
+					displayMenu();
+					menuDisplay = 1;
+				}
+				else{
+					removeMenu();
+					menuDisplay = 0;
+				}
 			}
 		});
 		
@@ -223,8 +261,12 @@ public class PlayerFilterPanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				if(label_add_item.getText().equals("+")){
+					if(table_exist==1){
+						panel.remove(scrollPane_filter_total);
+					}
 					displaySelectPanel();
 					label_add_item.setText("-");
+					repaint();
 				}
 				else if(label_add_item.getText().equals("-")){
 					removeSelectPanel();
@@ -251,6 +293,7 @@ public class PlayerFilterPanel extends JPanel{
 		this.add(label_up_info);
 		this.add(label_arrow_left);
 		this.add(label_left_info);
+		this.add(label_menu);
 		this.add(label_searchIcon);
 		this.add(label_preference);
 		this.add(filter_position);
@@ -287,7 +330,6 @@ public class PlayerFilterPanel extends JPanel{
 			}
 		};
 		//设置点击表头自动排序
-		table_filter.setAutoCreateRowSorter(true);
 		table_filter.setOpaque(false);
 		table_filter.setForeground(Color.WHITE);
 		table_filter.setFont(new FontUIResource("DialogInput", Font.PLAIN, 12));
@@ -329,10 +371,20 @@ public class PlayerFilterPanel extends JPanel{
 		scrollPane_filter_total = new JScrollPane(table_filter);
 		scrollPane_filter_total.setOpaque(false);
 		scrollPane_filter_total.getViewport().setOpaque(false);
-		scrollPane_filter_total.setBounds(25, 260, 1050, 415);
+		scrollPane_filter_total.setBounds(25, 185, 1050, 480);
 		
 		this.add(scrollPane_filter_total);
 		this.repaint();
 		table_exist = 1;
+	}
+	
+	public void displayMenu(){
+		this.add(menuPanel);
+		this.repaint();
+	}
+	
+	public void removeMenu(){
+		this.remove(menuPanel);
+		this.repaint();
 	}
 }
