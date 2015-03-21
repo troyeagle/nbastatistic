@@ -53,10 +53,9 @@ public class PlayerFilterPanel extends JPanel{
 	
 	//表格属性
 	private JTable table_filter;
-	private String[] table_filter_header;
-	private Object[][] table_filter_body;
 	private DefaultTableModel tableModel_filter_total;
 	private JScrollPane scrollPane_filter_total;
+	private int table_exist = 0;//0代表未筛选过，1代表已经筛选过
 	
 	public PlayerFilterPanel(){
 		this.setSize(teamComparePanel_width, teamComparePanel_height);
@@ -160,6 +159,9 @@ public class PlayerFilterPanel extends JPanel{
 				String position = filter_position.getSelectedItem().toString();
 				String league = filter_league.getSelectedItem().toString();
 				String sortCondition = label_sort_condition.getText();
+				if(table_exist==1){
+					panel.remove(scrollPane_filter_total);
+				}
 				uiController.setPlayerFilterResult(panel ,position, league, sortCondition);
 			}
 		});
@@ -269,7 +271,12 @@ public class PlayerFilterPanel extends JPanel{
 	}
 	
 	public void setFilterInfo(String[] properties_average,Object[][] values_average){
-		tableModel_filter_total = new DefaultTableModel(values_average,properties_average);
+		tableModel_filter_total = new DefaultTableModel(values_average,properties_average){
+			public boolean isCellEditable(int row, int column)
+            {
+                return false;
+            }
+		};
 		table_filter = new JTable(tableModel_filter_total){
 			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
 				Component c=super.prepareRenderer(renderer,row,column);
@@ -294,9 +301,14 @@ public class PlayerFilterPanel extends JPanel{
 //		    cmodel.getColumn(i).setHeaderRenderer(renderer);
 //		}
 		TableColumn firstColumn_total = table_filter.getColumnModel().getColumn(0);
-		firstColumn_total.setPreferredWidth(150);
-		firstColumn_total.setMaxWidth(150);
-		firstColumn_total.setMinWidth(150);
+		firstColumn_total.setPreferredWidth(50);
+		firstColumn_total.setMaxWidth(50);
+		firstColumn_total.setMinWidth(50);
+		
+		TableColumn secondColumn_total = table_filter.getColumnModel().getColumn(1);
+		secondColumn_total.setPreferredWidth(150);
+		secondColumn_total.setMaxWidth(150);
+		secondColumn_total.setMinWidth(150);
 
 		table_filter.setColumnSelectionAllowed (true);
 		table_filter.setRowSelectionAllowed (false);
@@ -321,5 +333,6 @@ public class PlayerFilterPanel extends JPanel{
 		
 		this.add(scrollPane_filter_total);
 		this.repaint();
+		table_exist = 1;
 	}
 }

@@ -272,7 +272,7 @@ public class PlayerProfilePanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				// TODO 跳转到高级搜索界面
-				uiController.setPlayerDataPanel(1);
+				
 			}
 		});
         
@@ -294,7 +294,7 @@ public class PlayerProfilePanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				// TODO 跳转到高级搜索界面
-				uiController.setPlayerDataPanel(2);
+				
 			}
 		});
         
@@ -316,7 +316,7 @@ public class PlayerProfilePanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				// TODO 跳转到高级搜索界面
-				uiController.setPlayerDataPanel(3);
+				
 			}
 		});
         
@@ -338,7 +338,7 @@ public class PlayerProfilePanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				// TODO 跳转到高级搜索界面
-				uiController.setPlayerDataPanel(4);
+				
 			}
 		});
         

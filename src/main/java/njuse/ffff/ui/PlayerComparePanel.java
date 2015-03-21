@@ -233,7 +233,12 @@ public class PlayerComparePanel extends JPanel{
 	 */
 	public void setPlayersInfo(String[] properties_total,Object[][] values_total,String[] properties_average,Object[][] values_average){
 		//球员信息比较表格----总数据
-		tableModel_playerCompare_total = new DefaultTableModel(values_total,properties_total);
+		tableModel_playerCompare_total = new DefaultTableModel(values_total,properties_total){
+			public boolean isCellEditable(int row, int column)
+            {
+                return false;
+            }
+		};
 		table_playerCompare_total = new JTable(tableModel_playerCompare_total){
 			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
 				Component c=super.prepareRenderer(renderer,row,column);
@@ -287,7 +292,12 @@ public class PlayerComparePanel extends JPanel{
 		tableDisplay = 0;
 		
 		//球员信息比较表格----平均数据
-		tableModel_playerCompare_average = new DefaultTableModel(values_average,properties_average);
+		tableModel_playerCompare_average = new DefaultTableModel(values_average,properties_average){
+			public boolean isCellEditable(int row, int column)
+            {
+                return false;
+            }
+		};
 		table_playerCompare_average = new JTable(tableModel_playerCompare_average){
 			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
 				Component c=super.prepareRenderer(renderer,row,column);

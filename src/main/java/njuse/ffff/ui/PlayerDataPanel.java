@@ -1,6 +1,7 @@
 package njuse.ffff.ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -8,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -16,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import njuse.ffff.presenter.ControllerService;
 import njuse.ffff.presenter.UIController;
@@ -294,8 +297,101 @@ public class PlayerDataPanel extends JPanel{
 		this.add(label_data_arrow);
 	}
 	
-	//设置表格数据
-	public void setData(){
+	//设置球员动作图像
+	public void setAction(String img_action_URL){
 		
+	}
+	
+	//设置表格数据
+	public void setData(String[] properties1,String[] properties2,String[] properties3,String[] properties4
+			,Object[][] values_total1,Object[][] values_total2,Object[][] values_total3,Object[][] values_total4
+			,Object[][] values_average1,Object[][] values_average2,Object[][] values_average3,Object[][] values_average4){
+		tableModel_playerInfo1_total = new DefaultTableModel(values_total1,properties1);
+		table_playerInfo1_total = new JTable(tableModel_playerInfo1_total){
+			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
+				Component c=super.prepareRenderer(renderer,row,column);
+				if(c instanceof JComponent){
+					((JComponent)c).setOpaque(false);
+				}
+				return c;
+			}
+		};
+		
+		tableModel_playerInfo2_total = new DefaultTableModel(values_total2,properties2);
+		table_playerInfo2_total = new JTable(tableModel_playerInfo2_total){
+			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
+				Component c=super.prepareRenderer(renderer,row,column);
+				if(c instanceof JComponent){
+					((JComponent)c).setOpaque(false);
+				}
+				return c;
+			}
+		};
+		
+		tableModel_playerInfo3_total = new DefaultTableModel(values_total3,properties3);
+		table_playerInfo3_total = new JTable(tableModel_playerInfo3_total){
+			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
+				Component c=super.prepareRenderer(renderer,row,column);
+				if(c instanceof JComponent){
+					((JComponent)c).setOpaque(false);
+				}
+				return c;
+			}
+		};
+		
+		tableModel_playerInfo4_total = new DefaultTableModel(values_total4,properties4);
+		table_playerInfo4_total = new JTable(tableModel_playerInfo4_total){
+			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
+				Component c=super.prepareRenderer(renderer,row,column);
+				if(c instanceof JComponent){
+					((JComponent)c).setOpaque(false);
+				}
+				return c;
+			}
+		};
+		
+		tableModel_playerInfo1_average = new DefaultTableModel(values_average1,properties1);
+		table_playerInfo1_average = new JTable(tableModel_playerInfo1_average){
+			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
+				Component c=super.prepareRenderer(renderer,row,column);
+				if(c instanceof JComponent){
+					((JComponent)c).setOpaque(false);
+				}
+				return c;
+			}
+		};
+		
+		tableModel_playerInfo2_average = new DefaultTableModel(values_average2,properties2);
+		table_playerInfo2_average = new JTable(tableModel_playerInfo2_average){
+			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
+				Component c=super.prepareRenderer(renderer,row,column);
+				if(c instanceof JComponent){
+					((JComponent)c).setOpaque(false);
+				}
+				return c;
+			}
+		};
+		
+		tableModel_playerInfo3_average = new DefaultTableModel(values_average3,properties3);
+		table_playerInfo3_average = new JTable(tableModel_playerInfo3_average){
+			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
+				Component c=super.prepareRenderer(renderer,row,column);
+				if(c instanceof JComponent){
+					((JComponent)c).setOpaque(false);
+				}
+				return c;
+			}
+		};
+		
+		tableModel_playerInfo4_average = new DefaultTableModel(values_average4,properties4);
+		table_playerInfo4_average = new JTable(tableModel_playerInfo4_average){
+			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
+				Component c=super.prepareRenderer(renderer,row,column);
+				if(c instanceof JComponent){
+					((JComponent)c).setOpaque(false);
+				}
+				return c;
+			}
+		};
 	}
 }

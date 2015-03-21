@@ -16,8 +16,6 @@ public interface ControllerService {
 	public void setPlayerFilterResult(PlayerFilterPanel panel,String position,String league,String sort);
 	//设置界面为球员简介界面
 	public void setPlayerProfilePanel(String playerName);
-	//设置界面为球员数据界面
-	public void setPlayerDataPanel(int number);
 	//设置界面为球队简介界面
 	public void setTeamProfilePanel(String teamName);
 	//设置界面为球队数据界面

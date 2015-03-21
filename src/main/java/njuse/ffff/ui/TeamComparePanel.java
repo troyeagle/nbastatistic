@@ -194,8 +194,12 @@ public class TeamComparePanel extends JPanel{
 	
 	public void setTeamsInfo(String[] properties_total,Object[][] values_total,String[] propertices_average,Object[][] values_average){
 		//球队信息比较表格----总数据
-		tableModel_teamCompare_total = new DefaultTableModel(values_total,properties_total);
-		
+		tableModel_teamCompare_total = new DefaultTableModel(values_total,properties_total){
+			public boolean isCellEditable(int row, int column)
+            {
+                return false;
+            }
+		};
 		table_teamCompare_total = new JTable(tableModel_teamCompare_total){
 			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
 				Component c=super.prepareRenderer(renderer,row,column);
@@ -251,8 +255,12 @@ public class TeamComparePanel extends JPanel{
 		tableDisplay = 0;
 		
 		//球队信息比较表格----平均数据
-		tableModel_teamCompare_average = new DefaultTableModel(values_average,propertices_average);
-		
+		tableModel_teamCompare_average = new DefaultTableModel(values_average,propertices_average){
+			public boolean isCellEditable(int row, int column)
+            {
+                return false;
+            }
+		};
 		table_teamCompare_average = new JTable(tableModel_teamCompare_average){
 			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
 				Component c=super.prepareRenderer(renderer,row,column);
