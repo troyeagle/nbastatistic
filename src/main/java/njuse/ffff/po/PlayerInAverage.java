@@ -83,7 +83,10 @@ public class PlayerInAverage {
 		}
 		calAverage();
 	}*/
-
+/**
+ * Used by DataReadController
+ * @param p
+ */
 	public void addOneMatchStat(PlayerInMatchExtended p) {
 
 		playerStats.add(p);
@@ -207,13 +210,6 @@ public class PlayerInAverage {
 //	     
 
 		
-		//FIXME
-//		System.out.println(name);
-//		for(double i:statsAverage){
-//			System.out.print(i+"  ");
-//			
-//		}
-//		System.out.println();
 	}
 	/*
 	public void calAverage() {
