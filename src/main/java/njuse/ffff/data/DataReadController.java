@@ -168,7 +168,7 @@ public class DataReadController implements DataReaderService {
 					if (pa.getName().equals(p.getName())) {
 						pa.addOneMatchStat(p);
 						for(TeamPO tpo:TeamDataProcessor.teams){
-							if(tpo.getName().equals(p.getTeam().getName())){
+							if(tpo.getAbbr().equals(p.getTeam().getNameAbbr())){
 								pa.setLeague(tpo.getLeague());
 							}
 						}

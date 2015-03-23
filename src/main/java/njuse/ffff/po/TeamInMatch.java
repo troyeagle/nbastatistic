@@ -14,7 +14,7 @@ public class TeamInMatch implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	boolean win;
-	String name;
+	String nameAbbr;
 	int secondInTotal;
 	int fieldGoalMade = 0;
 	int fieldGoalAttempted = 0;
@@ -49,7 +49,7 @@ public class TeamInMatch implements Serializable{
 	public TeamInMatch(String name, ArrayList<PlayerInMatch> players,
 			TeamInMatch rival, ArrayList<Integer> score,
 			ArrayList<Integer> rivalScore) {
-		this.name = name;
+		this.nameAbbr = name;
 		if(score.get(0)>rivalScore.get(0)){
 			win = true;
 			
@@ -101,7 +101,7 @@ public class TeamInMatch implements Serializable{
 
 	@Override
 	public String toString() {
-		return "TeamInMatch [win=" + win + ", name=" + name
+		return "TeamInMatch [win=" + win + ", name=" + nameAbbr
 				+ ", secondInTotal=" + secondInTotal + ", fieldGoalMade="
 				+ fieldGoalMade + ", fieldGoalAttempted=" + fieldGoalAttempted
 				+ ", threePointerMade=" + threePointerMade
@@ -175,8 +175,8 @@ public class TeamInMatch implements Serializable{
 		freeThrowRatio = (double) freeThrowMade / freeThrowAttempted;
 	}
 
-	public String getName() {
-		return name;
+	public String getNameAbbr() {
+		return nameAbbr;
 	}
 
 }
