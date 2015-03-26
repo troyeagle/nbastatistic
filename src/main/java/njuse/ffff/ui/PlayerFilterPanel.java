@@ -261,9 +261,6 @@ public class PlayerFilterPanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				if(label_add_item.getText().equals("+")){
-					if(table_exist==1){
-						panel.remove(scrollPane_filter_total);
-					}
 					displaySelectPanel();
 					label_add_item.setText("-");
 					repaint();
@@ -304,7 +301,7 @@ public class PlayerFilterPanel extends JPanel{
 	}
 	
 	public void displaySelectPanel(){
-		this.add(p);
+		this.add(p,0);
 		this.repaint();
 	}
 	
@@ -379,7 +376,7 @@ public class PlayerFilterPanel extends JPanel{
 	}
 	
 	public void displayMenu(){
-		this.add(menuPanel);
+		this.add(menuPanel,0);
 		this.repaint();
 	}
 	

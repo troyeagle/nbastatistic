@@ -54,7 +54,7 @@ public class UIController implements ControllerService {
 		}
 		frame.setVisible(true);
 	}
-	
+
 	public void initSystem(){
 		try {
 			dataService.initialize();
@@ -243,7 +243,7 @@ public class UIController implements ControllerService {
 	 */
 	public void setPlayerFilterResult(PlayerFilterPanel panel,String position,String league,String sort){
 		char pos = 0;
-		String leagueInEnglist = null;
+		String leagueInEnglish = null;
 		if(position.equals("前锋")){
 			pos = 'F';
 		}
@@ -255,10 +255,10 @@ public class UIController implements ControllerService {
 		}
 		
 		if(league.equals("东部")){
-			leagueInEnglist = "E";
+			leagueInEnglish = "E";
 		}
 		else if(league.equals("西部")){
-			leagueInEnglist = "W";
+			leagueInEnglish = "W";
 		}
 		
 		//TODO
@@ -270,9 +270,9 @@ public class UIController implements ControllerService {
 				continue;
 			}
 			if(pos!=0&&playerPO.getPosition()==pos){
-//				if(leagueInEnglish!=null&&leagueInEnglist.equals(player.getLeague())){
+				if(leagueInEnglish!=null&&leagueInEnglish.equals(player.getLeague())){
 					data_filtered.add(player);
-//				}
+				}
 			}
 		}
 		
@@ -287,43 +287,43 @@ public class UIController implements ControllerService {
 			int location = 0;
 			switch(conditions[i]){
 			case "得分":
-				location = 25;
+				location = 14;
 				break;
 			case "篮板":
-				location = 19;
-				break;
-			case "助攻":
-				location = 20;
-				break;
-			case "得分/篮板/助攻":
-				//location = -1;TODO
-				break;
-			case "盖帽":
-				location = 22;
-				break;
-			case "抢断":
-				location = 21;
-				break;
-			case "犯规":
-				location = 23;
-				break;
-			case "失误":
-				location = 24;
-				break;
-			case "分钟":
 				location = 8;
 				break;
-			case "效率":
-				location = 26;
+			case "助攻":
+				location = 9;
 				break;
-			case "投篮":
+			case "得分/篮板/助攻":
+				location = 30;
+				break;
+			case "盖帽":
 				location = 11;
 				break;
-			case "三分":
+			case "抢断":
+				location = 10;
+				break;
+			case "犯规":
 				location = 13;
 				break;
-			case "罚球":
+			case "失误":
+				location = 12;
+				break;
+			case "分钟":
+//				location = 8;
+				break;
+			case "效率":
 				location = 15;
+				break;
+			case "投篮":
+				location = 0;
+				break;
+			case "三分":
+				location = 2;
+				break;
+			case "罚球":
+				location = 4;
 				break;
 			case "两双":
 				//location = -1;TODO
@@ -343,7 +343,7 @@ public class UIController implements ControllerService {
 			
 			if(playerAvg!=null){
 				double[] average = playerAvg.getStatsAverage();
-				values_average[i] = new Object[]{i,playerAvg.getName(),DealDecimal.formatChange(average[14], 3)
+				values_average[i] = new Object[]{i+1,playerAvg.getName(),DealDecimal.formatChange(average[14], 3)
 						,DealDecimal.formatChange(average[8], 3),DealDecimal.formatChange(average[9], 3)
 						,DealDecimal.formatChange(average[30], 3),DealDecimal.formatChange(average[11], 3)
 						,DealDecimal.formatChange(average[10], 3),DealDecimal.formatChange(average[12], 3)

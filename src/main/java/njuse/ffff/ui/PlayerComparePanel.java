@@ -388,7 +388,7 @@ public class PlayerComparePanel extends JPanel{
 	}
 	
 	public void displayMenu(){
-		this.add(menuPanel);
+		this.add(menuPanel,0);
 		this.repaint();
 	}
 	

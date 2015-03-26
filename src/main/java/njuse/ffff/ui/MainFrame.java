@@ -31,7 +31,6 @@ public class MainFrame extends JFrame implements FrameService{
 		this.setResizable(false);
 		this.setUndecorated(true);
 		this.setVisible(true);
-		this.setAlwaysOnTop(true);
 		
 		
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
