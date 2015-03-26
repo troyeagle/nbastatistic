@@ -3,6 +3,7 @@ package njuse.ffff.po;
 import java.util.ArrayList;
 
 import sun.misc.Queue;
+
 @SuppressWarnings("unused")
 /**
  * 负责储存球员所有比赛的平均数据
@@ -100,7 +101,7 @@ public class PlayerInAverage {
 	/**
 	 * 计算平均数据，包括脏数据处理
 	 */
-	@SuppressWarnings("restriction")
+
 	public void calAverageAsArray() {
 		statsAverage = new double[31];
 		statsTotal = new double[31];
