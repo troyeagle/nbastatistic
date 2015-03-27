@@ -1,5 +1,6 @@
 package njuse.ffff.presenter;
 
+import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -17,8 +18,9 @@ import njuse.ffff.ui.PlayerComparePanel;
 import njuse.ffff.ui.PlayerFilterPanel;
 import njuse.ffff.ui.PlayerPanel;
 import njuse.ffff.ui.SearchPanel;
+import njuse.ffff.ui.SearchResultPanel;
 import njuse.ffff.ui.TeamComparePanel;
-import njuse.ffff.ui.TeamProfilePanel;
+import njuse.ffff.ui.TeamPanel;
 import njuse.ffff.util.DealDecimal;
 import njuse.ffff.util.Filter;
 import njuse.ffff.util.Sort;
@@ -88,12 +90,52 @@ public class UIController implements ControllerService {
 		SearchPanel searchPanel = new SearchPanel();
 		switchToPanel(searchPanel);
 	}
+	
+	/**
+	 * 查找搜索的球队或者球员
+	 */
+	public void search(String input){
+		ArrayList<TeamPO> search_team = new ArrayList<TeamPO>();
+		ArrayList<PlayerPO> search_player = new ArrayList<PlayerPO>();
+		//获取所有球队信息
+		ArrayList<TeamPO> data_team = dataService.getTeamInfoAll(emptyFilter);
+		//获取所有球员信息
+		ArrayList<PlayerPO> data_player = dataService.getPlayerInfoAll(emptyFilter);
+		//查找
+		for(TeamPO team:data_team){
+			if(team.getName().contains(input)||team.getAbbr().contains(input)){
+				search_team.add(team);
+			}
+		}
+		for(PlayerPO player:data_player){
+			if(player.getName().contains(input)){
+				search_player.add(player);
+			}
+		}
+		//设置搜索结果界面
+		String[] properties = new String[]{"编号","分类","详细名称"};
+		Object[][] values = new Object[search_team.size()+search_player.size()][3];
+		for(int i=0;i<search_team.size();i++){
+			values[i][0] = i+1;
+			values[i][1] = "球队";
+			values[i][2] = search_team.get(i).getName();
+		}
+		for(int j=search_team.size();j<search_team.size()+search_player.size();j++){
+			values[j][0] = j+1;
+			values[j][1] = "球员";
+			values[j][2] = search_player.get(j-search_team.size()).getName();
+		}
+		SearchResultPanel panel_searchResult = new SearchResultPanel();
+		panel_searchResult.setSearchResult(properties, values);
+		currentPanel = panel_searchResult;
+		switchToPanel(panel_searchResult);
+	}
 
 	/**
 	 * 设置球队信息横向比较界面
 	 */
 	public void setTeamComparePanel() {
-		// TODO 获取所有球队信息
+		//获取所有球队信息
 		ArrayList<TeamPO> data = dataService.getTeamInfoAll(emptyFilter);
 		
 		String[] propertices_total = {"球队名称","比赛场数","投篮命中数","投篮出手数"
@@ -157,6 +199,7 @@ public class UIController implements ControllerService {
 		TeamComparePanel teamComparePanel = new TeamComparePanel();
 		teamComparePanel.setTeamsInfo(propertices_total,values_total,propertices_average,values_average);
 		
+		currentPanel = teamComparePanel;
 		switchToPanel(teamComparePanel);
 	}
 
@@ -164,7 +207,7 @@ public class UIController implements ControllerService {
 	 * 设置球员信息一览界面
 	 */
 	public void setPlayerComparePanel() {
-		//TODO 获取所有球员信息
+		//获取所有球员信息
 		ArrayList<PlayerPO> data = dataService.getPlayerInfoAll(emptyFilter);
 
 		String[] properties_total = { "球员名称","所属球队","参赛场数","先发场数"
@@ -227,7 +270,13 @@ public class UIController implements ControllerService {
 		PlayerComparePanel playerComparePanel = new PlayerComparePanel();
 		playerComparePanel.setPlayersInfo(properties_total, values_total, properties_average, values_average);
 
+		currentPanel = playerComparePanel;
 		switchToPanel(playerComparePanel);
+	}
+	
+	//按照选择的表头排序 TODO
+	public void resetPlayerList(int column){
+		
 	}
 	
 	/**
@@ -235,6 +284,7 @@ public class UIController implements ControllerService {
 	 */
 	public void setPlayerFilterPanel(){
 		PlayerFilterPanel playerFilterPanel = new PlayerFilterPanel();
+		currentPanel = playerFilterPanel;
 		switchToPanel(playerFilterPanel);
 	}
 	
@@ -305,10 +355,10 @@ public class UIController implements ControllerService {
 				location = 10;
 				break;
 			case "犯规":
-				location = 13;
+				location = 12;
 				break;
 			case "失误":
-				location = 12;
+				location = 13;
 				break;
 			case "分钟":
 //				location = 8;
@@ -332,7 +382,7 @@ public class UIController implements ControllerService {
 			conditionsOfSort[i] = location;
 		}
 
-		//TODO 排序
+		//排序
 		Sort sortConductor = new Sort();
 		sortConductor.sortPlayer(data_filtered, conditionsOfSort);
 		
@@ -361,7 +411,7 @@ public class UIController implements ControllerService {
 	 * 设置球员简介界面
 	 */
 	public void setPlayerProfilePanel(String playerName) {
-		//TODO 获取指定的球员信息
+		//获取指定的球员信息
 		PlayerPO playerInfo = dataService.getPlayerInfo(playerName, emptyFilter);
 		String position = null;
 		switch (Character.toUpperCase(playerInfo.getPosition())) {
@@ -382,7 +432,7 @@ public class UIController implements ControllerService {
 				{ "年龄", String.valueOf(playerInfo.getAge()) },
 				{ "联赛球龄", playerInfo.getNumber() },
 				{ "编号", playerInfo.getNumber() },
-				{ "学校", playerInfo.getSchool() }
+				{ "毕业学校", playerInfo.getSchool() }
 		};
 		
 		PlayerInAverage data = dataService.getPlayerAverage(playerName, emptyFilter);
@@ -444,13 +494,30 @@ public class UIController implements ControllerService {
 				};
 			
 			PlayerPanel playerPanel = new PlayerPanel();
-			playerPanel.setProfile(playerInfo.getName(), position,playerInfo.getPathOfPortrait(), properties);
-			playerPanel.setData(playerInfo.getPathOfAction(),properties1,properties2,properties3,properties4
+			ImageIcon img_icon = new ImageIcon(playerInfo.getPathOfPortrait());
+			Image image = new ImageIcon(playerInfo.getPathOfAction()).getImage();
+			playerPanel.setProfile(playerInfo.getName(), position, img_icon, properties);
+			playerPanel.setData(playerInfo.getName(), image,properties1,properties2,properties3,properties4
 							,values_total1,values_total2,values_total3,values_total4
 							,values_average1,values_average2,values_average3,values_average4);
 	
+			currentPanel = playerPanel;
 			switchToPanel(playerPanel);
 		}
+	}
+	
+	/**
+	 * 球员简介界面切换为球员数据界面
+	 */
+	public void changeToPlayerDataPanel(int number){
+		((PlayerPanel)currentPanel).displayData(number);
+	}
+	
+	/**
+	 * 球员数据界面切换为球员简介界面
+	 */
+	public void changeToPlayerProfilePanel(){
+		((PlayerPanel)currentPanel).displayProfile();
 	}
 
 	/**
@@ -458,11 +525,11 @@ public class UIController implements ControllerService {
 	 */
 	public void setTeamProfilePanel(String teamName) {
 		//TODO 获取指定球队的信息
-
 		TeamPO teamInfo = dataService.getTeamInfo(teamName, emptyFilter);
 
 		// 球队简介
 		String[][] properties = {
+				{ "简称", teamInfo.getAbbr() },
 				{ "所在地", teamInfo.getState() },
 				{ "联盟", teamInfo.getLeague() },
 				{ "次级联盟", teamInfo.getSubLeague() },
@@ -475,25 +542,108 @@ public class UIController implements ControllerService {
 		// 球队队徽
 		ImageIcon icon = new ImageIcon(teamInfo.getPathOfLogo());
 		// TODO 处理svg文件
-
-		TeamProfilePanel teamProfilePanel = new TeamProfilePanel();
-		teamProfilePanel.setProfile(teamInfo.getName(), properties);
-		teamProfilePanel.setIcon(icon);
-//		teamProfilePanel.putTable(2014, "赛季总数据", null, null);
-//		teamProfilePanel.putTable(2014, "场均数据", null, null);
-
-		switchToPanel(teamProfilePanel);
+		
+		TeamInAverage data = dataService.getTeamAverage(teamName, emptyFilter);
+		if(data!=null){
+			String[] properties1 = {"投篮命中数","投篮出手数","三分命中数","三分出手数","罚球命中数","罚球出手数"};
+			String[] properties1_2 = {"投篮命中率","三分命中率","罚球命中率"};
+			String[] properties2 = {"篮板数","进攻篮板数","防守篮板数","助攻数","抢断数","盖帽数","失误数","犯规数"};
+			String[] properties2_2 = {"进攻篮板率","防守篮板率","助攻率","抢断率","盖帽率","失误率"};
+			String[] properties3 = {"比赛场数","胜场数","胜率"};
+			String[] properties3_2 = {"进攻回合","进攻效率","防守效率"};
+			
+			//TODO
+			int GP = data.getNumOfMatches();
+			Object[][] values_total1 = new Object[1][];
+			values_total1[0] = new Object[]{
+					DealDecimal.formatChange(data.getFieldGoalMade()*GP,3)//properties1
+						,DealDecimal.formatChange(data.getFieldGoalAttempted()*GP, 3)
+						,DealDecimal.formatChange(data.getThreePointerMade()*GP, 3)
+						,DealDecimal.formatChange(data.getThreePointerAttempted()*GP, 3)
+						,DealDecimal.formatChange(data.getFreeThrowMade()*GP, 3)
+						,DealDecimal.formatChange(data.getFreeThrowAttempted()*GP, 3)
+					};
+			Object[][] values_average1 = new Object[1][];
+			values_average1[0] = new Object[]{
+					DealDecimal.formatChange(data.getFieldGoalMade(),3)//properties1
+					,DealDecimal.formatChange(data.getFieldGoalAttempted(), 3)
+					,DealDecimal.formatChange(data.getThreePointerMade(), 3)
+					,DealDecimal.formatChange(data.getThreePointerAttempted(), 3)
+					,DealDecimal.formatChange(data.getFreeThrowMade(), 3)
+					,DealDecimal.formatChange(data.getFreeThrowAttempted(), 3)
+			};
+			Object[][] values_ratio1 = new Object[1][];
+			values_ratio1[0] = new Object[]{
+					DealDecimal.formatChange(data.getFieldGoalRatio(),3)//properties1_2
+					,DealDecimal.formatChange(data.getThreePointerRatio(), 3)
+					,DealDecimal.formatChange(data.getFreeThrowRatio(), 3)
+			};
+			
+			Object[][] values_total2 = new Object[1][];
+			values_total2[0] = new Object[]{
+					DealDecimal.formatChange(data.getRebound()*GP,3)//properties2
+					,DealDecimal.formatChange(data.getOffensiveRebound()*GP, 3)
+					,DealDecimal.formatChange(data.getDefensiveRebound()*GP, 3)
+					,DealDecimal.formatChange(data.getAssist()*GP, 3)
+					,DealDecimal.formatChange(data.getSteal()*GP, 3)
+					,DealDecimal.formatChange(data.getBlock()*GP, 3)
+					,DealDecimal.formatChange(data.getTurnover()*GP, 3)
+					,DealDecimal.formatChange(data.getFoul()*GP, 3)
+			};
+			Object[][] values_average2 = new Object[1][];
+			values_average2[0] = new Object[]{
+					DealDecimal.formatChange(data.getRebound(),3)//properties2
+					,DealDecimal.formatChange(data.getOffensiveRebound(), 3)
+					,DealDecimal.formatChange(data.getDefensiveRebound(), 3)
+					,DealDecimal.formatChange(data.getAssist(), 3)
+					,DealDecimal.formatChange(data.getSteal(), 3)
+					,DealDecimal.formatChange(data.getBlock(), 3)
+					,DealDecimal.formatChange(data.getTurnover(), 3)
+					,DealDecimal.formatChange(data.getFoul(), 3)
+			};
+			Object[][] values_ratio2 = new Object[1][];
+			values_ratio2[0] = new Object[]{
+					DealDecimal.formatChange(data.getOffensiveReboundEf(),3)//properties2_2
+					,DealDecimal.formatChange(data.getDefensiveReboundEf(), 3)
+					,DealDecimal.formatChange(data.getAssistEf(), 3)
+					,DealDecimal.formatChange(data.getStealEf(),3)
+					,"",""//盖帽率,失误率
+			};
+			
+			Object[][] values3_1 = new Object[1][];
+			values3_1[0] = new Object[]{
+					DealDecimal.formatChange(data.getNumOfMatches(),3)//properties3_1
+					,DealDecimal.formatChange(data.getNumOfWins(), 3)
+					,DealDecimal.formatChange(data.getWinningRatio(), 3)
+			};
+			Object[][] values3_2 = new Object[1][];
+			values3_2[0] = new Object[]{
+					DealDecimal.formatChange(data.getMyRounds(),3)//properties3_2
+					,DealDecimal.formatChange(data.getOffensiveEf(), 3)
+					,DealDecimal.formatChange(data.getDefensiveEf(), 3)
+			};
+			
+			TeamPanel teamPanel = new TeamPanel();
+			teamPanel.setProfile(teamInfo.getName(),icon,properties);
+			teamPanel.setData(teamInfo.getName(),properties1,properties1_2,properties2,properties2_2,properties3,properties3_2
+					,values_total1,values_average1,values_ratio1,values_total2,values_average2,values_ratio2
+					,values3_1,values3_2);
+			
+			currentPanel = teamPanel;
+			switchToPanel(teamPanel);
+		}
 	}
 
 	/**
-	 * 设置球队数据信息界面
+	 * 球队简介界面切换为球队数据界面
 	 */
-	public void setTeamDataPanel(String teamName, String tableName) {
-
+	public void changeToTeamDataPanel(int number){
+		((TeamPanel)currentPanel).displayData(number);
 	}
-
-	public void setTeamDataPanel() {
-		// TODO 自动生成的方法存根
-		
+	/**
+	 * 球队数据界面切换为球队简介界面
+	 */
+	public void changeToTeamProfilePanel(){
+		((TeamPanel)currentPanel).displayProfile();
 	}
 }

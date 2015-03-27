@@ -77,7 +77,8 @@ public class PlayerProfilePanel extends JPanel{
 				label_arrow_left.setIcon(icon_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO 跳转到“球员一览”界面
+				//跳转到搜索界面
+				uiController.setSearchPanel();
 			}
 		});
 		
@@ -87,7 +88,7 @@ public class PlayerProfilePanel extends JPanel{
 		label_player_name.setBackground(background);
 		label_player_name.setForeground(Color.WHITE);
 		label_player_name.setFont(new FontUIResource("DialogInput", Font.BOLD, 50));
-		label_player_name.setBounds(308, 62, 400, 44);
+		label_player_name.setBounds(208, 62, 500, 44);
 		
 		//便捷搜索框
 		JLabel label_searchDialog = new JLabel();
@@ -133,6 +134,7 @@ public class PlayerProfilePanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				// TODO 跳转到搜索结果界面
+				
 			}
 		});
         
@@ -151,10 +153,9 @@ public class PlayerProfilePanel extends JPanel{
         //左侧球员头像
         label_player_protrait = new JLabel();
         label_player_protrait.setOpaque(true);
-        label_player_protrait.setBounds(44, 252, 214, 174);
+        label_player_protrait.setBounds(64, 252, 214, 174);
         
         //中间球员信息
-        //TODO
         JLabel label_height = new JLabel("身高");
         label_height.setOpaque(true);
         label_height.setBackground(background);
@@ -271,8 +272,8 @@ public class PlayerProfilePanel extends JPanel{
 				label_player_data1.setBackground(blue_light_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO 跳转到高级搜索界面
-				
+				// TODO 跳转到球员数据信息界面
+				uiController.changeToPlayerDataPanel(1);
 			}
 		});
         
@@ -293,8 +294,8 @@ public class PlayerProfilePanel extends JPanel{
 				label_player_data2.setBackground(blue_light_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO 跳转到高级搜索界面
-				
+				// TODO 跳转到球员数据信息界面
+				uiController.changeToPlayerDataPanel(2);
 			}
 		});
         
@@ -315,8 +316,8 @@ public class PlayerProfilePanel extends JPanel{
 				label_player_data3.setBackground(blue_light_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO 跳转到高级搜索界面
-				
+				// TODO 跳转到球员数据信息界面
+				uiController.changeToPlayerDataPanel(3);
 			}
 		});
         
@@ -337,8 +338,8 @@ public class PlayerProfilePanel extends JPanel{
 				label_player_data4.setBackground(blue_light_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO 跳转到高级搜索界面
-				
+				// TODO 跳转到球员数据信息界面
+				uiController.changeToPlayerDataPanel(4);
 			}
 		});
         
@@ -360,6 +361,7 @@ public class PlayerProfilePanel extends JPanel{
 		this.add(label_career);
 		this.add(label_career_field);
 		this.add(label_code);
+		this.add(label_code_field);
 		this.add(label_guaduateSchool);
 		this.add(label_graduateSchool_field);
 		this.add(label_player_data1);
@@ -400,9 +402,8 @@ public class PlayerProfilePanel extends JPanel{
 		this.repaint();
 	}
 	
-	public void setPhoto(String img_URL){
-		ImageIcon icon = new ImageIcon(img_URL);
-		label_player_protrait.setIcon(icon);
+	public void setPhoto(ImageIcon img){
+		label_player_protrait.setIcon(img);
 		this.repaint();
 	}
 }

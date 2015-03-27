@@ -251,7 +251,7 @@ public class TeamComparePanel extends JPanel{
 		
 		table_teamCompare_total.setFont(new FontUIResource("DialogInput", Font.PLAIN, 12));
 		//设置点击表头自动排序
-		table_teamCompare_total.setAutoCreateRowSorter(true);
+//		table_teamCompare_total.setAutoCreateRowSorter(true);TODO
 		table_teamCompare_total.setOpaque(false);
 		table_teamCompare_total.setForeground(Color.WHITE);
 		table_teamCompare_total.setSelectionForeground(Color.CYAN);
@@ -275,15 +275,18 @@ public class TeamComparePanel extends JPanel{
 		table_teamCompare_total.setColumnSelectionAllowed (true);
 		table_teamCompare_total.setRowSelectionAllowed (false);
 		table_teamCompare_total.getTableHeader().addMouseListener (new MouseAdapter() {  
-             public void mouseReleased (MouseEvent e) {  
+			public void mouseClicked(MouseEvent e){
+				//TODO
+			}
+            public void mouseReleased (MouseEvent e) {  
                  if (! e.isShiftDown())  
                 	 table_teamCompare_total.clearSelection();  
                  //获取点击的列索引  
                  int pick = table_teamCompare_total.getTableHeader().columnAtPoint(e.getPoint());  
                  //设置选择模型 
                  table_teamCompare_total.addColumnSelectionInterval (pick, pick);
-             }  
-         });
+            }  
+        });
 		
 		scrollPane_teamCompare_total = new JScrollPane(table_teamCompare_total);
 		scrollPane_teamCompare_total.setOpaque(false);

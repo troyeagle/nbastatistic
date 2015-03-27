@@ -288,7 +288,7 @@ public class PlayerComparePanel extends JPanel{
 			}
 		};
 		//设置点击表头自动排序
-		table_playerCompare_total.setAutoCreateRowSorter(true);
+//		table_playerCompare_total.setAutoCreateRowSorter(true);
 		table_playerCompare_total.setOpaque(false);
 		table_playerCompare_total.setForeground(Color.WHITE);
 		table_playerCompare_total.setFont(new FontUIResource("DialogInput", Font.PLAIN, 12));
@@ -311,16 +311,19 @@ public class PlayerComparePanel extends JPanel{
 		table_playerCompare_total.getTableHeader().setFont(new FontUIResource("DialogInput", Font.PLAIN, 11));
 		table_playerCompare_total.getTableHeader().setBackground(background);
 		table_playerCompare_total.getTableHeader().setForeground(Color.WHITE);
-		table_playerCompare_total.getTableHeader().addMouseListener (new MouseAdapter() {  
-             public void mouseReleased (MouseEvent e) {  
-                 if (! e.isShiftDown())  
-                	 table_playerCompare_total.clearSelection();  
-                 //获取点击的列索引  
-                 int pick = table_playerCompare_total.getTableHeader().columnAtPoint(e.getPoint());  
-                 //设置选择模型 
-                 table_playerCompare_total.addColumnSelectionInterval (pick, pick);
-             }  
-         });
+		table_playerCompare_total.getTableHeader().addMouseListener (new MouseAdapter() { 
+			public void mouseClicked(MouseEvent e){
+				//TODO
+			}
+            public void mouseReleased (MouseEvent e) {  
+                if (! e.isShiftDown())  
+               	table_playerCompare_total.clearSelection();
+                //获取点击的列索引  
+                int pick = table_playerCompare_total.getTableHeader().columnAtPoint(e.getPoint());  
+                //设置选择模型 
+                table_playerCompare_total.addColumnSelectionInterval (pick, pick);
+            }  
+        });
 		
 		scrollPane_playerCompare_total = new JScrollPane(table_playerCompare_total);
 		scrollPane_playerCompare_total.setOpaque(false);

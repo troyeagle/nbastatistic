@@ -102,7 +102,7 @@ public class SearchPanel extends JPanel{
 				//获得搜索的项
 				String search = text_searchInfo.getText();
 				//TODO 调用查找
-				
+				uiController.search(search);
 				
 			}
 		});
