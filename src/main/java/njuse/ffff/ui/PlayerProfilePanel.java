@@ -252,7 +252,7 @@ public class PlayerProfilePanel extends JPanel{
         label_graduateSchool_field.setBackground(background);
         label_graduateSchool_field.setForeground(Color.WHITE);
         label_graduateSchool_field.setFont(new FontUIResource("DialogInput", Font.BOLD, 30));
-        label_graduateSchool_field.setBounds(605, 565, 275, 35);
+        label_graduateSchool_field.setBounds(605, 565, 475, 35);
         
         
         //右侧数据引导框1

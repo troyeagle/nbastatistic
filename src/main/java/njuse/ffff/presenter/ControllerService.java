@@ -1,5 +1,8 @@
 package njuse.ffff.presenter;
 
+import java.util.ArrayList;
+
+import njuse.ffff.po.PlayerInAverage;
 import njuse.ffff.ui.PlayerFilterPanel;
 
 public interface ControllerService {
@@ -13,7 +16,7 @@ public interface ControllerService {
 	//设置球员信息横向比较界面
 	public void setPlayerComparePanel();
 	//按照选择的表头排序
-	public void resetPlayerList(int column);
+	public void resetPlayerList(ArrayList<PlayerInAverage> players,int column);
 	//设置界面为球员筛选界面
 	public void setPlayerFilterPanel();
 	//传送球员筛选条件

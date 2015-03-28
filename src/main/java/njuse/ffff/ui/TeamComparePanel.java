@@ -277,6 +277,7 @@ public class TeamComparePanel extends JPanel{
 		table_teamCompare_total.getTableHeader().addMouseListener (new MouseAdapter() {  
 			public void mouseClicked(MouseEvent e){
 				//TODO
+				System.out.println(properties_total[table_teamCompare_total.getSelectedColumn()]);
 			}
             public void mouseReleased (MouseEvent e) {  
                  if (! e.isShiftDown())  

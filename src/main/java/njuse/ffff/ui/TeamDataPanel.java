@@ -3,8 +3,6 @@ package njuse.ffff.ui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
@@ -39,7 +37,6 @@ public class TeamDataPanel extends JPanel{
 	private String img_label_search_URL = "picture/transfer/label_search_small.jpg";
 	private String img_label_search_changed_URL = "picture/transfer/label_search_changed_small.jpg";
 	private String img_data_arrow_URL = "picture/arrow/data_arrow.jpg";
-	private Image img_action;
 	
 	private JTextField text_searchInfo;
 	private JLabel label_search;
@@ -439,7 +436,7 @@ public class TeamDataPanel extends JPanel{
 		scrollPane_teamInfo2_average.setBounds(200, 320, 650, 135);
 		
 		//球员数据表格3
-		tableModel_teamInfo3_2 = new DefaultTableModel(values3_2,properties3);
+		tableModel_teamInfo3_2 = new DefaultTableModel(values3_2,properties3_2);
 		table_teamInfo3_2 = new JTable(tableModel_teamInfo3_2){
 			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
 				Component c=super.prepareRenderer(renderer,row,column);

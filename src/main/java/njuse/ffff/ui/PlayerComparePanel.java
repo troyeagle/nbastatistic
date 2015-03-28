@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -18,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import njuse.ffff.po.PlayerInAverage;
 import njuse.ffff.presenter.ControllerService;
 import njuse.ffff.presenter.UIController;
 
@@ -270,7 +272,7 @@ public class PlayerComparePanel extends JPanel{
 	 * @param properties_average
 	 * @param values_average
 	 */
-	public void setPlayersInfo(String[] properties_total,Object[][] values_total,String[] properties_average,Object[][] values_average){
+	public void setPlayersTotalInfo(String[] properties_total,Object[][] values_total,ArrayList<PlayerInAverage> players){
 		//球员信息比较表格----总数据
 		tableModel_playerCompare_total = new DefaultTableModel(values_total,properties_total){
 			public boolean isCellEditable(int row, int column)
@@ -314,6 +316,7 @@ public class PlayerComparePanel extends JPanel{
 		table_playerCompare_total.getTableHeader().addMouseListener (new MouseAdapter() { 
 			public void mouseClicked(MouseEvent e){
 				//TODO
+				uiController.resetPlayerList(players,table_playerCompare_total.getSelectedColumn());
 			}
             public void mouseReleased (MouseEvent e) {  
                 if (! e.isShiftDown())  
@@ -332,7 +335,9 @@ public class PlayerComparePanel extends JPanel{
 		
 		this.add(scrollPane_playerCompare_total);
 		tableDisplay = 0;
+	}
 		
+	public void setPlayerAverageInfo(String[] properties_average,Object[][] values_average){
 		//球员信息比较表格----平均数据
 		tableModel_playerCompare_average = new DefaultTableModel(values_average,properties_average){
 			public boolean isCellEditable(int row, int column)
