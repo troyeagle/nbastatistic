@@ -1,6 +1,7 @@
 package njuse.ffff.po;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import sun.misc.Queue;
 
@@ -55,6 +56,7 @@ public class PlayerInAverage {
 	private double usingRatio;
 	private double GmSc;
 	
+	private boolean doubledouble;
 	//关键变量。用于存放该球员所有比赛数据
 	ArrayList<PlayerInMatchExtended> playerStats;
 
@@ -101,7 +103,7 @@ public class PlayerInAverage {
 	/**
 	 * 计算平均数据，包括脏数据处理
 	 */
-
+//核心方法
 	public void calAverageAsArray() {
 		statsAverage = new double[31];
 		statsTotal = new double[31];
@@ -142,26 +144,7 @@ public class PlayerInAverage {
 				statsTotal[13] += p.foul;
 				statsTotal[14] += p.points;
 //				statsTotal[15] +=p.second;
-
 				statsTotal[15] += p.playerEfficiencyRate;
-				statsTotal[16] += p.fieldGoalRatio;
-				//FIXME
-				
-				
-				
-				statsTotal[17] += p.threePointerRatio;
-				statsTotal[18] += p.freeThrowRatio;
-				statsTotal[19] += p.efficiencyGoalPercentage;
-				statsTotal[20] += p.trueShootingPercentage;
-				statsTotal[21] += p.reboundRatio;
-				statsTotal[22] += p.offensiveReboundRatio;
-				statsTotal[23] += p.defensiveReboundRatio;
-				statsTotal[24] += p.assistRatio;
-				statsTotal[25] += p.stealRatio;
-				statsTotal[26] += p.blockRatio;
-				statsTotal[27] += p.turnoverRatio;
-				statsTotal[28] += p.usingRatio;
-				statsTotal[29] += p.GmSc;
 				//Get off dirty statistics
 				for (int j : p.dirty) {
 
@@ -193,10 +176,7 @@ public class PlayerInAverage {
 		foul=statsTotal[13];
 		points=statsTotal[14];
 		second = statsTotal[15];
-		
-		
-		
-		
+
 		statsAverage[30] = statsAverage[14]+statsAverage[8]+statsAverage[9];//得分+篮板+助攻
 		
 //		fieldGoalMade=statsAverage[0];
@@ -337,5 +317,131 @@ public class PlayerInAverage {
 	public String getLeague() {
 		return league;
 	}
+	public void calAllAverage(TeamInMatch team, TeamInMatch rival) {
 
+		calPlayerEfficiencyRate();
+		calEfficiencyGoalPercentage();
+		calTrueShootingPercentage();
+		calFreeThrowRatio();
+		calThreePointerRatio();
+		calFieldGoalRatio();
+		calGmSc();
+		calReboundRatio(team.secondInTotal, team.rebound, rival.rebound);
+		calStealRatio(team.secondInTotal, rival.myRounds);
+		calBlockRatio(team.secondInTotal, rival.fieldGoalAttempted
+				- rival.threePointerAttempted);
+		calTurnoverRatio();
+		calUsingRatio(team.secondInTotal, team.freeThrowAttempted,
+				team.fieldGoalAttempted, team.turnover);
+		calDoubledouble();
+		calAssistRatio(team.secondInTotal,team.scores);
+	}
+
+	void calAssistRatio(double secondInTotal,double totalScores) {
+		assistRatio = (double)assist/((double)second/(secondInTotal/5)*totalScores-points);
+		
+	}
+
+	void calDoubledouble() {
+		ArrayList<Double> arr = new ArrayList<Double>();
+		arr.add(points);
+		arr.add(assist);
+		arr.add(rebound);
+		arr.add(steal);
+		arr.add(block);
+		Collections.sort(arr);
+		if(arr.get(3)>=10&&arr.get(2)<10){
+			doubledouble = true;
+		}else{
+			doubledouble = false;
+		}
+		
+		
+	}
+
+	void calPlayerEfficiencyRate() {
+		playerEfficiencyRate = (points + rebound + assist + steal + block)
+				- (fieldGoalAttempted - fieldGoalMade)
+				- (freeThrowAttempted - freeThrowMade) - turnover;
+	}
+
+	void calEfficiencyGoalPercentage() {
+		efficiencyGoalPercentage = ((double) fieldGoalMade)
+				/ ((double) fieldGoalAttempted);
+		if(Double.valueOf(efficiencyGoalPercentage).isNaN()){(efficiencyGoalPercentage)=0;}
+	}
+
+	void calTrueShootingPercentage() {
+		trueShootingPercentage = (double) points
+				/ ((double) 2 * fieldGoalAttempted + (double) 0.44
+						* freeThrowAttempted);
+		if(Double.valueOf(trueShootingPercentage).isNaN()){(trueShootingPercentage)=0;}
+	}
+
+	void calReboundRatio(double secondTotal, int teamReboundsTotal,
+			int rivalReboundsTotal) {
+		reboundRatio = (double) rebound * secondTotal / 5 / (second)
+				/ (teamReboundsTotal + rivalReboundsTotal);
+		if(Double.valueOf(reboundRatio).isNaN()){(reboundRatio)=0;}
+		offensiveReboundRatio = (double) offensiveRebound * (secondTotal / 5)
+				/ (second) / (teamReboundsTotal + rivalReboundsTotal);
+		if(Double.valueOf(offensiveReboundRatio).isNaN()){(offensiveReboundRatio)=0;}
+		defensiveReboundRatio = (double) defensiveRebound * (secondTotal / 5)
+				/ (second) / (teamReboundsTotal + rivalReboundsTotal);
+		if(Double.valueOf(defensiveReboundRatio).isNaN()){(defensiveReboundRatio)=0;}
+		
+	}
+
+	void calStealRatio(double secondTotal, double rivalRound) {
+		stealRatio = (double) steal * secondTotal / 5 / (second) / rivalRound;
+		if(Double.valueOf(stealRatio).isNaN()){(stealRatio)=0;}
+	}
+
+	void calBlockRatio(double secondTotal, int twoPointAttempts) {
+		blockRatio = (double) block * secondTotal / 5 / (second)
+				/ twoPointAttempts;
+		if(Double.valueOf(blockRatio).isNaN()){(blockRatio)=0;}
+	}
+
+	void calTurnoverRatio() {
+		turnoverRatio = (double) turnover
+				/ (0.44 * freeThrowAttempted + fieldGoalAttempted + turnover);
+		if(Double.valueOf(turnoverRatio).isNaN()){(turnoverRatio)=0;}
+	}
+
+	void calUsingRatio(double secondTotal, double freeThrowTotal,
+			double fieldGoalTotal, double turnoverTotal) {
+		usingRatio = (0.44 * freeThrowAttempted + fieldGoalAttempted + turnover)
+				* secondTotal
+				/ 5
+				/ (second)
+				/ (0.44 * freeThrowTotal + fieldGoalTotal + turnoverTotal);
+		if(Double.valueOf(usingRatio).isNaN()){(usingRatio)=0;}
+	}
+
+	void calThreePointerRatio() {
+		threePointerRatio = (double) threePointerMade / threePointerAttempted;
+		if(Double.valueOf(threePointerRatio).isNaN()){(threePointerRatio)=0;}
+	}
+
+	void calFieldGoalRatio() {
+		fieldGoalRatio = (double) fieldGoalMade / fieldGoalAttempted;
+		if(Double.valueOf(fieldGoalRatio).isNaN()){(fieldGoalRatio)=0;}
+	}
+
+	void calFreeThrowRatio() {
+		freeThrowRatio = (double) freeThrowMade / freeThrowAttempted;
+		if(Double.valueOf(freeThrowRatio).isNaN()){(freeThrowRatio)=0;}
+
+	}
+
+	void calGmSc() {
+		GmSc = 0.4 * fieldGoalMade + points - 0.7 * fieldGoalAttempted - 0.4
+				* (freeThrowAttempted - freeThrowMade) + 0.7 * offensiveRebound
+				+ 0.3 * defensiveRebound + steal + 0.7 * assist + 0.7 * block
+				- 0.4 * foul - turnover;
+		if ((GmSc) == Double.NaN) {
+			(GmSc) = 0;
+		}
+	}
 }

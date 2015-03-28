@@ -92,13 +92,6 @@ public class TeamInMatch implements Serializable{
 	}
 
 
-
-
-
-
-
-
-
 	@Override
 	public String toString() {
 		return "TeamInMatch [win=" + win + ", name=" + nameAbbr

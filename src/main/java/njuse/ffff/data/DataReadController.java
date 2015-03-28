@@ -2,6 +2,8 @@ package njuse.ffff.data;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import njuse.ffff.dataservice.DataReaderService;
 import njuse.ffff.po.MatchPO;
@@ -219,4 +221,16 @@ public class DataReadController implements DataReaderService {
 		return arr;
 	}
 
+	public void processNewMatch(){
+		Queue<String> eventQ = new LinkedList<String>();
+		new Thread(){
+			public void run(){
+				while(true){
+					if(!eventQ.isEmpty()){
+						
+					}
+				}
+			}
+		}.start();
+	}
 }
