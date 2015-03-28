@@ -54,8 +54,8 @@ public class PlayerInAverage {
 	private double turnoverRatio;
 	private double usingRatio;
 	private double GmSc;
-
-
+	
+	//关键变量。用于存放该球员所有比赛数据
 	ArrayList<PlayerInMatchExtended> playerStats;
 
 	public PlayerInAverage(String name) {

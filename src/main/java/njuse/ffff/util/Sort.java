@@ -24,8 +24,8 @@ public class Sort {
 			double result = 0;
 			for (int i = 0; i < attributes.length; i++) {
 				try {
-					result = o1.getStatsAverage()[attributes[i]]
-							- o2.getStatsAverage()[attributes[i]];
+					result = 1000*o1.getStatsAverage()[attributes[i]]
+							- 1000*o2.getStatsAverage()[attributes[i]];
 				} catch (IllegalArgumentException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
