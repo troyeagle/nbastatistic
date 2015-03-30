@@ -460,6 +460,9 @@ public class PlayerInAverage {
 		}
 	}
 	public String getTeamName(){
+		if(playerStats.size()==0){
+			return "N/A";
+		}
 		return playerStats.get(playerStats.size()-1).getTeam().nameAbbr;
 	}
 }
