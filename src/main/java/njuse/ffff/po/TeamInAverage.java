@@ -93,8 +93,6 @@ public class TeamInAverage implements Serializable {
 		calReboundEf();
 		calStealEf();
 		calAssistEf();
-		// FIXME
-		// System.out.println(this.toString());
 	}
 
 	public void calAverage() {
@@ -124,6 +122,7 @@ public class TeamInAverage implements Serializable {
 			rivalRebounds += p.rival.rebound;
 			rivalFieldGoalAttempted += p.rival.fieldGoalAttempted;
 			rivalThreePointerAttempted += p.rival.threePointerAttempted;
+			rivalRounds += p.myRounds;
 			secondInTotal += p.secondInTotal;
 			// fieldGoalRatio +=p.fieldGoalRatio;
 			// threePointerRatio +=p.threePointerRatio;

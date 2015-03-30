@@ -88,7 +88,6 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 		calEfficiencyGoalPercentage();
 		calTrueShootingPercentage();
 
-		//FIXME Print ratio
 		calFreeThrowRatio();
 
 		calThreePointerRatio();
