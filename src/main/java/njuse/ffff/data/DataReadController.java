@@ -227,7 +227,9 @@ public class DataReadController implements DataReaderService {
 			public void run(){
 				while(true){
 					if(!eventQ.isEmpty()){
-						
+						String[] name = eventQ.poll().split(";");
+						if(name[1].equals("EVENT_CREATE"));
+						match.readAndAnalyzeNew(name[0]);
 					}
 				}
 			}
