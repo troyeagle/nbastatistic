@@ -90,7 +90,7 @@ public class MatchDataProcessor {
 		}
 	}
 	//Iteration 2
-	public void readAndAnalyzeNew(String fileName){
+	public MatchPO readAndAnalyzeNew(String fileName){
 		
 		try {
 			FileReader fr = new FileReader(path+"/"+fileName);
@@ -156,6 +156,7 @@ public class MatchDataProcessor {
 					members, scoreA, scoreB, playerInTeamA, playerInTeamB);
 			matches.add(match);
 			br.close();
+			return match;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			System.out.println("FileNotFound!");
@@ -167,5 +168,6 @@ public class MatchDataProcessor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
 	}
 }

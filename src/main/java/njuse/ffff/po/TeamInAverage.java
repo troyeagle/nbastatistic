@@ -75,12 +75,8 @@ public class TeamInAverage implements Serializable {
 		this.abbr = abbr;
 	}
 
-	public void addMatch(MatchPO m) {
-		if (m.teamA.equals(abbr)) {
-			teamStats.add(m.teamStatA);
-		} else if (m.teamB.equals(abbr)) {
-			teamStats.add(m.teamStatB);
-		}
+	public void addMatch(TeamInMatch p) {
+		teamStats.add(p);
 	}
 
 	private void calAll() {
@@ -94,7 +90,8 @@ public class TeamInAverage implements Serializable {
 		calStealEf();
 		calAssistEf();
 	}
-	public void addOneMatchToAll(TeamInMatch p){
+
+	public void addOneMatchToAll(TeamInMatch p) {
 		numOfMatches++;
 		if (p.win) {
 			numOfWins++;
@@ -123,6 +120,7 @@ public class TeamInAverage implements Serializable {
 		rivalRounds += p.myRounds;
 		secondInTotal += p.secondInTotal;
 	}
+
 	public void calAverage() {
 		for (TeamInMatch p : teamStats) {
 			addOneMatchToAll(p);
@@ -130,8 +128,7 @@ public class TeamInAverage implements Serializable {
 		averageProcess();
 	}
 
-	
-	private void averageProcess(){
+	private void averageProcess() {
 		makeTotalArray();
 		fieldGoalMade /= teamStats.size();
 		fieldGoalAttempted /= teamStats.size();
@@ -152,13 +149,15 @@ public class TeamInAverage implements Serializable {
 		winningRatio = (double) numOfWins / numOfMatches;
 		makeArray();
 	}
-	//Iteration 2
-	public void calAverageWithNew(TeamInMatch p){
+
+	// Iteration 2
+	public void calAverageWithNew(TeamInMatch p) {
 		teamStats.add(p);
 		addOneMatchToAll(p);
 		averageProcess();
-		
+
 	}
+
 	public void makeTotalArray() {
 		statsTotal = new double[22];
 		statsTotal[0] = fieldGoalMade;

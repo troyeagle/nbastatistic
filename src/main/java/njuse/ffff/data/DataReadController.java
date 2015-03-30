@@ -159,32 +159,7 @@ public class DataReadController implements DataReaderService {
 			teamInAverage.add(new TeamInAverage(p.getName(),p.getAbbr()));
 		}
 		for (MatchPO m : MatchDataProcessor.matches) {
-			for(TeamInAverage ta:teamInAverage){
-				if(ta.getAbbr().equals(m.getName())||ta.getAbbr().equals(m.getTeamB())){
-					ta.addMatch(m);
-				}
-			}
-			
-			for (PlayerInMatchExtended p : m.getPlayerInAEx()) {
-				for (PlayerInAverage pa : playerInAverage) {
-					if (pa.getName().equals(p.getName())) {
-						pa.addOneMatchStat(p);
-						for(TeamPO tpo:TeamDataProcessor.teams){
-							if(tpo.getAbbr().equals(p.getTeam().getNameAbbr())){
-								pa.setLeague(tpo.getLeague());
-							}
-						}
-						
-					}
-				}
-			}
-			for (PlayerInMatchExtended p : m.getPlayerInBEx()) {
-				for (PlayerInAverage pa : playerInAverage) {
-					if (pa.getName().equals(p.getName())) {
-						pa.addOneMatchStat(p);
-					}
-				}
-			}
+			averageProcessForMatch(m);
 		}
 		for (PlayerInAverage pa : playerInAverage) {
 			pa.calAverageAsArray();
@@ -194,6 +169,67 @@ public class DataReadController implements DataReaderService {
 		}
 	}
 
+	private void averageProcessForMatch(MatchPO m){
+		for(TeamInAverage ta:teamInAverage){
+			if(ta.getAbbr().equals(m.getName())){
+				ta.addMatch(m.getTeamStatA());
+			}else if(ta.getAbbr().equals(m.getTeamB())){
+				ta.addMatch(m.getTeamStatB());
+			}
+		}
+		
+		for (PlayerInMatchExtended p : m.getPlayerInAEx()) {
+			for (PlayerInAverage pa : playerInAverage) {
+				if (pa.getName().equals(p.getName())) {
+					pa.addOneMatchStat(p);
+					for(TeamPO tpo:TeamDataProcessor.teams){
+						if(tpo.getAbbr().equals(p.getTeam().getNameAbbr())){
+							pa.setLeague(tpo.getLeague());
+						}
+					}
+					
+				}
+			}
+		}
+		for (PlayerInMatchExtended p : m.getPlayerInBEx()) {
+			for (PlayerInAverage pa : playerInAverage) {
+				if (pa.getName().equals(p.getName())) {
+					pa.addOneMatchStat(p);
+				}
+			}
+		}
+	}
+	/**
+	 * Iteration 2
+	 * Process a new Match with its average
+	 * @param m
+	 */
+	private void averageProcessForNewMatch(MatchPO m){
+		for(TeamInAverage ta:teamInAverage){
+			if(ta.getAbbr().equals(m.getName())){
+				ta.calAverageWithNew(m.getTeamStatA());
+			}else if(ta.getAbbr().equals(m.getTeamB())){
+				ta.calAverageWithNew(m.getTeamStatB());
+			}
+		}
+		
+		for (PlayerInMatchExtended p : m.getPlayerInAEx()) {
+			for (PlayerInAverage pa : playerInAverage) {
+				if (pa.getName().equals(p.getName())) {
+					pa.calAverageAsArrayNew(p);				
+				}
+			}
+		}
+		for (PlayerInMatchExtended p : m.getPlayerInBEx()) {
+			for (PlayerInAverage pa : playerInAverage) {
+				if (pa.getName().equals(p.getName())) {
+					pa.calAverageAsArrayNew(p);
+				}
+			}
+		}
+	}
+	
+	
 	public static void main(String[] args) throws IOException,
 			ClassNotFoundException {
 		new DataReadController().initialize();
@@ -229,7 +265,9 @@ public class DataReadController implements DataReaderService {
 					if(!eventQ.isEmpty()){
 						String[] name = eventQ.poll().split(";");
 						if(name[1].equals("EVENT_CREATE"));
-						match.readAndAnalyzeNew(name[0]);
+						MatchPO oneMatch = match.readAndAnalyzeNew(name[0]);
+						oneMatch.teamProcess();
+						averageProcessForNewMatch(oneMatch);
 					}
 				}
 			}

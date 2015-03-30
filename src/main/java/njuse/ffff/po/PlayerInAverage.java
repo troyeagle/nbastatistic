@@ -105,6 +105,124 @@ public class PlayerInAverage {
 	}
 
 	/**
+	 * 将一场比赛加入总数据中，从迭代一拆分出来供迭代二使用。
+	 * 
+	 * @param p
+	 */
+	private void addOneMatchToAll(PlayerInMatchExtended p) {
+		if (p.second != 0) {
+			effective++;
+			if (p.firstOnMatch) {
+				this.firstOnMatch++;
+			}
+			Queue<Double> queue = new Queue<Double>();
+			/**
+			 * Number 3: for the dirty number starts from number 3
+			 * 
+			 * @see PlayerInMatch
+			 * 
+			 */
+			for (int j : p.dirty) {
+				// FIXME
+				// System.out.println(p.getName());
+				statsDirty[j - 3]++;
+				queue.enqueue(statsTotal[j - 3]);
+			}
+
+			statsTotal[0] += p.fieldGoalMade;
+			statsTotal[1] += p.fieldGoalAttempted;
+			statsTotal[2] += p.threePointerMade;
+			statsTotal[3] += p.threePointerAttempted;
+			statsTotal[4] += p.freeThrowMade;
+			statsTotal[5] += p.freeThrowAttempted;
+			statsTotal[6] += p.offensiveRebound;
+			statsTotal[7] += p.defensiveRebound;
+			statsTotal[8] += p.rebound;
+			statsTotal[9] += p.assist;
+			statsTotal[10] += p.steal;
+			statsTotal[11] += p.block;
+			statsTotal[12] += p.turnover;
+			statsTotal[13] += p.foul;
+			statsTotal[14] += p.points;
+
+			statsTotal[15] += p.playerEfficiencyRate;
+
+			teamSecondInTotal += p.getTeam().secondInTotal;
+			teamRebound += p.getTeam().rebound;
+			rivalRebound += p.getTeam().rival.rebound;
+			teamFieldGoalAttempted += p.getTeam().fieldGoalAttempted;
+			teamThreePointerAttempted += p.getTeam().threePointerAttempted;
+			teamTurnover += p.getTeam().turnover;
+			teamScores += p.getTeam().scores;
+			teamFreeThrowAttempted += p.getTeam().freeThrowAttempted;
+			rivalFieldGoalAttempted += p.getTeam().rival.fieldGoalAttempted;
+			rivalThreePointerAttempted += p.getTeam().rival.threePointerAttempted;
+			rivalRounds += p.getTeam().rival.myRounds;
+
+			statsTotal[31] += p.second;
+			// Get off dirty statistics
+			for (int j : p.dirty) {
+
+				try {
+					statsTotal[j - 3] = queue.dequeue();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	/**
+	 * 对平均值的处理
+	 */
+	private void averageProcess() {
+		for (int i = 0; i < 30; i++) {
+			statsAverage[i] = statsTotal[i] / (effective - statsDirty[i]);
+		}
+
+		fieldGoalMade = statsAverage[0];
+		fieldGoalAttempted = statsAverage[1];
+		threePointerMade = statsAverage[2];
+		threePointerAttempted = statsAverage[3];
+		freeThrowMade = statsAverage[4];
+		freeThrowAttempted = statsAverage[5];
+		offensiveRebound = statsAverage[6];
+		defensiveRebound = statsAverage[7];
+		rebound = statsAverage[8];
+		assist = statsAverage[9];
+		steal = statsAverage[10];
+		block = statsAverage[11];
+		turnover = statsAverage[12];
+		foul = statsAverage[13];
+		points = statsAverage[14];
+		second = statsAverage[15];
+
+		calAllAverage();
+		// TODO 关键区域，@张怡 关于队员平均信息在数组中保存的顺序。
+		statsAverage[15] = playerEfficiencyRate;
+		statsAverage[16] = GmSc;
+		statsAverage[17] = trueShootingPercentage;
+		statsAverage[18] = efficiencyGoalPercentage;
+		statsAverage[19] = reboundRatio;
+		statsAverage[20] = offensiveReboundRatio;
+		statsAverage[21] = defensiveReboundRatio;
+		statsAverage[22] = assistRatio;
+		statsAverage[23] = stealRatio;
+		statsAverage[24] = blockRatio;
+		statsAverage[25] = turnoverRatio;
+		statsAverage[26] = usingRatio;
+		statsAverage[27] = freeThrowRatio;
+		statsAverage[28] = threePointerRatio;
+		statsAverage[29] = fieldGoalRatio;
+
+		// playerEfficiencyRate = statsTotal[15];
+		second = statsTotal[31];
+
+		statsAverage[30] = statsAverage[14] + statsAverage[8] + statsAverage[9];// 得分+篮板+助攻
+
+	}
+
+	/**
 	 * 计算平均数据，包括脏数据处理
 	 */
 	// 核心方法
@@ -114,117 +232,19 @@ public class PlayerInAverage {
 		statsDirty = new int[31];
 		// For each PlayerInMatchExtended, add basic statistics.
 		for (PlayerInMatchExtended p : playerStats) {
-			if (p.second != 0) {
-				effective++;
-				if (p.firstOnMatch) {
-					this.firstOnMatch++;
-				}
-				Queue<Double> queue = new Queue<Double>();
-				/**
-				 * Number 3: for the dirty number starts from number 3
-				 * 
-				 * @see PlayerInMatch
-				 * 
-				 */
-				for (int j : p.dirty) {
-					// FIXME
-					// System.out.println(p.getName());
-					statsDirty[j - 3]++;
-					queue.enqueue(statsTotal[j - 3]);
-				}
-
-				statsTotal[0] += p.fieldGoalMade;
-				statsTotal[1] += p.fieldGoalAttempted;
-				statsTotal[2] += p.threePointerMade;
-				statsTotal[3] += p.threePointerAttempted;
-				statsTotal[4] += p.freeThrowMade;
-				statsTotal[5] += p.freeThrowAttempted;
-				statsTotal[6] += p.offensiveRebound;
-				statsTotal[7] += p.defensiveRebound;
-				statsTotal[8] += p.rebound;
-				statsTotal[9] += p.assist;
-				statsTotal[10] += p.steal;
-				statsTotal[11] += p.block;
-				statsTotal[12] += p.turnover;
-				statsTotal[13] += p.foul;
-				statsTotal[14] += p.points;
-
-				statsTotal[15] += p.playerEfficiencyRate;
-				
-				teamSecondInTotal+=p.getTeam().secondInTotal;
-				teamRebound+=p.getTeam().rebound;
-				rivalRebound+=p.getTeam().rival.rebound;
-				teamFieldGoalAttempted+=p.getTeam().fieldGoalAttempted;
-				teamThreePointerAttempted+=p.getTeam().threePointerAttempted;
-				teamTurnover+=p.getTeam().turnover;
-				teamScores+=p.getTeam().scores;
-				teamFreeThrowAttempted+=p.getTeam().freeThrowAttempted;
-				rivalFieldGoalAttempted+=p.getTeam().rival.fieldGoalAttempted;
-				rivalThreePointerAttempted+=p.getTeam().rival.threePointerAttempted;
-				rivalRounds+=p.getTeam().rival.myRounds;
-				
-				statsTotal[31] += p.second;
-				// Get off dirty statistics
-				for (int j : p.dirty) {
-
-					try {
-						statsTotal[j - 3] = queue.dequeue();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
+			addOneMatchToAll(p);
 		}
-		for (int i = 0; i < 30; i++) {
-			statsAverage[i] = statsTotal[i] / (effective - statsDirty[i]);
-		}
+		averageProcess();
+	}
 
-		 fieldGoalMade=statsAverage[0];
-		 fieldGoalAttempted= statsAverage[1];
-		 threePointerMade=statsAverage[2];
-		 threePointerAttempted=statsAverage[3];
-		 freeThrowMade=statsAverage[4];
-		 freeThrowAttempted=statsAverage[5];
-		 offensiveRebound=statsAverage[6];
-		 defensiveRebound=statsAverage[7];
-		 rebound=statsAverage[8];
-		 assist=statsAverage[9];
-		 steal=statsAverage[10];
-		 block=statsAverage[11];
-		 turnover=statsAverage[12];
-		 foul=statsAverage[13];
-		 points=statsAverage[14];
-		 second = statsAverage[15];
-		
-		calAllAverage();
-		//TODO 关键区域，@张怡	关于队员平均信息在数组中保存的顺序。		
-		statsAverage[15]= playerEfficiencyRate;
-		statsAverage[16]= GmSc;
-		statsAverage[17]= trueShootingPercentage;
-		statsAverage[18]= efficiencyGoalPercentage;
-		statsAverage[19]= reboundRatio;
-		statsAverage[20]= offensiveReboundRatio;
-		statsAverage[21]= defensiveReboundRatio;
-		statsAverage[22]= assistRatio;
-		statsAverage[23]= stealRatio;
-		statsAverage[24]=blockRatio;
-		statsAverage[25]=turnoverRatio;
-		statsAverage[26]=usingRatio;
-		statsAverage[27]=freeThrowRatio;
-		statsAverage[28]=threePointerRatio;
-		statsAverage[29]=fieldGoalRatio;
-		
-
-
-		
-//		playerEfficiencyRate = statsTotal[15];
-		second = statsTotal[31];
-
-		statsAverage[30] = statsAverage[14] + statsAverage[8] + statsAverage[9];// 得分+篮板+助攻
-
-
-		
-
+	/**
+	 * 迭代二使用的增量读取数据
+	 * 
+	 * @param p
+	 */
+	public void calAverageAsArrayNew(PlayerInMatchExtended p) {
+		addOneMatchToAll(p);
+		averageProcess();
 	}
 
 	/*
@@ -451,18 +471,21 @@ public class PlayerInAverage {
 	}
 
 	void calGmSc() {
-		GmSc = 0.4 * (double)fieldGoalMade + points - 0.7 * (double)fieldGoalAttempted - 0.4
-				* ((double)freeThrowAttempted - (double)freeThrowMade) + 0.7 * (double)offensiveRebound
-				+ 0.3 * (double)defensiveRebound + (double)steal + 0.7 * assist + 0.7 * block
-				- 0.4 * (double)foul - turnover;
+		GmSc = 0.4 * (double) fieldGoalMade + points - 0.7
+				* (double) fieldGoalAttempted - 0.4
+				* ((double) freeThrowAttempted - (double) freeThrowMade) + 0.7
+				* (double) offensiveRebound + 0.3 * (double) defensiveRebound
+				+ (double) steal + 0.7 * assist + 0.7 * block - 0.4
+				* (double) foul - turnover;
 		if ((GmSc) == Double.NaN) {
 			(GmSc) = 0;
 		}
 	}
-	public String getTeamName(){
-		if(playerStats.size()==0){
+
+	public String getTeamName() {
+		if (playerStats.size() == 0) {
 			return "N/A";
 		}
-		return playerStats.get(playerStats.size()-1).getTeam().nameAbbr;
+		return playerStats.get(playerStats.size() - 1).getTeam().nameAbbr;
 	}
 }

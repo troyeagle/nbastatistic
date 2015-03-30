@@ -87,4 +87,11 @@ public class MatchPO implements Serializable{
 	public void dirtyProcess(){
 		
 	}
+	public TeamInMatch getTeamStatA() {
+		return teamStatA;
+	}
+	public TeamInMatch getTeamStatB() {
+		return teamStatB;
+	}
+	
 }
