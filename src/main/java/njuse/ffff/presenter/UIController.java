@@ -312,7 +312,7 @@ public class UIController implements ControllerService {
 		}
 		//排序
 		Sort sortConductor = new Sort();
-		sortConductor.sortPlayer(players, conditionOfSort);
+		sortConductor.sortPlayerTotal(players, conditionOfSort);
 		
 		String[] properties_total = { "球员名称","所属球队","参赛场数","先发场数"
 				,"篮板数","助攻数"/**,"在场时间","进攻数","防守数"*/
@@ -326,7 +326,6 @@ public class UIController implements ControllerService {
 			values_total[i] = new Object[] {
 					playerAvg.getName(),playerAvg.getLeague(),playerAvg.getEffective(),playerAvg.getFirstOnMatch()//球队
 					,DealDecimal.formatChange(total[8], 3),DealDecimal.formatChange(total[9], 3)//,"playerAvg.getMinute()"
-					,DealDecimal.formatChange(total[16], 3)
 					/**,"",""*/,DealDecimal.formatChange(total[10], 3)//进攻数,防守数
 					,DealDecimal.formatChange(total[11], 3),DealDecimal.formatChange(total[12], 3)
 					,DealDecimal.formatChange(total[13], 3),DealDecimal.formatChange(total[14], 3)
@@ -340,6 +339,7 @@ public class UIController implements ControllerService {
 			};
 		}
 		
+		((PlayerComparePanel)currentPanel).removeTotalTable();
 		((PlayerComparePanel)currentPanel).setPlayersTotalInfo(properties_total, values_total, players);
 	}
 	

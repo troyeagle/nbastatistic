@@ -2,6 +2,7 @@ package njuse.ffff.ui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -314,9 +315,32 @@ public class PlayerComparePanel extends JPanel{
 		table_playerCompare_total.getTableHeader().setBackground(background);
 		table_playerCompare_total.getTableHeader().setForeground(Color.WHITE);
 		table_playerCompare_total.getTableHeader().addMouseListener (new MouseAdapter() { 
-			public void mouseClicked(MouseEvent e){
+			public void mouseClicked(MouseEvent event){
 				//TODO
-				uiController.resetPlayerList(players,table_playerCompare_total.getSelectedColumn());
+				if (event.getSource() == table_playerCompare_total.getTableHeader()) {  
+						table_playerCompare_total.getTableHeader().removeMouseListener(this);  
+//	                int i = table_playerCompare_total.columnAtPoint(event.getPoint());  
+//	                int j = table_playerCompare_total.convertColumnIndexToModel(i);  
+	
+//	                if (!columnIsSortable(j)) {  
+//	                    return;  
+//	                }  
+//	                if (j == sortColumn) {  
+//	                    ascending = !ascending;  
+//	                } else {  
+//	                    ascending = true;  
+//	                    sortColumn = j;  
+//	                }  
+	
+	                EventQueue.invokeLater(new Runnable() {  
+	                    public void run() {  
+	                    	uiController.resetPlayerList(players,table_playerCompare_total.getSelectedColumn());
+	                    }  
+	                });  
+	
+	                table_playerCompare_total.getTableHeader().addMouseListener(this);  
+				}  
+				
 			}
             public void mouseReleased (MouseEvent e) {  
                 if (! e.isShiftDown())  
@@ -393,6 +417,10 @@ public class PlayerComparePanel extends JPanel{
 		scrollPane_playerCompare_average.setOpaque(false);
 		scrollPane_playerCompare_average.getViewport().setOpaque(false);
 		scrollPane_playerCompare_average.setBounds(25, 160, 1050, 515);
+	}
+	
+	public void removeTotalTable(){
+		this.remove(scrollPane_playerCompare_total);
 	}
 	
 	public void displayMenu(){
