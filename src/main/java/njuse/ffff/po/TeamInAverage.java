@@ -83,7 +83,7 @@ public class TeamInAverage implements Serializable {
 		}
 	}
 
-	public void calAll() {
+	private void calAll() {
 		calOffensiveRounds();
 		calFreeThrowRatio();
 		calThreePointerRatio();
@@ -94,47 +94,44 @@ public class TeamInAverage implements Serializable {
 		calStealEf();
 		calAssistEf();
 	}
-
+	public void addOneMatchToAll(TeamInMatch p){
+		numOfMatches++;
+		if (p.win) {
+			numOfWins++;
+		}
+		fieldGoalMade += p.fieldGoalMade;
+		fieldGoalAttempted += p.fieldGoalAttempted;
+		threePointerMade += p.threePointerMade;
+		threePointerAttempted += p.threePointerAttempted;
+		freeThrowMade += p.freeThrowMade;
+		freeThrowAttempted += p.freeThrowAttempted;
+		offensiveRebound += p.offensiveRebound;
+		defensiveRebound += p.defensiveRebound;
+		rebound += p.rebound;
+		assist += p.assist;
+		steal += p.steal;
+		block += p.block;
+		turnover += p.turnover;
+		foul += p.foul;
+		scores += p.scores;
+		rivalScores += p.rival.scores;
+		rivalOffensiveRebound += p.rival.offensiveRebound;
+		rivalDefensiveRebound += p.rival.defensiveRebound;
+		rivalRebounds += p.rival.rebound;
+		rivalFieldGoalAttempted += p.rival.fieldGoalAttempted;
+		rivalThreePointerAttempted += p.rival.threePointerAttempted;
+		rivalRounds += p.myRounds;
+		secondInTotal += p.secondInTotal;
+	}
 	public void calAverage() {
 		for (TeamInMatch p : teamStats) {
-			numOfMatches++;
-			if (p.win) {
-				numOfWins++;
-			}
-			fieldGoalMade += p.fieldGoalMade;
-			fieldGoalAttempted += p.fieldGoalAttempted;
-			threePointerMade += p.threePointerMade;
-			threePointerAttempted += p.threePointerAttempted;
-			freeThrowMade += p.freeThrowMade;
-			freeThrowAttempted += p.freeThrowAttempted;
-			offensiveRebound += p.offensiveRebound;
-			defensiveRebound += p.defensiveRebound;
-			rebound += p.rebound;
-			assist += p.assist;
-			steal += p.steal;
-			block += p.block;
-			turnover += p.turnover;
-			foul += p.foul;
-			scores += p.scores;
-			rivalScores += p.rival.scores;
-			rivalOffensiveRebound += p.rival.offensiveRebound;
-			rivalDefensiveRebound += p.rival.defensiveRebound;
-			rivalRebounds += p.rival.rebound;
-			rivalFieldGoalAttempted += p.rival.fieldGoalAttempted;
-			rivalThreePointerAttempted += p.rival.threePointerAttempted;
-			rivalRounds += p.myRounds;
-			secondInTotal += p.secondInTotal;
-			// fieldGoalRatio +=p.fieldGoalRatio;
-			// threePointerRatio +=p.threePointerRatio;
-			// freeThrowRatio +=p.freeThrowRatio;
-			// myRounds +=p.myRounds;
-			// offensiveEf +=p.offensiveEf;
-			// defensiveEf +=p.defensiveEf;
-			// offensiveReboundEf +=p.offensiveReboundEf;
-			// defensiveReboundEf +=p.defensiveReboundEf;
-			// stealEf +=p.stealEf;
-			// assistEf +=p.assistEf;
+			addOneMatchToAll(p);
 		}
+		averageProcess();
+	}
+
+	
+	private void averageProcess(){
 		makeTotalArray();
 		fieldGoalMade /= teamStats.size();
 		fieldGoalAttempted /= teamStats.size();
@@ -152,21 +149,16 @@ public class TeamInAverage implements Serializable {
 		foul /= teamStats.size();
 		scores /= teamStats.size();
 		calAll();
-
-		// fieldGoalRatio/=teamStats.size();
-		// threePointerRatio/=teamStats.size();
-		// freeThrowRatio/=teamStats.size();
-		// myRounds/=teamStats.size();
-		// offensiveEf/=teamStats.size();
-		// defensiveEf/=teamStats.size();
-		// offensiveReboundEf/=teamStats.size();
-		// defensiveReboundEf/=teamStats.size();
-		// stealEf/=teamStats.size();
-		// assistEf/=teamStats.size();
 		winningRatio = (double) numOfWins / numOfMatches;
 		makeArray();
 	}
-
+	//Iteration 2
+	public void calAverageWithNew(TeamInMatch p){
+		teamStats.add(p);
+		addOneMatchToAll(p);
+		averageProcess();
+		
+	}
 	public void makeTotalArray() {
 		statsTotal = new double[22];
 		statsTotal[0] = fieldGoalMade;
