@@ -210,6 +210,9 @@ public class PlayerInAverage {
 		statsAverage[24]=blockRatio;
 		statsAverage[25]=turnoverRatio;
 		statsAverage[26]=usingRatio;
+		statsAverage[27]=freeThrowRatio;
+		statsAverage[28]=threePointerRatio;
+		statsAverage[29]=fieldGoalRatio;
 		
 
 
