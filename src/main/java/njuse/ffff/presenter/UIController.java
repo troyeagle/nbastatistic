@@ -425,7 +425,7 @@ public class UIController implements ControllerService {
 				location = 13;
 				break;
 			case "分钟":
-//				location = 8;
+				location = 15;
 				break;
 			case "效率":
 				location = 15;
@@ -440,7 +440,7 @@ public class UIController implements ControllerService {
 				location = 4;
 				break;
 			case "两双":
-				//location = -1;TODO
+				location = 30;
 				break;
 			}
 			conditionsOfSort[i] = location;

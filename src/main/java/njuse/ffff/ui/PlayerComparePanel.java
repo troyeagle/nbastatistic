@@ -2,7 +2,6 @@ package njuse.ffff.ui;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -23,6 +22,7 @@ import javax.swing.table.TableColumn;
 import njuse.ffff.po.PlayerInAverage;
 import njuse.ffff.presenter.ControllerService;
 import njuse.ffff.presenter.UIController;
+import njuse.ffff.ui.table.MyTable;
 
 @SuppressWarnings("serial")
 public class PlayerComparePanel extends JPanel{
@@ -48,11 +48,11 @@ public class PlayerComparePanel extends JPanel{
 	private String img_menu_changed_URL = "picture/menu_changed.jpg";
 	
 	private DefaultTableModel tableModel_playerCompare_total;
-	private JTable table_playerCompare_total;
+	private MyTable table_playerCompare_total;
 	private JScrollPane scrollPane_playerCompare_total;
 	
 	private DefaultTableModel tableModel_playerCompare_average;
-	private JTable table_playerCompare_average;
+	private MyTable table_playerCompare_average;
 	private JScrollPane scrollPane_playerCompare_average;
 	
 	private JLabel label_arrow_up;
@@ -281,7 +281,7 @@ public class PlayerComparePanel extends JPanel{
                 return false;
             }
 		};
-		table_playerCompare_total = new JTable(tableModel_playerCompare_total){
+		table_playerCompare_total = new MyTable(tableModel_playerCompare_total){
 			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
 				Component c=super.prepareRenderer(renderer,row,column);
 				if(c instanceof JComponent){
@@ -315,33 +315,6 @@ public class PlayerComparePanel extends JPanel{
 		table_playerCompare_total.getTableHeader().setBackground(background);
 		table_playerCompare_total.getTableHeader().setForeground(Color.WHITE);
 		table_playerCompare_total.getTableHeader().addMouseListener (new MouseAdapter() { 
-			public void mouseClicked(MouseEvent event){
-				//TODO
-				if (event.getSource() == table_playerCompare_total.getTableHeader()) {  
-						table_playerCompare_total.getTableHeader().removeMouseListener(this);  
-//	                int i = table_playerCompare_total.columnAtPoint(event.getPoint());  
-//	                int j = table_playerCompare_total.convertColumnIndexToModel(i);  
-	
-//	                if (!columnIsSortable(j)) {  
-//	                    return;  
-//	                }  
-//	                if (j == sortColumn) {  
-//	                    ascending = !ascending;  
-//	                } else {  
-//	                    ascending = true;  
-//	                    sortColumn = j;  
-//	                }  
-	
-	                EventQueue.invokeLater(new Runnable() {  
-	                    public void run() {  
-	                    	uiController.resetPlayerList(players,table_playerCompare_total.getSelectedColumn());
-	                    }  
-	                });  
-	
-	                table_playerCompare_total.getTableHeader().addMouseListener(this);  
-				}  
-				
-			}
             public void mouseReleased (MouseEvent e) {  
                 if (! e.isShiftDown())  
                	table_playerCompare_total.clearSelection();
@@ -351,6 +324,28 @@ public class PlayerComparePanel extends JPanel{
                 table_playerCompare_total.addColumnSelectionInterval (pick, pick);
             }  
         });
+		
+		table_playerCompare_total.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent e) {
+				// TODO 自动生成的方法存根
+				
+			}
+			public void mouseEntered(MouseEvent e) {
+				//鼠标进入第三列的某一个单元格，该单元格高亮
+				
+			}
+			public void mouseClicked(MouseEvent e) {
+				// 点击某个球员或者球队，跳转到该球员或球队界面
+				int column = table_playerCompare_total.getSelectedColumn();
+				if(column==0){
+					int row = table_playerCompare_total.getSelectedRow();
+					String content = (String)table_playerCompare_total.getValueAt(row, column);
+					uiController.setPlayerProfilePanel(content);
+				}
+			}
+		});
 		
 		scrollPane_playerCompare_total = new JScrollPane(table_playerCompare_total);
 		scrollPane_playerCompare_total.setOpaque(false);
@@ -369,7 +364,7 @@ public class PlayerComparePanel extends JPanel{
                 return false;
             }
 		};
-		table_playerCompare_average = new JTable(tableModel_playerCompare_average){
+		table_playerCompare_average = new MyTable(tableModel_playerCompare_average){
 			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
 				Component c=super.prepareRenderer(renderer,row,column);
 				if(c instanceof JComponent){
@@ -412,6 +407,28 @@ public class PlayerComparePanel extends JPanel{
                  table_playerCompare_average.addColumnSelectionInterval (pick, pick);
              }  
         });
+		
+		table_playerCompare_average.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent e) {
+				// TODO 自动生成的方法存根
+				
+			}
+			public void mouseEntered(MouseEvent e) {
+				//鼠标进入第三列的某一个单元格，该单元格高亮
+				
+			}
+			public void mouseClicked(MouseEvent e) {
+				// 点击某个球员或者球队，跳转到该球员或球队界面
+				int column = table_playerCompare_average.getSelectedColumn();
+				if(column==0){
+					int row = table_playerCompare_average.getSelectedRow();
+					String content = (String)table_playerCompare_average.getValueAt(row, column);
+					uiController.setPlayerProfilePanel(content);
+				}
+			}
+		});
 		
 		scrollPane_playerCompare_average = new JScrollPane(table_playerCompare_average);
 		scrollPane_playerCompare_average.setOpaque(false);

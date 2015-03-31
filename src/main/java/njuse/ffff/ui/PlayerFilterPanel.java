@@ -180,7 +180,7 @@ public class PlayerFilterPanel extends JPanel{
 		label_searchIcon.setOpaque(true);
 		ImageIcon icon_search = new ImageIcon(img_searchIcon_URL);
 		label_searchIcon.setIcon(icon_search);
-		label_searchIcon.setBounds(64, 90, 80, 80);
+		label_searchIcon.setBounds(564, 90, 80, 80);
 		label_searchIcon.addMouseListener(new MouseListener() {
 			public void mouseReleased(MouseEvent arg0) {}
 			public void mousePressed(MouseEvent arg0) {}
@@ -241,7 +241,7 @@ public class PlayerFilterPanel extends JPanel{
 		label_sort_condition.setOpaque(true);
 		label_sort_condition.setBackground(background);
 		label_sort_condition.setForeground(Color.WHITE);
-		label_sort_condition.setBounds(310, 132, 800, 30);
+		label_sort_condition.setBounds(310, 132, 200, 30);
 		
 		//添加项
 		label_add_item = new JLabel("+");

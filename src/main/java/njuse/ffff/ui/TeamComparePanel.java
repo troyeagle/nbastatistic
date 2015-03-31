@@ -20,6 +20,7 @@ import javax.swing.table.TableColumn;
 
 import njuse.ffff.presenter.ControllerService;
 import njuse.ffff.presenter.UIController;
+import njuse.ffff.ui.table.MyTable;
 
 //1）设置表格透明度
 //2）playerProfilePanel界面布局
@@ -47,11 +48,11 @@ public class TeamComparePanel extends JPanel{
 	private String img_menu_changed_URL = "picture/menu_changed.jpg";
 	
 	private DefaultTableModel tableModel_teamCompare_total;
-	private JTable table_teamCompare_total;
+	private MyTable table_teamCompare_total;
 	private JScrollPane scrollPane_teamCompare_total;
 	
 	private DefaultTableModel tableModel_teamCompare_average;
-	private JTable table_teamCompare_average;
+	private MyTable table_teamCompare_average;
 	private JScrollPane scrollPane_teamCompare_average;
 	
 	private JLabel label_arrow_up;
@@ -239,7 +240,7 @@ public class TeamComparePanel extends JPanel{
                 return false;
             }
 		};
-		table_teamCompare_total = new JTable(tableModel_teamCompare_total){
+		table_teamCompare_total = new MyTable(tableModel_teamCompare_total){
 			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
 				Component c=super.prepareRenderer(renderer,row,column);
 				if(c instanceof JComponent){
@@ -274,11 +275,7 @@ public class TeamComparePanel extends JPanel{
 		table_teamCompare_total.getTableHeader().setForeground(Color.WHITE);
 		table_teamCompare_total.setColumnSelectionAllowed (true);
 		table_teamCompare_total.setRowSelectionAllowed (false);
-		table_teamCompare_total.getTableHeader().addMouseListener (new MouseAdapter() {  
-			public void mouseClicked(MouseEvent e){
-				//TODO
-				System.out.println(properties_total[table_teamCompare_total.getSelectedColumn()]);
-			}
+		table_teamCompare_total.getTableHeader().addMouseListener (new MouseAdapter() {
             public void mouseReleased (MouseEvent e) {  
                  if (! e.isShiftDown())  
                 	 table_teamCompare_total.clearSelection();  
@@ -288,6 +285,28 @@ public class TeamComparePanel extends JPanel{
                  table_teamCompare_total.addColumnSelectionInterval (pick, pick);
             }  
         });
+		
+		table_teamCompare_total.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent e) {
+				// TODO 自动生成的方法存根
+				
+			}
+			public void mouseEntered(MouseEvent e) {
+				//鼠标进入第三列的某一个单元格，该单元格高亮
+				
+			}
+			public void mouseClicked(MouseEvent e) {
+				// 点击某个球员或者球队，跳转到该球员或球队界面
+				int column = table_teamCompare_total.getSelectedColumn();
+				if(column==0){
+					int row = table_teamCompare_total.getSelectedRow();
+					String content = (String)table_teamCompare_total.getValueAt(row, column);
+					uiController.setTeamProfilePanel(content);
+				}
+			}
+		});
 		
 		scrollPane_teamCompare_total = new JScrollPane(table_teamCompare_total);
 		scrollPane_teamCompare_total.setOpaque(false);
@@ -304,7 +323,7 @@ public class TeamComparePanel extends JPanel{
                 return false;
             }
 		};
-		table_teamCompare_average = new JTable(tableModel_teamCompare_average){
+		table_teamCompare_average = new MyTable(tableModel_teamCompare_average){
 			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
 				Component c=super.prepareRenderer(renderer,row,column);
 				if(c instanceof JComponent){
@@ -316,7 +335,7 @@ public class TeamComparePanel extends JPanel{
 		
 		table_teamCompare_average.setFont(new FontUIResource("DialogInput", Font.PLAIN, 12));
 		//设置点击表头自动排序
-		table_teamCompare_average.setAutoCreateRowSorter(true);
+//		table_teamCompare_average.setAutoCreateRowSorter(true);
 		table_teamCompare_average.setOpaque(false);
 		table_teamCompare_average.setForeground(Color.WHITE);
 		table_teamCompare_average.setSelectionForeground(Color.CYAN);
@@ -349,6 +368,28 @@ public class TeamComparePanel extends JPanel{
                  table_teamCompare_average.addColumnSelectionInterval (pick, pick);
              }  
          });
+		
+		table_teamCompare_average.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent e) {
+				// TODO 自动生成的方法存根
+				
+			}
+			public void mouseEntered(MouseEvent e) {
+				//鼠标进入第三列的某一个单元格，该单元格高亮
+				
+			}
+			public void mouseClicked(MouseEvent e) {
+				// 点击某个球员或者球队，跳转到该球员或球队界面
+				int column = table_teamCompare_average.getSelectedColumn();
+				if(column==0){
+					int row = table_teamCompare_average.getSelectedRow();
+					String content = (String)table_teamCompare_average.getValueAt(row, column);
+					uiController.setTeamProfilePanel(content);
+				}
+			}
+		});
 		
 		scrollPane_teamCompare_average = new JScrollPane(table_teamCompare_average);
 		scrollPane_teamCompare_average.setOpaque(false);
