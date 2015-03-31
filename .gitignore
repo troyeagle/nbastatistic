@@ -4,7 +4,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
@@ -65,3 +64,8 @@ CSEIII data
 CSEIII data2
 .settings
 .classpath
+
+/src/test/java/local/
+/.idea/
+/*.iml
+/lib/batik-1.8/samples/
