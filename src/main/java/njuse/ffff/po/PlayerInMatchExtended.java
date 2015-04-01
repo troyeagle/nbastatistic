@@ -100,11 +100,11 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 		calUsingRatio(team.secondInTotal, team.freeThrowAttempted,
 				team.fieldGoalAttempted, team.turnover);
 		calDoubledouble();
-		calAssistRatio(team.secondInTotal,team.freeThrowMade);
+		calAssistRatio(team.secondInTotal,team.fieldGoalMade);
 	}
 
-	void calAssistRatio(double secondInTotal,double totalFreeThrowMade) {
-		assistRatio = (double)assist/((double)second/(secondInTotal/5)*totalFreeThrowMade-freeThrowMade);
+	void calAssistRatio(double secondInTotal,double totalFieldGoalMade) {
+		assistRatio = (double)assist/((double)second/(secondInTotal/5)*totalFieldGoalMade-freeThrowMade);
 		
 	}
 

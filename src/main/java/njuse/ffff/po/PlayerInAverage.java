@@ -62,7 +62,7 @@ public class PlayerInAverage {
 	private int teamFieldGoalAttempted;
 	private int teamThreePointerAttempted;
 	private int teamTurnover;
-	private int teamFreeThrowMade;
+	private int teamFieldGoalMade;
 	private int teamFreeThrowAttempted;
 	private int rivalFieldGoalAttempted;
 	private int rivalThreePointerAttempted;
@@ -154,7 +154,7 @@ public class PlayerInAverage {
 			teamFieldGoalAttempted += p.getTeam().fieldGoalAttempted;
 			teamThreePointerAttempted += p.getTeam().threePointerAttempted;
 			teamTurnover += p.getTeam().turnover;
-			teamFreeThrowMade += p.getTeam().freeThrowMade;
+			teamFieldGoalMade += p.getTeam().fieldGoalMade;
 			teamFreeThrowAttempted += p.getTeam().freeThrowAttempted;
 			rivalFieldGoalAttempted += p.getTeam().rival.fieldGoalAttempted;
 			rivalThreePointerAttempted += p.getTeam().rival.threePointerAttempted;
@@ -174,9 +174,10 @@ public class PlayerInAverage {
 	 * 对平均值的处理
 	 */
 	private void averageProcess() {
-		for (int i = 0; i < 30; i++) {
+		for (int i = 0; i < 16; i++) {
 			statsAverage[i] = statsTotal[i] / (effective - statsDirty[i]);
 		}
+		statsAverage[31]=statsTotal[31]/(effective - statsDirty[31]);
 
 		fieldGoalMade = statsAverage[0];
 		fieldGoalAttempted = statsAverage[1];
@@ -193,8 +194,8 @@ public class PlayerInAverage {
 		turnover = statsAverage[12];
 		foul = statsAverage[13];
 		points = statsAverage[14];
-		second = statsAverage[15];
 
+		second = statsAverage[31];
 		calAllAverage();
 		// TODO 关键区域，@张怡 关于队员平均信息在数组中保存的顺序。
 		statsAverage[15] = playerEfficiencyRate;
@@ -214,7 +215,7 @@ public class PlayerInAverage {
 		statsAverage[29] = fieldGoalRatio;
 
 		// playerEfficiencyRate = statsTotal[15];
-		second = statsTotal[31];
+//		second = statsTotal[31];
 
 		statsAverage[30] = statsAverage[14] + statsAverage[8] + statsAverage[9];// 得分+篮板+助攻
 
@@ -227,7 +228,7 @@ public class PlayerInAverage {
 	public void calAverageAsArray() {
 		statsAverage = new double[32];
 		statsTotal = new double[32];
-		statsDirty = new int[31];
+		statsDirty = new int[32];
 		// For each PlayerInMatchExtended, add basic statistics.
 		for (PlayerInMatchExtended p : playerStats) {
 			addOneMatchToAll(p);
@@ -347,12 +348,12 @@ public class PlayerInAverage {
 		calUsingRatio(teamSecondInTotal, teamFreeThrowAttempted,
 				teamFieldGoalAttempted, teamTurnover);
 		calDoubledouble();
-		calAssistRatio(teamSecondInTotal, teamFreeThrowMade);
+		calAssistRatio(teamSecondInTotal, teamFieldGoalMade);
 	}
 
-	void calAssistRatio(double secondInTotal, double totalFreeThrow) {
+	void calAssistRatio(double secondInTotal, double totalFieldGoal) {
 		assistRatio = (double) assist
-				/ ((double) second / (secondInTotal / 5) * totalFreeThrow - fieldGoalMade);
+				/ ((double) second / (secondInTotal / 5) * totalFieldGoal - fieldGoalMade);
 
 	}
 
