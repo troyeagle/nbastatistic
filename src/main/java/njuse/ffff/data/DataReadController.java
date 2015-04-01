@@ -100,23 +100,19 @@ public class DataReadController implements DataReaderService {
 	 */
 	public void initialize() throws IOException {
 		
-		long a = System.currentTimeMillis();
 		player.readAndAnalysisPlayer();
 
 		team.readAndAnalysisTeam();
 
-		match.readAndAnalysisMatch();
-		
-		long b = System.currentTimeMillis();
-		System.out.println(b - a);
-		match.processAll();
-		long c = System.currentTimeMillis();
-		System.out.println(c - b);
 
-		average();
 		new Thread() {
 			public void run() {
+				match.readAndAnalysisMatch();
+				
+				match.processAll();
 
+
+				average();
 				try {
 					player.saveAsSerial();
 					team.saveAsSerial();

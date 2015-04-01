@@ -28,8 +28,7 @@ public class PlayersDataProcessor {
 	
 	public void readAndAnalysisPlayer() {
 		players = new ArrayList<PlayerPO>();
-		System.out.println("INFO:Player Info Initializing");
-		long a = System.currentTimeMillis();
+//		System.out.println("INFO:Player Info Initializing");
 		File file = new File(path+"/info");
 		File[] files = file.listFiles();
 		FileReader fr;
@@ -78,8 +77,7 @@ public class PlayersDataProcessor {
 			}
 		}
 		System.out.println("INFO:Player Info Initialized!");
-		long b = System.currentTimeMillis();
-		System.out.println(b-a);
+
 	}
 
 	

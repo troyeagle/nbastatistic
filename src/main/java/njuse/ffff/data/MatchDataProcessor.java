@@ -31,7 +31,7 @@ public class MatchDataProcessor {
 
 	public void readAndAnalysisMatch(){
 		matches = new ArrayList<MatchPO>();
-		System.out.println("INFO:MatchPO Info Initializing");
+		//System.out.println("INFO:MatchPO Info Initializing");
 		File file = new File(path);
 		File[] files = file.listFiles();
 
@@ -42,7 +42,7 @@ public class MatchDataProcessor {
 	}
 
 	public void saveAsSerial() throws IOException {
-		System.out.println("Info:Match Info Saving");
+//		System.out.println("Info:Match Info Saving");
 		FileOutputStream fo;
 		ObjectOutputStream os;
 		File file = new File(saveLoadPath);
@@ -65,7 +65,7 @@ public class MatchDataProcessor {
 	}
 	
 	public void loadSerial() throws IOException, ClassNotFoundException{
-		System.out.println("INFO:Match Info Loading");
+//		System.out.println("INFO:Match Info Loading");
 		if(matches!=null){
 			matches.clear();
 		}else{

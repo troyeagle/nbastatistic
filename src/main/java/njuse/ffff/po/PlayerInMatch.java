@@ -136,8 +136,8 @@ public class PlayerInMatch implements Serializable {
 		for (int i = 0; i < split.length; i++) {
 			if (split[i].equals("null") || split[i].equals("None")) {
 				dirty.add(i);
-				System.out.println("Empty data:" + split.toString());
-				System.out.println("in file " + path);
+//FIXME				System.out.println("Empty data:" + split.toString());
+//				System.out.println("in file " + path);
 				switch (i) {
 				case 0:
 				case 1:
