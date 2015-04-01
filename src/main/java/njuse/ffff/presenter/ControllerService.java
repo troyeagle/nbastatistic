@@ -1,8 +1,5 @@
 package njuse.ffff.presenter;
 
-import java.util.ArrayList;
-
-import njuse.ffff.po.PlayerInAverage;
 import njuse.ffff.ui.PlayerFilterPanel;
 
 public interface ControllerService {
