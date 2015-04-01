@@ -13,5 +13,11 @@ public class DealDecimal {
 //		java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#.000");  
 //		return Double.valueOf(df.format(number));
 	}
+	
+	public static int formatChange(double number){
+		String a = String.valueOf(number);
+		int int1 = Integer.parseInt(a.split("[.]")[0]);
+		return int1;
+	}
 		
 }

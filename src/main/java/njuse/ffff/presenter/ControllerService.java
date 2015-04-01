@@ -15,8 +15,6 @@ public interface ControllerService {
 	public void setTeamComparePanel();
 	//设置球员信息横向比较界面
 	public void setPlayerComparePanel();
-	//按照选择的表头排序
-	public void resetPlayerList(ArrayList<PlayerInAverage> players,int column);
 	//设置界面为球员筛选界面
 	public void setPlayerFilterPanel();
 	//传送球员筛选条件
@@ -33,4 +31,6 @@ public interface ControllerService {
 	public void changeToTeamDataPanel(int number);
 	//球队数据界面切换为球队简介界面
 	public void changeToTeamProfilePanel();
+	//回退到上个界面
+	public void backToLastPanel();
 }

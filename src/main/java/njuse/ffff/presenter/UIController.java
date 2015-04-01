@@ -1,11 +1,14 @@
 package njuse.ffff.presenter;
 
 import java.awt.Image;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+
+import org.apache.batik.transcoder.TranscoderException;
 
 import njuse.ffff.data.DataReadController;
 import njuse.ffff.dataservice.DataReaderService;
@@ -24,12 +27,14 @@ import njuse.ffff.ui.TeamPanel;
 import njuse.ffff.util.DealDecimal;
 import njuse.ffff.util.Filter;
 import njuse.ffff.util.Sort;
+import njuse.ffff.util.SvgConverter;
 
 public class UIController implements ControllerService {
 	private MainFrame frame = null;
 	private static UIController controller = null;
 	private DataReaderService dataService;
 
+	private JPanel lastPanel;
 	private JPanel currentPanel;
 
 	private static final Filter emptyFilter;
@@ -160,7 +165,7 @@ public class UIController implements ControllerService {
 						,"","","","","","","","","",""};
 				continue;
 			}
-			//TODO
+			
 			int GP = teamAvg.getNumOfMatches();
 			values_total[i] = new Object[] {team.getName(),teamAvg.getNumOfMatches(),teamAvg.getFieldGoalMade()*GP
 					,teamAvg.getFieldGoalAttempted()*GP,teamAvg.getThreePointerMade()*GP,teamAvg.getThreePointerAttempted()*GP
@@ -275,73 +280,6 @@ public class UIController implements ControllerService {
 		switchToPanel(playerComparePanel);
 	}
 	
-	//按照选择的表头排序 TODO
-	public void resetPlayerList(ArrayList<PlayerInAverage> players,int column){
-		int[] conditionOfSort = new int[1];
-		switch(column){
-		case 4:
-			conditionOfSort[0] = 8;
-			break;
-		case 5:
-			conditionOfSort[0] = 9;
-			break;
-		case 6:
-			conditionOfSort[0] = 10;
-			break;
-		case 7:
-			conditionOfSort[0] = 11;
-			break;
-		case 8:
-			conditionOfSort[0] = 12;
-			break;
-		case 9:
-			conditionOfSort[0] = 13;
-			break;
-		case 10:
-			conditionOfSort[0] = 14;
-			break;
-		case 11:
-			conditionOfSort[0] = 15;
-			break;
-		case 12:
-			conditionOfSort[0] = 29;
-			break;
-		case 13:
-			conditionOfSort[0] = 19;
-			break;
-		}
-		//排序
-		Sort sortConductor = new Sort();
-		sortConductor.sortPlayerTotal(players, conditionOfSort);
-		
-		String[] properties_total = { "球员名称","所属球队","参赛场数","先发场数"
-				,"篮板数","助攻数"/**,"在场时间","进攻数","防守数"*/
-				,"抢断数","盖帽数","失误数","犯规数","得分","效率","GmSc效率值"/**"真实命中率",*/,"投篮效率" };
-		Object[][] values_total = new Object[players.size()][];
-		for(int i=0;i<players.size();i++){
-			PlayerInAverage playerAvg = players.get(i);
-			double[] total = playerAvg.getStatsTotal();
-			double[] average = playerAvg.getStatsAverage();
-			// TODO
-			values_total[i] = new Object[] {
-					playerAvg.getName(),playerAvg.getLeague(),playerAvg.getEffective(),playerAvg.getFirstOnMatch()//球队
-					,DealDecimal.formatChange(total[8], 3),DealDecimal.formatChange(total[9], 3)//,"playerAvg.getMinute()"
-					/**,"",""*/,DealDecimal.formatChange(total[10], 3)//进攻数,防守数
-					,DealDecimal.formatChange(total[11], 3),DealDecimal.formatChange(total[12], 3)
-					,DealDecimal.formatChange(total[13], 3),DealDecimal.formatChange(total[14], 3)
-					,DealDecimal.formatChange(total[15], 3),DealDecimal.formatChange(total[29], 3)
-					,DealDecimal.formatChange(total[19], 3)//,DealDecimal.formatChange(total[20], 3)
-//					,DealDecimal.formatChange(total[21], 3),DealDecimal.formatChange(total[22], 3)
-//					,DealDecimal.formatChange(total[23], 3),DealDecimal.formatChange(total[24], 3)
-//					,DealDecimal.formatChange(total[25], 3),DealDecimal.formatChange(total[26], 3)
-					//,total[27],total[28]
-//					,DealDecimal.formatChange(total[27], 3),DealDecimal.formatChange(total[28], 3)
-			};
-		}
-		
-		((PlayerComparePanel)currentPanel).removeTotalTable();
-		((PlayerComparePanel)currentPanel).setPlayersTotalInfo(properties_total, values_total, players);
-	}
 	
 	/**
 	 * 设置球员筛选界面
@@ -375,7 +313,6 @@ public class UIController implements ControllerService {
 			leagueInEnglish = "W";
 		}
 		
-		//TODO
 		ArrayList<PlayerInAverage> data_to_filter = dataService.getPlayerInAverage();
 		ArrayList<PlayerInAverage> data_filtered = new ArrayList<PlayerInAverage>();
 		for(PlayerInAverage player:data_to_filter){
@@ -502,24 +439,29 @@ public class UIController implements ControllerService {
 		PlayerInAverage data = dataService.getPlayerAverage(playerName, emptyFilter);
 		
 		if(data!=null){
-			String[] properties1 = {"投篮命中数","投篮出手数","投篮命中率","三分命中数","三分出手数","三分命中率"
+			String[] properties1_total = {"投篮命中数","投篮出手数","三分命中数","三分出手数"
+					,"罚球命中数","罚球出手数"};
+			String[] properties1_average = {"投篮命中数","投篮出手数","投篮命中率","三分命中数","三分出手数","三分命中率"
 					,"罚球命中数","罚球出手数","罚球命中率","真实命中率"};
 			String[] properties2 = {"篮板数","进攻篮板数","防守篮板数","助攻数","抢断数","盖帽数","失误数","犯规数"};
-			String[] properties3 = {"进攻篮板率","防守篮板率","助攻率","抢断率","盖帽率","失误率"};
+			String[] properties3 = {"篮板率","进攻篮板率","防守篮板率","助攻率","抢断率","盖帽率","失误率"};
 			String[] properties4 = {"在场时间","使用率","得分","效率","GmSc效率值"};
 			
 			double[] total = data.getStatsTotal();
 			double[] average = data.getStatsAverage();
 			//TODO
-			Object[][] values_total1 = new Object[1][];
-			values_total1[0] = new Object[]{total[0],total[1],DealDecimal.formatChange(total[16], 3)//properties1
-						,total[2],total[3],DealDecimal.formatChange(total[17], 3)
-						,total[4],total[5],DealDecimal.formatChange(total[18], 3)
-						,DealDecimal.formatChange(total[20], 3)
+			Object[][] values_total1 = new Object[1][];//DealDecimal.formatChange(total[2])TODO
+			values_total1[0] = new Object[]{DealDecimal.formatChange(total[0]),
+				DealDecimal.formatChange(total[1])//properties1
+						,DealDecimal.formatChange(total[2]),DealDecimal.formatChange(total[3])
+						,DealDecimal.formatChange(total[4]),DealDecimal.formatChange(total[5])
 					};
 			Object[][] values_total2 = new Object[1][];
 			values_total2[0] = new Object[]{
-						total[8],total[6],total[7],total[9],total[10],total[11],total[12],total[13]//properties2
+					DealDecimal.formatChange(total[8]),DealDecimal.formatChange(total[6])
+					,DealDecimal.formatChange(total[7]),DealDecimal.formatChange(total[9])
+					,DealDecimal.formatChange(total[10]),DealDecimal.formatChange(total[11])
+					,DealDecimal.formatChange(total[12]),DealDecimal.formatChange(total[13])//properties2
 					};
 			Object[][] values_total3 = new Object[1][];
 			values_total3[0] = new Object[]{
@@ -529,30 +471,37 @@ public class UIController implements ControllerService {
 					};
 			Object[][] values_total4 = new Object[1][];
 			values_total4[0] = new Object[]{
-						data.getSecond(),DealDecimal.formatChange(total[28], 3)//properties4
+					DealDecimal.formatChange(data.getSecond()/60),DealDecimal.formatChange(total[28], 3)//properties4
 						,DealDecimal.formatChange(total[14], 3),DealDecimal.formatChange(total[15], 3)
 						,DealDecimal.formatChange(total[29], 3)
 					};
 			Object[][] values_average1 = new Object[1][];
-			values_average1[0] = new Object[]{average[0],average[1],DealDecimal.formatChange(average[16], 3)//properties1
-					,average[2],average[3],DealDecimal.formatChange(average[17], 3)
-					,average[4],average[5],DealDecimal.formatChange(average[18], 3)
+			values_average1[0] = new Object[]{
+					DealDecimal.formatChange(average[0], 3),DealDecimal.formatChange(average[1], 3)
+					,DealDecimal.formatChange(average[29], 3)//properties1
+					,DealDecimal.formatChange(average[2], 3),DealDecimal.formatChange(average[3], 3)
+					,DealDecimal.formatChange(average[28], 3)
+					,DealDecimal.formatChange(average[4], 3),DealDecimal.formatChange(average[5], 3)
+					,DealDecimal.formatChange(average[27], 3)
 					,DealDecimal.formatChange(average[20], 3)
 				};
 			Object[][] values_average2 = new Object[1][];
 			values_average2[0] = new Object[]{
-					average[8],average[6],average[7],average[9]//propertices2
-					,average[10],average[11],average[12],average[13]
+					DealDecimal.formatChange(average[8], 3),DealDecimal.formatChange(average[6], 3)
+					,DealDecimal.formatChange(average[7], 3),DealDecimal.formatChange(average[9], 3)//propertices2
+					,DealDecimal.formatChange(average[10], 3),DealDecimal.formatChange(average[11], 3)
+					,DealDecimal.formatChange(average[12], 3),DealDecimal.formatChange(average[13], 3)
 				};
 			Object[][] values_average3 = new Object[1][];
-			values_average3[0] = new Object[]{
-					DealDecimal.formatChange(average[22], 3),DealDecimal.formatChange(average[23], 3)//properties3
+			values_average3[0] = new Object[]{DealDecimal.formatChange(average[19], 3)
+					,DealDecimal.formatChange(average[20], 3),DealDecimal.formatChange(average[21], 3)//properties3
+					,DealDecimal.formatChange(average[22], 3),DealDecimal.formatChange(average[23], 3)
 					,DealDecimal.formatChange(average[24], 3),DealDecimal.formatChange(average[25], 3)
-					,DealDecimal.formatChange(average[26], 3),DealDecimal.formatChange(average[27], 3)
 				};
 			Object[][] values_average4 = new Object[1][];
 			values_average4[0] = new Object[]{
-					data.getSecond(),DealDecimal.formatChange(average[28], 3)//properties4
+					DealDecimal.formatChange(data.getSecond()/(60*data.getEffective()), 3)
+					,DealDecimal.formatChange(average[28], 3)//properties4
 					,DealDecimal.formatChange(average[14], 3),DealDecimal.formatChange(average[15], 3)
 					,DealDecimal.formatChange(average[29], 3)
 				};
@@ -561,10 +510,11 @@ public class UIController implements ControllerService {
 			ImageIcon img_icon = new ImageIcon(playerInfo.getPathOfPortrait());
 			Image image = new ImageIcon(playerInfo.getPathOfAction()).getImage();
 			playerPanel.setProfile(playerInfo.getName(), position, img_icon, properties);
-			playerPanel.setData(playerInfo.getName(), image,properties1,properties2,properties3,properties4
+			playerPanel.setData(playerInfo.getName(), image,properties1_total,properties1_average,properties2,properties3,properties4
 							,values_total1,values_total2,values_total3,values_total4
 							,values_average1,values_average2,values_average3,values_average4);
 	
+			lastPanel = currentPanel;
 			currentPanel = playerPanel;
 			switchToPanel(playerPanel);
 		}
@@ -604,8 +554,20 @@ public class UIController implements ControllerService {
 		//		dataService.getTeamAverage(teamName, emptyFilter);
 
 		// 球队队徽
-		ImageIcon icon = new ImageIcon(teamInfo.getPathOfLogo());
-		// TODO 处理svg文件
+		//处理svg文件
+		File flie_svg = new File(teamInfo.getPathOfLogo());
+		String f = teamInfo.getPathOfLogo();
+		String pathOfLogo = f.substring(0, f.length()-4).concat(".png");
+		File flie_png = new File(pathOfLogo);
+		try {
+			SvgConverter.convertToPng(flie_svg, flie_png);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (TranscoderException e) {
+			e.printStackTrace();
+		}
+		ImageIcon icon = new ImageIcon(pathOfLogo);
+		
 		
 		TeamInAverage data = dataService.getTeamAverage(teamName, emptyFilter);
 		if(data!=null){
@@ -617,24 +579,24 @@ public class UIController implements ControllerService {
 			String[] properties3_2 = {"进攻回合","进攻效率","防守效率"};
 			
 			//TODO
-			int GP = data.getNumOfMatches();
+			double[] total = data.getStatsTotal();
 			Object[][] values_total1 = new Object[1][];
 			values_total1[0] = new Object[]{
-					DealDecimal.formatChange(data.getFieldGoalMade()*GP,3)//properties1
-						,DealDecimal.formatChange(data.getFieldGoalAttempted()*GP, 3)
-						,DealDecimal.formatChange(data.getThreePointerMade()*GP, 3)
-						,DealDecimal.formatChange(data.getThreePointerAttempted()*GP, 3)
-						,DealDecimal.formatChange(data.getFreeThrowMade()*GP, 3)
-						,DealDecimal.formatChange(data.getFreeThrowAttempted()*GP, 3)
+					DealDecimal.formatChange(total[0])//properties1
+						,DealDecimal.formatChange(total[1])
+						,DealDecimal.formatChange(total[2])
+						,DealDecimal.formatChange(total[3])
+						,DealDecimal.formatChange(total[4])
+						,DealDecimal.formatChange(total[5])
 					};
 			Object[][] values_average1 = new Object[1][];
 			values_average1[0] = new Object[]{
 					DealDecimal.formatChange(data.getFieldGoalMade(),3)//properties1
-					,DealDecimal.formatChange(data.getFieldGoalAttempted(), 3)
-					,DealDecimal.formatChange(data.getThreePointerMade(), 3)
-					,DealDecimal.formatChange(data.getThreePointerAttempted(), 3)
-					,DealDecimal.formatChange(data.getFreeThrowMade(), 3)
-					,DealDecimal.formatChange(data.getFreeThrowAttempted(), 3)
+					,DealDecimal.formatChange(data.getFieldGoalAttempted(),3)
+					,DealDecimal.formatChange(data.getThreePointerMade(),3)
+					,DealDecimal.formatChange(data.getThreePointerAttempted(),3)
+					,DealDecimal.formatChange(data.getFreeThrowMade(),3)
+					,DealDecimal.formatChange(data.getFreeThrowAttempted(),3)
 			};
 			Object[][] values_ratio1 = new Object[1][];
 			values_ratio1[0] = new Object[]{
@@ -645,14 +607,14 @@ public class UIController implements ControllerService {
 			
 			Object[][] values_total2 = new Object[1][];
 			values_total2[0] = new Object[]{
-					DealDecimal.formatChange(data.getRebound()*GP,3)//properties2
-					,DealDecimal.formatChange(data.getOffensiveRebound()*GP, 3)
-					,DealDecimal.formatChange(data.getDefensiveRebound()*GP, 3)
-					,DealDecimal.formatChange(data.getAssist()*GP, 3)
-					,DealDecimal.formatChange(data.getSteal()*GP, 3)
-					,DealDecimal.formatChange(data.getBlock()*GP, 3)
-					,DealDecimal.formatChange(data.getTurnover()*GP, 3)
-					,DealDecimal.formatChange(data.getFoul()*GP, 3)
+					DealDecimal.formatChange(total[8])//properties2
+					,DealDecimal.formatChange(total[6])
+					,DealDecimal.formatChange(total[7])
+					,DealDecimal.formatChange(total[9])
+					,DealDecimal.formatChange(total[10])
+					,DealDecimal.formatChange(total[11])
+					,DealDecimal.formatChange(total[12])
+					,DealDecimal.formatChange(total[13])
 			};
 			Object[][] values_average2 = new Object[1][];
 			values_average2[0] = new Object[]{
@@ -676,8 +638,8 @@ public class UIController implements ControllerService {
 			
 			Object[][] values3_1 = new Object[1][];
 			values3_1[0] = new Object[]{
-					DealDecimal.formatChange(data.getNumOfMatches(),3)//properties3_1
-					,DealDecimal.formatChange(data.getNumOfWins(), 3)
+					DealDecimal.formatChange(data.getNumOfMatches())//properties3_1
+					,DealDecimal.formatChange(data.getNumOfWins())
 					,DealDecimal.formatChange(data.getWinningRatio(), 3)
 			};
 			Object[][] values3_2 = new Object[1][];
@@ -693,6 +655,7 @@ public class UIController implements ControllerService {
 					,values_total1,values_average1,values_ratio1,values_total2,values_average2,values_ratio2
 					,values3_1,values3_2);
 			
+			lastPanel = currentPanel;
 			currentPanel = teamPanel;
 			switchToPanel(teamPanel);
 		}
@@ -709,5 +672,13 @@ public class UIController implements ControllerService {
 	 */
 	public void changeToTeamProfilePanel(){
 		((TeamPanel)currentPanel).displayProfile();
+	}
+	
+	/**
+	 * 回退到上个界面
+	 */
+	public void backToLastPanel(){
+		switchToPanel(lastPanel);
+		currentPanel = lastPanel;
 	}
 }

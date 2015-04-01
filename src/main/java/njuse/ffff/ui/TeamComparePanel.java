@@ -1,21 +1,16 @@
 package njuse.ffff.ui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import njuse.ffff.presenter.ControllerService;
@@ -235,57 +230,25 @@ public class TeamComparePanel extends JPanel{
 	public void setTeamsInfo(String[] properties_total,Object[][] values_total,String[] propertices_average,Object[][] values_average){
 		//球队信息比较表格----总数据
 		tableModel_teamCompare_total = new DefaultTableModel(values_total,properties_total){
+			//设置表格单元格内容不可编辑
 			public boolean isCellEditable(int row, int column)
             {
                 return false;
             }
 		};
-		table_teamCompare_total = new MyTable(tableModel_teamCompare_total){
-			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
-				Component c=super.prepareRenderer(renderer,row,column);
-				if(c instanceof JComponent){
-					((JComponent)c).setOpaque(false);
-				}
-				return c;
-			}
-		};
+		table_teamCompare_total = new MyTable(tableModel_teamCompare_total);
 		
-		table_teamCompare_total.setFont(new FontUIResource("DialogInput", Font.PLAIN, 12));
-		//设置点击表头自动排序
-//		table_teamCompare_total.setAutoCreateRowSorter(true);TODO
-		table_teamCompare_total.setOpaque(false);
-		table_teamCompare_total.setForeground(Color.WHITE);
-		table_teamCompare_total.setSelectionForeground(Color.CYAN);
-		//第一方案
-		table_teamCompare_total.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		//第二方案
-			//实现表头折行显示
-//				HeaderRendererHh renderer = new HeaderRendererHh();
-//				TableColumnModel cmodel = table_teamCompare_total.getColumnModel();
-//				for (int i = 0; i < cmodel.getColumnCount(); i++) {
-//				    cmodel.getColumn(i).setHeaderRenderer(renderer);
-//				}
+		//设置第一列宽度
 		TableColumn firstColumn = table_teamCompare_total.getColumnModel().getColumn(0);
 		firstColumn.setPreferredWidth(100);
 		firstColumn.setMaxWidth(100);
 		firstColumn.setMinWidth(100);
 
-		table_teamCompare_total.getTableHeader().setFont(new FontUIResource("DialogInput", Font.PLAIN, 11));
-		table_teamCompare_total.getTableHeader().setBackground(background);
-		table_teamCompare_total.getTableHeader().setForeground(Color.WHITE);
+		//设置点击一个单元格，选中该单元格所在列
 		table_teamCompare_total.setColumnSelectionAllowed (true);
 		table_teamCompare_total.setRowSelectionAllowed (false);
-		table_teamCompare_total.getTableHeader().addMouseListener (new MouseAdapter() {
-            public void mouseReleased (MouseEvent e) {  
-                 if (! e.isShiftDown())  
-                	 table_teamCompare_total.clearSelection();  
-                 //获取点击的列索引  
-                 int pick = table_teamCompare_total.getTableHeader().columnAtPoint(e.getPoint());  
-                 //设置选择模型 
-                 table_teamCompare_total.addColumnSelectionInterval (pick, pick);
-            }  
-        });
 		
+		//添加单击球队名称时跳转到详细数据的事件监听
 		table_teamCompare_total.addMouseListener(new MouseListener() {
 			public void mouseReleased(MouseEvent arg0) {}
 			public void mousePressed(MouseEvent arg0) {}
@@ -323,52 +286,13 @@ public class TeamComparePanel extends JPanel{
                 return false;
             }
 		};
-		table_teamCompare_average = new MyTable(tableModel_teamCompare_average){
-			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
-				Component c=super.prepareRenderer(renderer,row,column);
-				if(c instanceof JComponent){
-					((JComponent)c).setOpaque(false);
-				}
-				return c;
-			}
-		};
+		table_teamCompare_average = new MyTable(tableModel_teamCompare_average);
 		
-		table_teamCompare_average.setFont(new FontUIResource("DialogInput", Font.PLAIN, 12));
-		//设置点击表头自动排序
-//		table_teamCompare_average.setAutoCreateRowSorter(true);
-		table_teamCompare_average.setOpaque(false);
-		table_teamCompare_average.setForeground(Color.WHITE);
-		table_teamCompare_average.setSelectionForeground(Color.CYAN);
-		//第一方案
-		table_teamCompare_average.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		//第二方案
-			//实现表头折行显示
-//		HeaderRendererHh renderer2 = new HeaderRendererHh();
-//		TableColumnModel cmodel2 = table_teamCompare_total.getColumnModel();
-//		for (int i = 0; i < cmodel2.getColumnCount(); i++) {
-//		    cmodel2.getColumn(i).setHeaderRenderer(renderer2);
-//		}
 		TableColumn firstColumn_average = table_teamCompare_average.getColumnModel().getColumn(0);
 		firstColumn_average.setPreferredWidth(100);
 		firstColumn_average.setMaxWidth(100);
 		firstColumn_average.setMinWidth(100);
 
-		table_teamCompare_average.getTableHeader().setFont(new FontUIResource("DialogInput", Font.PLAIN, 11));
-		table_teamCompare_average.getTableHeader().setBackground(background);
-		table_teamCompare_average.getTableHeader().setForeground(Color.WHITE);
-		table_teamCompare_average.setColumnSelectionAllowed (true);
-		table_teamCompare_average.setRowSelectionAllowed (false);
-		table_teamCompare_average.getTableHeader().addMouseListener (new MouseAdapter() {  
-             public void mouseReleased (MouseEvent e) {  
-                 if (! e.isShiftDown())  
-                	 table_teamCompare_average.clearSelection();  
-                 //获取点击的列索引  
-                 int pick = table_teamCompare_average.getTableHeader().columnAtPoint(e.getPoint());  
-                 //设置选择模型 
-                 table_teamCompare_average.addColumnSelectionInterval (pick, pick);
-             }  
-         });
-		
 		table_teamCompare_average.addMouseListener(new MouseListener() {
 			public void mouseReleased(MouseEvent arg0) {}
 			public void mousePressed(MouseEvent arg0) {}

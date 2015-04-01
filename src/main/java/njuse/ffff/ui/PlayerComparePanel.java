@@ -1,22 +1,17 @@
 package njuse.ffff.ui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import njuse.ffff.po.PlayerInAverage;
@@ -267,7 +262,7 @@ public class PlayerComparePanel extends JPanel{
 	}
 	
 	/**
-	 * 设置表格数据
+	 * 设置球员总数据表格数据
 	 * @param properties_total
 	 * @param values_total
 	 * @param properties_average
@@ -281,50 +276,13 @@ public class PlayerComparePanel extends JPanel{
                 return false;
             }
 		};
-		table_playerCompare_total = new MyTable(tableModel_playerCompare_total){
-			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
-				Component c=super.prepareRenderer(renderer,row,column);
-				if(c instanceof JComponent){
-					((JComponent)c).setOpaque(false);
-				}
-				return c;
-			}
-		};
-		//设置点击表头自动排序
-//		table_playerCompare_total.setAutoCreateRowSorter(true);
-		table_playerCompare_total.setOpaque(false);
-		table_playerCompare_total.setForeground(Color.WHITE);
-		table_playerCompare_total.setFont(new FontUIResource("DialogInput", Font.PLAIN, 12));
-		table_playerCompare_total.setSelectionForeground(Color.CYAN);
-		//表格显示
-		table_playerCompare_total.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-//		//实现表头折行显示
-//		HeaderRendererHh renderer = new HeaderRendererHh();
-//		TableColumnModel cmodel = table_playerCompare_total.getColumnModel();  
-//		for (int i = 0; i < cmodel.getColumnCount(); i++) {
-//		    cmodel.getColumn(i).setHeaderRenderer(renderer);
-//		}
+		table_playerCompare_total = new MyTable(tableModel_playerCompare_total);
+
 		TableColumn firstColumn_total = table_playerCompare_total.getColumnModel().getColumn(0);
 		firstColumn_total.setPreferredWidth(150);
 		firstColumn_total.setMaxWidth(150);
 		firstColumn_total.setMinWidth(150);
 
-		table_playerCompare_total.setColumnSelectionAllowed (true);
-		table_playerCompare_total.setRowSelectionAllowed (false);
-		table_playerCompare_total.getTableHeader().setFont(new FontUIResource("DialogInput", Font.PLAIN, 11));
-		table_playerCompare_total.getTableHeader().setBackground(background);
-		table_playerCompare_total.getTableHeader().setForeground(Color.WHITE);
-		table_playerCompare_total.getTableHeader().addMouseListener (new MouseAdapter() { 
-            public void mouseReleased (MouseEvent e) {  
-                if (! e.isShiftDown())  
-               	table_playerCompare_total.clearSelection();
-                //获取点击的列索引  
-                int pick = table_playerCompare_total.getTableHeader().columnAtPoint(e.getPoint());  
-                //设置选择模型 
-                table_playerCompare_total.addColumnSelectionInterval (pick, pick);
-            }  
-        });
-		
 		table_playerCompare_total.addMouseListener(new MouseListener() {
 			public void mouseReleased(MouseEvent arg0) {}
 			public void mousePressed(MouseEvent arg0) {}
@@ -355,59 +313,26 @@ public class PlayerComparePanel extends JPanel{
 		this.add(scrollPane_playerCompare_total);
 		tableDisplay = 0;
 	}
-		
+	
+	/**
+	 * 球员信息比较表格----平均数据
+	 * @param properties_average
+	 * @param values_average
+	 */
 	public void setPlayerAverageInfo(String[] properties_average,Object[][] values_average){
-		//球员信息比较表格----平均数据
 		tableModel_playerCompare_average = new DefaultTableModel(values_average,properties_average){
 			public boolean isCellEditable(int row, int column)
             {
                 return false;
             }
 		};
-		table_playerCompare_average = new MyTable(tableModel_playerCompare_average){
-			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
-				Component c=super.prepareRenderer(renderer,row,column);
-				if(c instanceof JComponent){
-					((JComponent)c).setOpaque(false);
-				}
-				return c;
-			}
-		};
-		//设置点击表头自动排序
-		table_playerCompare_average.setAutoCreateRowSorter(true);
-		table_playerCompare_average.setOpaque(false);
-		table_playerCompare_average.setForeground(Color.WHITE);
-		table_playerCompare_average.setFont(new FontUIResource("DialogInput", Font.PLAIN, 12));
-		table_playerCompare_average.setSelectionForeground(Color.CYAN);
-		//表格显示格式
-		table_playerCompare_average.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		//实现表头折行显示
-//		HeaderRendererHh renderer2 = new HeaderRendererHh();
-//		TableColumnModel cmodel2 = table_playerCompare_average.getColumnModel();  
-//		for (int i = 0; i < cmodel2.getColumnCount(); i++) {
-//		    cmodel2.getColumn(i).setHeaderRenderer(renderer2);
-//		}
+		table_playerCompare_average = new MyTable(tableModel_playerCompare_average);
+		
 		TableColumn firstColumn_average = table_playerCompare_average.getColumnModel().getColumn(0);
 		firstColumn_average.setPreferredWidth(150);
 		firstColumn_average.setMaxWidth(150);
 		firstColumn_average.setMinWidth(150);
 
-		table_playerCompare_average.setColumnSelectionAllowed (true);
-		table_playerCompare_average.setRowSelectionAllowed (false);
-		table_playerCompare_average.getTableHeader().setFont(new FontUIResource("DialogInput", Font.PLAIN, 11));
-		table_playerCompare_average.getTableHeader().setBackground(background);
-		table_playerCompare_average.getTableHeader().setForeground(Color.WHITE);
-		table_playerCompare_average.getTableHeader().addMouseListener (new MouseAdapter() {  
-             public void mouseReleased (MouseEvent e) {
-                 if (! e.isShiftDown())  
-                	 table_playerCompare_average.clearSelection();  
-                 //获取点击的列索引  
-                 int pick = table_playerCompare_average.getTableHeader().columnAtPoint(e.getPoint());  
-                 //设置选择模型 
-                 table_playerCompare_average.addColumnSelectionInterval (pick, pick);
-             }  
-        });
-		
 		table_playerCompare_average.addMouseListener(new MouseListener() {
 			public void mouseReleased(MouseEvent arg0) {}
 			public void mousePressed(MouseEvent arg0) {}

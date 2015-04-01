@@ -1,5 +1,6 @@
 package njuse.ffff.ui.table;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
@@ -11,6 +12,7 @@ import java.util.Vector;
 import java.util.regex.Pattern;
 
 import javax.swing.Icon;
+import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.event.TableModelEvent;
@@ -43,6 +45,10 @@ public class MyTable extends JTable{
 	private int sortableColumns[];
 
 	private DefaultTableModelListener tableModelListener = new DefaultTableModelListener();
+	
+	private Color background = new Color(99,43,142);
+	
+	private MyTable myTable;
 
 	public MyTable() {
 		super();
@@ -51,9 +57,19 @@ public class MyTable extends JTable{
 
 	public MyTable(TableModel dm) {
 		super(dm, null, null);
-
+		myTable = this;
+		
 		JTableHeader jtableheader = getTableHeader();
 		jtableheader.addMouseListener(new MouseAdapter() {
+			public void mouseReleased (MouseEvent e) {  
+                if (! e.isShiftDown())  
+                	myTable.clearSelection();
+                //获取点击的列索引  
+                int pick = myTable.getTableHeader().columnAtPoint(e.getPoint());  
+                //设置选择模型 
+                myTable.addColumnSelectionInterval (pick, pick);
+	        }  
+			
 			public void mouseClicked(MouseEvent event) {
 				if (event.getSource() == getTableHeader()) {
 					getTableHeader().removeMouseListener(this);
@@ -90,6 +106,15 @@ public class MyTable extends JTable{
 			});
 		}
 		// setRowSorter(new TableRowSorter<TableModel>(defModel));
+		this.setOpaque(false);
+		this.setForeground(Color.WHITE);
+		this.setSelectionForeground(Color.CYAN);
+		//设置表头自动长度
+		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+		jtableheader.setBackground(background);
+		jtableheader.setForeground(Color.WHITE);
+		this.repaint();
 	}
 
 	private boolean columnIsSortable(int i) {
@@ -250,12 +275,23 @@ public class MyTable extends JTable{
 		isInt = pattern.matcher(str).matches();
 
 		// 匹配float型。
-		pattern = Pattern.compile("[0-9]*+\\.+[0-9]*");
+		pattern = Pattern.compile("^[+-]?([0-9]*\\.?[0-9]+|[0-9]+\\.?[0-9]*)([eE][+-]?[0-9]+)?$");
 		// 匹配结果。
 		isFloat = pattern.matcher(str).matches();
 
 		// 是否是数字。
 		return isInt | isFloat;
+	}
+	
+	/**
+	 * 设置单元格为透明
+	 */
+	public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
+		Component c=super.prepareRenderer(renderer,row,column);
+		if(c instanceof JComponent){
+			((JComponent)c).setOpaque(false);
+		}
+		return c;
 	}
 
 	/**
@@ -327,7 +363,7 @@ public class MyTable extends JTable{
 
 			Object obj1 = tableModel.getValueAt(index, sortColumn);
 			Object obj2 = tableModel.getValueAt(row.index, sortColumn);
-			double num1;//TODO
+			double num1;
 			double num2;
 			if (ascending) {
 				if (!(obj1 instanceof Comparable<?>)) {
@@ -338,14 +374,19 @@ public class MyTable extends JTable{
 				} else {
 					if (isNumeric(String.valueOf(obj1))
 							&& isNumeric(String.valueOf(obj2))) {
-						num1 = Float.parseFloat(String.valueOf(obj1));
-						num2 = Float.parseFloat(String.valueOf(obj2));
+						num1 = Double.parseDouble(String.valueOf(obj1));
+						num2 = Double.parseDouble(String.valueOf(obj2));
 						if (num1 > num2) {
 							return 1;
 						} else {
 							return -1;
 						}
-					} else {
+					}else if((String.valueOf(obj1)).equals("NaN")){
+						return 1;
+					}else if((String.valueOf(obj2)).equals("NaN")){
+						return -1;
+					}
+					else {
 						return cnCollator.compare(obj1, obj2);
 					}
 				}
@@ -358,21 +399,19 @@ public class MyTable extends JTable{
 			} else {
 				if (isNumeric(String.valueOf(obj1))
 						&& isNumeric(String.valueOf(obj2))) {
-					try{
-						num1 = Double.parseDouble(String.valueOf(obj1));
-						num2 = Double.parseDouble(String.valueOf(obj2));//TODO
-						if (num1 > num2) {
-							return -1;
-						} else {
-							return 1;
-						}
-					}catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					}catch (ClassCastException e){
-						e.printStackTrace();
+					num1 = Double.parseDouble(String.valueOf(obj1));
+					num2 = Double.parseDouble(String.valueOf(obj2));//TODO
+					if (num1 > num2) {
+						return -1;
+					} else {
+						return 1;
 					}
-					return 0;
-				} else {
+				}else if((String.valueOf(obj1)).equals("NaN")){
+					return -1;
+				}else if((String.valueOf(obj2)).equals("NaN")){
+					return 1;
+				} 
+				else {
 					return cnCollator.compare(obj2, obj1);
 				}
 			}
@@ -403,7 +442,6 @@ public class MyTable extends JTable{
 	 * 
 	 * </PRE>
 	 * 
-	 * @author Zaki
 	 * @since 1.00
 	 */
 	private class DefaultTableModelListener implements TableModelListener {

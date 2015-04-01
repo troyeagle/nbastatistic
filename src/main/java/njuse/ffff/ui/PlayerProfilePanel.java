@@ -77,8 +77,8 @@ public class PlayerProfilePanel extends JPanel{
 				label_arrow_left.setIcon(icon_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				//跳转到搜索界面
-				uiController.setSearchPanel();
+				//回退到上个界面
+				uiController.backToLastPanel();
 			}
 		});
 		
@@ -88,7 +88,7 @@ public class PlayerProfilePanel extends JPanel{
 		label_player_name.setBackground(background);
 		label_player_name.setForeground(Color.WHITE);
 		label_player_name.setFont(new FontUIResource("DialogInput", Font.BOLD, 50));
-		label_player_name.setBounds(208, 62, 500, 44);
+		label_player_name.setBounds(208, 62, 600, 44);
 		
 		//便捷搜索框
 		JLabel label_searchDialog = new JLabel();
@@ -256,7 +256,7 @@ public class PlayerProfilePanel extends JPanel{
         
         
         //右侧数据引导框1
-        label_player_data1 = new JLabel(" 各种数据1");
+        label_player_data1 = new JLabel(" 投篮数据");
         label_player_data1.setOpaque(true);
         label_player_data1.setBackground(blue_light);
         label_player_data1.setForeground(Color.WHITE);
@@ -278,7 +278,7 @@ public class PlayerProfilePanel extends JPanel{
 		});
         
         //右侧数据引导框2
-        label_player_data2 = new JLabel(" 各种数据2");
+        label_player_data2 = new JLabel("各项数据数");
         label_player_data2.setOpaque(true);
         label_player_data2.setBackground(blue_light);
         label_player_data2.setForeground(Color.WHITE);
@@ -300,7 +300,7 @@ public class PlayerProfilePanel extends JPanel{
 		});
         
         //右侧数据引导框3
-        label_player_data3 = new JLabel(" 各种数据3");
+        label_player_data3 = new JLabel("各项数据率");
         label_player_data3.setOpaque(true);
         label_player_data3.setBackground(blue_light);
         label_player_data3.setForeground(Color.WHITE);
@@ -322,7 +322,7 @@ public class PlayerProfilePanel extends JPanel{
 		});
         
         //右侧数据引导框4
-        label_player_data4 = new JLabel(" 各种数据4");
+        label_player_data4 = new JLabel(" 其他数据");
         label_player_data4.setOpaque(true);
         label_player_data4.setBackground(blue_light);
         label_player_data4.setForeground(Color.WHITE);

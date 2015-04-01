@@ -2,6 +2,8 @@ package njuse.ffff.ui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
@@ -41,6 +43,7 @@ public class TeamProfilePanel extends JPanel{
 	private JLabel label_team_data3;
 	
 	private JLabel label_team_protrait;
+	private ImageIcon icon_protrait;
 	private JLabel label_abbr_field;
 	private JLabel label_state_field;
 	private JLabel label_league_field;
@@ -73,7 +76,8 @@ public class TeamProfilePanel extends JPanel{
 				label_arrow_left.setIcon(icon_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				uiController.setSearchPanel();
+				//回退到上个界面
+				uiController.backToLastPanel();
 			}
 		});
 		
@@ -227,7 +231,7 @@ public class TeamProfilePanel extends JPanel{
         label_timeOfFoundation_field.setBounds(605, 515, 275, 35);
         
         //右侧数据引导框1
-        label_team_data1 = new JLabel(" 各种数据1");
+        label_team_data1 = new JLabel(" 投篮数据");
         label_team_data1.setOpaque(true);
         label_team_data1.setBackground(blue_light);
         label_team_data1.setForeground(Color.WHITE);
@@ -248,7 +252,7 @@ public class TeamProfilePanel extends JPanel{
 		});
         
         //右侧数据引导框2
-        label_team_data2 = new JLabel(" 各种数据2");
+        label_team_data2 = new JLabel(" 各项数据");
         label_team_data2.setOpaque(true);
         label_team_data2.setBackground(blue_light);
         label_team_data2.setForeground(Color.WHITE);
@@ -269,7 +273,7 @@ public class TeamProfilePanel extends JPanel{
 		});
         
         //右侧数据引导框3
-        label_team_data3 = new JLabel(" 各种数据3");
+        label_team_data3 = new JLabel(" 其他数据");
         label_team_data3.setOpaque(true);
         label_team_data3.setBackground(blue_light);
         label_team_data3.setForeground(Color.WHITE);
@@ -294,7 +298,7 @@ public class TeamProfilePanel extends JPanel{
 		this.add(label_arrow_left);
 		this.add(label_team_name);
 		this.add(label_searchDialog);
-		this.add(label_team_protrait);
+//		this.add(label_team_protrait);
 		this.add(label_abbr);
 		this.add(label_abbr_field);
 		this.add(label_state);
@@ -340,6 +344,13 @@ public class TeamProfilePanel extends JPanel{
 	}
 	
 	public void setIcon(ImageIcon icon){
-		label_team_protrait.setIcon(icon);
+		icon_protrait = icon;
+		repaint();
+	}
+	
+	public void paint(Graphics g){
+		super.paint(g);
+		Image img = icon_protrait.getImage();
+		g.drawImage(img, 64, 232, 250, 250, null);
 	}
 }

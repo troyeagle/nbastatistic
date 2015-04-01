@@ -1,30 +1,26 @@
 package njuse.ffff.ui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
 import njuse.ffff.presenter.ControllerService;
 import njuse.ffff.presenter.UIController;
+import njuse.ffff.ui.table.MyInfoTable;
 
 @SuppressWarnings("serial")
 public class PlayerDataPanel extends JPanel{
@@ -54,35 +50,35 @@ public class PlayerDataPanel extends JPanel{
 	private int currentTable = 0;//当前显示的表格编号
 	
 	private DefaultTableModel tableModel_playerInfo1_total;
-	private JTable table_playerInfo1_total;
+	private MyInfoTable table_playerInfo1_total;
 	private JScrollPane scrollPane_playerInfo1_total;
 	
 	private DefaultTableModel tableModel_playerInfo1_average;
-	private JTable table_playerInfo1_average;
+	private MyInfoTable table_playerInfo1_average;
 	private JScrollPane scrollPane_playerInfo1_average;
 	
 	private DefaultTableModel tableModel_playerInfo2_total;
-	private JTable table_playerInfo2_total;
+	private MyInfoTable table_playerInfo2_total;
 	private JScrollPane scrollPane_playerInfo2_total;
 	
 	private DefaultTableModel tableModel_playerInfo2_average;
-	private JTable table_playerInfo2_average;
+	private MyInfoTable table_playerInfo2_average;
 	private JScrollPane scrollPane_playerInfo2_average;
 	
 	private DefaultTableModel tableModel_playerInfo3_total;
-	private JTable table_playerInfo3_total;
+	private MyInfoTable table_playerInfo3_total;
 	private JScrollPane scrollPane_playerInfo3_total;
 
 	private DefaultTableModel tableModel_playerInfo3_average;
-	private JTable table_playerInfo3_average;
+	private MyInfoTable table_playerInfo3_average;
 	private JScrollPane scrollPane_playerInfo3_average;
 	
 	private DefaultTableModel tableModel_playerInfo4_total;
-	private JTable table_playerInfo4_total;
+	private MyInfoTable table_playerInfo4_total;
 	private JScrollPane scrollPane_playerInfo4_total;
 
 	private DefaultTableModel tableModel_playerInfo4_average;
-	private JTable table_playerInfo4_average;
+	private MyInfoTable table_playerInfo4_average;
 	private JScrollPane scrollPane_playerInfo4_average;
 	
 	public PlayerDataPanel(){
@@ -153,7 +149,7 @@ public class PlayerDataPanel extends JPanel{
         label_searchDialog.add(label_search);
         
         //左侧数据引导框1
-        label_player_data1 = new JLabel(" 各种数据1");
+        label_player_data1 = new JLabel(" 投篮数据");
         label_player_data1.setOpaque(true);
         label_player_data1.setBackground(blue_light);
         label_player_data1.setForeground(Color.WHITE);
@@ -174,7 +170,7 @@ public class PlayerDataPanel extends JPanel{
 		});
         
         //左侧数据引导框2
-        label_player_data2 = new JLabel(" 各种数据2");
+        label_player_data2 = new JLabel("各项数据数");
         label_player_data2.setOpaque(true);
         label_player_data2.setBackground(blue_light);
         label_player_data2.setForeground(Color.WHITE);
@@ -195,7 +191,7 @@ public class PlayerDataPanel extends JPanel{
 		});
         
         //左侧数据引导框3
-        label_player_data3 = new JLabel(" 各种数据3");
+        label_player_data3 = new JLabel("各项数据率");
         label_player_data3.setOpaque(true);
         label_player_data3.setBackground(blue_light);
         label_player_data3.setForeground(Color.WHITE);
@@ -216,7 +212,7 @@ public class PlayerDataPanel extends JPanel{
 		});
         
         //左侧数据引导框4
-        label_player_data4 = new JLabel(" 各种数据4");
+        label_player_data4 = new JLabel(" 其他数据");
         label_player_data4.setOpaque(true);
         label_player_data4.setBackground(blue_light);
         label_player_data4.setForeground(Color.WHITE);
@@ -293,280 +289,96 @@ public class PlayerDataPanel extends JPanel{
 	}
 	
 	//设置表格数据
-	public void setData(String[] properties1,String[] properties2,String[] properties3,String[] properties4
+	public void setData(String[] properties1_total,String[] properties1_average,String[] properties2,String[] properties3,String[] properties4
 			,Object[][] values_total1,Object[][] values_total2,Object[][] values_total3,Object[][] values_total4
 			,Object[][] values_average1,Object[][] values_average2,Object[][] values_average3,Object[][] values_average4){
 		//球员数据表格1
-		tableModel_playerInfo1_total = new DefaultTableModel(values_total1,properties1);
-		table_playerInfo1_total = new JTable(tableModel_playerInfo1_total){
-			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
-				Component c=super.prepareRenderer(renderer,row,column);
-				if(c instanceof JComponent){
-					((JComponent)c).setOpaque(false);
-				}
-				return c;
-			}
-		};
-		table_playerInfo1_total.setOpaque(false);
-		table_playerInfo1_total.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		table_playerInfo1_total.setForeground(Color.WHITE);
-		table_playerInfo1_total.setSelectionForeground(Color.CYAN);
-
-		table_playerInfo1_total.getTableHeader().setBackground(background);
-		table_playerInfo1_total.getTableHeader().setForeground(Color.WHITE);
-		table_playerInfo1_total.getTableHeader().addMouseListener (new MouseAdapter() { 
-            public void mouseReleased (MouseEvent e) {  
-                if (! e.isShiftDown())  
-                	table_playerInfo1_total.clearSelection();
-                //获取点击的列索引  
-                int pick = table_playerInfo1_total.getTableHeader().columnAtPoint(e.getPoint());  
-                //设置选择模型 
-                table_playerInfo1_total.addColumnSelectionInterval (pick, pick);
-            }  
-        });
+		tableModel_playerInfo1_total = new DefaultTableModel(values_total1,properties1_total);
+		table_playerInfo1_total = new MyInfoTable(tableModel_playerInfo1_total);
 		
 		scrollPane_playerInfo1_total = new JScrollPane(table_playerInfo1_total);
 		scrollPane_playerInfo1_total.setOpaque(false);
 		scrollPane_playerInfo1_total.getViewport().setOpaque(false);
-		scrollPane_playerInfo1_total.setBounds(200, 160, 650, 155);
+		int width1 = 3+table_playerInfo1_total.getColumnModel().getColumn(0).getWidth()*table_playerInfo1_total.getColumnCount();
+		int height1 = 20*(1+values_total1.length);
+		scrollPane_playerInfo1_total.setBounds(200, 160, width1, height1);
 		
 		//球员数据表格2
 		tableModel_playerInfo2_total = new DefaultTableModel(values_total2,properties2);
-		table_playerInfo2_total = new JTable(tableModel_playerInfo2_total){
-			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
-				Component c=super.prepareRenderer(renderer,row,column);
-				if(c instanceof JComponent){
-					((JComponent)c).setOpaque(false);
-				}
-				return c;
-			}
-		};
-		table_playerInfo2_total.setOpaque(false);
-		table_playerInfo2_total.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		table_playerInfo2_total.setForeground(Color.WHITE);
-		table_playerInfo2_total.setSelectionForeground(Color.CYAN);
-
-		table_playerInfo2_total.getTableHeader().setBackground(background);
-		table_playerInfo2_total.getTableHeader().setForeground(Color.WHITE);
-		table_playerInfo2_total.getTableHeader().addMouseListener (new MouseAdapter() { 
-            public void mouseReleased (MouseEvent e) {  
-                if (! e.isShiftDown())  
-                	table_playerInfo2_total.clearSelection();
-                //获取点击的列索引  
-                int pick = table_playerInfo2_total.getTableHeader().columnAtPoint(e.getPoint());  
-                //设置选择模型 
-                table_playerInfo2_total.addColumnSelectionInterval (pick, pick);
-            }  
-        });
+		table_playerInfo2_total = new MyInfoTable(tableModel_playerInfo2_total);
 		
 		scrollPane_playerInfo2_total = new JScrollPane(table_playerInfo2_total);
 		scrollPane_playerInfo2_total.setOpaque(false);
 		scrollPane_playerInfo2_total.getViewport().setOpaque(false);
-		scrollPane_playerInfo2_total.setBounds(200, 160, 650, 155);
+		int width2 = 3+table_playerInfo2_total.getColumnModel().getColumn(0).getWidth()*table_playerInfo2_total.getColumnCount();
+		int height2 = 20*(1+values_total2.length);
+		scrollPane_playerInfo2_total.setBounds(200, 160, width2, height2);
 		
 		//球员数据表格3
 		tableModel_playerInfo3_total = new DefaultTableModel(values_total3,properties3);
-		table_playerInfo3_total = new JTable(tableModel_playerInfo3_total){
-			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
-				Component c=super.prepareRenderer(renderer,row,column);
-				if(c instanceof JComponent){
-					((JComponent)c).setOpaque(false);
-				}
-				return c;
-			}
-		};
-		table_playerInfo3_total.setOpaque(false);
-		table_playerInfo3_total.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		table_playerInfo3_total.setForeground(Color.WHITE);
-		table_playerInfo3_total.setSelectionForeground(Color.CYAN);
-
-		table_playerInfo3_total.getTableHeader().setBackground(background);
-		table_playerInfo3_total.getTableHeader().setForeground(Color.WHITE);
-		table_playerInfo3_total.getTableHeader().addMouseListener (new MouseAdapter() { 
-            public void mouseReleased (MouseEvent e) {  
-                if (! e.isShiftDown())  
-                	table_playerInfo3_total.clearSelection();
-                //获取点击的列索引  
-                int pick = table_playerInfo3_total.getTableHeader().columnAtPoint(e.getPoint());  
-                //设置选择模型 
-                table_playerInfo3_total.addColumnSelectionInterval (pick, pick);
-            }  
-        });
+		table_playerInfo3_total = new MyInfoTable(tableModel_playerInfo3_total);
 		
 		scrollPane_playerInfo3_total = new JScrollPane(table_playerInfo3_total);
 		scrollPane_playerInfo3_total.setOpaque(false);
 		scrollPane_playerInfo3_total.getViewport().setOpaque(false);
-		scrollPane_playerInfo3_total.setBounds(200, 160, 550, 155);
+		int width3 = 3+table_playerInfo3_total.getColumnModel().getColumn(0).getWidth()*table_playerInfo3_total.getColumnCount();
+		int height3 = 20*(1+values_total3.length);
+		scrollPane_playerInfo3_total.setBounds(200, 160, width3, height3);
 		
 		//球员数据表格4
 		tableModel_playerInfo4_total = new DefaultTableModel(values_total4,properties4);
-		table_playerInfo4_total = new JTable(tableModel_playerInfo4_total){
-			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
-				Component c=super.prepareRenderer(renderer,row,column);
-				if(c instanceof JComponent){
-					((JComponent)c).setOpaque(false);
-				}
-				return c;
-			}
-		};
-		table_playerInfo4_total.setOpaque(false);
-		table_playerInfo4_total.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		table_playerInfo4_total.setForeground(Color.WHITE);
-		table_playerInfo4_total.setSelectionForeground(Color.CYAN);
-
-		table_playerInfo4_total.getTableHeader().setBackground(background);
-		table_playerInfo4_total.getTableHeader().setForeground(Color.WHITE);
-		table_playerInfo4_total.getTableHeader().addMouseListener (new MouseAdapter() { 
-            public void mouseReleased (MouseEvent e) {  
-                if (! e.isShiftDown())  
-                	table_playerInfo4_total.clearSelection();
-                //获取点击的列索引  
-                int pick = table_playerInfo4_total.getTableHeader().columnAtPoint(e.getPoint());  
-                //设置选择模型 
-                table_playerInfo4_total.addColumnSelectionInterval (pick, pick);
-            }  
-        });
+		table_playerInfo4_total = new MyInfoTable(tableModel_playerInfo4_total);
 		
 		scrollPane_playerInfo4_total = new JScrollPane(table_playerInfo4_total);
 		scrollPane_playerInfo4_total.setOpaque(false);
 		scrollPane_playerInfo4_total.getViewport().setOpaque(false);
-		scrollPane_playerInfo4_total.setBounds(200, 160, 450, 155);
+		int width4 = 3+table_playerInfo4_total.getColumnModel().getColumn(0).getWidth()*table_playerInfo4_total.getColumnCount();
+		int height4 = 20*(1+values_total4.length);
+		scrollPane_playerInfo4_total.setBounds(200, 160, width4, height4);
 		
 		//球员数据表格1
-		tableModel_playerInfo1_average = new DefaultTableModel(values_average1,properties1);
-		table_playerInfo1_average = new JTable(tableModel_playerInfo1_average){
-			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
-				Component c=super.prepareRenderer(renderer,row,column);
-				if(c instanceof JComponent){
-					((JComponent)c).setOpaque(false);
-				}
-				return c;
-			}
-		};
-		table_playerInfo1_average.setOpaque(false);
-		table_playerInfo1_average.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		table_playerInfo1_average.setForeground(Color.WHITE);
-		table_playerInfo1_average.setSelectionForeground(Color.CYAN);
-
-		table_playerInfo1_average.getTableHeader().setBackground(background);
-		table_playerInfo1_average.getTableHeader().setForeground(Color.WHITE);
-		table_playerInfo1_average.getTableHeader().addMouseListener (new MouseAdapter() { 
-            public void mouseReleased (MouseEvent e) {  
-                if (! e.isShiftDown())  
-                	table_playerInfo1_average.clearSelection();
-                //获取点击的列索引  
-                int pick = table_playerInfo1_average.getTableHeader().columnAtPoint(e.getPoint());  
-                //设置选择模型 
-                table_playerInfo1_average.addColumnSelectionInterval (pick, pick);
-            }  
-        });
+		tableModel_playerInfo1_average = new DefaultTableModel(values_average1,properties1_average);
+		table_playerInfo1_average = new MyInfoTable(tableModel_playerInfo1_average);
 		
 		scrollPane_playerInfo1_average = new JScrollPane(table_playerInfo1_average);
 		scrollPane_playerInfo1_average.setOpaque(false);
 		scrollPane_playerInfo1_average.getViewport().setOpaque(false);
-		scrollPane_playerInfo1_average.setBounds(200, 350, 650, 155);
+		int width5 = 3+table_playerInfo1_average.getColumnModel().getColumn(0).getWidth()*table_playerInfo1_average.getColumnCount();
+		int height5 = 20*(1+values_average1.length);
+		scrollPane_playerInfo1_average.setBounds(200, 350, width5, height5);
 		
 		//球员数据表格2
 		tableModel_playerInfo2_average = new DefaultTableModel(values_average2,properties2);
-		table_playerInfo2_average = new JTable(tableModel_playerInfo2_average){
-			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
-				Component c=super.prepareRenderer(renderer,row,column);
-				if(c instanceof JComponent){
-					((JComponent)c).setOpaque(false);
-				}
-				return c;
-			}
-		};
-		table_playerInfo2_average.setOpaque(false);
-		table_playerInfo2_average.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		table_playerInfo2_average.setForeground(Color.WHITE);
-		table_playerInfo2_average.setSelectionForeground(Color.CYAN);
-
-		table_playerInfo2_average.getTableHeader().setBackground(background);
-		table_playerInfo2_average.getTableHeader().setForeground(Color.WHITE);
-		table_playerInfo2_average.getTableHeader().addMouseListener (new MouseAdapter() { 
-            public void mouseReleased (MouseEvent e) {  
-                if (! e.isShiftDown())  
-                	table_playerInfo2_average.clearSelection();
-                //获取点击的列索引  
-                int pick = table_playerInfo2_average.getTableHeader().columnAtPoint(e.getPoint());  
-                //设置选择模型 
-                table_playerInfo2_average.addColumnSelectionInterval (pick, pick);
-            }  
-        });
+		table_playerInfo2_average = new MyInfoTable(tableModel_playerInfo2_average);
 		
 		scrollPane_playerInfo2_average = new JScrollPane(table_playerInfo2_average);
 		scrollPane_playerInfo2_average.setOpaque(false);
 		scrollPane_playerInfo2_average.getViewport().setOpaque(false);
-		scrollPane_playerInfo2_average.setBounds(200, 350, 650, 155);
+		int width6 = 3+table_playerInfo2_average.getColumnModel().getColumn(0).getWidth()*table_playerInfo2_average.getColumnCount();
+		int height6 = 20*(1+values_average2.length);
+		scrollPane_playerInfo2_average.setBounds(200, 350, width6, height6);
 		
 		//球员数据表格3
 		tableModel_playerInfo3_average = new DefaultTableModel(values_average3,properties3);
-		table_playerInfo3_average = new JTable(tableModel_playerInfo3_average){
-			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
-				Component c=super.prepareRenderer(renderer,row,column);
-				if(c instanceof JComponent){
-					((JComponent)c).setOpaque(false);
-				}
-				return c;
-			}
-		};
-		table_playerInfo3_average.setOpaque(false);
-		table_playerInfo3_average.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		table_playerInfo3_average.setForeground(Color.WHITE);
-		table_playerInfo3_average.setSelectionForeground(Color.CYAN);
-
-		table_playerInfo3_average.getTableHeader().setBackground(background);
-		table_playerInfo3_average.getTableHeader().setForeground(Color.WHITE);
-		table_playerInfo3_average.getTableHeader().addMouseListener (new MouseAdapter() { 
-            public void mouseReleased (MouseEvent e) {  
-                if (! e.isShiftDown())  
-                	table_playerInfo3_average.clearSelection();
-                //获取点击的列索引  
-                int pick = table_playerInfo3_average.getTableHeader().columnAtPoint(e.getPoint());  
-                //设置选择模型 
-                table_playerInfo3_average.addColumnSelectionInterval (pick, pick);
-            }  
-        });
+		table_playerInfo3_average = new MyInfoTable(tableModel_playerInfo3_average);
 		
 		scrollPane_playerInfo3_average = new JScrollPane(table_playerInfo3_average);
 		scrollPane_playerInfo3_average.setOpaque(false);
 		scrollPane_playerInfo3_average.getViewport().setOpaque(false);
-		scrollPane_playerInfo3_average.setBounds(200, 350, 550, 155);
+		int width7 = 3+table_playerInfo3_average.getColumnModel().getColumn(0).getWidth()*table_playerInfo3_average.getColumnCount();
+		int height7 = 20*(1+values_average3.length);
+		scrollPane_playerInfo3_average.setBounds(200, 350, width7, height7);
 		
 		//球员数据表格4
 		tableModel_playerInfo4_average = new DefaultTableModel(values_average4,properties4);
-		table_playerInfo4_average = new JTable(tableModel_playerInfo4_average){
-			public Component prepareRenderer(TableCellRenderer renderer,int row,int column){
-				Component c=super.prepareRenderer(renderer,row,column);
-				if(c instanceof JComponent){
-					((JComponent)c).setOpaque(false);
-				}
-				return c;
-			}
-		};
-		table_playerInfo4_average.setOpaque(false);
-		table_playerInfo4_average.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		table_playerInfo4_average.setForeground(Color.WHITE);
-		table_playerInfo4_average.setSelectionForeground(Color.CYAN);
-
-		table_playerInfo4_average.getTableHeader().setBackground(background);
-		table_playerInfo4_average.getTableHeader().setForeground(Color.WHITE);
-		table_playerInfo4_average.getTableHeader().addMouseListener (new MouseAdapter() { 
-            public void mouseReleased (MouseEvent e) {  
-                if (! e.isShiftDown())  
-                	table_playerInfo1_average.clearSelection();
-                //获取点击的列索引  
-                int pick = table_playerInfo4_average.getTableHeader().columnAtPoint(e.getPoint());  
-                //设置选择模型 
-                table_playerInfo4_average.addColumnSelectionInterval (pick, pick);
-            }  
-        });
+		table_playerInfo4_average = new MyInfoTable(tableModel_playerInfo4_average);
 		
 		scrollPane_playerInfo4_average = new JScrollPane(table_playerInfo4_average);
 		scrollPane_playerInfo4_average.setOpaque(false);
 		scrollPane_playerInfo4_average.getViewport().setOpaque(false);
-		scrollPane_playerInfo4_average.setBounds(200, 350, 450, 155);
+		int width8 = 3+table_playerInfo4_average.getColumnModel().getColumn(0).getWidth()*table_playerInfo4_average.getColumnCount();
+		int height8 = 20*(1+values_average4.length);
+		scrollPane_playerInfo4_average.setBounds(200, 350, width8, height8);
 	}
 	
 	public void displayTables(int number){
