@@ -2,8 +2,8 @@ package njuse.ffff.po;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
-import sun.misc.Queue;
+import java.util.LinkedList;
+import java.util.Queue;
 
 @SuppressWarnings("unused")
 /**
@@ -62,7 +62,7 @@ public class PlayerInAverage {
 	private int teamFieldGoalAttempted;
 	private int teamThreePointerAttempted;
 	private int teamTurnover;
-	private int teamScores;
+	private int teamFreeThrowMade;
 	private int teamFreeThrowAttempted;
 	private int rivalFieldGoalAttempted;
 	private int rivalThreePointerAttempted;
@@ -115,7 +115,7 @@ public class PlayerInAverage {
 			if (p.firstOnMatch) {
 				this.firstOnMatch++;
 			}
-			Queue<Double> queue = new Queue<Double>();
+			Queue<Double> queue = new LinkedList<Double>();
 			/**
 			 * Number 3: for the dirty number starts from number 3
 			 * 
@@ -126,7 +126,8 @@ public class PlayerInAverage {
 				// FIXME
 				// System.out.println(p.getName());
 				statsDirty[j - 3]++;
-				queue.enqueue(statsTotal[j - 3]);
+
+				queue.offer(statsTotal[j - 3]);
 			}
 
 			statsTotal[0] += p.fieldGoalMade;
@@ -153,7 +154,7 @@ public class PlayerInAverage {
 			teamFieldGoalAttempted += p.getTeam().fieldGoalAttempted;
 			teamThreePointerAttempted += p.getTeam().threePointerAttempted;
 			teamTurnover += p.getTeam().turnover;
-			teamScores += p.getTeam().scores;
+			teamFreeThrowMade += p.getTeam().freeThrowMade;
 			teamFreeThrowAttempted += p.getTeam().freeThrowAttempted;
 			rivalFieldGoalAttempted += p.getTeam().rival.fieldGoalAttempted;
 			rivalThreePointerAttempted += p.getTeam().rival.threePointerAttempted;
@@ -163,11 +164,8 @@ public class PlayerInAverage {
 			// Get off dirty statistics
 			for (int j : p.dirty) {
 
-				try {
-					statsTotal[j - 3] = queue.dequeue();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				statsTotal[j - 3] = queue.poll();
+
 			}
 		}
 	}
@@ -345,12 +343,12 @@ public class PlayerInAverage {
 		calUsingRatio(teamSecondInTotal, teamFreeThrowAttempted,
 				teamFieldGoalAttempted, teamTurnover);
 		calDoubledouble();
-		calAssistRatio(teamSecondInTotal, teamScores);
+		calAssistRatio(teamSecondInTotal, teamFreeThrowMade);
 	}
 
-	void calAssistRatio(double secondInTotal, double totalScores) {
+	void calAssistRatio(double secondInTotal, double totalFreeThrow) {
 		assistRatio = (double) assist
-				/ ((double) second / (secondInTotal / 5) * totalScores - points);
+				/ ((double) second / (secondInTotal / 5) * totalFreeThrow - fieldGoalMade);
 
 	}
 

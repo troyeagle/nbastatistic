@@ -36,7 +36,6 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 	public PlayerInMatchExtended(PlayerInMatch p,TeamInMatch team) {
 		super(p);
 		this.team = team;
-		// TODO Auto-generated constructor stub
 	}
 
 	public PlayerInMatchExtended(PlayerInMatch p, int playerEfficiencyRate,
@@ -101,13 +100,11 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 		calUsingRatio(team.secondInTotal, team.freeThrowAttempted,
 				team.fieldGoalAttempted, team.turnover);
 		calDoubledouble();
-		calAssistRatio(team.secondInTotal,team.scores);
-		//FIXME
-		//System.out.println(this.toString());
+		calAssistRatio(team.secondInTotal,team.freeThrowMade);
 	}
 
-	void calAssistRatio(double secondInTotal,double totalScores) {
-		assistRatio = (double)assist/((double)second/(secondInTotal/5)*totalScores-points);
+	void calAssistRatio(double secondInTotal,double totalFreeThrowMade) {
+		assistRatio = (double)assist/((double)second/(secondInTotal/5)*totalFreeThrowMade-freeThrowMade);
 		
 	}
 
