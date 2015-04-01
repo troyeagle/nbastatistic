@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -81,6 +83,16 @@ public class SearchPanel extends JPanel{
 				}
 			}
 		});
+		text_searchInfo.addInputMethodListener(new InputMethodListener() {
+			public void inputMethodTextChanged(InputMethodEvent arg0) {
+				// TODO 自动生成的方法存根
+				
+			}
+			public void caretPositionChanged(InputMethodEvent arg0) {
+				// TODO 自动生成的方法存根
+				
+			}
+		});
 		
 		label_search = new JLabel();
 		label_search.setOpaque(true);
@@ -101,7 +113,7 @@ public class SearchPanel extends JPanel{
 			public void mouseClicked(MouseEvent arg0) {
 				//获得搜索的项
 				String search = text_searchInfo.getText();
-				//TODO 调用查找
+				//调用查找
 				uiController.search(search);
 				
 			}
@@ -160,7 +172,7 @@ public class SearchPanel extends JPanel{
 //				label_arrow_down_middle.setIcon(icon_changed);
 //			}
 //			public void mouseClicked(MouseEvent arg0) {
-//				// TODO 跳转到"高级搜索"界面
+//				//跳转到"高级搜索"界面
 //				
 //				
 //			}

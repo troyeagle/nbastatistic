@@ -50,7 +50,7 @@ public class PlayerProfilePanel extends JPanel{
 	private JLabel label_player_data1;
 	private JLabel label_player_data2;
 	private JLabel label_player_data3;
-	private JLabel label_player_data4;
+//	private JLabel label_player_data4;
 	
 	public PlayerProfilePanel(){
 		this.setSize(playerProfilePanel_width, playerProfilePanel_height);
@@ -156,12 +156,12 @@ public class PlayerProfilePanel extends JPanel{
         label_player_protrait.setBounds(64, 252, 214, 174);
         
         //中间球员信息
-        JLabel label_height = new JLabel("身高");
+        JLabel label_height = new JLabel("身高(英尺)");
         label_height.setOpaque(true);
         label_height.setBackground(background);
         label_height.setForeground(Color.WHITE);
         label_height.setFont(new FontUIResource("DialogInput", Font.BOLD, 30));
-        label_height.setBounds(418, 265, 88, 35);
+        label_height.setBounds(418, 265, 170, 35);
         
         label_height_field = new JLabel();
         label_height_field.setOpaque(true);
@@ -170,12 +170,12 @@ public class PlayerProfilePanel extends JPanel{
         label_height_field.setFont(new FontUIResource("DialogInput", Font.BOLD, 30));
         label_height_field.setBounds(605, 265, 275, 35);
         
-        JLabel label_weight = new JLabel("体重");
+        JLabel label_weight = new JLabel("体重(磅)");
         label_weight.setOpaque(true);
         label_weight.setBackground(background);
         label_weight.setForeground(Color.WHITE);
         label_weight.setFont(new FontUIResource("DialogInput", Font.BOLD, 30));
-        label_weight.setBounds(418, 315, 88, 35);
+        label_weight.setBounds(418, 315, 170, 35);
         
         label_weight_field = new JLabel();
         label_weight_field.setOpaque(true);
@@ -272,13 +272,13 @@ public class PlayerProfilePanel extends JPanel{
 				label_player_data1.setBackground(blue_light_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO 跳转到球员数据信息界面
+				//跳转到球员数据信息界面
 				uiController.changeToPlayerDataPanel(1);
 			}
 		});
         
         //右侧数据引导框2
-        label_player_data2 = new JLabel("各项数据数");
+        label_player_data2 = new JLabel(" 各项数据");
         label_player_data2.setOpaque(true);
         label_player_data2.setBackground(blue_light);
         label_player_data2.setForeground(Color.WHITE);
@@ -294,13 +294,13 @@ public class PlayerProfilePanel extends JPanel{
 				label_player_data2.setBackground(blue_light_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO 跳转到球员数据信息界面
+				//跳转到球员数据信息界面
 				uiController.changeToPlayerDataPanel(2);
 			}
 		});
         
         //右侧数据引导框3
-        label_player_data3 = new JLabel("各项数据率");
+        label_player_data3 = new JLabel(" 其他数据");
         label_player_data3.setOpaque(true);
         label_player_data3.setBackground(blue_light);
         label_player_data3.setForeground(Color.WHITE);
@@ -316,32 +316,32 @@ public class PlayerProfilePanel extends JPanel{
 				label_player_data3.setBackground(blue_light_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO 跳转到球员数据信息界面
+				//跳转到球员数据信息界面
 				uiController.changeToPlayerDataPanel(3);
 			}
 		});
         
-        //右侧数据引导框4
-        label_player_data4 = new JLabel(" 其他数据");
-        label_player_data4.setOpaque(true);
-        label_player_data4.setBackground(blue_light);
-        label_player_data4.setForeground(Color.WHITE);
-        label_player_data4.setFont(new FontUIResource("DialogInput", Font.BOLD, 24));
-        label_player_data4.setBounds(962, 434, 138, 46);
-        label_player_data4.addMouseListener(new MouseListener() {
-        	public void mouseReleased(MouseEvent arg0) {}
-			public void mousePressed(MouseEvent arg0) {}
-			public void mouseExited(MouseEvent arg0) {
-				label_player_data4.setBackground(blue_light);
-			}
-			public void mouseEntered(MouseEvent arg0) {
-				label_player_data4.setBackground(blue_light_changed);
-			}
-			public void mouseClicked(MouseEvent arg0) {
-				// TODO 跳转到球员数据信息界面
-				uiController.changeToPlayerDataPanel(4);
-			}
-		});
+//        //右侧数据引导框4
+//        label_player_data4 = new JLabel(" 其他数据");
+//        label_player_data4.setOpaque(true);
+//        label_player_data4.setBackground(blue_light);
+//        label_player_data4.setForeground(Color.WHITE);
+//        label_player_data4.setFont(new FontUIResource("DialogInput", Font.BOLD, 24));
+//        label_player_data4.setBounds(962, 434, 138, 46);
+//        label_player_data4.addMouseListener(new MouseListener() {
+//        	public void mouseReleased(MouseEvent arg0) {}
+//			public void mousePressed(MouseEvent arg0) {}
+//			public void mouseExited(MouseEvent arg0) {
+//				label_player_data4.setBackground(blue_light);
+//			}
+//			public void mouseEntered(MouseEvent arg0) {
+//				label_player_data4.setBackground(blue_light_changed);
+//			}
+//			public void mouseClicked(MouseEvent arg0) {
+//				//跳转到球员数据信息界面
+//				uiController.changeToPlayerDataPanel(4);
+//			}
+//		});
         
 		
 		this.setLayout(null);
@@ -367,7 +367,7 @@ public class PlayerProfilePanel extends JPanel{
 		this.add(label_player_data1);
 		this.add(label_player_data2);
 		this.add(label_player_data3);
-		this.add(label_player_data4);
+//		this.add(label_player_data4);
 	}
 	
 	//设置属性

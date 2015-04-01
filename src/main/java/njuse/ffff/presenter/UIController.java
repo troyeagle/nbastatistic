@@ -431,7 +431,7 @@ public class UIController implements ControllerService {
 				{ "体重", playerInfo.getWeight() },
 				{ "生日", playerInfo.getBirth() },
 				{ "年龄", String.valueOf(playerInfo.getAge()) },
-				{ "联赛球龄", playerInfo.getNumber() },
+				{ "联赛球龄", playerInfo.getExp() },
 				{ "编号", playerInfo.getNumber() },
 				{ "毕业学校", playerInfo.getSchool() }
 		};
@@ -439,13 +439,13 @@ public class UIController implements ControllerService {
 		PlayerInAverage data = dataService.getPlayerAverage(playerName, emptyFilter);
 		
 		if(data!=null){
-			String[] properties1_total = {"投篮命中数","投篮出手数","三分命中数","三分出手数"
+			String[] properties1 = {"投篮命中数","投篮出手数","三分命中数","三分出手数"
 					,"罚球命中数","罚球出手数"};
-			String[] properties1_average = {"投篮命中数","投篮出手数","投篮命中率","三分命中数","三分出手数","三分命中率"
-					,"罚球命中数","罚球出手数","罚球命中率","真实命中率"};
+			String[] properties1_ratio = {"投篮命中率","三分命中率","罚球命中率","真实命中率"};
 			String[] properties2 = {"篮板数","进攻篮板数","防守篮板数","助攻数","抢断数","盖帽数","失误数","犯规数"};
-			String[] properties3 = {"篮板率","进攻篮板率","防守篮板率","助攻率","抢断率","盖帽率","失误率"};
-			String[] properties4 = {"在场时间","使用率","得分","效率","GmSc效率值"};
+			String[] properties2_ratio = {"篮板率","进攻篮板率","防守篮板率","助攻率","抢断率","盖帽率","失误率"};
+			String[] properties3_total = {"在场时间","得分","效率"};
+			String[] properties3_average = {"在场时间","使用率","得分","效率","GmSc效率值"};
 			
 			double[] total = data.getStatsTotal();
 			double[] average = data.getStatsAverage();
@@ -456,6 +456,7 @@ public class UIController implements ControllerService {
 						,DealDecimal.formatChange(total[2]),DealDecimal.formatChange(total[3])
 						,DealDecimal.formatChange(total[4]),DealDecimal.formatChange(total[5])
 					};
+			
 			Object[][] values_total2 = new Object[1][];
 			values_total2[0] = new Object[]{
 					DealDecimal.formatChange(total[8]),DealDecimal.formatChange(total[6])
@@ -463,28 +464,20 @@ public class UIController implements ControllerService {
 					,DealDecimal.formatChange(total[10]),DealDecimal.formatChange(total[11])
 					,DealDecimal.formatChange(total[12]),DealDecimal.formatChange(total[13])//properties2
 					};
+			
 			Object[][] values_total3 = new Object[1][];
 			values_total3[0] = new Object[]{
-						DealDecimal.formatChange(total[22], 3),DealDecimal.formatChange(total[23], 3)//properties3
-						,DealDecimal.formatChange(total[24], 3),DealDecimal.formatChange(total[25], 3)
-						,DealDecimal.formatChange(total[26], 3),DealDecimal.formatChange(total[27], 3)
+					DealDecimal.formatChange(data.getSecond()/60,3)//properties4
+						,DealDecimal.formatChange(total[14], 3),DealDecimal.formatChange(total[15], 3)//GmSc
 					};
-			Object[][] values_total4 = new Object[1][];
-			values_total4[0] = new Object[]{
-					DealDecimal.formatChange(data.getSecond()/60),DealDecimal.formatChange(total[28], 3)//properties4
-						,DealDecimal.formatChange(total[14], 3),DealDecimal.formatChange(total[15], 3)
-						,DealDecimal.formatChange(total[29], 3)
-					};
+			
 			Object[][] values_average1 = new Object[1][];
 			values_average1[0] = new Object[]{
-					DealDecimal.formatChange(average[0], 3),DealDecimal.formatChange(average[1], 3)
-					,DealDecimal.formatChange(average[29], 3)//properties1
+					DealDecimal.formatChange(average[0], 3),DealDecimal.formatChange(average[1], 3)//properties1
 					,DealDecimal.formatChange(average[2], 3),DealDecimal.formatChange(average[3], 3)
-					,DealDecimal.formatChange(average[28], 3)
 					,DealDecimal.formatChange(average[4], 3),DealDecimal.formatChange(average[5], 3)
-					,DealDecimal.formatChange(average[27], 3)
-					,DealDecimal.formatChange(average[20], 3)
-				};
+			};
+			
 			Object[][] values_average2 = new Object[1][];
 			values_average2[0] = new Object[]{
 					DealDecimal.formatChange(average[8], 3),DealDecimal.formatChange(average[6], 3)
@@ -492,27 +485,41 @@ public class UIController implements ControllerService {
 					,DealDecimal.formatChange(average[10], 3),DealDecimal.formatChange(average[11], 3)
 					,DealDecimal.formatChange(average[12], 3),DealDecimal.formatChange(average[13], 3)
 				};
+			
 			Object[][] values_average3 = new Object[1][];
-			values_average3[0] = new Object[]{DealDecimal.formatChange(average[19], 3)
+			values_average3[0] = new Object[]{
+					DealDecimal.formatChange(data.getSecond()/(60*data.getEffective()), 3)
+					,DealDecimal.formatChange(average[26], 3)//properties3
+					,DealDecimal.formatChange(average[14], 3),DealDecimal.formatChange(average[15], 3)
+					,DealDecimal.formatChange(average[16], 3)
+				};
+			
+			Object[][] values_ratio1 = new Object[1][];
+			values_ratio1[0] = new Object[]{
+					DealDecimal.formatChange(average[29], 3)
+					,DealDecimal.formatChange(average[28], 3)
+					,DealDecimal.formatChange(average[27], 3)
+					,DealDecimal.formatChange(average[17], 3)
+					};
+			
+			Object[][] values_ratio2 = new Object[1][];
+			values_ratio2[0] = new Object[]{DealDecimal.formatChange(average[19], 3)
 					,DealDecimal.formatChange(average[20], 3),DealDecimal.formatChange(average[21], 3)//properties3
 					,DealDecimal.formatChange(average[22], 3),DealDecimal.formatChange(average[23], 3)
 					,DealDecimal.formatChange(average[24], 3),DealDecimal.formatChange(average[25], 3)
-				};
-			Object[][] values_average4 = new Object[1][];
-			values_average4[0] = new Object[]{
-					DealDecimal.formatChange(data.getSecond()/(60*data.getEffective()), 3)
-					,DealDecimal.formatChange(average[28], 3)//properties4
-					,DealDecimal.formatChange(average[14], 3),DealDecimal.formatChange(average[15], 3)
-					,DealDecimal.formatChange(average[29], 3)
 				};
 			
 			PlayerPanel playerPanel = new PlayerPanel();
 			ImageIcon img_icon = new ImageIcon(playerInfo.getPathOfPortrait());
 			Image image = new ImageIcon(playerInfo.getPathOfAction()).getImage();
 			playerPanel.setProfile(playerInfo.getName(), position, img_icon, properties);
-			playerPanel.setData(playerInfo.getName(), image,properties1_total,properties1_average,properties2,properties3,properties4
-							,values_total1,values_total2,values_total3,values_total4
-							,values_average1,values_average2,values_average3,values_average4);
+			playerPanel.setData(playerInfo.getName(), image
+							,properties1,properties1_ratio
+							,properties2,properties2_ratio,
+							properties3_total,properties3_average
+							,values_total1,values_average1,values_ratio1
+							,values_total2,values_average2,values_ratio2
+							,values_total3,values_average3);
 	
 			lastPanel = currentPanel;
 			currentPanel = playerPanel;

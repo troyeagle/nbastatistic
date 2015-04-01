@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
@@ -39,6 +40,7 @@ public class MyInfoTable extends JTable{
 		this.setSelectionForeground(Color.CYAN);
 		//设置表头自动长度
 		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		this.setBorder(new EmptyBorder(0,0,0,0));
 
 		jtableheader.setOpaque(true);
 		jtableheader.setBackground(background);

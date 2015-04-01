@@ -17,10 +17,6 @@ import njuse.ffff.presenter.ControllerService;
 import njuse.ffff.presenter.UIController;
 import njuse.ffff.ui.table.MyTable;
 
-//1）设置表格透明度
-//2）playerProfilePanel界面布局
-//3）快捷搜索透明度，进入效果
-
 @SuppressWarnings("serial")
 public class TeamComparePanel extends JPanel{
 	private final int teamComparePanel_width = 1100;
@@ -292,6 +288,10 @@ public class TeamComparePanel extends JPanel{
 		firstColumn_average.setPreferredWidth(100);
 		firstColumn_average.setMaxWidth(100);
 		firstColumn_average.setMinWidth(100);
+		
+		//设置点击一个单元格，选中该单元格所在列
+		table_teamCompare_average.setColumnSelectionAllowed (true);
+		table_teamCompare_average.setRowSelectionAllowed (false);
 
 		table_teamCompare_average.addMouseListener(new MouseListener() {
 			public void mouseReleased(MouseEvent arg0) {}

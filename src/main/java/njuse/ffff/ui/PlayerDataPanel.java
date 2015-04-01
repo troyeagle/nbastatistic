@@ -42,10 +42,14 @@ public class PlayerDataPanel extends JPanel{
 	private JLabel label_player_data1;
 	private JLabel label_player_data2;
 	private JLabel label_player_data3;
-	private JLabel label_player_data4;
+//	private JLabel label_player_data4;
 	private JLabel label_player_return;
 	private JLabel label_data_arrow;
 	private JLabel label_player_name;
+	
+	private JLabel label_data_total;
+	private JLabel label_data_average;
+	private JLabel label_data_ratio;
 	
 	private int currentTable = 0;//当前显示的表格编号
 	
@@ -57,6 +61,10 @@ public class PlayerDataPanel extends JPanel{
 	private MyInfoTable table_playerInfo1_average;
 	private JScrollPane scrollPane_playerInfo1_average;
 	
+	private DefaultTableModel tableModel_playerInfo1_ratio;
+	private MyInfoTable table_playerInfo1_ratio;
+	private JScrollPane scrollPane_playerInfo1_ratio;
+	
 	private DefaultTableModel tableModel_playerInfo2_total;
 	private MyInfoTable table_playerInfo2_total;
 	private JScrollPane scrollPane_playerInfo2_total;
@@ -64,22 +72,18 @@ public class PlayerDataPanel extends JPanel{
 	private DefaultTableModel tableModel_playerInfo2_average;
 	private MyInfoTable table_playerInfo2_average;
 	private JScrollPane scrollPane_playerInfo2_average;
-	
-	private DefaultTableModel tableModel_playerInfo3_total;
-	private MyInfoTable table_playerInfo3_total;
-	private JScrollPane scrollPane_playerInfo3_total;
 
-	private DefaultTableModel tableModel_playerInfo3_average;
-	private MyInfoTable table_playerInfo3_average;
-	private JScrollPane scrollPane_playerInfo3_average;
+	private DefaultTableModel tableModel_playerInfo2_ratio;
+	private MyInfoTable table_playerInfo2_ratio;
+	private JScrollPane scrollPane_playerInfo2_ratio;
 	
 	private DefaultTableModel tableModel_playerInfo4_total;
 	private MyInfoTable table_playerInfo4_total;
-	private JScrollPane scrollPane_playerInfo4_total;
+	private JScrollPane scrollPane_playerInfo3_total;
 
 	private DefaultTableModel tableModel_playerInfo4_average;
 	private MyInfoTable table_playerInfo4_average;
-	private JScrollPane scrollPane_playerInfo4_average;
+	private JScrollPane scrollPane_playerInfo3_average;
 	
 	public PlayerDataPanel(){
 		setOpaque(false);
@@ -170,7 +174,7 @@ public class PlayerDataPanel extends JPanel{
 		});
         
         //左侧数据引导框2
-        label_player_data2 = new JLabel("各项数据数");
+        label_player_data2 = new JLabel("各项数据");
         label_player_data2.setOpaque(true);
         label_player_data2.setBackground(blue_light);
         label_player_data2.setForeground(Color.WHITE);
@@ -191,7 +195,7 @@ public class PlayerDataPanel extends JPanel{
 		});
         
         //左侧数据引导框3
-        label_player_data3 = new JLabel("各项数据率");
+        label_player_data3 = new JLabel(" 其他数据");
         label_player_data3.setOpaque(true);
         label_player_data3.setBackground(blue_light);
         label_player_data3.setForeground(Color.WHITE);
@@ -211,26 +215,26 @@ public class PlayerDataPanel extends JPanel{
 			}
 		});
         
-        //左侧数据引导框4
-        label_player_data4 = new JLabel(" 其他数据");
-        label_player_data4.setOpaque(true);
-        label_player_data4.setBackground(blue_light);
-        label_player_data4.setForeground(Color.WHITE);
-        label_player_data4.setFont(new FontUIResource("DialogInput", Font.BOLD, 24));
-        label_player_data4.setBounds(0, 434, 138, 46);
-        label_player_data4.addMouseListener(new MouseListener() {
-        	public void mouseReleased(MouseEvent arg0) {}
-			public void mousePressed(MouseEvent arg0) {}
-			public void mouseExited(MouseEvent arg0) {
-				label_player_data4.setBackground(blue_light);
-			}
-			public void mouseEntered(MouseEvent arg0) {
-				label_player_data4.setBackground(blue_light_changed);
-			}
-			public void mouseClicked(MouseEvent arg0) {
-				displayTables(4);
-			}
-		});
+//        //左侧数据引导框4
+//        label_player_data4 = new JLabel(" 其他数据");
+//        label_player_data4.setOpaque(true);
+//        label_player_data4.setBackground(blue_light);
+//        label_player_data4.setForeground(Color.WHITE);
+//        label_player_data4.setFont(new FontUIResource("DialogInput", Font.BOLD, 24));
+//        label_player_data4.setBounds(0, 434, 138, 46);
+//        label_player_data4.addMouseListener(new MouseListener() {
+//        	public void mouseReleased(MouseEvent arg0) {}
+//			public void mousePressed(MouseEvent arg0) {}
+//			public void mouseExited(MouseEvent arg0) {
+//				label_player_data4.setBackground(blue_light);
+//			}
+//			public void mouseEntered(MouseEvent arg0) {
+//				label_player_data4.setBackground(blue_light_changed);
+//			}
+//			public void mouseClicked(MouseEvent arg0) {
+//				displayTables(4);
+//			}
+//		});
         
         //左侧返回球员简介界面框
         label_player_return = new JLabel(" 返回");
@@ -238,7 +242,7 @@ public class PlayerDataPanel extends JPanel{
         label_player_return.setBackground(blue_light);
         label_player_return.setForeground(Color.WHITE);
         label_player_return.setFont(new FontUIResource("DialogInput", Font.BOLD, 24));
-        label_player_return.setBounds(0, 510, 90, 46);
+        label_player_return.setBounds(0, 434, 90, 46);
         label_player_return.addMouseListener(new MouseListener() {
         	public void mouseReleased(MouseEvent arg0) {}
 			public void mousePressed(MouseEvent arg0) {}
@@ -262,6 +266,26 @@ public class PlayerDataPanel extends JPanel{
         label_data_arrow.setIcon(icon_data_arrow);
         
         //表格显示数据
+        label_data_total = new JLabel("总数据");
+        label_data_total.setOpaque(true);
+        label_data_total.setBackground(background);
+        label_data_total.setForeground(Color.white);
+        label_data_total.setFont(new FontUIResource("DialogInput", Font.BOLD, 15));
+        label_data_total.setBounds(260, 180, 50, 18);
+        
+        label_data_average = new JLabel("平均数据");
+        label_data_average.setOpaque(true);
+        label_data_average.setBackground(background);
+        label_data_average.setForeground(Color.white);
+        label_data_average.setFont(new FontUIResource("DialogInput", Font.BOLD, 15));
+        label_data_average.setBounds(260, 320, 70, 18);
+        
+        label_data_ratio = new JLabel("数据率");
+        label_data_ratio.setOpaque(true);
+        label_data_ratio.setBackground(background);
+        label_data_ratio.setForeground(Color.white);
+        label_data_ratio.setFont(new FontUIResource("DialogInput", Font.BOLD, 15));
+        label_data_ratio.setBounds(260, 460, 50, 18);
         
 		
 		this.setLayout(null);
@@ -270,7 +294,7 @@ public class PlayerDataPanel extends JPanel{
 		this.add(label_player_data1);
 		this.add(label_player_data2);
 		this.add(label_player_data3);
-		this.add(label_player_data4);
+//		this.add(label_player_data4);
 		this.add(label_player_return);
 		this.add(label_data_arrow);
 	}
@@ -289,11 +313,13 @@ public class PlayerDataPanel extends JPanel{
 	}
 	
 	//设置表格数据
-	public void setData(String[] properties1_total,String[] properties1_average,String[] properties2,String[] properties3,String[] properties4
-			,Object[][] values_total1,Object[][] values_total2,Object[][] values_total3,Object[][] values_total4
-			,Object[][] values_average1,Object[][] values_average2,Object[][] values_average3,Object[][] values_average4){
+	public void setData(String[] properties1,String[] properties1_ratio,String[] properties2
+			,String[] properties2_ratio,String[] properties3_total,String[] properties3_average
+			,Object[][] values_total1,Object[][] values_average1,Object[][] values_ratio1
+			,Object[][] values_total2,Object[][] values_average2,Object[][] values_ratio2
+			,Object[][] values_total3,Object[][] values_average3){
 		//球员数据表格1
-		tableModel_playerInfo1_total = new DefaultTableModel(values_total1,properties1_total);
+		tableModel_playerInfo1_total = new DefaultTableModel(values_total1,properties1);
 		table_playerInfo1_total = new MyInfoTable(tableModel_playerInfo1_total);
 		
 		scrollPane_playerInfo1_total = new JScrollPane(table_playerInfo1_total);
@@ -301,7 +327,7 @@ public class PlayerDataPanel extends JPanel{
 		scrollPane_playerInfo1_total.getViewport().setOpaque(false);
 		int width1 = 3+table_playerInfo1_total.getColumnModel().getColumn(0).getWidth()*table_playerInfo1_total.getColumnCount();
 		int height1 = 20*(1+values_total1.length);
-		scrollPane_playerInfo1_total.setBounds(200, 160, width1, height1);
+		scrollPane_playerInfo1_total.setBounds(240, 200, width1, height1);
 		
 		//球员数据表格2
 		tableModel_playerInfo2_total = new DefaultTableModel(values_total2,properties2);
@@ -312,40 +338,29 @@ public class PlayerDataPanel extends JPanel{
 		scrollPane_playerInfo2_total.getViewport().setOpaque(false);
 		int width2 = 3+table_playerInfo2_total.getColumnModel().getColumn(0).getWidth()*table_playerInfo2_total.getColumnCount();
 		int height2 = 20*(1+values_total2.length);
-		scrollPane_playerInfo2_total.setBounds(200, 160, width2, height2);
+		scrollPane_playerInfo2_total.setBounds(240, 200, width2, height2);
 		
 		//球员数据表格3
-		tableModel_playerInfo3_total = new DefaultTableModel(values_total3,properties3);
-		table_playerInfo3_total = new MyInfoTable(tableModel_playerInfo3_total);
-		
-		scrollPane_playerInfo3_total = new JScrollPane(table_playerInfo3_total);
-		scrollPane_playerInfo3_total.setOpaque(false);
-		scrollPane_playerInfo3_total.getViewport().setOpaque(false);
-		int width3 = 3+table_playerInfo3_total.getColumnModel().getColumn(0).getWidth()*table_playerInfo3_total.getColumnCount();
-		int height3 = 20*(1+values_total3.length);
-		scrollPane_playerInfo3_total.setBounds(200, 160, width3, height3);
-		
-		//球员数据表格4
-		tableModel_playerInfo4_total = new DefaultTableModel(values_total4,properties4);
+		tableModel_playerInfo4_total = new DefaultTableModel(values_total3,properties3_total);
 		table_playerInfo4_total = new MyInfoTable(tableModel_playerInfo4_total);
 		
-		scrollPane_playerInfo4_total = new JScrollPane(table_playerInfo4_total);
-		scrollPane_playerInfo4_total.setOpaque(false);
-		scrollPane_playerInfo4_total.getViewport().setOpaque(false);
-		int width4 = 3+table_playerInfo4_total.getColumnModel().getColumn(0).getWidth()*table_playerInfo4_total.getColumnCount();
-		int height4 = 20*(1+values_total4.length);
-		scrollPane_playerInfo4_total.setBounds(200, 160, width4, height4);
+		scrollPane_playerInfo3_total = new JScrollPane(table_playerInfo4_total);
+		scrollPane_playerInfo3_total.setOpaque(false);
+		scrollPane_playerInfo3_total.getViewport().setOpaque(false);
+		int width3 = 3+table_playerInfo4_total.getColumnModel().getColumn(0).getWidth()*table_playerInfo4_total.getColumnCount();
+		int height3 = 20*(1+values_total3.length);
+		scrollPane_playerInfo3_total.setBounds(240, 200, width3, height3);
 		
 		//球员数据表格1
-		tableModel_playerInfo1_average = new DefaultTableModel(values_average1,properties1_average);
+		tableModel_playerInfo1_average = new DefaultTableModel(values_average1,properties1);
 		table_playerInfo1_average = new MyInfoTable(tableModel_playerInfo1_average);
 		
 		scrollPane_playerInfo1_average = new JScrollPane(table_playerInfo1_average);
 		scrollPane_playerInfo1_average.setOpaque(false);
 		scrollPane_playerInfo1_average.getViewport().setOpaque(false);
-		int width5 = 3+table_playerInfo1_average.getColumnModel().getColumn(0).getWidth()*table_playerInfo1_average.getColumnCount();
-		int height5 = 20*(1+values_average1.length);
-		scrollPane_playerInfo1_average.setBounds(200, 350, width5, height5);
+		int width4 = 3+table_playerInfo1_average.getColumnModel().getColumn(0).getWidth()*table_playerInfo1_average.getColumnCount();
+		int height4 = 20*(1+values_average1.length);
+		scrollPane_playerInfo1_average.setBounds(240, 340, width4, height4);
 		
 		//球员数据表格2
 		tableModel_playerInfo2_average = new DefaultTableModel(values_average2,properties2);
@@ -354,31 +369,42 @@ public class PlayerDataPanel extends JPanel{
 		scrollPane_playerInfo2_average = new JScrollPane(table_playerInfo2_average);
 		scrollPane_playerInfo2_average.setOpaque(false);
 		scrollPane_playerInfo2_average.getViewport().setOpaque(false);
-		int width6 = 3+table_playerInfo2_average.getColumnModel().getColumn(0).getWidth()*table_playerInfo2_average.getColumnCount();
-		int height6 = 20*(1+values_average2.length);
-		scrollPane_playerInfo2_average.setBounds(200, 350, width6, height6);
+		int width5 = 3+table_playerInfo2_average.getColumnModel().getColumn(0).getWidth()*table_playerInfo2_average.getColumnCount();
+		int height5 = 20*(1+values_average2.length);
+		scrollPane_playerInfo2_average.setBounds(240, 340, width5, height5);
 		
 		//球员数据表格3
-		tableModel_playerInfo3_average = new DefaultTableModel(values_average3,properties3);
-		table_playerInfo3_average = new MyInfoTable(tableModel_playerInfo3_average);
-		
-		scrollPane_playerInfo3_average = new JScrollPane(table_playerInfo3_average);
-		scrollPane_playerInfo3_average.setOpaque(false);
-		scrollPane_playerInfo3_average.getViewport().setOpaque(false);
-		int width7 = 3+table_playerInfo3_average.getColumnModel().getColumn(0).getWidth()*table_playerInfo3_average.getColumnCount();
-		int height7 = 20*(1+values_average3.length);
-		scrollPane_playerInfo3_average.setBounds(200, 350, width7, height7);
-		
-		//球员数据表格4
-		tableModel_playerInfo4_average = new DefaultTableModel(values_average4,properties4);
+		tableModel_playerInfo4_average = new DefaultTableModel(values_average3,properties3_average);
 		table_playerInfo4_average = new MyInfoTable(tableModel_playerInfo4_average);
 		
-		scrollPane_playerInfo4_average = new JScrollPane(table_playerInfo4_average);
-		scrollPane_playerInfo4_average.setOpaque(false);
-		scrollPane_playerInfo4_average.getViewport().setOpaque(false);
-		int width8 = 3+table_playerInfo4_average.getColumnModel().getColumn(0).getWidth()*table_playerInfo4_average.getColumnCount();
-		int height8 = 20*(1+values_average4.length);
-		scrollPane_playerInfo4_average.setBounds(200, 350, width8, height8);
+		scrollPane_playerInfo3_average = new JScrollPane(table_playerInfo4_average);
+		scrollPane_playerInfo3_average.setOpaque(false);
+		scrollPane_playerInfo3_average.getViewport().setOpaque(false);
+		int width6 = 3+table_playerInfo4_average.getColumnModel().getColumn(0).getWidth()*table_playerInfo4_average.getColumnCount();
+		int height6 = 20*(1+values_average3.length);
+		scrollPane_playerInfo3_average.setBounds(240, 340, width6, height6);
+		
+		//球员数据表格1
+		tableModel_playerInfo1_ratio = new DefaultTableModel(values_ratio1,properties1_ratio);
+		table_playerInfo1_ratio = new MyInfoTable(tableModel_playerInfo1_ratio);
+		
+		scrollPane_playerInfo1_ratio = new JScrollPane(table_playerInfo1_ratio);
+		scrollPane_playerInfo1_ratio.setOpaque(false);
+		scrollPane_playerInfo1_ratio.getViewport().setOpaque(false);
+		int width7 = 3+table_playerInfo1_ratio.getColumnModel().getColumn(0).getWidth()*table_playerInfo1_ratio.getColumnCount();
+		int height7 = 20*(1+values_ratio1.length);
+		scrollPane_playerInfo1_ratio.setBounds(240, 480, width7, height7);
+		
+		//球员数据表格2
+		tableModel_playerInfo2_ratio = new DefaultTableModel(values_ratio2,properties2_ratio);
+		table_playerInfo2_ratio = new MyInfoTable(tableModel_playerInfo2_ratio);
+		
+		scrollPane_playerInfo2_ratio = new JScrollPane(table_playerInfo2_ratio);
+		scrollPane_playerInfo2_ratio.setOpaque(false);
+		scrollPane_playerInfo2_ratio.getViewport().setOpaque(false);
+		int width8 = 3+table_playerInfo2_ratio.getColumnModel().getColumn(0).getWidth()*table_playerInfo2_ratio.getColumnCount();
+		int height8 = 20*(1+values_ratio2.length);
+		scrollPane_playerInfo2_ratio.setBounds(240, 480, width8, height8);
 	}
 	
 	public void displayTables(int number){
@@ -387,18 +413,24 @@ public class PlayerDataPanel extends JPanel{
 		case 1:
 			this.remove(scrollPane_playerInfo1_total);
 			this.remove(scrollPane_playerInfo1_average);
+			this.remove(scrollPane_playerInfo1_ratio);
+			this.remove(label_data_total);
+			this.remove(label_data_average);
+			this.remove(label_data_ratio);
 			break;
 		case 2:
 			this.remove(scrollPane_playerInfo2_total);
 			this.remove(scrollPane_playerInfo2_average);
+			this.remove(scrollPane_playerInfo2_ratio);
+			this.remove(label_data_total);
+			this.remove(label_data_average);
+			this.remove(label_data_ratio);
 			break;
 		case 3:
 			this.remove(scrollPane_playerInfo3_total);
 			this.remove(scrollPane_playerInfo3_average);
-			break;
-		case 4:
-			this.remove(scrollPane_playerInfo4_total);
-			this.remove(scrollPane_playerInfo4_average);
+			this.remove(label_data_total);
+			this.remove(label_data_average);
 			break;
 		}
 		this.repaint();
@@ -406,18 +438,24 @@ public class PlayerDataPanel extends JPanel{
 		case 1:
 			this.add(scrollPane_playerInfo1_total,0);
 			this.add(scrollPane_playerInfo1_average,0);
+			this.add(scrollPane_playerInfo1_ratio,0);
+			this.add(label_data_total);
+			this.add(label_data_average);
+			this.add(label_data_ratio);
 			break;
 		case 2:
 			this.add(scrollPane_playerInfo2_total,0);
 			this.add(scrollPane_playerInfo2_average,0);
+			this.add(scrollPane_playerInfo2_ratio,0);
+			this.add(label_data_total);
+			this.add(label_data_average);
+			this.add(label_data_ratio);
 			break;
 		case 3:
 			this.add(scrollPane_playerInfo3_total,0);
 			this.add(scrollPane_playerInfo3_average,0);
-			break;
-		case 4:
-			this.add(scrollPane_playerInfo4_total,0);
-			this.add(scrollPane_playerInfo4_average,0);
+			this.add(label_data_total);
+			this.add(label_data_average);
 			break;
 		}
 		currentTable = number;

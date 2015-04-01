@@ -43,6 +43,10 @@ public class TeamDataPanel extends JPanel{
 	private JLabel label_data_arrow;
 	private JLabel label_team_name;
 	
+	private JLabel label_data_total;
+	private JLabel label_data_average;
+	private JLabel label_data_ratio;
+	
 	private int currentTable = 0;//当前显示的表格编号
 	
 	private DefaultTableModel tableModel_teamInfo1_total;
@@ -237,7 +241,26 @@ public class TeamDataPanel extends JPanel{
         label_data_arrow.setIcon(icon_data_arrow);
         
         //表格显示数据
+        label_data_total = new JLabel("总数据");
+        label_data_total.setOpaque(true);
+        label_data_total.setBackground(background);
+        label_data_total.setForeground(Color.white);
+        label_data_total.setFont(new FontUIResource("DialogInput", Font.BOLD, 15));
+        label_data_total.setBounds(260, 180, 50, 18);
         
+        label_data_average = new JLabel("平均数据");
+        label_data_average.setOpaque(true);
+        label_data_average.setBackground(background);
+        label_data_average.setForeground(Color.white);
+        label_data_average.setFont(new FontUIResource("DialogInput", Font.BOLD, 15));
+        label_data_average.setBounds(260, 320, 70, 18);
+        
+        label_data_ratio = new JLabel("数据率");
+        label_data_ratio.setOpaque(true);
+        label_data_ratio.setBackground(background);
+        label_data_ratio.setForeground(Color.white);
+        label_data_ratio.setFont(new FontUIResource("DialogInput", Font.BOLD, 15));
+        label_data_ratio.setBounds(260, 460, 50, 18);
 		
 		this.setLayout(null);
 		this.add(label_team_name);
@@ -260,7 +283,7 @@ public class TeamDataPanel extends JPanel{
 			,Object[][] values_total1,Object[][] values_average1,Object[][] values_ratio1
 			,Object[][] values_total2,Object[][] values_average2,Object[][] values_ratio2
 			,Object[][] values3_1,Object[][] values3_2){
-		//球员数据表格1
+		//球队数据表格1
 		tableModel_teamInfo1_total = new DefaultTableModel(values_total1,properties1);
 		table_teamInfo1_total = new MyInfoTable(tableModel_teamInfo1_total);
 		
@@ -269,9 +292,9 @@ public class TeamDataPanel extends JPanel{
 		scrollPane_teamInfo1_total.getViewport().setOpaque(false);
 		int width1 = 3+table_teamInfo1_total.getColumnModel().getColumn(0).getWidth()*table_teamInfo1_total.getColumnCount();
 		int height1 = 20*(1+values_total1.length);
-		scrollPane_teamInfo1_total.setBounds(200, 160, width1, height1);
+		scrollPane_teamInfo1_total.setBounds(240, 200, width1, height1);
 		
-		//球员数据表格2
+		//球队数据表格2
 		tableModel_teamInfo2_total = new DefaultTableModel(values_total2,properties2);
 		table_teamInfo2_total = new MyInfoTable(tableModel_teamInfo2_total);
 		
@@ -280,9 +303,9 @@ public class TeamDataPanel extends JPanel{
 		scrollPane_teamInfo2_total.getViewport().setOpaque(false);
 		int width2 = 3+table_teamInfo2_total.getColumnModel().getColumn(0).getWidth()*table_teamInfo2_total.getColumnCount();
 		int height2 = 20*(1+values_total2.length);
-		scrollPane_teamInfo2_total.setBounds(200, 160, width2, height2);
+		scrollPane_teamInfo2_total.setBounds(240, 200, width2, height2);
 		
-		//球员数据表格3
+		//球队数据表格3
 		tableModel_teamInfo3_1 = new DefaultTableModel(values3_1,properties3);
 		table_teamInfo3_1 = new MyInfoTable(tableModel_teamInfo3_1);
 		
@@ -291,10 +314,10 @@ public class TeamDataPanel extends JPanel{
 		scrollPane_teamInfo3_1.getViewport().setOpaque(false);
 		int width3 = 3+table_teamInfo3_1.getColumnModel().getColumn(0).getWidth()*table_teamInfo3_1.getColumnCount();
 		int height3 = 20*(1+values3_1.length);
-		scrollPane_teamInfo3_1.setBounds(200, 160, width3, height3);
+		scrollPane_teamInfo3_1.setBounds(240, 200, width3, height3);
 		
 		
-		//球员数据表格1
+		//球队数据表格1
 		tableModel_teamInfo1_average = new DefaultTableModel(values_average1,properties1);
 		table_teamInfo1_average = new MyInfoTable(tableModel_teamInfo1_average);
 		
@@ -303,9 +326,9 @@ public class TeamDataPanel extends JPanel{
 		scrollPane_teamInfo1_average.getViewport().setOpaque(false);
 		int width4 = 3+table_teamInfo1_average.getColumnModel().getColumn(0).getWidth()*table_teamInfo1_average.getColumnCount();
 		int height4 = 20*(1+values_average1.length);
-		scrollPane_teamInfo1_average.setBounds(200, 320, width4, height4);
+		scrollPane_teamInfo1_average.setBounds(240, 340, width4, height4);
 		
-		//球员数据表格2
+		//球队数据表格2
 		tableModel_teamInfo2_average = new DefaultTableModel(values_average2,properties2);
 		table_teamInfo2_average = new MyInfoTable(tableModel_teamInfo2_average);
 		
@@ -314,9 +337,9 @@ public class TeamDataPanel extends JPanel{
 		scrollPane_teamInfo2_average.getViewport().setOpaque(false);
 		int width5 = 3+table_teamInfo2_average.getColumnModel().getColumn(0).getWidth()*table_teamInfo2_average.getColumnCount();
 		int height5 = 20*(1+values_average2.length);
-		scrollPane_teamInfo2_average.setBounds(200, 320, width5, height5);
+		scrollPane_teamInfo2_average.setBounds(240, 340, width5, height5);
 		
-		//球员数据表格3
+		//球队数据表格3
 		tableModel_teamInfo3_2 = new DefaultTableModel(values3_2,properties3_2);
 		table_teamInfo3_2 = new MyInfoTable(tableModel_teamInfo3_2);
 		
@@ -325,9 +348,9 @@ public class TeamDataPanel extends JPanel{
 		scrollPane_teamInfo3_2.getViewport().setOpaque(false);
 		int width6 = 3+table_teamInfo3_2.getColumnModel().getColumn(0).getWidth()*table_teamInfo3_2.getColumnCount();
 		int height6 = 20*(1+values3_2.length);
-		scrollPane_teamInfo3_2.setBounds(200, 350, width6, height6);
+		scrollPane_teamInfo3_2.setBounds(240, 340, width6, height6);
 		
-		//球员数据表格1_2
+		//球队数据表格1_2
 		tableModel_teamInfo1_ratio = new DefaultTableModel(values_ratio1,properties1_2);
 		table_teamInfo1_ratio = new MyInfoTable(tableModel_teamInfo1_ratio);
 		
@@ -336,9 +359,9 @@ public class TeamDataPanel extends JPanel{
 		scrollPane_teamInfo1_ratio.getViewport().setOpaque(false);
 		int width7 = 3+table_teamInfo1_ratio.getColumnModel().getColumn(0).getWidth()*table_teamInfo1_ratio.getColumnCount();
 		int height7 = 20*(1+values_ratio1.length);
-		scrollPane_teamInfo1_ratio.setBounds(200, 480, width7, height7);
+		scrollPane_teamInfo1_ratio.setBounds(240, 480, width7, height7);
 				
-		//球员数据表格2_2
+		//球队数据表格2_2
 		tableModel_teamInfo2_ratio = new DefaultTableModel(values_ratio2,properties2_2);
 		table_teamInfo2_ratio = new MyInfoTable(tableModel_teamInfo2_ratio);
 		
@@ -347,7 +370,7 @@ public class TeamDataPanel extends JPanel{
 		scrollPane_teamInfo2_ratio.getViewport().setOpaque(false);
 		int width8 = 3+table_teamInfo2_ratio.getColumnModel().getColumn(0).getWidth()*table_teamInfo2_ratio.getColumnCount();
 		int height8 = 20*(1+values_ratio2.length);
-		scrollPane_teamInfo2_ratio.setBounds(200, 480, width8, height8);
+		scrollPane_teamInfo2_ratio.setBounds(240, 480, width8, height8);
 	}
 	
 	public void displayTables(int number){
@@ -357,11 +380,17 @@ public class TeamDataPanel extends JPanel{
 			this.remove(scrollPane_teamInfo1_total);
 			this.remove(scrollPane_teamInfo1_average);
 			this.remove(scrollPane_teamInfo1_ratio);
+			this.remove(label_data_total);
+			this.remove(label_data_average);
+			this.remove(label_data_ratio);
 			break;
 		case 2:
 			this.remove(scrollPane_teamInfo2_total);
 			this.remove(scrollPane_teamInfo2_average);
 			this.remove(scrollPane_teamInfo2_ratio);
+			this.remove(label_data_total);
+			this.remove(label_data_average);
+			this.remove(label_data_ratio);
 			break;
 		case 3:
 			this.remove(scrollPane_teamInfo3_1);
@@ -374,11 +403,17 @@ public class TeamDataPanel extends JPanel{
 			this.add(scrollPane_teamInfo1_total,0);
 			this.add(scrollPane_teamInfo1_average,0);
 			this.add(scrollPane_teamInfo1_ratio,0);
+			this.add(label_data_total,0);
+			this.add(label_data_average,0);
+			this.add(label_data_ratio,0);
 			break;
 		case 2:
 			this.add(scrollPane_teamInfo2_total,0);
 			this.add(scrollPane_teamInfo2_average,0);
 			this.add(scrollPane_teamInfo2_ratio,0);
+			this.add(label_data_total,0);
+			this.add(label_data_average,0);
+			this.add(label_data_ratio,0);
 			break;
 		case 3:
 			this.add(scrollPane_teamInfo3_1,0);

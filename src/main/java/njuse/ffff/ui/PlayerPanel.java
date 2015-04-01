@@ -39,13 +39,19 @@ public class PlayerPanel extends JPanel{
 		playerProfile.setPhoto(img_portrait);
 	}
 	
-	public void setData(String name,Image img_action,String[] properties1_total,String[] properties_average
-			,String[] properties2,String[] properties3,String[] properties4
-			,Object[][] values_total1,Object[][] values_total2,Object[][] values_total3,Object[][] values_total4
-			,Object[][] values_average1,Object[][] values_average2,Object[][] values_average3,Object[][] values_average4){
+	public void setData(String name,Image img_action
+			,String[] properties1,String[] properties1_ratio
+			,String[] properties2,String[] properties2_ratio
+			,String[] properties3_total,String[] properties3_average
+			,Object[][] values_total1,Object[][] values_average1,Object[][] values_ratio1
+			,Object[][] values_total2,Object[][] values_average2,Object[][] values_ratio2
+			,Object[][] values_total3,Object[][] values_average3){
 		playerData.setAction(name,img_action);
-		playerData.setData(properties1_total,properties_average, properties2, properties3, properties4, values_total1, values_total2
-				, values_total3, values_total4, values_average1, values_average2, values_average3, values_average4);
+		playerData.setData(properties1,properties1_ratio, properties2
+				, properties2_ratio, properties3_total, properties3_average
+				, values_total1, values_average1, values_ratio1
+				, values_total2, values_average2, values_ratio2
+				, values_total3, values_average3);
 	}
 	
 	public void displayProfile(){

@@ -282,6 +282,10 @@ public class PlayerComparePanel extends JPanel{
 		firstColumn_total.setPreferredWidth(150);
 		firstColumn_total.setMaxWidth(150);
 		firstColumn_total.setMinWidth(150);
+		
+		//设置点击一个单元格，选中该单元格所在列
+		table_playerCompare_total.setColumnSelectionAllowed (true);
+		table_playerCompare_total.setRowSelectionAllowed (false);
 
 		table_playerCompare_total.addMouseListener(new MouseListener() {
 			public void mouseReleased(MouseEvent arg0) {}
@@ -332,6 +336,10 @@ public class PlayerComparePanel extends JPanel{
 		firstColumn_average.setPreferredWidth(150);
 		firstColumn_average.setMaxWidth(150);
 		firstColumn_average.setMinWidth(150);
+		
+		//设置点击一个单元格，选中该单元格所在列
+		table_playerCompare_average.setColumnSelectionAllowed (true);
+		table_playerCompare_average.setRowSelectionAllowed (false);
 
 		table_playerCompare_average.addMouseListener(new MouseListener() {
 			public void mouseReleased(MouseEvent arg0) {}

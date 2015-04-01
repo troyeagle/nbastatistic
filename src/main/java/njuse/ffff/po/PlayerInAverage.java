@@ -325,6 +325,10 @@ public class PlayerInAverage {
 	public String getLeague() {
 		return league;
 	}
+	
+	public boolean getDoubledouble(){
+		return doubledouble;
+	}
 
 	public void calAllAverage() {
 
