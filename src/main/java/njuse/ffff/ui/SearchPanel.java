@@ -6,8 +6,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -81,16 +79,6 @@ public class SearchPanel extends JPanel{
 				if(text_searchInfo.getText().equals("请输入球队名/球员名进行搜索")){
 					text_searchInfo.setText("");
 				}
-			}
-		});
-		text_searchInfo.addInputMethodListener(new InputMethodListener() {
-			public void inputMethodTextChanged(InputMethodEvent arg0) {
-				// TODO 自动生成的方法存根
-				
-			}
-			public void caretPositionChanged(InputMethodEvent arg0) {
-				// TODO 自动生成的方法存根
-				
 			}
 		});
 		

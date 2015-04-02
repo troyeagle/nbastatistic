@@ -382,9 +382,9 @@ public class MyTable extends JTable{
 							return -1;
 						}
 					}else if((String.valueOf(obj1)).equals("NaN")){
-						return 1;
-					}else if((String.valueOf(obj2)).equals("NaN")){
 						return -1;
+					}else if((String.valueOf(obj2)).equals("NaN")){
+						return 1;
 					}
 					else {
 						return cnCollator.compare(obj1, obj2);
@@ -407,9 +407,9 @@ public class MyTable extends JTable{
 						return 1;
 					}
 				}else if((String.valueOf(obj1)).equals("NaN")){
-					return -1;
-				}else if((String.valueOf(obj2)).equals("NaN")){
 					return 1;
+				}else if((String.valueOf(obj2)).equals("NaN")){
+					return -1;
 				} 
 				else {
 					return cnCollator.compare(obj2, obj1);

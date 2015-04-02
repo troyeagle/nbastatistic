@@ -222,7 +222,7 @@ public class TeamComparePanel extends JPanel{
 		this.add(label_data_total);
 		this.add(label_data_average);
 	}
-	
+	//TODO
 	public void setTeamsInfo(String[] properties_total,Object[][] values_total,String[] propertices_average,Object[][] values_average){
 		//球队信息比较表格----总数据
 		tableModel_teamCompare_total = new DefaultTableModel(values_total,properties_total){
@@ -249,12 +249,10 @@ public class TeamComparePanel extends JPanel{
 			public void mouseReleased(MouseEvent arg0) {}
 			public void mousePressed(MouseEvent arg0) {}
 			public void mouseExited(MouseEvent e) {
-				// TODO 自动生成的方法存根
-				
+				//鼠标移出第三列的某一个单元格，该单元格暗淡
 			}
 			public void mouseEntered(MouseEvent e) {
 				//鼠标进入第三列的某一个单元格，该单元格高亮
-				
 			}
 			public void mouseClicked(MouseEvent e) {
 				// 点击某个球员或者球队，跳转到该球员或球队界面
@@ -297,12 +295,10 @@ public class TeamComparePanel extends JPanel{
 			public void mouseReleased(MouseEvent arg0) {}
 			public void mousePressed(MouseEvent arg0) {}
 			public void mouseExited(MouseEvent e) {
-				// TODO 自动生成的方法存根
-				
+				//鼠标移出第三列的某一个单元格，该单元格暗淡
 			}
 			public void mouseEntered(MouseEvent e) {
 				//鼠标进入第三列的某一个单元格，该单元格高亮
-				
 			}
 			public void mouseClicked(MouseEvent e) {
 				// 点击某个球员或者球队，跳转到该球员或球队界面

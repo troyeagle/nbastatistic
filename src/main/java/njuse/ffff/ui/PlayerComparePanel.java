@@ -267,7 +267,7 @@ public class PlayerComparePanel extends JPanel{
 	 * @param values_total
 	 * @param properties_average
 	 * @param values_average
-	 */
+	 *///TODO
 	public void setPlayersTotalInfo(String[] properties_total,Object[][] values_total,ArrayList<PlayerInAverage> players){
 		//球员信息比较表格----总数据
 		tableModel_playerCompare_total = new DefaultTableModel(values_total,properties_total){
@@ -291,12 +291,10 @@ public class PlayerComparePanel extends JPanel{
 			public void mouseReleased(MouseEvent arg0) {}
 			public void mousePressed(MouseEvent arg0) {}
 			public void mouseExited(MouseEvent e) {
-				// TODO 自动生成的方法存根
-				
+				//鼠标移出第三列的某一个单元格，该单元格暗淡
 			}
 			public void mouseEntered(MouseEvent e) {
 				//鼠标进入第三列的某一个单元格，该单元格高亮
-				
 			}
 			public void mouseClicked(MouseEvent e) {
 				// 点击某个球员或者球队，跳转到该球员或球队界面
@@ -345,12 +343,10 @@ public class PlayerComparePanel extends JPanel{
 			public void mouseReleased(MouseEvent arg0) {}
 			public void mousePressed(MouseEvent arg0) {}
 			public void mouseExited(MouseEvent e) {
-				// TODO 自动生成的方法存根
-				
+				//鼠标移出第三列的某一个单元格，该单元格暗淡
 			}
 			public void mouseEntered(MouseEvent e) {
 				//鼠标进入第三列的某一个单元格，该单元格高亮
-				
 			}
 			public void mouseClicked(MouseEvent e) {
 				// 点击某个球员或者球队，跳转到该球员或球队界面
@@ -367,10 +363,6 @@ public class PlayerComparePanel extends JPanel{
 		scrollPane_playerCompare_average.setOpaque(false);
 		scrollPane_playerCompare_average.getViewport().setOpaque(false);
 		scrollPane_playerCompare_average.setBounds(25, 160, 1050, 515);
-	}
-	
-	public void removeTotalTable(){
-		this.remove(scrollPane_playerCompare_total);
 	}
 	
 	public void displayMenu(){

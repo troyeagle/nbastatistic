@@ -467,12 +467,17 @@ public class UIController implements ControllerService {
 			position = "后卫";
 			break;
 		}
+		//退休球员
+		String experience = playerInfo.getExp();
+		if(experience.equals("R")){
+			experience = "Retired";
+		}
 		String[][] properties = {
 				{ "身高", playerInfo.getHeight() },
 				{ "体重", playerInfo.getWeight() },
 				{ "生日", playerInfo.getBirth() },
 				{ "年龄", String.valueOf(playerInfo.getAge()) },
-				{ "联赛球龄", playerInfo.getExp() },
+				{ "联赛球龄", experience },
 				{ "编号", playerInfo.getNumber() },
 				{ "毕业学校", playerInfo.getSchool() }
 		};
