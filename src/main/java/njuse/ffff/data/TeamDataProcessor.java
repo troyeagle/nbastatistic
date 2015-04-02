@@ -43,7 +43,7 @@ public class TeamDataProcessor {
 			
 			String[] split = info.split("│");
 			split[0]=split[0].substring(1);
-			split[6]=split[6].substring(0, 3);
+			split[6]=split[6].substring(0, 4);
 			
 			for(int j = 0;j<6;j++){
 				split[j]=split[j].trim();
