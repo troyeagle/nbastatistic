@@ -67,6 +67,8 @@ public class MatchPO implements Serializable{
 		teamStatA = new TeamInMatch(this.teamA,playerInTeamA,teamStatB,scoreA,scoreB);
 		teamStatB = new TeamInMatch(this.teamB,playerInTeamB,teamStatA,scoreA,scoreB);
 		teamStatA.rival=teamStatB;
+		teamStatA.calRounds();
+		teamStatB.calRounds();
 		teamStatA.calAll();//计算球队的进阶数据
 		teamStatB.calAll();
 

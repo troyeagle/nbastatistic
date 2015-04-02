@@ -145,6 +145,13 @@ public class TeamInAverage implements Serializable {
 		turnover /= teamStats.size();
 		foul /= teamStats.size();
 		scores /= teamStats.size();
+		rivalScores /= teamStats.size();
+		rivalRounds/= teamStats.size();
+		rivalOffensiveRebound/=teamStats.size();
+		rivalDefensiveRebound/=teamStats.size();
+		rivalRebounds/=teamStats.size();
+		rivalFieldGoalAttempted/=teamStats.size();
+		rivalThreePointerAttempted/=teamStats.size();
 		calAll();
 		winningRatio = (double) numOfWins / numOfMatches;
 		makeArray();

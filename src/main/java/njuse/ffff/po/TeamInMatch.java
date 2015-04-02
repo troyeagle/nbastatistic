@@ -2,13 +2,14 @@ package njuse.ffff.po;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
 /**
- * 处理一支球队在一场比赛中的数据
- * 由MatchPO构建
+ * 处理一支球队在一场比赛中的数据 由MatchPO构建
+ * 
  * @author Mebleyev.G.Longinus
- *@see MatchPO
+ * @see MatchPO
  */
-public class TeamInMatch implements Serializable{
+public class TeamInMatch implements Serializable {
 	/**
 	 * 
 	 */
@@ -50,10 +51,11 @@ public class TeamInMatch implements Serializable{
 			TeamInMatch rival, ArrayList<Integer> score,
 			ArrayList<Integer> rivalScore) {
 		this.nameAbbr = name;
-		if(score.get(0)>rivalScore.get(0)){
+		if (score.get(0) > rivalScore.get(0)) {
 			win = true;
-			
-		}this.scores+=score.get(0);
+
+		}
+		this.scores += score.get(0);
 		for (PlayerInMatch p : players) {
 			secondInTotal += p.second;
 			fieldGoalMade += p.fieldGoalMade;
@@ -74,11 +76,17 @@ public class TeamInMatch implements Serializable{
 			this.rival = rival;
 		}
 	}
+
 	/**
 	 * 计算所有进阶数据
 	 */
-	public void calAll() {
+
+	public void calRounds() {
 		calOffensiveRounds();
+	}
+
+	public void calAll() {
+//		calOffensiveRounds();
 		calFreeThrowRatio();
 		calThreePointerRatio();
 		calFieldGoalRatio();
@@ -87,10 +95,9 @@ public class TeamInMatch implements Serializable{
 		calReboundEf();
 		calStealEf();
 		calAssistEf();
-		//FIXME
-		//System.out.println(this.toString());
+		// FIXME
+		// System.out.println(this.toString());
 	}
-
 
 	@Override
 	public String toString() {
@@ -105,13 +112,13 @@ public class TeamInMatch implements Serializable{
 				+ rebound + ", assist=" + assist + ", steal=" + steal
 				+ ", block=" + block + ", turnover=" + turnover + ", foul="
 				+ foul + ", scores=" + scores + ", tempScores=" + tempScores
-				 + ", fieldGoalRatio=" + fieldGoalRatio
-				+ ", threePointerRatio=" + threePointerRatio
-				+ ", freeThrowRatio=" + freeThrowRatio + ", myRounds="
-				+ myRounds + ", offensiveEf=" + offensiveEf + ", defensiveEf="
-				+ defensiveEf + ", offensiveReboundEf=" + offensiveReboundEf
-				+ ", defensiveReboundEf=" + defensiveReboundEf + ", stealEf="
-				+ stealEf + ", assistEf=" + assistEf + "]";
+				+ ", fieldGoalRatio=" + fieldGoalRatio + ", threePointerRatio="
+				+ threePointerRatio + ", freeThrowRatio=" + freeThrowRatio
+				+ ", myRounds=" + myRounds + ", offensiveEf=" + offensiveEf
+				+ ", defensiveEf=" + defensiveEf + ", offensiveReboundEf="
+				+ offensiveReboundEf + ", defensiveReboundEf="
+				+ defensiveReboundEf + ", stealEf=" + stealEf + ", assistEf="
+				+ assistEf + "]";
 	}
 
 	void calOffensiveRounds() {
