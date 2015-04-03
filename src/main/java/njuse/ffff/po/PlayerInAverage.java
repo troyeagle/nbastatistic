@@ -69,6 +69,10 @@ public class PlayerInAverage {
 	private double rivalRounds;
 
 	private boolean doubledouble;
+	
+	private double recent5ScoreAdv;
+	private double recent5BlockAdv;
+	private double recent5AssistAdv;
 	// 关键变量。用于存放该球员所有比赛数据
 	ArrayList<PlayerInMatchExtended> playerStats;
 
@@ -238,12 +242,13 @@ public class PlayerInAverage {
 
 	/**
 	 * 迭代二使用的增量读取数据
-	 * 
+	 * 包含对最近五场提升率的计算
 	 * @param p
 	 */
 	public void calAverageAsArrayNew(PlayerInMatchExtended p) {
 		addOneMatchToAll(p);
 		averageProcess();
+		calRecentFive();
 	}
 
 	/*
@@ -483,6 +488,42 @@ public class PlayerInAverage {
 		if ((GmSc) == Double.NaN) {
 			(GmSc) = 0;
 		}
+	}
+	/**
+	 * 关键算法
+	 */
+	void calRecentFive(){
+		if(playerStats.size()<6){
+			return;
+		}
+		PlayerInAverage history = new PlayerInAverage(this.name);
+		for(int i=0;i<playerStats.size()-5;i++){
+			history.addOneMatchStat(playerStats.get(i));
+		}
+		history.calAverageAsArray();
+		
+		PlayerInAverage recent5 = new PlayerInAverage(this.name);
+		for(int i=playerStats.size()-5;i<playerStats.size();i++){
+			recent5.addOneMatchStat(playerStats.get(i));
+		}
+		recent5.calAverageAsArray();
+		
+		recent5ScoreAdv=recent5.statsAverage[14]/history.statsAverage[14]-1;
+		recent5BlockAdv=recent5.statsAverage[11]/history.statsAverage[11]-1;
+		recent5AssistAdv=recent5.statsAverage[9]/history.statsAverage[9]-1;
+		
+		
+	}
+	public double getRecent5ScoreAdv() {
+		return recent5ScoreAdv;
+	}
+
+	public double getRecent5BlockAdv() {
+		return recent5BlockAdv;
+	}
+
+	public double getRecent5AssistAdv() {
+		return recent5AssistAdv;
 	}
 
 	public String getTeamName() {

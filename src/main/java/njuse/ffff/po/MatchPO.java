@@ -8,7 +8,7 @@ import java.util.Date;
  * @author Mebleyev.G.Longinus
  *
  */
-public class MatchPO implements Serializable{
+public class MatchPO implements Serializable,Comparable<MatchPO>{
 	/**
 	 * 
 	 */
@@ -94,6 +94,15 @@ public class MatchPO implements Serializable{
 	}
 	public TeamInMatch getTeamStatB() {
 		return teamStatB;
+	}
+	@Override
+	public String toString() {
+		return "Match [name=" + name + ", date=" + date + "]";
+	}
+	@Override
+	public int compareTo(MatchPO p) {
+		// TODO Auto-generated method stub
+		return this.date.compareTo(p.date);
 	}
 	
 }

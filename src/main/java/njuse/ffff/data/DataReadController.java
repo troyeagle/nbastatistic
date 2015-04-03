@@ -167,7 +167,7 @@ public class DataReadController implements DataReaderService {
 
 	private void averageProcessForMatch(MatchPO m){
 		for(TeamInAverage ta:teamInAverage){
-			if(ta.getAbbr().equals(m.getName())){
+			if(ta.getAbbr().equals(m.getTeamA())){
 				ta.addMatch(m.getTeamStatA());
 			}else if(ta.getAbbr().equals(m.getTeamB())){
 				ta.addMatch(m.getTeamStatB());

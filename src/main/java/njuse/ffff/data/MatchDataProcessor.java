@@ -13,13 +13,16 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import njuse.ffff.po.MatchPO;
 import njuse.ffff.po.PlayerInMatch;
 /**
  * Read Match info
  * 在迭代二需要进行增量读取的修改
+ * 4.3修改完成
  * @author Mebleyev.G.Longinus
  *
  */
@@ -85,6 +88,8 @@ public class MatchDataProcessor {
 	}
 
 	public void processAll(){
+		List<MatchPO> ma = matches;
+		Collections.sort(ma);
 		for(MatchPO m:matches){
 			m.teamProcess();
 		}
@@ -105,11 +110,16 @@ public class MatchDataProcessor {
 			scoreB = new ArrayList<Integer>();
 
 			MatchPO match;
-
+			//关于日期处理和总分处理
 			BufferedReader br = new BufferedReader(fr);
 			String[] total = br.readLine().split(";");
-			
-			DateFormat df = new SimpleDateFormat("MM-dd");
+			String year[] = fileName.substring(0, 5).split("-");
+			if(total[0].startsWith("1")||total[0].startsWith("09")){
+				total[0]=year[0]+"-"+total[0];
+			}else{
+				total[0]=year[1]+"-"+total[0];
+			}
+			DateFormat df = new SimpleDateFormat("yy-MM-dd");
 			date = df.parse(total[0]);
 			teamA = total[1].split("-")[0];
 			teamB = total[1].split("-")[1];
