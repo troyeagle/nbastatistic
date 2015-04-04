@@ -14,15 +14,19 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.FontUIResource;
 
-import njuse.ffff.presenter.ControllerService;
-import njuse.ffff.presenter.UIController;
+import njuse.ffff.presenter.TotalUIController;
+import njuse.ffff.presenter.playerController.PlayerInfoController;
+import njuse.ffff.presenterService.TotalControlService;
+import njuse.ffff.presenterService.playerService.PlayerInfoService;
 
 @SuppressWarnings("serial")
 public class PlayerProfilePanel extends JPanel{
 	private final int playerProfilePanel_width = 1100;
 	private final int playerProfilePanel_height = 700;
 	
-	private ControllerService uiController;
+//	private ControllerService uiController;
+	private TotalControlService totalController;
+	private PlayerInfoService playerInfoController;
 	
 	private Color background = new Color(99,43,142);
 	private Color blue_light = new Color(46,117,182);
@@ -57,7 +61,9 @@ public class PlayerProfilePanel extends JPanel{
 		this.setBackground(background);
 		this.setVisible(true);
 		
-		uiController = UIController.getInstance();
+//		uiController = UIController.getInstance();
+		totalController = TotalUIController.getInstance();
+		playerInfoController = PlayerInfoController.getInstance();
 		
 		//左指向箭头，回退
 		label_arrow_left = new JLabel();
@@ -78,7 +84,8 @@ public class PlayerProfilePanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//回退到上个界面
-				uiController.backToLastPanel();
+//				uiController.backToLastPanel();
+				totalController.backToLastPanel();
 			}
 		});
 		
@@ -273,7 +280,8 @@ public class PlayerProfilePanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到球员数据信息界面
-				uiController.changeToPlayerDataPanel(1);
+//				uiController.changeToPlayerDataPanel(1);
+				playerInfoController.changeToPlayerDataPanel(1);
 			}
 		});
         
@@ -295,7 +303,8 @@ public class PlayerProfilePanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到球员数据信息界面
-				uiController.changeToPlayerDataPanel(2);
+//				uiController.changeToPlayerDataPanel(2);
+				playerInfoController.changeToPlayerDataPanel(2);
 			}
 		});
         
@@ -317,7 +326,8 @@ public class PlayerProfilePanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到球员数据信息界面
-				uiController.changeToPlayerDataPanel(3);
+//				uiController.changeToPlayerDataPanel(3);
+				playerInfoController.changeToPlayerDataPanel(3);
 			}
 		});
         

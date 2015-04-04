@@ -8,15 +8,25 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import njuse.ffff.presenter.ControllerService;
-import njuse.ffff.presenter.UIController;
+import njuse.ffff.presenter.SearchController;
+import njuse.ffff.presenter.playerController.PlayerCompareController;
+import njuse.ffff.presenter.playerController.PlayerFilterController;
+import njuse.ffff.presenter.teamController.TeamCompareController;
+import njuse.ffff.presenterService.SearchService;
+import njuse.ffff.presenterService.playerService.PlayerCompareService;
+import njuse.ffff.presenterService.playerService.PlayerFilterService;
+import njuse.ffff.presenterService.teamService.TeamCompareService;
 
 @SuppressWarnings("serial")
 public class MenuPanel extends JPanel{
 	private final int titlePanel_width = 150;
 	private final int titlePanel_height = 200;
 	
-	private ControllerService uiController;
+//	private ControllerService uiController;
+	private PlayerCompareService playerCompareController;
+	private TeamCompareService teamCompareController;
+	private PlayerFilterService playerFilterController;
+	private SearchService searchController;
 	
 	private Color background = new Color(170,200,228);
 	private String img_search_URL = "picture/menuItem/search.jpg";
@@ -47,7 +57,11 @@ public class MenuPanel extends JPanel{
 		this.setBackground(background);
 		this.setVisible(true);
 		
-		uiController = UIController.getInstance();
+//		uiController = UIController.getInstance();
+		playerCompareController = PlayerCompareController.getInstance();
+		teamCompareController = TeamCompareController.getInstance();
+		playerFilterController = PlayerFilterController.getInstance();
+		searchController = SearchController.getInstance();
 		
 		//搜索界面按钮
 		label_searchPanel = new JLabel();
@@ -55,6 +69,23 @@ public class MenuPanel extends JPanel{
 		ImageIcon icon = new ImageIcon(img_search_URL);
 		label_searchPanel.setIcon(icon);
 		label_searchPanel.setBounds(0, 0, 150, 40);
+		label_searchPanel.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent arg0) {
+				ImageIcon icon = new ImageIcon(img_search_URL);
+				label_searchPanel.setIcon(icon);
+			}
+			public void mouseEntered(MouseEvent arg0) {
+				ImageIcon icon_changed = new ImageIcon(img_search_changed_URL);
+				label_searchPanel.setIcon(icon_changed);
+			}
+			public void mouseClicked(MouseEvent arg0) {
+				//设置球队横向比较界面
+//				uiController.setTeamComparePanel();
+				searchController.setSearchPanel();
+			}
+		});
 		
 		//球队横向对比界面按钮
 		label_teamComparePanel = new JLabel();
@@ -74,8 +105,9 @@ public class MenuPanel extends JPanel{
 				label_teamComparePanel.setIcon(icon_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO 设置球队横向比较界面
-				uiController.setTeamComparePanel();
+				//设置球队横向比较界面
+//				uiController.setTeamComparePanel();
+				teamCompareController.setTeamComparePanel();
 			}
 		});
 		
@@ -97,8 +129,9 @@ public class MenuPanel extends JPanel{
 				label_playerComparePanel.setIcon(icon_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO 设置球员横向比较界面
-				uiController.setPlayerComparePanel();
+				//设置球员横向比较界面
+//				uiController.setPlayerComparePanel();
+				playerCompareController.setPlayerComparePanel();
 			}
 		});
 		
@@ -120,8 +153,9 @@ public class MenuPanel extends JPanel{
 				label_playerFilterPanel.setIcon(icon_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO 退出系统
-				uiController.setPlayerFilterPanel();
+				//设置球员筛选界面
+//				uiController.setPlayerFilterPanel();
+				playerFilterController.setPlayerFilterPanel();
 			}
 		});
 		
@@ -143,7 +177,7 @@ public class MenuPanel extends JPanel{
 				label_exit.setIcon(icon_exitChanged);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO 退出系统
+				//退出系统
 				System.exit(0);
 			}
 		});

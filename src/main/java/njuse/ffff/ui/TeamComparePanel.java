@@ -13,8 +13,12 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import njuse.ffff.presenter.ControllerService;
-import njuse.ffff.presenter.UIController;
+import njuse.ffff.presenter.SearchController;
+import njuse.ffff.presenter.playerController.PlayerCompareController;
+import njuse.ffff.presenter.teamController.TeamInfoController;
+import njuse.ffff.presenterService.SearchService;
+import njuse.ffff.presenterService.playerService.PlayerCompareService;
+import njuse.ffff.presenterService.teamService.TeamInfoService;
 import njuse.ffff.ui.table.MyTable;
 
 @SuppressWarnings("serial")
@@ -22,7 +26,10 @@ public class TeamComparePanel extends JPanel{
 	private final int teamComparePanel_width = 1100;
 	private final int teamComparePanel_height = 700;
 	
-	private ControllerService uiController;
+//	private ControllerService uiController;
+	private PlayerCompareService playerCompareController;
+	private TeamInfoService teamInfoController;
+	private SearchService searchController;
 	private JPanel panel;
 	private int tableDisplay;//0代表总数据，1代表平均数据
 	private MenuPanel menuPanel;
@@ -58,7 +65,10 @@ public class TeamComparePanel extends JPanel{
 		this.setBackground(background);
 		this.setVisible(true);
 		
-		uiController = UIController.getInstance();
+//		uiController = UIController.getInstance();
+		playerCompareController = PlayerCompareController.getInstance();
+		teamInfoController = TeamInfoController.getInstance();
+		searchController = SearchController.getInstance();
 		panel = this;
 		menuPanel = new MenuPanel();
 		menuPanel.setLocation(930, 110);
@@ -83,7 +93,8 @@ public class TeamComparePanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到搜索界面
-				uiController.setSearchPanel();
+//				uiController.setSearchPanel();
+				searchController.setSearchPanel();
 			}
 		});
 		
@@ -130,7 +141,8 @@ public class TeamComparePanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到"球员信息横向比较"界面
-				uiController.setPlayerComparePanel();
+//				uiController.setPlayerComparePanel();
+				playerCompareController.setPlayerComparePanel();
 			}
 		});
 		
@@ -260,7 +272,8 @@ public class TeamComparePanel extends JPanel{
 				if(column==0){
 					int row = table_teamCompare_total.getSelectedRow();
 					String content = (String)table_teamCompare_total.getValueAt(row, column);
-					uiController.setTeamProfilePanel(content);
+//					uiController.setTeamProfilePanel(content);
+					teamInfoController.setTeamProfilePanel(content);
 				}
 			}
 		});
@@ -306,7 +319,8 @@ public class TeamComparePanel extends JPanel{
 				if(column==0){
 					int row = table_teamCompare_average.getSelectedRow();
 					String content = (String)table_teamCompare_average.getValueAt(row, column);
-					uiController.setTeamProfilePanel(content);
+//					uiController.setTeamProfilePanel(content);
+					teamInfoController.setTeamProfilePanel(content);
 				}
 			}
 		});

@@ -6,16 +6,11 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import njuse.ffff.presenter.ControllerService;
-import njuse.ffff.presenter.UIController;
-
 @SuppressWarnings("serial")
 public class PlayerPanel extends JPanel{
 	private final int playerPanel_width = 1100;
 	private final int playerPanel_height = 700;
 	
-	@SuppressWarnings("unused")
-	private ControllerService uiController;
 	private PlayerProfilePanel playerProfile;
 	private PlayerDataPanel playerData;
 	
@@ -26,7 +21,6 @@ public class PlayerPanel extends JPanel{
 		this.setBackground(background);
 		this.setVisible(true);
 		
-		uiController = UIController.getInstance();
 		playerProfile = new PlayerProfilePanel();
 		playerData = new PlayerDataPanel();
 		

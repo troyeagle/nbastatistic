@@ -20,16 +20,22 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import njuse.ffff.presenter.ControllerService;
-import njuse.ffff.presenter.UIController;
+import njuse.ffff.presenter.SearchController;
+import njuse.ffff.presenter.playerController.PlayerCompareController;
+import njuse.ffff.presenter.playerController.PlayerFilterController;
+import njuse.ffff.presenterService.SearchService;
+import njuse.ffff.presenterService.playerService.PlayerCompareService;
+import njuse.ffff.presenterService.playerService.PlayerFilterService;
 
 @SuppressWarnings("serial")
 public class PlayerFilterPanel extends JPanel{
 	private final int teamComparePanel_width = 1100;
 	private final int teamComparePanel_height = 700;
 	
-	private ControllerService uiController;
-	
+//	private ControllerService uiController;
+	private PlayerCompareService playerCompareController;
+	private PlayerFilterService playerFilterController;
+	private SearchService searchController;
 	private SelectPanel p;
 	private PlayerFilterPanel panel;
 	private MenuPanel menuPanel;
@@ -67,7 +73,10 @@ public class PlayerFilterPanel extends JPanel{
 		this.setBackground(background);
 		this.setVisible(true);
 		
-		uiController = UIController.getInstance();
+//		uiController = UIController.getInstance();
+		playerCompareController = PlayerCompareController.getInstance();
+		playerFilterController = PlayerFilterController.getInstance();
+		searchController = SearchController.getInstance();
 		p = new SelectPanel();
 		p.setLocation(264, 168);
 		panel = this;
@@ -101,8 +110,9 @@ public class PlayerFilterPanel extends JPanel{
 				label_arrow_left.setIcon(icon_left_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO 跳转到"球员信息横向比较"界面
-				uiController.setPlayerComparePanel();
+				//跳转到"球员信息横向比较"界面
+//				uiController.setPlayerComparePanel();
+				playerCompareController.setPlayerComparePanel();
 			}
 		});
 		
@@ -140,8 +150,9 @@ public class PlayerFilterPanel extends JPanel{
 				label_arrow_up.setIcon(icon_up_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO 跳转到搜索界面
-				uiController.setSearchPanel();
+				//跳转到搜索界面
+//				uiController.setSearchPanel();
+				searchController.setSearchPanel();
 			}
 		});
 		
@@ -193,14 +204,15 @@ public class PlayerFilterPanel extends JPanel{
 				label_searchIcon.setIcon(icon_search_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO 获得搜索条件，开始搜索
+				//获得搜索条件，开始搜索
 				String position = filter_position.getSelectedItem().toString();
 				String league = filter_league.getSelectedItem().toString();
 				String sortCondition = label_sort_condition.getText();
 				if(table_exist==1){
 					panel.remove(scrollPane_filter_total);
 				}
-				uiController.setPlayerFilterResult(panel ,position, league, sortCondition);
+//				uiController.setPlayerFilterResult(panel ,position, league, sortCondition);
+				playerFilterController.setPlayerFilterResult(panel, position, league, sortCondition);
 			}
 		});
 		

@@ -18,8 +18,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 
-import njuse.ffff.presenter.ControllerService;
-import njuse.ffff.presenter.UIController;
+import njuse.ffff.presenter.playerController.PlayerInfoController;
+import njuse.ffff.presenterService.playerService.PlayerInfoService;
 import njuse.ffff.ui.table.MyInfoTable;
 
 @SuppressWarnings("serial")
@@ -27,7 +27,8 @@ public class PlayerDataPanel extends JPanel{
 	private final int playerDataPanel_width = 1100;
 	private final int playerDataPanel_height = 700;
 	
-	private ControllerService uiController;
+//	private ControllerService uiController;
+	private PlayerInfoService playerInfoController;
 	
 	private Color background = new Color(99,43,142);
 	private Color blue_light = new Color(46,117,182);
@@ -91,7 +92,8 @@ public class PlayerDataPanel extends JPanel{
 		this.setBackground(background);
 		this.setVisible(true);
 		
-		uiController = UIController.getInstance();
+//		uiController = UIController.getInstance();
+		playerInfoController = PlayerInfoController.getInstance();
 		
 		//球员姓名
 		label_player_name = new JLabel();
@@ -254,7 +256,8 @@ public class PlayerDataPanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到球员介绍界面
-				uiController.changeToPlayerProfilePanel();
+//				uiController.changeToPlayerProfilePanel();
+				playerInfoController.changeToPlayerProfilePanel();
 			}
 		});
         

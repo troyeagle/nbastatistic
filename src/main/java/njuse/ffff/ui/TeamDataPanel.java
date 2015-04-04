@@ -16,8 +16,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 
-import njuse.ffff.presenter.ControllerService;
-import njuse.ffff.presenter.UIController;
+import njuse.ffff.presenter.teamController.TeamInfoController;
+import njuse.ffff.presenterService.teamService.TeamInfoService;
 import njuse.ffff.ui.table.MyInfoTable;
 
 @SuppressWarnings("serial")
@@ -25,7 +25,8 @@ public class TeamDataPanel extends JPanel{
 	private final int teamDataPanel_width = 1100;
 	private final int teamDataPanel_height = 700;
 	
-	private ControllerService uiController;
+//	private ControllerService uiController;
+	private TeamInfoService teamInfoController;
 	
 	private Color background = new Color(99,43,142);
 	private Color blue_light = new Color(46,117,182);
@@ -87,7 +88,8 @@ public class TeamDataPanel extends JPanel{
 		this.setBackground(background);
 		this.setVisible(true);
 		
-		uiController = UIController.getInstance();
+//		uiController = UIController.getInstance();
+		teamInfoController = TeamInfoController.getInstance();
 		
 		//球队姓名
 		label_team_name = new JLabel();
@@ -229,7 +231,8 @@ public class TeamDataPanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到球队介绍界面
-				uiController.changeToTeamProfilePanel();
+//				uiController.changeToTeamProfilePanel();
+				teamInfoController.changeToTeamProfilePanel();
 			}
 		});
         

@@ -16,15 +16,19 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.FontUIResource;
 
-import njuse.ffff.presenter.ControllerService;
-import njuse.ffff.presenter.UIController;
+import njuse.ffff.presenter.TotalUIController;
+import njuse.ffff.presenter.teamController.TeamInfoController;
+import njuse.ffff.presenterService.TotalControlService;
+import njuse.ffff.presenterService.teamService.TeamInfoService;
 
 @SuppressWarnings("serial")
 public class TeamProfilePanel extends JPanel{
 	private final int teamProfilePanel_width = 1100;
 	private final int teamProfilePanel_height = 700;
 	
-	private ControllerService uiController;
+//	private ControllerService uiController;
+	private TotalControlService totalController;
+	private TeamInfoService teamInfoController;
 	
 	private Color background = new Color(99,43,142);
 	private Color blue_light = new Color(46,117,182);
@@ -56,7 +60,9 @@ public class TeamProfilePanel extends JPanel{
 		this.setBackground(background);
 		this.setVisible(true);
 		
-		uiController = UIController.getInstance();
+//		uiController = UIController.getInstance();
+		totalController = TotalUIController.getInstance();
+		teamInfoController = TeamInfoController.getInstance();
 		
 		//左指向箭头，回退
 		label_arrow_left = new JLabel();
@@ -77,7 +83,8 @@ public class TeamProfilePanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//回退到上个界面
-				uiController.backToLastPanel();
+//				uiController.backToLastPanel();
+				totalController.backToLastPanel();
 			}
 		});
 		
@@ -247,7 +254,8 @@ public class TeamProfilePanel extends JPanel{
 				label_team_data1.setBackground(blue_light_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				uiController.changeToTeamDataPanel(1);
+//				uiController.changeToTeamDataPanel(1);
+				teamInfoController.changeToTeamDataPanel(1);
 			}
 		});
         
@@ -268,7 +276,8 @@ public class TeamProfilePanel extends JPanel{
 				label_team_data2.setBackground(blue_light_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				uiController.changeToTeamDataPanel(2);
+//				uiController.changeToTeamDataPanel(2);
+				teamInfoController.changeToTeamDataPanel(2);
 			}
 		});
         
@@ -289,7 +298,8 @@ public class TeamProfilePanel extends JPanel{
 				label_team_data3.setBackground(blue_light_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				uiController.changeToTeamDataPanel(3);
+//				uiController.changeToTeamDataPanel(3);
+				teamInfoController.changeToTeamDataPanel(3);
 			}
 		});
         

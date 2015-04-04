@@ -5,16 +5,11 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import njuse.ffff.presenter.ControllerService;
-import njuse.ffff.presenter.UIController;
-
 @SuppressWarnings("serial")
 public class TeamPanel extends JPanel{
 	private final int teamPanel_width = 1100;
 	private final int teamPanel_height = 700;
 	
-	@SuppressWarnings("unused")
-	private ControllerService uiController;
 	private TeamProfilePanel teamProfile;
 	private TeamDataPanel teamData;
 	
@@ -25,7 +20,6 @@ public class TeamPanel extends JPanel{
 		this.setBackground(background);
 		this.setVisible(true);
 		
-		uiController = UIController.getInstance();
 		teamProfile = new TeamProfilePanel();
 		teamData = new TeamDataPanel();
 		
