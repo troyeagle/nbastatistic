@@ -2,7 +2,9 @@ package njuse.ffff.data;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import njuse.ffff.dataservice.DataReaderService;
@@ -13,6 +15,7 @@ import njuse.ffff.po.PlayerPO;
 import njuse.ffff.po.TeamInAverage;
 import njuse.ffff.po.TeamInMatch;
 import njuse.ffff.po.TeamPO;
+import njuse.ffff.util.FileListener;
 import njuse.ffff.util.Filter;
 /**
  * 数据层读取处理入口和中心控制
@@ -26,7 +29,7 @@ public class DataReadController implements DataReaderService {
 	TeamDataProcessor team = new TeamDataProcessor();
 	ArrayList<TeamInAverage> teamInAverage;
 	ArrayList<PlayerInAverage> playerInAverage;
-
+	Queue<String> eventQ = new LinkedList<String>();
 	public ArrayList<PlayerInAverage> getPlayerInAverage() {
 		return playerInAverage;
 	}
@@ -254,9 +257,21 @@ public class DataReadController implements DataReaderService {
 	}
 
 	public void processNewMatch(){
-		Queue<String> eventQ = new LinkedList<String>();
+
 		new Thread(){
 			public void run(){
+				FileListener fl = new FileListener();
+				try {
+					fl.startNewWatch(eventQ);
+				} catch (IOException | InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}.start();
+		new Thread(){
+			public void run(){
+
 				while(true){
 					if(!eventQ.isEmpty()){
 						String[] name = eventQ.poll().split(";");
@@ -268,5 +283,80 @@ public class DataReadController implements DataReaderService {
 				}
 			}
 		}.start();
+	}
+
+	@Override
+	public List<MatchPO> getMatchForTeam(String team) {
+		List<MatchPO> matchForTeam = new ArrayList<MatchPO>();
+		for(MatchPO m:MatchDataProcessor.matches){
+			if(m.getTeamA().equals(team)||m.getTeamB().equals(team)){
+				matchForTeam.add(m);
+			}
+		}
+		return matchForTeam;
+	}
+
+	@Override
+	public List<MatchPO> getMatchForPlayer(String player) {
+		List<MatchPO> matchForTeam = new ArrayList<MatchPO>();
+		for(MatchPO m:MatchDataProcessor.matches){
+			if(m.getMembers().contains(player)){
+				matchForTeam.add(m);
+			}
+		}
+		return matchForTeam;
+	}
+
+	@Override
+	public List<MatchPO> getMatchInPeriod(Date date1, Date date2) {
+		List<MatchPO> matchForTeam = new ArrayList<MatchPO>();
+		for(MatchPO m:MatchDataProcessor.matches){
+			if(m.getDate().compareTo(date1)>=0&&m.getDate().compareTo(date2)>=0){
+				matchForTeam.add(m);
+			}
+		}
+		return matchForTeam;
+	}
+
+	@Override
+	public MatchPO getMatch(Date date, String teamA) {
+		for(MatchPO m:MatchDataProcessor.matches){
+			if(m.getDate().equals(date)&&(m.getTeamA().equals(teamA)||m.getTeamB().equals(teamA))){
+				return m;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public List<PlayerInMatchExtended> getLeadPlayerForDay(Date date, String condition) {
+		List<PlayerInMatchExtended> players = new ArrayList<PlayerInMatchExtended>();
+		for(MatchPO m:MatchDataProcessor.matches){
+			if(m.getDate().equals(date)){
+				players.addAll(m.getPlayerInAEx());
+				players.addAll(m.getPlayerInBEx());
+			}
+		}
+		
+		
+		return null;
+	}
+
+	@Override
+	public List<PlayerInAverage> getLeadPlayerForSeason(String season, String condition) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<TeamInAverage> getLeadTeamForSeason(String season, String condition) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<PlayerInAverage> getImprovePlayer(String season, String condition) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

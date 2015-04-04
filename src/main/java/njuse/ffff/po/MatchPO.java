@@ -104,5 +104,11 @@ public class MatchPO implements Serializable,Comparable<MatchPO>{
 		// TODO Auto-generated method stub
 		return this.date.compareTo(p.date);
 	}
+	public ArrayList<String> getMembers() {
+		return members;
+	}
+	public Date getDate() {
+		return date;
+	}
 	
 }
