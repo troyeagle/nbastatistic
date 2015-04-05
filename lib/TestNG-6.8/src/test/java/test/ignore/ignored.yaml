@@ -1,0 +1,14 @@
+name: SingleSuite
+verbose: 2
+parallel: instances
+
+tests:
+  - name: Test1
+    excludedGroups: [ excludeThisGroup ]
+    classes:
+      - name: test.ignore.Test1
+      - name: test.ignore.Test2
+#        includedMethods: [ a ]
+#      - test.Test2
+#      - name: test.CommandLineTest
+#        includedMethods: [ junitParsing ]

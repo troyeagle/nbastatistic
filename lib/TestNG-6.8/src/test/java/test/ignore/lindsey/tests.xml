@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="tests" parallel="methods" thread-count="2" >
+  <test name="tests" preserve-order="false">
+    <groups>
+      <run>
+        <exclude name="broken"/>
+      </run>
+    </groups>
+    <classes>
+      <class name="test.tmp.lindsey.Bar1" />
+      <class name="test.tmp.lindsey.Bar2" />
+      <class name="test.tmp.lindsey.Bar3" />
+    </classes>    
+  </test>
+</suite>

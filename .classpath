@@ -19,5 +19,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="lib" path="lib/batik-1.8/batik-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/TestNG-6.8/testng-6.8.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
