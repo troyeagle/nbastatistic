@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import njuse.ffff.dataservice.DataReaderService;
 import njuse.ffff.po.MatchPO;
@@ -17,6 +19,7 @@ import njuse.ffff.po.TeamInMatch;
 import njuse.ffff.po.TeamPO;
 import njuse.ffff.util.FileListener;
 import njuse.ffff.util.Filter;
+import njuse.ffff.util.Sort;
 /**
  * 数据层读取处理入口和中心控制
  * 
@@ -29,6 +32,9 @@ public class DataReadController implements DataReaderService {
 	TeamDataProcessor team = new TeamDataProcessor();
 	ArrayList<TeamInAverage> teamInAverage;
 	ArrayList<PlayerInAverage> playerInAverage;
+	ArrayList<SeasonStatProcessor> seasons;
+	ExecutorService exe = Executors.newCachedThreadPool();
+	
 	Queue<String> eventQ = new LinkedList<String>();
 	public ArrayList<PlayerInAverage> getPlayerInAverage() {
 		return playerInAverage;
@@ -56,7 +62,6 @@ public class DataReadController implements DataReaderService {
 	}
 
 	public TeamInAverage getTeamAverage(String name, Filter filter) {
-		// TODO Auto-generated method stub
 		if(filter==null){filter = new Filter();}
 		for (TeamInAverage t : teamInAverage) {
 			if (t.getName().equals(name) && filter.filt(t)) {
@@ -99,21 +104,33 @@ public class DataReadController implements DataReaderService {
 		return null;
 	}
 	/**
-	 * 数据首次读取入口
+	 * 数据首次读取入口,程序核心方法
 	 */
 	public void initialize() throws IOException {
+		/**
+		 * FileListener应该是最高优先级？
+		 */
+		Thread fileListener = new Thread(){
+			public void run(){
+				FileListener fl = new FileListener();
+				try {
+					fl.startNewWatch(eventQ);
+				} catch (IOException | InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		exe.execute(fileListener);
 		
 		player.readAndAnalysisPlayer();
 
 		team.readAndAnalysisTeam();
 
 
-		new Thread() {
+		Thread main = new Thread() {
 			public void run() {
-				match.readAndAnalysisMatch();
-				
+				match.readAndAnalysisMatch();				
 				match.processAll();
-
 
 				average();
 				try {
@@ -121,12 +138,21 @@ public class DataReadController implements DataReaderService {
 					team.saveAsSerial();
 					match.saveAsSerial();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
 			}
-		}.start();
+		};
+		Thread season = new Thread(){
+			public void run(){
+				seasons.add(new SeasonStatProcessor("12-13"));
+				seasons.add(new SeasonStatProcessor("13-14"));
+				seasons.add(new SeasonStatProcessor("14-15"));
+			}
+		};
+		exe.execute(main);
+		exe.execute(season);
+		processNewMatch();
 	}
 
 	public void load() throws ClassNotFoundException, IOException {
@@ -227,8 +253,7 @@ public class DataReadController implements DataReaderService {
 			}
 		}
 	}
-	
-	
+		
 	public static void main(String[] args) throws IOException,
 			ClassNotFoundException {
 		new DataReadController().initialize();
@@ -255,34 +280,37 @@ public class DataReadController implements DataReaderService {
 		}
 		return arr;
 	}
-
+	/**
+	 * Iteration 2 main method
+	 */
 	public void processNewMatch(){
-
-		new Thread(){
-			public void run(){
-				FileListener fl = new FileListener();
-				try {
-					fl.startNewWatch(eventQ);
-				} catch (IOException | InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}.start();
-		new Thread(){
+		
+		Thread watch = new Thread(){
 			public void run(){
 
 				while(true){
 					if(!eventQ.isEmpty()){
 						String[] name = eventQ.poll().split(";");
 						if(name[1].equals("EVENT_CREATE"));
-						MatchPO oneMatch = match.readAndAnalyzeNew(name[0]);
+						MatchPO oneMatch = MatchDataProcessor.readAndAnalyzeNew(name[0]);
 						oneMatch.teamProcess();
 						averageProcessForNewMatch(oneMatch);
+						/**
+						 * Iteration 2 select season and process
+						 */
+						for(SeasonStatProcessor ss:seasons){
+							if(oneMatch.getName().startsWith(ss.getSeason())){
+								ss.averageProcessForNewMatch(oneMatch);
+								break;
+							}
+						}
 					}
 				}
 			}
-		}.start();
+		};
+		
+
+		exe.execute(watch);
 	}
 
 	@Override
@@ -337,26 +365,39 @@ public class DataReadController implements DataReaderService {
 				players.addAll(m.getPlayerInBEx());
 			}
 		}
+		int[] attributes = new int[2];
+		new Sort().sortPlayerSingle(players, attributes);
 		
-		
+		return players;
+	}
+
+	@Override
+	public List<PlayerInAverage> getLeadPlayerForSeason(String season, int condition) {
+		for(SeasonStatProcessor ss:seasons){
+			if(ss.season.equals(season)){
+				return ss.getLeadPlayerForSeason(condition);
+			}
+		}
 		return null;
 	}
 
 	@Override
-	public List<PlayerInAverage> getLeadPlayerForSeason(String season, String condition) {
-		// TODO Auto-generated method stub
+	public List<TeamInAverage> getLeadTeamForSeason(String season, int condition) {
+		for(SeasonStatProcessor ss:seasons){
+			if(ss.season.equals(season)){
+				return ss.getLeadTeamForSeason(condition);
+			}
+		}
 		return null;
 	}
 
 	@Override
-	public List<TeamInAverage> getLeadTeamForSeason(String season, String condition) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<PlayerInAverage> getImprovePlayer(String season, String condition) {
-		// TODO Auto-generated method stub
+	public List<PlayerInAverage> getImprovePlayer(String season, int condition) {
+		for(SeasonStatProcessor ss:seasons){
+			if(ss.season.equals(season)){
+				return ss.getImprovePlayer(condition);
+			}
+		}
 		return null;
 	}
 }

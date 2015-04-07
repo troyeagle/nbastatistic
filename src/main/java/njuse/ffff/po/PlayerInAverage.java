@@ -12,6 +12,7 @@ import java.util.Queue;
  *
  */
 public class PlayerInAverage {
+	String season;
 	double[] statsAverage;// 记录并处理
 	int[] statsDirty;// 记录每一项数据属性，在遍历所有球员单场数据时，有几个是脏数据
 	double[] statsTotal;
@@ -69,7 +70,7 @@ public class PlayerInAverage {
 	private double rivalRounds;
 
 	private boolean doubledouble;
-	
+
 	private double recent5ScoreAdv;
 	private double recent5BlockAdv;
 	private double recent5AssistAdv;
@@ -128,7 +129,6 @@ public class PlayerInAverage {
 			 */
 			for (int j : p.dirty) {
 				// FIXME
-				// System.out.println(p.getName());
 				statsDirty[j - 3]++;
 
 				queue.offer(statsTotal[j - 3]);
@@ -181,7 +181,7 @@ public class PlayerInAverage {
 		for (int i = 0; i < 16; i++) {
 			statsAverage[i] = statsTotal[i] / (effective - statsDirty[i]);
 		}
-		statsAverage[31]=statsTotal[31]/(effective - statsDirty[31]);
+		statsAverage[31] = statsTotal[31] / (effective - statsDirty[31]);
 
 		fieldGoalMade = statsAverage[0];
 		fieldGoalAttempted = statsAverage[1];
@@ -219,9 +219,9 @@ public class PlayerInAverage {
 		statsAverage[29] = fieldGoalRatio;
 
 		// playerEfficiencyRate = statsTotal[15];
-//		second = statsTotal[31];
+		// second = statsTotal[31];
 
-		statsAverage[30] = statsAverage[14] + statsAverage[8] + statsAverage[9];// 得分+篮板+助攻
+		statsAverage[30] = (statsAverage[14] + statsAverage[8] + statsAverage[9]) / 3;// 得分+篮板+助攻
 
 	}
 
@@ -241,14 +241,17 @@ public class PlayerInAverage {
 	}
 
 	/**
-	 * 迭代二使用的增量读取数据
-	 * 包含对最近五场提升率的计算
+	 * 迭代二使用的增量读取数据 包含对最近五场提升率的计算
+	 * 
 	 * @param p
 	 */
 	public void calAverageAsArrayNew(PlayerInMatchExtended p) {
 		addOneMatchToAll(p);
 		averageProcess();
 		calRecentFive();
+		statsTotal[21] = recent5ScoreAdv;
+		statsTotal[22] = recent5BlockAdv;
+		statsTotal[23] = recent5AssistAdv;
 	}
 
 	/*
@@ -331,8 +334,8 @@ public class PlayerInAverage {
 	public String getLeague() {
 		return league;
 	}
-	
-	public boolean getDoubledouble(){
+
+	public boolean getDoubledouble() {
 		return doubledouble;
 	}
 
@@ -489,31 +492,35 @@ public class PlayerInAverage {
 			(GmSc) = 0;
 		}
 	}
+
 	/**
 	 * 关键算法
 	 */
-	void calRecentFive(){
-		if(playerStats.size()<6){
+	void calRecentFive() {
+		if (playerStats.size() < 6) {
 			return;
 		}
 		PlayerInAverage history = new PlayerInAverage(this.name);
-		for(int i=0;i<playerStats.size()-5;i++){
+		for (int i = 0; i < playerStats.size() - 5; i++) {
 			history.addOneMatchStat(playerStats.get(i));
 		}
 		history.calAverageAsArray();
-		
+
 		PlayerInAverage recent5 = new PlayerInAverage(this.name);
-		for(int i=playerStats.size()-5;i<playerStats.size();i++){
+		for (int i = playerStats.size() - 5; i < playerStats.size(); i++) {
 			recent5.addOneMatchStat(playerStats.get(i));
 		}
 		recent5.calAverageAsArray();
-		
-		recent5ScoreAdv=recent5.statsAverage[14]/history.statsAverage[14]-1;
-		recent5BlockAdv=recent5.statsAverage[11]/history.statsAverage[11]-1;
-		recent5AssistAdv=recent5.statsAverage[9]/history.statsAverage[9]-1;
-		
-		
+
+		recent5ScoreAdv = recent5.statsAverage[14] / history.statsAverage[14]
+				- 1;
+		recent5BlockAdv = recent5.statsAverage[11] / history.statsAverage[11]
+				- 1;
+		recent5AssistAdv = recent5.statsAverage[9] / history.statsAverage[9]
+				- 1;
+
 	}
+
 	public double getRecent5ScoreAdv() {
 		return recent5ScoreAdv;
 	}
@@ -532,4 +539,5 @@ public class PlayerInAverage {
 		}
 		return playerStats.get(playerStats.size() - 1).getTeam().nameAbbr;
 	}
+
 }

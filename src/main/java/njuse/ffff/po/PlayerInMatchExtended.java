@@ -2,11 +2,12 @@ package njuse.ffff.po;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
 /**
- * 处理一场比赛中某一球员的进阶数据
- * 由MatchPO构建
+ * 处理一场比赛中某一球员的进阶数据 由MatchPO构建
+ * 
  * @author Mebleyev.G.Longinus
- *@see MatchPO
+ * @see MatchPO
  */
 public class PlayerInMatchExtended extends PlayerInMatch {
 
@@ -30,10 +31,12 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 	double usingRatio;
 	double GmSc;
 	boolean doubledouble;
-	
+
+	double[] array = new double[32];
+
 	TeamInMatch team;
 
-	public PlayerInMatchExtended(PlayerInMatch p,TeamInMatch team) {
+	public PlayerInMatchExtended(PlayerInMatch p, TeamInMatch team) {
 		super(p);
 		this.team = team;
 	}
@@ -44,7 +47,8 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 			double trueShootingPercentage, double reboundRatio,
 			double offensiveReboundRatio, double defensiveReboundRatio,
 			double assistRatio, double stealRatio, double blockRatio,
-			double turnoverRatio, double usingRatio, double gmSc,TeamInMatch team) {
+			double turnoverRatio, double usingRatio, double gmSc,
+			TeamInMatch team) {
 		super(p);
 		this.playerEfficiencyRate = playerEfficiencyRate;
 		this.fieldGoalRatio = fieldGoalRatio;
@@ -71,18 +75,20 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 				p.trueShootingPercentage, p.reboundRatio,
 				p.offensiveReboundRatio, p.defensiveReboundRatio,
 				p.assistRatio, p.stealRatio, p.blockRatio, p.turnoverRatio,
-				p.usingRatio, p.GmSc,p.team);
+				p.usingRatio, p.GmSc, p.team);
 	}
+
 	/**
 	 * calAll<br>
 	 * Calculate all advanced statistics of a player.<br>
 	 * Based on all dirty statistics are properly dealt with;<br>
+	 * 
 	 * @param team
 	 * @param rival
 	 */
 	public void calAll(TeamInMatch team, TeamInMatch rival) {
-//		System.out.println("Player " + name
-//				+ " Calculating Advanced Statistics");
+		// System.out.println("Player " + name
+		// + " Calculating Advanced Statistics");
 		calPlayerEfficiencyRate();
 		calEfficiencyGoalPercentage();
 		calTrueShootingPercentage();
@@ -100,12 +106,52 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 		calUsingRatio(team.secondInTotal, team.freeThrowAttempted,
 				team.fieldGoalAttempted, team.turnover);
 		calDoubledouble();
-		calAssistRatio(team.secondInTotal,team.fieldGoalMade);
+		calAssistRatio(team.secondInTotal, team.fieldGoalMade);
+		makeArray();
 	}
 
-	void calAssistRatio(double secondInTotal,double totalFieldGoalMade) {
-		assistRatio = (double)assist/((double)second/(secondInTotal/5)*totalFieldGoalMade-freeThrowMade);
-		
+	void calAssistRatio(double secondInTotal, double totalFieldGoalMade) {
+		assistRatio = (double) assist
+				/ ((double) second / (secondInTotal / 5) * totalFieldGoalMade - freeThrowMade);
+
+	}
+
+	void makeArray() {
+		array[0] += fieldGoalMade;
+		array[1] += fieldGoalAttempted;
+		array[2] += threePointerMade;
+		array[3] += threePointerAttempted;
+		array[4] += freeThrowMade;
+		array[5] += freeThrowAttempted;
+		array[6] += offensiveRebound;
+		array[7] += defensiveRebound;
+		array[8] += rebound;
+		array[9] += assist;
+		array[10] += steal;
+		array[11] += block;
+		array[12] += turnover;
+		array[13] += foul;
+		array[14] += points;
+
+
+
+		array[15] = playerEfficiencyRate;
+		array[16] = GmSc;
+		array[17] = trueShootingPercentage;
+		array[18] = efficiencyGoalPercentage;
+		array[19] = reboundRatio;
+		array[20] = offensiveReboundRatio;
+		array[21] = defensiveReboundRatio;
+		array[22] = assistRatio;
+		array[23] = stealRatio;
+		array[24] = blockRatio;
+		array[25] = turnoverRatio;
+		array[26] = usingRatio;
+		array[27] = freeThrowRatio;
+		array[28] = threePointerRatio;
+		array[29] = fieldGoalRatio;
+		array[30] = (array[14] + array[8] + array[9])/3;
+		array[31] += second;
 	}
 
 	void calDoubledouble() {
@@ -116,13 +162,12 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 		arr.add(steal);
 		arr.add(block);
 		Collections.sort(arr);
-		if(arr.get(3)>=10&&arr.get(2)<10){
+		if (arr.get(3) >= 10 && arr.get(2) < 10) {
 			doubledouble = true;
-		}else{
+		} else {
 			doubledouble = false;
 		}
-		
-		
+
 	}
 
 	void calPlayerEfficiencyRate() {
@@ -134,45 +179,61 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 	void calEfficiencyGoalPercentage() {
 		efficiencyGoalPercentage = ((double) fieldGoalMade)
 				/ ((double) fieldGoalAttempted);
-		if(Double.valueOf(efficiencyGoalPercentage).isNaN()){(efficiencyGoalPercentage)=0;}
+		if (Double.valueOf(efficiencyGoalPercentage).isNaN()) {
+			(efficiencyGoalPercentage) = 0;
+		}
 	}
 
 	void calTrueShootingPercentage() {
 		trueShootingPercentage = (double) points
 				/ ((double) 2 * fieldGoalAttempted + (double) 0.44
 						* freeThrowAttempted);
-		if(Double.valueOf(trueShootingPercentage).isNaN()){(trueShootingPercentage)=0;}
+		if (Double.valueOf(trueShootingPercentage).isNaN()) {
+			(trueShootingPercentage) = 0;
+		}
 	}
 
 	void calReboundRatio(double secondTotal, int teamReboundsTotal,
 			int rivalReboundsTotal) {
 		reboundRatio = (double) rebound * secondTotal / 5 / (second)
 				/ (teamReboundsTotal + rivalReboundsTotal);
-		if(Double.valueOf(reboundRatio).isNaN()){(reboundRatio)=0;}
+		if (Double.valueOf(reboundRatio).isNaN()) {
+			(reboundRatio) = 0;
+		}
 		offensiveReboundRatio = (double) offensiveRebound * (secondTotal / 5)
 				/ (second) / (teamReboundsTotal + rivalReboundsTotal);
-		if(Double.valueOf(offensiveReboundRatio).isNaN()){(offensiveReboundRatio)=0;}
+		if (Double.valueOf(offensiveReboundRatio).isNaN()) {
+			(offensiveReboundRatio) = 0;
+		}
 		defensiveReboundRatio = (double) defensiveRebound * (secondTotal / 5)
 				/ (second) / (teamReboundsTotal + rivalReboundsTotal);
-		if(Double.valueOf(defensiveReboundRatio).isNaN()){(defensiveReboundRatio)=0;}
-		
+		if (Double.valueOf(defensiveReboundRatio).isNaN()) {
+			(defensiveReboundRatio) = 0;
+		}
+
 	}
 
 	void calStealRatio(double secondTotal, double rivalRound) {
 		stealRatio = (double) steal * secondTotal / 5 / (second) / rivalRound;
-		if(Double.valueOf(stealRatio).isNaN()){(stealRatio)=0;}
+		if (Double.valueOf(stealRatio).isNaN()) {
+			(stealRatio) = 0;
+		}
 	}
 
 	void calBlockRatio(double secondTotal, int twoPointAttempts) {
 		blockRatio = (double) block * secondTotal / 5 / (second)
 				/ twoPointAttempts;
-		if(Double.valueOf(blockRatio).isNaN()){(blockRatio)=0;}
+		if (Double.valueOf(blockRatio).isNaN()) {
+			(blockRatio) = 0;
+		}
 	}
 
 	void calTurnoverRatio() {
 		turnoverRatio = (double) turnover
 				/ (0.44 * freeThrowAttempted + fieldGoalAttempted + turnover);
-		if(Double.valueOf(turnoverRatio).isNaN()){(turnoverRatio)=0;}
+		if (Double.valueOf(turnoverRatio).isNaN()) {
+			(turnoverRatio) = 0;
+		}
 	}
 
 	void calUsingRatio(double secondTotal, double freeThrowTotal,
@@ -182,22 +243,30 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 				/ 5
 				/ (second)
 				/ (0.44 * freeThrowTotal + fieldGoalTotal + turnoverTotal);
-		if(Double.valueOf(usingRatio).isNaN()){(usingRatio)=0;}
+		if (Double.valueOf(usingRatio).isNaN()) {
+			(usingRatio) = 0;
+		}
 	}
 
 	void calThreePointerRatio() {
 		threePointerRatio = (double) threePointerMade / threePointerAttempted;
-		if(Double.valueOf(threePointerRatio).isNaN()){(threePointerRatio)=0;}
+		if (Double.valueOf(threePointerRatio).isNaN()) {
+			(threePointerRatio) = 0;
+		}
 	}
 
 	void calFieldGoalRatio() {
 		fieldGoalRatio = (double) fieldGoalMade / fieldGoalAttempted;
-		if(Double.valueOf(fieldGoalRatio).isNaN()){(fieldGoalRatio)=0;}
+		if (Double.valueOf(fieldGoalRatio).isNaN()) {
+			(fieldGoalRatio) = 0;
+		}
 	}
 
 	void calFreeThrowRatio() {
 		freeThrowRatio = (double) freeThrowMade / freeThrowAttempted;
-		if(Double.valueOf(freeThrowRatio).isNaN()){(freeThrowRatio)=0;}
+		if (Double.valueOf(freeThrowRatio).isNaN()) {
+			(freeThrowRatio) = 0;
+		}
 
 	}
 
@@ -211,11 +280,12 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 		}
 	}
 
-	void JudgeNaN(double num){
-		if(num==Double.NaN){
-			num=0;
+	void JudgeNaN(double num) {
+		if (num == Double.NaN) {
+			num = 0;
 		}
 	}
+
 	public int getPlayerEfficiencyRate() {
 		return playerEfficiencyRate;
 	}
@@ -296,5 +366,9 @@ public class PlayerInMatchExtended extends PlayerInMatch {
 				+ usingRatio + ", GmSc=" + GmSc + ", doubledouble="
 				+ doubledouble + "]";
 	}
-	
+
+	public double[] getArray() {
+		return array;
+	}
+
 }

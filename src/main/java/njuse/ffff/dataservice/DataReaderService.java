@@ -61,11 +61,11 @@ public interface DataReaderService {
 	public List<PlayerInMatchExtended> getLeadPlayerForDay(Date date,String condition);
 
 	//获得某一赛季的某个条件筛选出来的前5名球员
-	public List<PlayerInAverage> getLeadPlayerForSeason(String season,String condition);
+	public List<PlayerInAverage> getLeadPlayerForSeason(String season,int condition);
 
 	//获得某一赛季的某个条件筛选出来的前5支球队
-	public List<TeamInAverage> getLeadTeamForSeason(String season,String condition);
+	public List<TeamInAverage> getLeadTeamForSeason(String season,int condition);
 
 	//获得按某一条件的提升率筛选出来的最近5场进步最快的5名球员
-	public List<PlayerInAverage> getImprovePlayer(String season,String condition);
+	public List<PlayerInAverage> getImprovePlayer(String season,int condition);
 }

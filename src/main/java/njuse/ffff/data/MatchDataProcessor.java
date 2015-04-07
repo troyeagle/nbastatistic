@@ -95,7 +95,7 @@ public class MatchDataProcessor {
 		}
 	}
 	//Iteration 2
-	public MatchPO readAndAnalyzeNew(String fileName){
+	public static synchronized MatchPO readAndAnalyzeNew(String fileName){
 		
 		try {
 			FileReader fr = new FileReader(path+"/"+fileName);
