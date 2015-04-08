@@ -21,9 +21,9 @@ public class SeasonStatProcessor {
 	ArrayList<TeamInAverage> teamInAverage;
 	ArrayList<PlayerInAverage> playerInAverage;
 	Queue<String> eventQ = new LinkedList<String>();
-	SeasonStatProcessor(String season){
-		season = this.season;
-		
+	public SeasonStatProcessor(String season){
+		this.season = season;
+		averageArrayIni();
 	}
 	public ArrayList<PlayerInAverage> getPlayerInAverage() {
 		return playerInAverage;
@@ -99,6 +99,16 @@ public class SeasonStatProcessor {
 		}
 	}
 
+	private void averageArrayIni(){
+		playerInAverage = new ArrayList<PlayerInAverage>();
+		teamInAverage = new ArrayList<TeamInAverage>();
+		for (PlayerPO p : PlayersDataProcessor.players) {
+			playerInAverage.add(new PlayerInAverage(p.getName()));
+		}
+		for(TeamPO p:TeamDataProcessor.teams){
+			teamInAverage.add(new TeamInAverage(p.getName(),p.getAbbr()));
+		}
+	}
 	private void addMatch(MatchPO m){
 		for(TeamInAverage ta:teamInAverage){
 			if(ta.getAbbr().equals(m.getTeamA())){

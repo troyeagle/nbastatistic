@@ -1,5 +1,6 @@
 package njuse.ffff.data;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +35,8 @@ public class DataReadController implements DataReaderService {
 	ArrayList<PlayerInAverage> playerInAverage;
 	ArrayList<SeasonStatProcessor> seasons = new ArrayList<SeasonStatProcessor>();
 	ExecutorService exe = Executors.newCachedThreadPool();
+	
+	String path;
 	
 	Date currentDate;
 	String currentSeason;
@@ -113,9 +116,15 @@ public class DataReadController implements DataReaderService {
 		/**
 		 * FileListener应该是最高优先级？
 		 */
+		path="./CSEIII data/plus/matches";
+		File f = new File(path);
+		if(!f.exists()){
+			f.mkdirs();
+		}
+		
 		Thread fileListener = new Thread(){
 			public void run(){
-				FileListener fl = new FileListener();
+				FileListener fl = new FileListener(path);
 				try {
 					fl.startNewWatch(eventQ);
 				} catch (IOException | InterruptedException e) {
@@ -129,13 +138,13 @@ public class DataReadController implements DataReaderService {
 
 		team.readAndAnalysisTeam();
 
-
 		Thread main = new Thread() {
 			public void run() {
-				match.readAndAnalysisMatch();				
+				MatchDataProcessor.matches = new ArrayList<MatchPO>();
+				//match.readAndAnalysisMatch();				
 				match.processAll();
-
-				average();
+				averageArrayIni();
+				//average();
 				try {
 					player.saveAsSerial();
 					team.saveAsSerial();
@@ -158,6 +167,16 @@ public class DataReadController implements DataReaderService {
 		processNewMatch();
 	}
 
+	private void averageArrayIni(){
+		playerInAverage = new ArrayList<PlayerInAverage>();
+		teamInAverage = new ArrayList<TeamInAverage>();
+		for (PlayerPO p : PlayersDataProcessor.players) {
+			playerInAverage.add(new PlayerInAverage(p.getName()));
+		}
+		for(TeamPO p:TeamDataProcessor.teams){
+			teamInAverage.add(new TeamInAverage(p.getName(),p.getAbbr()));
+		}
+	}
 	public void load() throws ClassNotFoundException, IOException {
 		player.loadSerial();
 		team.loadSerial();
@@ -171,8 +190,7 @@ public class DataReadController implements DataReaderService {
 	 * 所有平均值计算
 	 */
 	public void average() {
-		playerInAverage = new ArrayList<PlayerInAverage>();
-		teamInAverage = new ArrayList<TeamInAverage>();
+
 
 		/*
 		 * for (PlayerPO p : PlayersDataProcessor.players) {
@@ -180,12 +198,7 @@ public class DataReadController implements DataReaderService {
 		 * MatchDataProcessor.matches)); }
 		 */// This method is too stupid.
 
-		for (PlayerPO p : PlayersDataProcessor.players) {
-			playerInAverage.add(new PlayerInAverage(p.getName()));
-		}
-		for(TeamPO p:TeamDataProcessor.teams){
-			teamInAverage.add(new TeamInAverage(p.getName(),p.getAbbr()));
-		}
+
 		for (MatchPO m : MatchDataProcessor.matches) {
 			averageProcessForMatch(m);
 		}
@@ -292,30 +305,38 @@ public class DataReadController implements DataReaderService {
 			public void run(){
 
 				while(true){
-					if(!eventQ.isEmpty()){
-						String[] name = eventQ.poll().split(";");
-						if(name[1].equals("EVENT_CREATE"));
-						MatchPO oneMatch = MatchDataProcessor.readAndAnalyzeNew(name[0]);
-						oneMatch.teamProcess();
-						averageProcessForNewMatch(oneMatch);
-						currentDate = oneMatch.getDate();
-						currentSeason = oneMatch.getName().substring(0, 5);
-						//FIXME 这里还需要调用一下“更新”接口
-						/**
-						 * Iteration 2 select season and process
-						 */
-						for(SeasonStatProcessor ss:seasons){
-							if(oneMatch.getName().startsWith(ss.getSeason())){
-								ss.averageProcessForNewMatch(oneMatch);
-								break;
+					synchronized(this){
+						if(eventQ.size()>2){
+							String[] name = eventQ.poll().split(";");
+							
+							if(name[0].equals("ENTRY_CREATE")){
+								
+									System.out.println(name[0]+"start:"+name[1]);
+									MatchPO oneMatch = MatchDataProcessor.readAndAnalyzeNew(path,name[1]);
+									oneMatch.teamProcess();
+									averageProcessForNewMatch(oneMatch);
+									currentDate = oneMatch.getDate();
+									currentSeason = oneMatch.getName().substring(0, 5);
+									//FIXME 这里还需要调用一下“更新”接口
+									/**
+									 * Iteration 2 select season and process
+									 */
+									for(SeasonStatProcessor ss:seasons){
+										if(oneMatch.getName().startsWith(ss.getSeason())){
+											ss.averageProcessForNewMatch(oneMatch);
+											break;
+										}
+									}
+								
+								
 							}
+							
 						}
 					}
+					
 				}
 			}
 		};
-		
-
 		exe.execute(watch);
 	}
 

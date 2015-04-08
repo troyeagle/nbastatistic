@@ -246,6 +246,11 @@ public class PlayerInAverage {
 	 * @param p
 	 */
 	public void calAverageAsArrayNew(PlayerInMatchExtended p) {
+		if(statsAverage==null){
+			statsAverage = new double[32];
+			statsTotal = new double[32];
+			statsDirty = new int[32];
+		}
 		addOneMatchToAll(p);
 		averageProcess();
 		calRecentFive();

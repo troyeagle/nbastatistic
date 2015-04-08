@@ -40,7 +40,7 @@ public class MatchDataProcessor {
 
 
 		for (int i = 0; i < files.length; i++) {
-			readAndAnalyzeNew(files[i].getName());
+			readAndAnalyzeNew(path,files[i].getName());
 		}
 	}
 
@@ -95,7 +95,7 @@ public class MatchDataProcessor {
 		}
 	}
 	//Iteration 2
-	public static synchronized MatchPO readAndAnalyzeNew(String fileName){
+	public static synchronized MatchPO readAndAnalyzeNew(String path,String fileName){
 		
 		try {
 			FileReader fr = new FileReader(path+"/"+fileName);
@@ -111,8 +111,11 @@ public class MatchDataProcessor {
 
 			MatchPO match;
 			//关于日期处理和总分处理
+			/**
+			 * 数据是0怎么办？！
+			 */
 			BufferedReader br = new BufferedReader(fr);
-			String[] total = br.readLine().split(";");
+			String[] total = br.readLine().split(";");//FIXME Null Pointer?
 			String year[] = fileName.substring(0, 5).split("-");
 			if(total[0].startsWith("1")||total[0].startsWith("09")){
 				total[0]=year[0]+"-"+total[0];

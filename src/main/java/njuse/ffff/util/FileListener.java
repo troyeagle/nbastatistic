@@ -15,12 +15,16 @@ import java.util.Queue;
  */
 public class FileListener {  
 	String path;
-	
+	public FileListener(String path){
+		this.path = path;
+				
+	}
+
 	public void startNewWatch(Queue<String> eventq) throws IOException, InterruptedException{
-		 WatchService watchService=FileSystems.getDefault().newWatchService();  
+		 WatchService watchService=FileSystems.getDefault().newWatchService();
 	        Paths.get(path).register(watchService,   
 	                StandardWatchEventKinds.ENTRY_CREATE,  
-	                StandardWatchEventKinds.ENTRY_DELETE,  
+	                StandardWatchEventKinds.ENTRY_DELETE,
 	                StandardWatchEventKinds.ENTRY_MODIFY);  
 	        while(true)  
 	        {  
@@ -28,7 +32,10 @@ public class FileListener {
 	            for(WatchEvent<?> event:key.pollEvents())  
 	            {  
 	                System.out.println(event.context()+"发生了"+event.kind()+"事件");  
-	                eventq.offer(event.kind().toString()+";"+event.context().toString()) ;
+	                synchronized(this){
+	                	 eventq.offer(event.kind().toString()+";"+event.context().toString()) ;
+	                }
+	               
 	            }  
 	            if(!key.reset())  
 	            {  
