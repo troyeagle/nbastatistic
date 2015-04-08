@@ -32,7 +32,7 @@ public class DataReadController implements DataReaderService {
 	TeamDataProcessor team = new TeamDataProcessor();
 	ArrayList<TeamInAverage> teamInAverage;
 	ArrayList<PlayerInAverage> playerInAverage;
-	ArrayList<SeasonStatProcessor> seasons;
+	ArrayList<SeasonStatProcessor> seasons = new ArrayList<SeasonStatProcessor>();
 	ExecutorService exe = Executors.newCachedThreadPool();
 	
 	Queue<String> eventQ = new LinkedList<String>();
