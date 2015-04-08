@@ -43,14 +43,12 @@ public class TeamCompareController implements TeamCompareService{
 		
 		String[] propertices_total = {"球队名称","比赛场数","投篮命中数","投篮出手数"
 				,"三分命中数","三分出手数","罚球命中数","罚球出手数","进攻篮板数","防守篮板数","篮板数"
-				,"助攻数","抢断数","盖帽数","失误数","犯规数","比赛得分","投篮命中率","三分命中率"
-				,"罚球命中率","胜率","进攻回合","进攻效率","防守效率","进攻篮板效率","防守篮板效率"
-				,"抢断效率","助攻率"};
+				,"助攻数","抢断数","盖帽数","失误数","犯规数","比赛得分"};
 		String[] propertices_average = {"球队名称","比赛场数","投篮命中数","投篮出手数"
 				,"三分命中数","三分出手数","罚球命中数","罚球出手数","进攻篮板数","防守篮板数","篮板数"
 				,"助攻数","抢断数","盖帽数","失误数","犯规数","比赛得分","投篮命中率","三分命中率"
 				,"罚球命中率","进攻回合","进攻效率","防守效率","进攻篮板效率","防守篮板效率"
-				,"抢断效率","助攻率"};
+				,"抢断效率","助攻效率"};
 		Object[][] values_total = new Object[data.size()][];
 		Object[][] values_average = new Object[data.size()][];
 		for(int i = 0;i <data.size(); i++){
@@ -64,39 +62,53 @@ public class TeamCompareController implements TeamCompareService{
 				continue;
 			}
 			
-			int GP = teamAvg.getNumOfMatches();
-			values_total[i] = new Object[] {team.getName(),teamAvg.getNumOfMatches(),teamAvg.getFieldGoalMade()*GP
-					,teamAvg.getFieldGoalAttempted()*GP,teamAvg.getThreePointerMade()*GP,teamAvg.getThreePointerAttempted()*GP
-					,teamAvg.getFreeThrowMade()*GP,teamAvg.getFieldGoalAttempted()*GP,teamAvg.getOffensiveRebound()*GP
-					,teamAvg.getDefensiveRebound()*GP,teamAvg.getRebound()*GP,teamAvg.getAssist()*GP,teamAvg.getSteal()*GP
-					,teamAvg.getBlock()*GP,teamAvg.getTurnover()*GP,teamAvg.getFoul()*GP,teamAvg.getScores()*GP
-					,DealDecimal.formatChange(teamAvg.getFieldGoalRatio(), 3),DealDecimal.formatChange(teamAvg.getThreePointerRatio(), 3)
-					,DealDecimal.formatChange(teamAvg.getFreeThrowRatio(), 3),DealDecimal.formatChange(teamAvg.getWinningRatio(), 3)
-					,DealDecimal.formatChange(teamAvg.getMyRounds()*GP, 3),DealDecimal.formatChange(teamAvg.getOffensiveEf(), 3)
-					,DealDecimal.formatChange(teamAvg.getDefensiveEf(), 3)
-					,DealDecimal.formatChange(teamAvg.getOffensiveReboundEf(), 3),DealDecimal.formatChange(teamAvg.getDefensiveReboundEf(), 3)
-					,DealDecimal.formatChange(teamAvg.getStealEf(), 3),DealDecimal.formatChange(teamAvg.getAssistEf(), 3)
+			double[] total = teamAvg.getStatsTotal();
+			double[] average = teamAvg.getStatsAverage();
+			values_total[i] = new Object[] {
+					team.getName(),teamAvg.getNumOfMatches()		//球队名，球队比赛场数
+					,DealDecimal.formatChange(total[0])				//投篮命中数
+					,DealDecimal.formatChange(total[1])				//投篮出手数
+					,DealDecimal.formatChange(total[2])				//三分命中数
+					,DealDecimal.formatChange(total[3])				//三分出手数
+					,DealDecimal.formatChange(total[4])				//罚球命中数
+					,DealDecimal.formatChange(total[5])				//罚球出手数
+					,DealDecimal.formatChange(total[6])				//进攻篮板数
+					,DealDecimal.formatChange(total[7])				//防守篮板数
+					,DealDecimal.formatChange(total[8])				//篮板数
+					,DealDecimal.formatChange(total[9])				//助攻数
+					,DealDecimal.formatChange(total[10])			//抢断数
+					,DealDecimal.formatChange(total[11])			//盖帽数
+					,DealDecimal.formatChange(total[12])			//失误数
+					,DealDecimal.formatChange(total[13])			//犯规数
+					,DealDecimal.formatChange(total[14])			//得分
 			};
-			values_average[i] = new Object[] {team.getName(),teamAvg.getNumOfMatches(),DealDecimal.formatChange(teamAvg.getFieldGoalMade(), 3)
-					,DealDecimal.formatChange(teamAvg.getFieldGoalAttempted(), 3),DealDecimal.formatChange(teamAvg.getThreePointerMade(), 3)
-					,DealDecimal.formatChange(teamAvg.getThreePointerAttempted(), 3)
-					,DealDecimal.formatChange(teamAvg.getFreeThrowMade(), 3)
-					,DealDecimal.formatChange(teamAvg.getFieldGoalAttempted(), 3)
-					,DealDecimal.formatChange(teamAvg.getOffensiveRebound(), 3)
-					,DealDecimal.formatChange(teamAvg.getDefensiveRebound(), 3)
-					,DealDecimal.formatChange(teamAvg.getRebound(), 3)
-					,DealDecimal.formatChange(teamAvg.getAssist(), 3),DealDecimal.formatChange(teamAvg.getSteal(), 3)
-					,DealDecimal.formatChange(teamAvg.getBlock(), 3),DealDecimal.formatChange(teamAvg.getTurnover(), 3)
-					,DealDecimal.formatChange(teamAvg.getFoul(), 3),DealDecimal.formatChange(teamAvg.getScores(), 3)
-					,DealDecimal.formatChange(teamAvg.getFieldGoalRatio(), 3)
-					,DealDecimal.formatChange(teamAvg.getThreePointerRatio(), 3)
-					,DealDecimal.formatChange(teamAvg.getFreeThrowRatio(), 3)
-					,DealDecimal.formatChange(teamAvg.getMyRounds(), 3)
-					,DealDecimal.formatChange(teamAvg.getOffensiveEf(), 3),DealDecimal.formatChange(teamAvg.getDefensiveEf(), 3)
-					,DealDecimal.formatChange(teamAvg.getOffensiveReboundEf(), 3)
-					,DealDecimal.formatChange(teamAvg.getDefensiveReboundEf(), 3)
-					,DealDecimal.formatChange(teamAvg.getStealEf(), 3)
-					,DealDecimal.formatChange(teamAvg.getAssistEf(), 3)
+			values_average[i] = new Object[] {
+					team.getName(),teamAvg.getNumOfMatches()							//球队名称，球队比赛场数
+					,DealDecimal.formatChange(average[0], 1)			//投篮命中数
+					,DealDecimal.formatChange(average[1], 1)		//投篮出手数
+					,DealDecimal.formatChange(average[2], 1)			//三分命中数
+					,DealDecimal.formatChange(average[3], 1)	//三分出手数
+					,DealDecimal.formatChange(average[4], 1)			//罚球命中数
+					,DealDecimal.formatChange(average[5], 1)		//罚球出手数
+					,DealDecimal.formatChange(average[6], 1)			//进攻篮板数
+					,DealDecimal.formatChange(average[7], 1)			//防守篮板数
+					,DealDecimal.formatChange(average[8], 1)					//篮板数
+					,DealDecimal.formatChange(average[9], 1)					//助攻数
+					,DealDecimal.formatChange(average[10], 1)					//抢断数
+					,DealDecimal.formatChange(average[11], 1)					//盖帽数
+					,DealDecimal.formatChange(average[12], 1)					//失误数
+					,DealDecimal.formatChange(average[13], 1)						//犯规数
+					,DealDecimal.formatChange(average[14], 1)					//得分
+					,DealDecimal.formatChangeToPercentage(average[21])			//投篮命中率
+					,DealDecimal.formatChangeToPercentage(average[22])		//三分命中率
+					,DealDecimal.formatChangeToPercentage(average[23])			//罚球命中率
+					,DealDecimal.formatChange(average[24], 1)					//进攻回合
+					,DealDecimal.formatChange(average[25], 1)				//进攻效率
+					,DealDecimal.formatChange(average[26], 1)				//防守效率
+					,DealDecimal.formatChange(average[27], 1)		//进攻篮板效率
+					,DealDecimal.formatChange(average[28], 1)		//防守篮板效率
+					,DealDecimal.formatChange(average[29], 1)					//抢断效率
+					,DealDecimal.formatChange(average[30], 1)					//助攻效率
 			};
 		}
 		TeamComparePanel teamComparePanel = new TeamComparePanel();

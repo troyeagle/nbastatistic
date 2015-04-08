@@ -87,8 +87,9 @@ public class PlayerFilterController implements PlayerFilterService{
 		//排序条件
 		String[] conditions = sort.split(";");
 		
-		String[] properties = {"编号","球员姓名","得分","篮板","助攻","得分/篮板/助攻","盖帽","抢断","犯规"
-				,"失误","分钟","效率","投篮","三分","罚球","两双"};
+		String[] properties = {"编号","球员姓名","场均得分","场均篮板数","场均助攻数","得分/篮板/助攻"
+				,"场均盖帽数","场均抢断数","场均犯规数","场均失误数","分钟","效率"
+				,"投篮命中率","三分命中率","罚球命中率","两双"};
 		
 		int[] conditionsOfSort = new int[conditions.length];
 
@@ -166,9 +167,6 @@ public class PlayerFilterController implements PlayerFilterService{
 				case "罚球":
 					location = 4;
 					break;
-	//			case "两双":
-	//				location = 30;
-	//				break;
 				}
 				conditionsOfSort[i] = location;
 			}
@@ -189,14 +187,23 @@ public class PlayerFilterController implements PlayerFilterService{
 			
 			if(playerAvg!=null){
 				double[] average = playerAvg.getStatsAverage();
-				values_average[i] = new Object[]{i+1,playerAvg.getName(),DealDecimal.formatChange(average[14], 3)
-						,DealDecimal.formatChange(average[8], 3),DealDecimal.formatChange(average[9], 3)
-						,DealDecimal.formatChange(average[30], 3),DealDecimal.formatChange(average[11], 3)
-						,DealDecimal.formatChange(average[10], 3),DealDecimal.formatChange(average[12], 3)
-						,DealDecimal.formatChange(average[13], 3),DealDecimal.formatChange(playerAvg.getSecond()/60, 3)
-						,DealDecimal.formatChange(average[15], 3),DealDecimal.formatChange(average[0], 3)
-						,DealDecimal.formatChange(average[2], 3),DealDecimal.formatChange(average[4], 3)
-						,playerAvg.getDoubledouble()};//两双
+				values_average[i] = new Object[]{
+						i+1,playerAvg.getName()						//编号，球员名称
+						,DealDecimal.formatChange(average[14], 1)	//得分
+						,DealDecimal.formatChange(average[8], 1)	//篮板数
+						,DealDecimal.formatChange(average[9], 1)	//助攻数
+						,DealDecimal.formatChange(average[30], 1)	//得分/篮板/助攻
+						,DealDecimal.formatChange(average[11], 1)	//盖帽数
+						,DealDecimal.formatChange(average[10], 1)	//抢断数
+						,DealDecimal.formatChange(average[12], 1)	//犯规数
+						,DealDecimal.formatChange(average[13], 1)	//失误数
+						,DealDecimal.formatChange(playerAvg.getSecond()/60, 1)	//平均上场时间
+						,DealDecimal.formatChange(average[15], 1)	//效率
+						,DealDecimal.formatChangeToPercentage(average[29])	//投篮命中率
+						,DealDecimal.formatChangeToPercentage(average[28])	//三分命中率
+						,DealDecimal.formatChangeToPercentage(average[27])	//罚球命中率
+						,playerAvg.getDoubledouble()				//两双
+						};
 			}
 		}
 		
