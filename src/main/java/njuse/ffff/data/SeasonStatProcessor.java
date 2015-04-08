@@ -177,6 +177,7 @@ public class SeasonStatProcessor {
 		List<PlayerInAverage> players = new ArrayList<PlayerInAverage>();
 		players.addAll(playerInAverage);
 		int[] attributes = new int[2];
+		attributes[0]=condition;
 		new Sort().sortPlayer(players, attributes);
 		return players;
 	}
@@ -185,6 +186,7 @@ public class SeasonStatProcessor {
 		List<TeamInAverage> teams = new ArrayList<TeamInAverage>();
 		teams.addAll(teamInAverage);
 		int[] attributes = new int[2];
+		attributes[0]=condition;
 		new Sort().sortTeam(teams, attributes);
 		return null;
 	}
@@ -200,6 +202,7 @@ public class SeasonStatProcessor {
 		List<PlayerInAverage> players = new ArrayList<PlayerInAverage>();
 		players.addAll(playerInAverage);
 		int[] attributes = new int[2];
+		attributes[0]=condition;
 		new Sort().sortPlayerTotal(players, attributes);
 		return players;
 	}

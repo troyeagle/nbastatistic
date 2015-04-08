@@ -35,6 +35,9 @@ public class DataReadController implements DataReaderService {
 	ArrayList<SeasonStatProcessor> seasons = new ArrayList<SeasonStatProcessor>();
 	ExecutorService exe = Executors.newCachedThreadPool();
 	
+	Date currentDate;
+	String currentSeason;
+	
 	Queue<String> eventQ = new LinkedList<String>();
 	public ArrayList<PlayerInAverage> getPlayerInAverage() {
 		return playerInAverage;
@@ -295,6 +298,9 @@ public class DataReadController implements DataReaderService {
 						MatchPO oneMatch = MatchDataProcessor.readAndAnalyzeNew(name[0]);
 						oneMatch.teamProcess();
 						averageProcessForNewMatch(oneMatch);
+						currentDate = oneMatch.getDate();
+						currentSeason = oneMatch.getName().substring(0, 5);
+						//FIXME 这里还需要调用一下“更新”接口
 						/**
 						 * Iteration 2 select season and process
 						 */
@@ -357,7 +363,7 @@ public class DataReadController implements DataReaderService {
 	}
 
 	@Override
-	public List<PlayerInMatchExtended> getLeadPlayerForDay(Date date, String condition) {
+	public List<PlayerInMatchExtended> getLeadPlayerForDay(Date date, int condition) {
 		List<PlayerInMatchExtended> players = new ArrayList<PlayerInMatchExtended>();
 		for(MatchPO m:MatchDataProcessor.matches){
 			if(m.getDate().equals(date)){
@@ -366,6 +372,7 @@ public class DataReadController implements DataReaderService {
 			}
 		}
 		int[] attributes = new int[2];
+		attributes[0]=condition;
 		new Sort().sortPlayerSingle(players, attributes);
 		
 		return players;
@@ -400,4 +407,13 @@ public class DataReadController implements DataReaderService {
 		}
 		return null;
 	}
+
+	public Date getCurrentDate() {
+		return currentDate;
+	}
+
+	public String getCurrentSeason() {
+		return currentSeason;
+	}
+	
 }

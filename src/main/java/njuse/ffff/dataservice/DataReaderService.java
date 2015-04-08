@@ -58,7 +58,7 @@ public interface DataReaderService {
 	
 	
 	//获得某一天的某个条件筛选出来的前5名球员
-	public List<PlayerInMatchExtended> getLeadPlayerForDay(Date date,String condition);
+	public List<PlayerInMatchExtended> getLeadPlayerForDay(Date date,int condition);
 
 	//获得某一赛季的某个条件筛选出来的前5名球员
 	public List<PlayerInAverage> getLeadPlayerForSeason(String season,int condition);
@@ -68,4 +68,8 @@ public interface DataReaderService {
 
 	//获得按某一条件的提升率筛选出来的最近5场进步最快的5名球员
 	public List<PlayerInAverage> getImprovePlayer(String season,int condition);
+	
+	public Date getCurrentDate();
+	
+	public String getCurrentSeason();
 }
