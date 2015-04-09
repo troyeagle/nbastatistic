@@ -158,7 +158,7 @@ public class HotEventController implements HotEventService{
 	 * @return
 	 */
 	private Object[][] formPlayerValuesForDay(int condition){
-		List<PlayerInMatchExtended> list = dataService.getLeadPlayerForDay(null, "condition");
+		List<PlayerInMatchExtended> list = dataService.getLeadPlayerForDay(null, condition);
 		Object[][] player_condition = new Object[5][];
 		for(int i=0;i<5;i++){
 			PlayerInMatchExtended player = list.get(i);
