@@ -138,7 +138,7 @@ public class DataReadController implements DataReaderService {
 
 		team.readAndAnalysisTeam();
 
-		Thread main = new Thread() {
+		Thread main = new Thread() {//初始化以及处理初始数据
 			public void run() {
 				MatchDataProcessor.matches = new ArrayList<MatchPO>();
 				//match.readAndAnalysisMatch();				
@@ -155,7 +155,7 @@ public class DataReadController implements DataReaderService {
 
 			}
 		};
-		Thread season = new Thread(){
+		Thread season = new Thread(){//增添赛季数据
 			public void run(){
 				seasons.add(new SeasonStatProcessor("12-13"));
 				seasons.add(new SeasonStatProcessor("13-14"));
@@ -437,4 +437,12 @@ public class DataReadController implements DataReaderService {
 		return currentSeason;
 	}
 	
+	public SeasonStatProcessor getSeasonStatProcessor(String season){
+		for(SeasonStatProcessor ss:seasons){
+			if(season.equals(ss.season)){
+				return ss;
+			}
+		}
+		return null;
+	}
 }

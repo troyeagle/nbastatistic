@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import njuse.ffff.data.SeasonStatProcessor;
 import njuse.ffff.po.MatchPO;
 import njuse.ffff.po.PlayerInAverage;
 import njuse.ffff.po.PlayerInMatchExtended;
@@ -72,4 +73,6 @@ public interface DataReaderService {
 	public Date getCurrentDate();
 	
 	public String getCurrentSeason();
+	
+	public SeasonStatProcessor getSeasonStatProcessor(String season);
 }
