@@ -2,10 +2,13 @@ package njuse.ffff.presenter.playerController;
 
 import java.awt.Image;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 
 import njuse.ffff.dataservice.DataReaderService;
+import njuse.ffff.po.MatchPO;
 import njuse.ffff.po.PlayerInAverage;
 import njuse.ffff.po.PlayerPO;
 import njuse.ffff.presenter.TotalUIController;
@@ -78,7 +81,7 @@ public class PlayerInfoController implements PlayerInfoService{
 			String[] properties1_ratio = {"投篮命中率","三分命中率","罚球命中率","真实命中率"};
 			String[] properties2 = {"篮板数","进攻篮板数","防守篮板数","助攻数","抢断数","盖帽数","失误数","犯规数"};
 			String[] properties2_ratio = {"篮板率","进攻篮板率","防守篮板率","助攻率","抢断率","盖帽率","失误率"};
-			String[] properties3_total = {"在场时间","得分","效率"};
+			String[] properties3_total = {"在场时间","得分","效率"};//出场次数，先发次数
 			String[] properties3_average = {"在场时间","使用率","得分","效率","GmSc效率值"};
 			
 			double[] total = data.getStatsTotal();
@@ -172,5 +175,21 @@ public class PlayerInfoController implements PlayerInfoService{
 	 */
 	public void changeToPlayerProfilePanel() {
 		((PlayerPanel)totalController.getCurrentPanel()).displayProfile();
+	}
+	
+	/**
+	 * 球员参与的比赛
+	 */
+	public void arrangeMatchForPlayer(String season,String playerName){
+		List<MatchPO> matchList = dataService.getMatchForPlayer(playerName);
+		String[] properties = {"比赛日期","比赛对阵"};
+		Object[][] values = new Object[matchList.size()][];
+		for(int i=0;i<matchList.size();i++){
+			MatchPO match = matchList.get(i);
+			Date date = match.getDate();
+			StringBuffer dateBuffer = new StringBuffer(date.getYear()+"-"+date.getMinutes()+"-"+date.getDay());
+			StringBuffer participentsBuffer = new StringBuffer(match.getTeamA()+"  VS  "+match.getTeamB());
+			values[i] = new Object[]{dateBuffer.toString(),participentsBuffer.toString()};
+		}
 	}
 }

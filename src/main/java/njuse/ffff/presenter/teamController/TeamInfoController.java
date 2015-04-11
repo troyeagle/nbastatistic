@@ -3,10 +3,13 @@ package njuse.ffff.presenter.teamController;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 
 import njuse.ffff.dataservice.DataReaderService;
+import njuse.ffff.po.MatchPO;
 import njuse.ffff.po.TeamInAverage;
 import njuse.ffff.po.TeamPO;
 import njuse.ffff.presenter.TotalUIController;
@@ -179,5 +182,21 @@ public class TeamInfoController implements TeamInfoService{
 	 */
 	public void changeToTeamProfilePanel(){
 		((TeamPanel)totalController.getCurrentPanel()).displayProfile();
+	}
+	
+	/**
+	 * 球队参与的比赛
+	 */
+	public void arrangeMatchForTeam(String season,String teamName){
+		List<MatchPO> matchList = dataService.getMatchForTeam(teamName);
+		String[] properties = {"比赛日期","比赛对阵"};
+		Object[][] values = new Object[matchList.size()][];
+		for(int i=0;i<matchList.size();i++){
+			MatchPO match = matchList.get(i);
+			Date date = match.getDate();
+			StringBuffer dateBuffer = new StringBuffer(date.getYear()+"-"+date.getMinutes()+"-"+date.getDay());
+			StringBuffer participentsBuffer = new StringBuffer(match.getTeamA()+"  VS  "+match.getTeamB());
+			values[i] = new Object[]{dateBuffer.toString(),participentsBuffer.toString()};
+		}
 	}
 }

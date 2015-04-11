@@ -7,4 +7,6 @@ public interface PlayerInfoService {
 	public void changeToPlayerDataPanel(int number);
 	//球员数据界面切换为球员简介界面
 	public void changeToPlayerProfilePanel();
+	//球员参与的比赛
+	public void arrangeMatchForPlayer(String season,String playerName);
 }

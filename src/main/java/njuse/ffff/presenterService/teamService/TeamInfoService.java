@@ -7,4 +7,6 @@ public interface TeamInfoService {
 	public void changeToTeamDataPanel(int number);
 	//球队数据界面切换为球队简介界面
 	public void changeToTeamProfilePanel();
+	//球队参与的比赛
+	public void arrangeMatchForTeam(String season,String teamName);
 }
