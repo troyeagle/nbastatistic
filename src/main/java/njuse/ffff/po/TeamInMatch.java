@@ -46,10 +46,12 @@ public class TeamInMatch implements Serializable {
 	double defensiveReboundEf;
 	double stealEf;
 	double assistEf;
-
+	ArrayList<PlayerInMatch> players;
+	
 	public TeamInMatch(String name, ArrayList<PlayerInMatch> players,
 			TeamInMatch rival, ArrayList<Integer> score,
 			ArrayList<Integer> rivalScore) {
+		this.players= players;
 		this.nameAbbr = name;
 		if (score.get(0) > rivalScore.get(0)) {
 			win = true;
@@ -127,7 +129,10 @@ public class TeamInMatch implements Serializable {
 				+ fieldGoalAttempted
 				- 1.07
 				* ((double) offensiveRebound
-						/ (offensiveRebound + rival.defensiveRebound) * (freeThrowAttempted - freeThrowMade))
+						/ (offensiveRebound 
+								+ rival.defensiveRebound) 
+						* (freeThrowAttempted 
+								- freeThrowMade))
 				+ 1.07 * turnover;
 	}
 

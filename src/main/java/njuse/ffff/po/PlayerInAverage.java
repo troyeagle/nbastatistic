@@ -1,7 +1,12 @@
 package njuse.ffff.po;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -246,7 +251,7 @@ public class PlayerInAverage {
 	 * @param p
 	 */
 	public void calAverageAsArrayNew(PlayerInMatchExtended p) {
-		if(statsAverage==null){
+		if (statsAverage == null) {
 			statsAverage = new double[32];
 			statsTotal = new double[32];
 			statsDirty = new int[32];
@@ -524,6 +529,22 @@ public class PlayerInAverage {
 		recent5AssistAdv = recent5.statsAverage[9] / history.statsAverage[9]
 				- 1;
 
+	}
+
+	void calLastMonth(Date currentDate) {
+		PlayerInAverage lastmonth = new PlayerInAverage(this.name);
+
+		for (int i = playerStats.size(); i > 0; i--) {
+
+			Calendar see = new GregorianCalendar();
+			see.setTime(playerStats.get(i).getDate());
+			Calendar current = new GregorianCalendar();
+			current.setTime(currentDate);
+			if(see.get(Calendar.MONTH)-current.get(Calendar.MONTH)%12==1){
+				lastmonth.addOneMatchStat(playerStats.get(i));
+			}
+		}
+		lastmonth.calAverageAsArray();
 	}
 
 	public double getRecent5ScoreAdv() {

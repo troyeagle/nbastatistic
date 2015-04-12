@@ -91,34 +91,34 @@ public class TeamInAverage implements Serializable {
 		calAssistEf();
 	}
 
-	public void addOneMatchToAll(TeamInMatch p) {
+	public void addOneMatchToAll(TeamInMatch t) {
 		numOfMatches++;
-		if (p.win) {
+		if (t.win) {
 			numOfWins++;
 		}
-		fieldGoalMade += p.fieldGoalMade;
-		fieldGoalAttempted += p.fieldGoalAttempted;
-		threePointerMade += p.threePointerMade;
-		threePointerAttempted += p.threePointerAttempted;
-		freeThrowMade += p.freeThrowMade;
-		freeThrowAttempted += p.freeThrowAttempted;
-		offensiveRebound += p.offensiveRebound;
-		defensiveRebound += p.defensiveRebound;
-		rebound += p.rebound;
-		assist += p.assist;
-		steal += p.steal;
-		block += p.block;
-		turnover += p.turnover;
-		foul += p.foul;
-		scores += p.scores;
-		rivalScores += p.rival.scores;
-		rivalOffensiveRebound += p.rival.offensiveRebound;
-		rivalDefensiveRebound += p.rival.defensiveRebound;
-		rivalRebounds += p.rival.rebound;
-		rivalFieldGoalAttempted += p.rival.fieldGoalAttempted;
-		rivalThreePointerAttempted += p.rival.threePointerAttempted;
-		rivalRounds += p.myRounds;
-		secondInTotal += p.secondInTotal;
+		fieldGoalMade += t.fieldGoalMade;
+		fieldGoalAttempted += t.fieldGoalAttempted;
+		threePointerMade += t.threePointerMade;
+		threePointerAttempted += t.threePointerAttempted;
+		freeThrowMade += t.freeThrowMade;
+		freeThrowAttempted += t.freeThrowAttempted;
+		offensiveRebound += t.offensiveRebound;
+		defensiveRebound += t.defensiveRebound;
+		rebound += t.rebound;
+		assist += t.assist;
+		steal += t.steal;
+		block += t.block;
+		turnover += t.turnover;
+		foul += t.foul;
+		scores += t.scores;
+		rivalScores += t.rival.scores;
+		rivalOffensiveRebound += t.rival.offensiveRebound;
+		rivalDefensiveRebound += t.rival.defensiveRebound;
+		rivalRebounds += t.rival.rebound;
+		rivalFieldGoalAttempted += t.rival.fieldGoalAttempted;
+		rivalThreePointerAttempted += t.rival.threePointerAttempted;
+		rivalRounds += t.myRounds;
+		secondInTotal += t.secondInTotal;
 	}
 
 	public void calAverage() {
@@ -458,5 +458,34 @@ public class TeamInAverage implements Serializable {
 	public double[] getStatsTotal() {
 		return statsTotal;
 	}
-
+	/**
+	 * 新增功能。通过计算某球员上场和不上场的球队分别情况，衡量该球员的贡献。
+	 * @param playerName
+	 * @return
+	 */
+	public ArrayList<TeamInAverage> calPlayerContribution(String playerName){
+		TeamInAverage with = new TeamInAverage(this.name,this.abbr);
+		TeamInAverage without = new TeamInAverage(this.name,this.abbr);
+		for(TeamInMatch t:teamStats){
+			boolean in = false;
+			for(PlayerInMatch p:t.players){
+				if(p.name.equals(playerName)){
+					with.addMatch(t);
+					in = true;
+					break;
+				}
+			}
+			if(!in){
+				without.addMatch(t);
+			}
+		}
+		with.calAll();
+		without.calAll();
+		ArrayList<TeamInAverage> two = new ArrayList<TeamInAverage>();
+		two.add(with);
+		two.add(without);
+		return two;
+	}
+	
+	
 }
