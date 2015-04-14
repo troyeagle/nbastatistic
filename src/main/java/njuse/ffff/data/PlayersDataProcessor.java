@@ -31,6 +31,7 @@ public class PlayersDataProcessor {
 //		System.out.println("INFO:Player Info Initializing");
 		File file = new File(path+"/info");
 		File[] files = file.listFiles();
+		System.out.println(file.getAbsolutePath());
 		FileReader fr;
 		
 		
@@ -39,6 +40,7 @@ public class PlayersDataProcessor {
 				PlayerPO tempPlayerPO;
 				
 				fr = new FileReader(files[i]);
+
 				BufferedReader br = new BufferedReader(fr);
 				Pattern p = Pattern.compile("│(.*)║");
 				br.readLine();
