@@ -107,7 +107,7 @@ public class MenuPanel extends JPanel{
 			public void mouseClicked(MouseEvent arg0) {
 				//设置球队横向比较界面
 //				uiController.setTeamComparePanel();
-				teamCompareController.setTeamComparePanel();
+				teamCompareController.setTeamCompareInfoForSeason(null,"");
 			}
 		});
 		
@@ -131,7 +131,7 @@ public class MenuPanel extends JPanel{
 			public void mouseClicked(MouseEvent arg0) {
 				//设置球员横向比较界面
 //				uiController.setPlayerComparePanel();
-				playerCompareController.setPlayerComparePanel();
+				playerCompareController.setPlayerCompareInfoForSeason(null,"");
 			}
 		});
 		

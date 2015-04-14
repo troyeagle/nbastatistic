@@ -14,6 +14,8 @@ import njuse.ffff.po.PlayerPO;
 import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.presenterService.playerService.PlayerInfoService;
 import njuse.ffff.ui.PlayerPanel;
+import njuse.ffff.uiservice.PlayerDataService;
+import njuse.ffff.uiservice.PlayerProfileService;
 import njuse.ffff.util.DealDecimal;
 import njuse.ffff.util.Filter;
 
@@ -43,7 +45,7 @@ public class PlayerInfoController implements PlayerInfoService{
 	/**
 	 * 设置球员简介界面
 	 */
-	public void setPlayerProfilePanel(String playerName) {
+	public void setPlayerProfilePanel(PlayerProfileService playerProfilePanel,String playerName) {
 		//获取指定的球员信息
 		PlayerPO playerInfo = dataService.getPlayerInfo(playerName, emptyFilter);
 		String position = null;
@@ -162,19 +164,12 @@ public class PlayerInfoController implements PlayerInfoService{
 			totalController.switchToPanel(playerPanel);
 		}
 	}
-
+	
 	/**
-	 * 球员简介界面切换为球员数据界面
+	 * 设置球员数据界面
 	 */
-	public void changeToPlayerDataPanel(int number) {
-		((PlayerPanel)totalController.getCurrentPanel()).displayData(number);
-	}
-
-	/**
-	 * 球员数据界面切换为球员简介界面
-	 */
-	public void changeToPlayerProfilePanel() {
-		((PlayerPanel)totalController.getCurrentPanel()).displayProfile();
+	public void setPlayerDataPanel(PlayerDataService playerDataPanel){
+		
 	}
 	
 	/**

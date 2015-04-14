@@ -2,12 +2,13 @@ package njuse.ffff.presenter.playerController;
 
 import java.util.ArrayList;
 
+import njuse.ffff.data.SeasonStatProcessor;
 import njuse.ffff.dataservice.DataReaderService;
 import njuse.ffff.po.PlayerInAverage;
-import njuse.ffff.po.PlayerPO;
 import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.presenterService.playerService.PlayerCompareService;
 import njuse.ffff.ui.PlayerComparePanel;
+import njuse.ffff.uiservice.PlayersOverviewService;
 import njuse.ffff.util.DealDecimal;
 import njuse.ffff.util.Filter;
 
@@ -16,6 +17,7 @@ public class PlayerCompareController implements PlayerCompareService{
 	private static PlayerCompareController playerCompareController = null;
 	private static TotalUIController totalController = null;
 	
+	@SuppressWarnings("unused")
 	private static final Filter emptyFilter;
 
 	static {
@@ -37,9 +39,10 @@ public class PlayerCompareController implements PlayerCompareService{
 	/**
 	 * 设置球员信息一览界面
 	 */
-	public void setPlayerComparePanel() {
+	public void setPlayerCompareInfoForSeason(PlayersOverviewService playerViewPanel,String season) {
 		//获取所有球员信息
-		ArrayList<PlayerPO> data = dataService.getPlayerInfoAll(emptyFilter);
+		SeasonStatProcessor seasonStatProcessor = dataService.getSeasonStatProcessor(season);
+		ArrayList<PlayerInAverage> players = seasonStatProcessor.getPlayerInAverage();
 
 		String[] properties_total = { "球员名称","所属球队","参赛场数","先发场数"
 				,"投篮命中数","投篮出手数","三分命中数","三分出手数","罚球命中数"
@@ -49,20 +52,13 @@ public class PlayerCompareController implements PlayerCompareService{
 				,"篮板数","助攻数","在场时间","投篮命中率","三分命中率","罚球命中率"/**,"进攻数","防守数"*/
 				,"抢断数","盖帽数","失误数","犯规数","得分","效率","GmSc效率值","真实命中率","投篮效率"
 				,"篮板率","进攻篮板率","防守篮板率","助攻率","抢断率","盖帽率","失误率","使用率" };
-		ArrayList<PlayerInAverage> players = new ArrayList<PlayerInAverage>();
-		Object[][] values_total = new Object[data.size()][];
-		Object[][] values_average = new Object[data.size()][];
-		for (int i = 0; i < data.size(); i++) {
-			PlayerPO player = data.get(i);
-			PlayerInAverage playerAvg = dataService.getPlayerAverage(player.getName(),emptyFilter);
+		Object[][] values_total = new Object[players.size()][];
+		Object[][] values_average = new Object[players.size()][];
+		for (int i = 0; i < players.size(); i++) {
+			PlayerInAverage playerAvg = players.get(i);
 			if(playerAvg==null){
-				values_total[i] = new Object[] {player.getName(),"","","","","","","","","","","","","","","",""
-						,"","","","","","","","","","","","","","","",""};
-				values_average[i] = new Object[] {player.getName(),"","","","","","","","","","","","","","",""
-						,"","","","","","","","","","",""};
 				continue;
 			}
-			players.add(playerAvg);
 			double[] total = playerAvg.getStatsTotal();
 			double[] average = playerAvg.getStatsAverage();
 			// TODO

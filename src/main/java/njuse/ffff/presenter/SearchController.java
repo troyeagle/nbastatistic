@@ -8,6 +8,7 @@ import njuse.ffff.po.TeamPO;
 import njuse.ffff.presenterService.SearchService;
 import njuse.ffff.ui.SearchPanel;
 import njuse.ffff.ui.SearchResultPanel;
+import njuse.ffff.uiservice.SearchResultService;
 import njuse.ffff.util.Filter;
 
 public class SearchController implements SearchService{
@@ -32,7 +33,7 @@ public class SearchController implements SearchService{
 		}
 		return searchController;
 	}
-
+	
 	/**
 	 * 设置查询界面
 	 */
@@ -45,7 +46,7 @@ public class SearchController implements SearchService{
 	/**
 	 * 查找搜索的球队或者球员
 	 */
-	public void search(String input) {
+	public void search(SearchResultService searchResultPanel,String input) {
 		ArrayList<TeamPO> search_team = new ArrayList<TeamPO>();
 		ArrayList<PlayerPO> search_player = new ArrayList<PlayerPO>();
 		//获取所有球队信息
@@ -81,6 +82,13 @@ public class SearchController implements SearchService{
 		
 		totalController.addCurrentPanel(panel_searchResult);
 		totalController.switchToPanel(panel_searchResult);
+	}
+	
+	/**
+	 * 设置高级所示结果界面
+	 */
+	public void setAdvancedSearchPanel(SearchService searchPanel,SearchResultService searchResultPanel){
+		
 	}
 
 }

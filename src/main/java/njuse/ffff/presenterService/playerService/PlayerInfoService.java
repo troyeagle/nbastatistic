@@ -1,12 +1,11 @@
 package njuse.ffff.presenterService.playerService;
 
+import njuse.ffff.uiservice.PlayerDataService;
+import njuse.ffff.uiservice.PlayerProfileService;
+
 public interface PlayerInfoService {
-	//设置界面为球员简介界面
-	public void setPlayerProfilePanel(String playerName);
-	//球员简介界面切换为球员数据界面
-	public void changeToPlayerDataPanel(int number);
-	//球员数据界面切换为球员简介界面
-	public void changeToPlayerProfilePanel();
-	//球员参与的比赛
-	public void arrangeMatchForPlayer(String season,String playerName);
+	//设置球员简介界面
+	public void setPlayerProfilePanel(PlayerProfileService playerProfilePanel,String playerName);
+	//设置球员数据界面
+	public void setPlayerDataPanel(PlayerDataService playerDataPanel);
 }

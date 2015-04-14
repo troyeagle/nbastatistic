@@ -109,7 +109,7 @@ public class SearchPanel extends JPanel{
 				String search = text_searchInfo.getText();
 				//调用查找
 //				uiController.search(search);
-				searchController.search(search);
+				searchController.search(null,search);
 				
 			}
 		});
@@ -138,7 +138,7 @@ public class SearchPanel extends JPanel{
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到球队信息横向比较界面
 //				uiController.setTeamComparePanel();
-				teamCompareController.setTeamComparePanel();
+				teamCompareController.setTeamCompareInfoForSeason(null,"");
 			}
 		});
 		

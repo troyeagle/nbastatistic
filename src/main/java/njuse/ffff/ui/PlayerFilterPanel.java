@@ -112,7 +112,7 @@ public class PlayerFilterPanel extends JPanel{
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到"球员信息横向比较"界面
 //				uiController.setPlayerComparePanel();
-				playerCompareController.setPlayerComparePanel();
+				playerCompareController.setPlayerCompareInfoForSeason(null,"");
 			}
 		});
 		
@@ -212,7 +212,7 @@ public class PlayerFilterPanel extends JPanel{
 					panel.remove(scrollPane_filter_total);
 				}
 //				uiController.setPlayerFilterResult(panel ,position, league, sortCondition);
-				playerFilterController.setPlayerFilterResult(panel, position, league, sortCondition);
+				playerFilterController.setPlayerFilterResult(null, position, league, sortCondition);
 			}
 		});
 		

@@ -11,6 +11,7 @@ import njuse.ffff.po.TeamInAverage;
 import njuse.ffff.po.TeamPO;
 import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.presenterService.hotEventService.HotEventService;
+import njuse.ffff.uiservice.SpecialViewService;
 import njuse.ffff.util.DealDecimal;
 import njuse.ffff.util.Filter;
 
@@ -158,7 +159,7 @@ public class HotEventController implements HotEventService{
 	 * @return
 	 */
 	private Object[][] formPlayerValuesForDay(int condition){
-		List<PlayerInMatchExtended> list = dataService.getLeadPlayerForDay(null, condition);
+		List<PlayerInMatchExtended> list = dataService.getLeadPlayerForDay(dataService.getCurrentDate(), condition);
 		Object[][] player_condition = new Object[5][];
 		for(int i=0;i<5;i++){
 			PlayerInMatchExtended player = list.get(i);
@@ -178,7 +179,7 @@ public class HotEventController implements HotEventService{
 	 * @return
 	 */
 	private Object[][] formPlayerValuesForSeason(int condition){
-		List<PlayerInAverage> list = dataService.getLeadPlayerForSeason("", condition);
+		List<PlayerInAverage> list = dataService.getLeadPlayerForSeason(dataService.getCurrentSeason(), condition);
 		Object[][] player_condition = new Object[5][];
 		for(int i=0;i<5;i++){
 			PlayerInAverage player = list.get(i);
@@ -209,7 +210,7 @@ public class HotEventController implements HotEventService{
 	 * @return
 	 */
 	private Object[][] formTeamValuesForSeason(int condition){
-		List<TeamInAverage> list = dataService.getLeadTeamForSeason("", condition);
+		List<TeamInAverage> list = dataService.getLeadTeamForSeason(dataService.getCurrentSeason(), condition);
 		Object[][] team_condition = new Object[5][];
 		for(int i=0;i<5;i++){
 			TeamInAverage team = list.get(i);
@@ -241,7 +242,7 @@ public class HotEventController implements HotEventService{
 	 * @return
 	 */
 	private Object[][] formPlayerValuesForImprove(int condition){
-		List<PlayerInAverage> list = dataService.getImprovePlayer("", condition);
+		List<PlayerInAverage> list = dataService.getImprovePlayer(dataService.getCurrentSeason(), condition);
 		Object[][] player_condition = new Object[5][];
 		for(int i=0;i<5;i++){
 			PlayerInAverage player = list.get(i);
@@ -260,6 +261,12 @@ public class HotEventController implements HotEventService{
 					,DealDecimal.formatChange(player.getStatsAverage()[condition], 1),improvement};
 		}
 		return player_condition;
+	}
+
+	@Override
+	public void setHotEventPanel(SpecialViewService panel) {
+		// TODO 自动生成的方法存根
+		
 	}
 
 }

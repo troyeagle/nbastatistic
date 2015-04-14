@@ -206,11 +206,11 @@ public class SearchResultPanel extends JPanel{
 					String content = (String)table_searchResult.getValueAt(row, column);
 					if(type.equals("球队")){
 //						uiController.setTeamProfilePanel(content);
-						teamInfoController.setTeamProfilePanel(content);
+						teamInfoController.setTeamProfilePanel(null,content);
 					}
 					else if(type.equals("球员")){
 //						uiController.setPlayerProfilePanel(content);
-						playerInfoController.setPlayerProfilePanel(content);
+						playerInfoController.setPlayerProfilePanel(null,content);
 					}
 				}
 			}

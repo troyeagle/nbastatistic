@@ -281,7 +281,7 @@ public class PlayerProfilePanel extends JPanel{
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到球员数据信息界面
 //				uiController.changeToPlayerDataPanel(1);
-				playerInfoController.changeToPlayerDataPanel(1);
+//				playerInfoController.changeToPlayerDataPanel(1);
 			}
 		});
         
@@ -304,7 +304,7 @@ public class PlayerProfilePanel extends JPanel{
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到球员数据信息界面
 //				uiController.changeToPlayerDataPanel(2);
-				playerInfoController.changeToPlayerDataPanel(2);
+//				playerInfoController.changeToPlayerDataPanel(2);
 			}
 		});
         
@@ -327,7 +327,7 @@ public class PlayerProfilePanel extends JPanel{
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到球员数据信息界面
 //				uiController.changeToPlayerDataPanel(3);
-				playerInfoController.changeToPlayerDataPanel(3);
+//				playerInfoController.changeToPlayerDataPanel(3);
 			}
 		});
         

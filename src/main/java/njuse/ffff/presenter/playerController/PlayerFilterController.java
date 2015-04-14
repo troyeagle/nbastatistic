@@ -8,6 +8,7 @@ import njuse.ffff.po.PlayerPO;
 import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.presenterService.playerService.PlayerFilterService;
 import njuse.ffff.ui.PlayerFilterPanel;
+import njuse.ffff.uiservice.PlayerFilterViewService;
 import njuse.ffff.util.DealDecimal;
 import njuse.ffff.util.Filter;
 import njuse.ffff.util.Sort;
@@ -34,7 +35,7 @@ public class PlayerFilterController implements PlayerFilterService{
 		}
 		return playerFilterController;
 	}
-
+	
 	/**
 	 * 设置球员筛选界面
 	 */
@@ -47,7 +48,7 @@ public class PlayerFilterController implements PlayerFilterService{
 	/**
 	 * 将球员筛选结果显示到界面
 	 */
-	public void setPlayerFilterResult(PlayerFilterPanel panel, String position,
+	public void setPlayerFilterResult(PlayerFilterViewService panel, String position,
 			String league, String sort) {
 		char pos = 0;
 		String leagueInEnglish = null;
@@ -206,8 +207,6 @@ public class PlayerFilterController implements PlayerFilterService{
 						};
 			}
 		}
-		
-		panel.setFilterInfo(properties, values_average);
 		
 	}
 }

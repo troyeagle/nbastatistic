@@ -142,7 +142,7 @@ public class TeamComparePanel extends JPanel{
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到"球员信息横向比较"界面
 //				uiController.setPlayerComparePanel();
-				playerCompareController.setPlayerComparePanel();
+				playerCompareController.setPlayerCompareInfoForSeason(null,"");
 			}
 		});
 		
@@ -273,7 +273,7 @@ public class TeamComparePanel extends JPanel{
 					int row = table_teamCompare_total.getSelectedRow();
 					String content = (String)table_teamCompare_total.getValueAt(row, column);
 //					uiController.setTeamProfilePanel(content);
-					teamInfoController.setTeamProfilePanel(content);
+					teamInfoController.setTeamProfilePanel(null,content);
 				}
 			}
 		});
@@ -320,7 +320,7 @@ public class TeamComparePanel extends JPanel{
 					int row = table_teamCompare_average.getSelectedRow();
 					String content = (String)table_teamCompare_average.getValueAt(row, column);
 //					uiController.setTeamProfilePanel(content);
-					teamInfoController.setTeamProfilePanel(content);
+					teamInfoController.setTeamProfilePanel(null,content);
 				}
 			}
 		});

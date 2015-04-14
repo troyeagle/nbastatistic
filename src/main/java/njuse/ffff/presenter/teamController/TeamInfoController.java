@@ -15,6 +15,8 @@ import njuse.ffff.po.TeamPO;
 import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.presenterService.teamService.TeamInfoService;
 import njuse.ffff.ui.TeamPanel;
+import njuse.ffff.uiservice.TeamDataService;
+import njuse.ffff.uiservice.TeamProfileService;
 import njuse.ffff.util.DealDecimal;
 import njuse.ffff.util.Filter;
 import njuse.ffff.util.SvgConverter;
@@ -47,7 +49,7 @@ public class TeamInfoController implements TeamInfoService{
 	/**
 	 * 设置球队简介界面
 	 */
-	public void setTeamProfilePanel(String teamName) {
+	public void setTeamProfilePanel(TeamProfileService panel,String teamName) {
 		//TODO 获取指定球队的信息
 		TeamPO teamInfo = dataService.getTeamInfo(teamName, emptyFilter);
 
@@ -169,19 +171,12 @@ public class TeamInfoController implements TeamInfoService{
 			totalController.switchToPanel(teamPanel);
 		}
 	}
-
+	
 	/**
-	 * 球队简介界面切换为球队数据界面
+	 * 设置球队数据界面
 	 */
-	public void changeToTeamDataPanel(int number){
-		((TeamPanel)totalController.getCurrentPanel()).displayData(number);
-	}
-
-	/**
-	 * 球队数据界面切换为球队简介界面
-	 */
-	public void changeToTeamProfilePanel(){
-		((TeamPanel)totalController.getCurrentPanel()).displayProfile();
+	public void changeToTeamDataPanel(TeamDataService panel){
+		
 	}
 	
 	/**

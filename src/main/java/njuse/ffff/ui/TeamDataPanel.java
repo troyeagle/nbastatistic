@@ -232,7 +232,7 @@ public class TeamDataPanel extends JPanel{
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到球队介绍界面
 //				uiController.changeToTeamProfilePanel();
-				teamInfoController.changeToTeamProfilePanel();
+//				teamInfoController.changeToTeamProfilePanel();
 			}
 		});
         

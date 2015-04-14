@@ -2,12 +2,14 @@ package njuse.ffff.presenter.teamController;
 
 import java.util.ArrayList;
 
+import njuse.ffff.data.SeasonStatProcessor;
 import njuse.ffff.dataservice.DataReaderService;
 import njuse.ffff.po.TeamInAverage;
 import njuse.ffff.po.TeamPO;
 import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.presenterService.teamService.TeamCompareService;
 import njuse.ffff.ui.TeamComparePanel;
+import njuse.ffff.uiservice.TeamsOverviewService;
 import njuse.ffff.util.DealDecimal;
 import njuse.ffff.util.Filter;
 
@@ -37,8 +39,9 @@ public class TeamCompareController implements TeamCompareService{
 	/**
 	 * 设置球队信息横向比较界面
 	 */
-	public void setTeamComparePanel() {
+	public void setTeamCompareInfoForSeason(TeamsOverviewService panel,String season) {
 		//获取所有球队信息
+		SeasonStatProcessor seasonStatProcessor = dataService.getSeasonStatProcessor(season);
 		ArrayList<TeamPO> data = dataService.getTeamInfoAll(emptyFilter);
 		
 		String[] propertices_total = {"球队名称","比赛场数","投篮命中数","投篮出手数"

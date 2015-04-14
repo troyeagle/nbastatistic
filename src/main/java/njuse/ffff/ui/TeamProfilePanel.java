@@ -255,7 +255,7 @@ public class TeamProfilePanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 //				uiController.changeToTeamDataPanel(1);
-				teamInfoController.changeToTeamDataPanel(1);
+//				teamInfoController.changeToTeamDataPanel(1);
 			}
 		});
         
@@ -277,7 +277,7 @@ public class TeamProfilePanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 //				uiController.changeToTeamDataPanel(2);
-				teamInfoController.changeToTeamDataPanel(2);
+//				teamInfoController.changeToTeamDataPanel(2);
 			}
 		});
         
@@ -299,7 +299,7 @@ public class TeamProfilePanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 //				uiController.changeToTeamDataPanel(3);
-				teamInfoController.changeToTeamDataPanel(3);
+//				teamInfoController.changeToTeamDataPanel(3);
 			}
 		});
         
