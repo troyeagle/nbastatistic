@@ -1,6 +1,6 @@
 package njuse.ffff.uiservice;
 
-import java.awt.Image;
+import javax.swing.ImageIcon;
 
 /**
  * 提供球队一览界面访问和修改方法
@@ -8,7 +8,7 @@ import java.awt.Image;
  * @author Li
  *
  */
-public interface TeamsViewService {
+public interface TeamsOverviewService {
 
 	/**
 	 * 设置所有球队的信息
@@ -16,7 +16,7 @@ public interface TeamsViewService {
 	 * @param properties
 	 * @param values
 	 */
-	void setTeamsInfo(String[] properties, String[][] values);
+	void setTeamsInfo(String[] columns, Object[][] values);
 
 	/**
 	 * 设置球队的队徽
@@ -26,12 +26,5 @@ public interface TeamsViewService {
 	 * @param icons
 	 *            队徽图像数组
 	 */
-	void setTeamsIcon(String[] names, Image[] icons);
-
-	/**
-	 * 获得当前排序条件
-	 * 
-	 * @return
-	 */
-	String getFilter();
+	void setTeamsIcon(String[] names, ImageIcon[] icons);
 }

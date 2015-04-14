@@ -11,11 +11,8 @@ public interface SearchResultService {
 	/**
 	 * 设置搜索结果
 	 * 
-	 * @param teamsProperties
-	 * @param teamsValues
-	 * @param playersProperties
-	 * @param playerValues
+	 * @param teamNames
+	 * @param playerNames
 	 */
-	void setSearchResult(String[] teamsProperties, String[][] teamsValues,
-			String[] playersProperties, String[][] playerValues);
+	void setSearchResult(String[] teamNames, String[] playerNames);
 }
