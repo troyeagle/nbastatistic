@@ -22,4 +22,25 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
+  <build>
+	  <plugins>
+		  <plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-surefire-plugin </artifactId>
+			<version>2.5</version>
+			<configuration>
+			    <source>1.8</source>  
+                <target>1.8</target>  
+				<includes>
+					<include>**/*Test.java</include>   
+				</includes>
+				<excludes>
+  			 		 <!-- 可以去除符合要求但不想测试的类 -->
+				</excludes>			
+			</configuration>
+		  </plugin>
+	  </plugins>
+  </build>
+  
 </project>
