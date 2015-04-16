@@ -18,6 +18,8 @@ import njuse.ffff.po.PlayerPO;
 import njuse.ffff.po.TeamInAverage;
 import njuse.ffff.po.TeamInMatch;
 import njuse.ffff.po.TeamPO;
+import njuse.ffff.presenter.UpdateController;
+import njuse.ffff.presenterService.UpdateService;
 import njuse.ffff.util.FileListener;
 import njuse.ffff.util.Filter;
 import njuse.ffff.util.Sort;
@@ -318,6 +320,8 @@ public class DataReadController implements DataReaderService {
 									currentDate = oneMatch.getDate();
 									currentSeason = oneMatch.getName().substring(0, 5);
 									//FIXME 这里还需要调用一下“更新”接口
+									UpdateService up = new UpdateController();
+									up.informUpdate();
 									/**
 									 * Iteration 2 select season and process
 									 */
