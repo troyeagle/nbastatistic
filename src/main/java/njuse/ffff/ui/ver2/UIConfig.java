@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 
 public class UIConfig {
 
@@ -18,7 +19,20 @@ public class UIConfig {
 	public static Color TitleForeColor;
 	/** 副标题字体 */
 	public static Font SubTitleFont;
-	
+	/** 正文字体 */
+	public static Font ContentFont;
+
+	public static Color TableSelectionBgColor;
+
+	public static Color TableSelectionFgColor;
+
+	//	public static Color TableBgColor;
+
+	public static Color TableFgColor;
+
+	public static Color TableHeaderBgColor;
+
+	public static Color TableHeaderFgColor;
 
 	/**
 	 * 初始化设定
@@ -27,16 +41,27 @@ public class UIConfig {
 		System.setProperty("awt.useSystemAAFontSettings", "on");
 		System.setProperty("swing.aatext", "true");
 
+		// 初始化表格属性
+		UIManager.put("Table.background", new ColorUIResource(new Color(255, 255, 255, 64)));
+		UIManager.put("Table.alternateRowColor", new Color(255, 255, 255, 128));
+
 		Font f;
 		try {
 			f = Font.createFont(Font.TRUETYPE_FONT, new File("./font/DengXian.ttf"));
 		} catch (FontFormatException | IOException e) {
 			f = UIManager.getDefaults().getFont("JLabel");
 		}
-		UIConfig.TitleFont = f.deriveFont(Font.PLAIN, 30);
-		UIConfig.SubTitleFont = f.deriveFont(Font.PLAIN, 18);
+		TitleFont = f.deriveFont(Font.PLAIN, 30);
+		SubTitleFont = f.deriveFont(Font.PLAIN, 18);
+		ContentFont = f.deriveFont(Font.PLAIN, 20);
 
 		TitleBgColor = Color.GRAY;
 		TitleForeColor = Color.WHITE;
+
+		TableSelectionBgColor = new Color(255, 255, 255, 150);
+		TableSelectionFgColor = Color.BLACK;
+		TableFgColor = Color.WHITE;
+
+		TableHeaderBgColor = new Color(255, 255, 255, 192);
 	}
 }

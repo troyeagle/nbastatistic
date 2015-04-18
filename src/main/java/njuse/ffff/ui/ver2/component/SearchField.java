@@ -1,4 +1,4 @@
-package njuse.ffff.ui.ver2;
+package njuse.ffff.ui.ver2.component;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -9,13 +9,15 @@ import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import njuse.ffff.ui.component.ButtonEx;
 import njuse.ffff.ui.component.ComponentExUtilities;
+import njuse.ffff.ui.component.PanelEx;
+import njuse.ffff.ui.ver2.UIConfig;
+import njuse.ffff.ui.ver2.UIConfigNotifier;
 
-public class SearchField extends JPanel implements UIConfigNotifier {
+public class SearchField extends PanelEx implements UIConfigNotifier {
 
 	private static final long serialVersionUID = 1L;
 
@@ -47,8 +49,7 @@ public class SearchField extends JPanel implements UIConfigNotifier {
 			}
 		});
 
-		JPanel fieldPanel = new JPanel(new BorderLayout(0, 0));
-//		fieldPanel.setOpaque(false);
+		PanelEx fieldPanel = new PanelEx(new BorderLayout(0, 0));
 		fieldPanel.setBackground(Color.WHITE);
 		fieldPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));
 		fieldPanel.add(textField);

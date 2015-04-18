@@ -13,6 +13,8 @@ public interface PlayersOverviewService {
 	 * 
 	 * @param values
 	 */
-	void setPlayersInfo(Object[][] values);
+	void setPlayersAvgInfo(Object[][] values);
+	
+	void setPlayersTotalInfo(Object[][] values);
 
 }

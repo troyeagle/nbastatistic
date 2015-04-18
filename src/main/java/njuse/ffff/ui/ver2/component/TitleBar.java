@@ -1,8 +1,9 @@
-package njuse.ffff.ui.ver2;
+package njuse.ffff.ui.ver2.component;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,13 +11,15 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import njuse.ffff.ui.component.BasicButtonExListener;
 import njuse.ffff.ui.component.ButtonEx;
 import njuse.ffff.ui.component.LabelEx;
+import njuse.ffff.ui.component.PanelEx;
+import njuse.ffff.ui.ver2.UIConfig;
+import njuse.ffff.ui.ver2.UIConfigNotifier;
 
-public class TitleArea extends JPanel implements UIConfigNotifier {
+public class TitleBar extends PanelEx implements UIConfigNotifier {
 
 	private static final long serialVersionUID = 1L;
 
@@ -24,13 +27,15 @@ public class TitleArea extends JPanel implements UIConfigNotifier {
 	private ButtonEx minimize;
 	private ButtonEx exit;
 
-	private MainFrame frame;
+	private Frame window;
 
-	public TitleArea() {
+	public TitleBar(Frame w) {
 		super(new BorderLayout(0, 0));
 
-		JPanel utilPanel = new JPanel(new BorderLayout(0, 0));	// 搜索面板+控制按钮
-		JPanel ctrlPanel = new JPanel(new GridLayout(1, 0));	// 右上控制按钮面板（最小化 关闭）
+		window = w;
+
+		PanelEx utilPanel = new PanelEx(new BorderLayout(0, 0));	// 搜索面板+控制按钮
+		PanelEx ctrlPanel = new PanelEx(new GridLayout(1, 0));	// 右上控制按钮面板（最小化 关闭）
 		utilPanel.setOpaque(false);
 		ctrlPanel.setOpaque(false);
 
@@ -83,29 +88,20 @@ public class TitleArea extends JPanel implements UIConfigNotifier {
 		add(titleLabel);
 		add(utilPanel, BorderLayout.EAST);
 
-		// TODO
-		add(new TitleBar("主页", "球队一览", "球员一览", "球员筛选"), BorderLayout.SOUTH);
-	}
-
-	private MainFrame getFrame() {
-		if (frame == null) {
-			frame = MainFrame.getInstance();
-		}
-		return frame;
 	}
 
 	private void initAction() {
 		minimize.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				getFrame().setExtendedState(JFrame.ICONIFIED);
+				window.setExtendedState(JFrame.ICONIFIED);
 			}
 		});
 
 		exit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				getFrame().dispose();
+				window.dispose();
 			}
 		});
 
@@ -125,6 +121,5 @@ public class TitleArea extends JPanel implements UIConfigNotifier {
 
 		titleLabel.setForeground(UIConfig.TitleForeColor);
 		titleLabel.setFont(UIConfig.TitleFont);
-
 	}
 }

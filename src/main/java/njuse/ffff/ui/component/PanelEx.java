@@ -2,6 +2,7 @@ package njuse.ffff.ui.component;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.LayoutManager;
 import java.awt.Paint;
 
 import javax.swing.JPanel;
@@ -20,6 +21,13 @@ public class PanelEx extends JPanel implements IComponentEx {
 
 	private boolean alphaDependOnParent = true;    // 控件透明度是否依赖于父控件
 
+	public PanelEx() {
+	}
+	
+	public PanelEx(LayoutManager layout) {
+		super(layout);
+	}
+	
 	@Override
 	public void setOpaque(boolean isOpaque) {
 		this.isOpaque = isOpaque;

@@ -1,6 +1,7 @@
 package njuse.ffff.ui.ver2;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -8,12 +9,16 @@ import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import njuse.ffff.ui.ver2.component.TabBar;
+import njuse.ffff.ui.ver2.component.TitleBar;
+
 public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private static MainFrame frame;
 
-	TitleArea titleArea;
+	private TitleBar titleBar;
+	private TabBar tabBar;
 
 	private MainFrame() {
 		this.setUndecorated(true);
@@ -21,7 +26,28 @@ public class MainFrame extends JFrame {
 		this.setSize(800, 600);
 		this.setLocationRelativeTo(null);
 
-		titleArea = new TitleArea();
+		getContentPane().setBackground(Color.DARK_GRAY);
+
+		initTitleArea();
+
+		// TODO
+		add(new TeamsOverViewPanel());
+
+		this.setVisible(true);
+	}
+
+	private void initTitleArea() {
+		titleBar = new TitleBar(this);
+		titleBar.setOpaque(false);
+
+		tabBar = new TabBar("主页", "球队一览", "球员一览", "球员筛选");
+		tabBar.setOpaque(false);
+
+		JPanel titleArea = new JPanel(new BorderLayout(0, 0));
+		titleArea.setBackground(UIConfig.TitleBgColor);
+		titleArea.add(titleBar, BorderLayout.NORTH);
+		titleArea.add(tabBar, BorderLayout.SOUTH);
+
 		add(titleArea, BorderLayout.NORTH);
 
 		MouseAdapter l = new MouseAdapter() {
@@ -41,7 +67,7 @@ public class MainFrame extends JFrame {
 			public void mouseDragged(MouseEvent e) {
 				Point p1 = e.getPoint();
 				// 模拟窗口移动
-				if (moved || (moved = p1.distance(p) >= 10)) {
+				if (moved || (moved = p1.distance(p) >= 5)) {
 					Point p2 = getLocation(null);
 					p2.x += p1.x - p.x;
 					p2.y += p1.y - p.y;
@@ -51,10 +77,6 @@ public class MainFrame extends JFrame {
 		};
 		titleArea.addMouseListener(l);
 		titleArea.addMouseMotionListener(l);
-
-		add(new JPanel());
-
-		this.setVisible(true);
 	}
 
 	public static MainFrame getInstance() {
@@ -66,7 +88,7 @@ public class MainFrame extends JFrame {
 	@Override
 	public void setTitle(String title) {
 		super.setTitle(title);
-		titleArea.setTitle(title);
+		titleBar.setTitle(title);
 	}
 
 	public static void main(String[] args) {

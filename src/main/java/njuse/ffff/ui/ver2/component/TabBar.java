@@ -1,4 +1,4 @@
-package njuse.ffff.ui.ver2;
+package njuse.ffff.ui.ver2.component;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -7,19 +7,21 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-import javax.swing.JPanel;
+import njuse.ffff.ui.component.PanelEx;
+import njuse.ffff.ui.ver2.UIConfig;
+import njuse.ffff.ui.ver2.UIConfigNotifier;
 
-public class TitleBar extends JPanel implements UIConfigNotifier {
+public class TabBar extends PanelEx implements UIConfigNotifier {
 
 	private static final long serialVersionUID = 1L;
 
 	private List<TabLabel> tabs;	// 标签集合
 
-	public TitleBar() {
+	public TabBar() {
 		this(new String[0]);
 	}
 
-	public TitleBar(String... titles) {
+	public TabBar(String... titles) {
 		super(new FlowLayout(0, 30, 0));
 		setOpaque(false);
 
@@ -105,9 +107,13 @@ public class TitleBar extends JPanel implements UIConfigNotifier {
 		});
 	}
 
+	public void setSpace(int width) {
+		setLayout(new FlowLayout(FlowLayout.LEFT, width, 0));
+	}
+
 	@Override
 	public void notifyChange() {
-		
+
 	}
 
 }

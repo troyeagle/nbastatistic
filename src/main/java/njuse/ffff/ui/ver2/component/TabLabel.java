@@ -1,4 +1,4 @@
-package njuse.ffff.ui.ver2;
+package njuse.ffff.ui.ver2.component;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -7,11 +7,11 @@ import java.awt.Graphics;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.JPanel;
 
 import njuse.ffff.ui.component.ButtonEx;
+import njuse.ffff.ui.component.PanelEx;
 
-public class TabLabel extends JPanel {
+public class TabLabel extends PanelEx {
 
 	private static final long serialVersionUID = 1L;
 
@@ -54,7 +54,7 @@ public class TabLabel extends JPanel {
 			x = lineWidth;
 		}
 		button.setBorder(BorderFactory.createEmptyBorder(y, x, y, x));
-		JPanel labelArea = new JPanel(new BorderLayout(0, 0));
+		PanelEx labelArea = new PanelEx(new BorderLayout(0, 0));
 		labelArea.setOpaque(false);
 		labelArea.add(button);
 

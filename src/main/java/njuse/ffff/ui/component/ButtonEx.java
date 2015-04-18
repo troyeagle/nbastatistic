@@ -95,17 +95,26 @@ public class ButtonEx extends JButton implements IComponentEx {
 			ComponentExUtilities.setGraphicsAntiAlias(gMask);
 			ComponentExUtilities.setGraphicsAlpha(gMask, alpha * 0.5f);
 			// 绘制背景遮罩
-			if (bgMask != null) {
+			if (bgMask != null && isEnabled()) {
 				gMask.setColor(bgMask);
 				gMask.fillRect(0, 0, getWidth(), getHeight());
 			}
 			super.paintComponent(g2d);
 			// 绘制遮罩
-			if (fntMask != null) {
+			if (fntMask != null && isEnabled()) {
 				gMask.setColor(fntMask);
 				gMask.fillRect(0, 0, getWidth(), getHeight());
 			}
+			
+			if (!isEnabled()) {
+				paintUnable(gMask);
+			}
 		}
+	}
+	
+	protected void paintUnable(Graphics g) {
+		g.setColor(Color.GRAY);
+		g.fillRect(0, 0, getWidth(), getHeight());
 	}
 
 	@Override
