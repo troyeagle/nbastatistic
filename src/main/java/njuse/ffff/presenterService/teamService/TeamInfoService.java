@@ -12,5 +12,6 @@ public interface TeamInfoService {
 	public void setTeamAvgData(TeamDataService panel,String teamName);
 	//设置球队数据界面--进阶基础数据
 	public void setTeamAdvancedlData(TeamDataService panel,String teamName);
-	
+	//设置球队参加的比赛
+	public void setTeamGameLog(TeamDataService panel,String teamName);
 }

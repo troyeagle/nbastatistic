@@ -212,4 +212,10 @@ public class TeamInfoController implements TeamInfoService{
 		// TODO 自动生成的方法存根
 		
 	}
+
+	@Override
+	public void setTeamGameLog(TeamDataService panel, String teamName) {
+		// TODO 自动生成的方法存根
+		
+	}
 }

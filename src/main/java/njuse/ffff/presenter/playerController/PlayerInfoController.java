@@ -206,5 +206,11 @@ public class PlayerInfoController implements PlayerInfoService{
 		
 	}
 
+	@Override
+	public void setPlayerGameLog(PlayerDataService panel,String playerName) {
+		// TODO 自动生成的方法存根
+		
+	}
+
 	
 }

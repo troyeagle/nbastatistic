@@ -12,4 +12,6 @@ public interface PlayerInfoService {
 	public void setPlayerAvgData(PlayerDataService panel,String playerName);
 	//设置球员数据界面--进阶数据表格
 	public void setPlayerAdvancedData(PlayerDataService panel,String playerName);
+	//设置球员参加的比赛
+	public void setPlayerGameLog(PlayerDataService panel,String playerName);
 }
