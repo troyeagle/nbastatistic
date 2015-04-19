@@ -49,7 +49,8 @@ public class TeamInfoController implements TeamInfoService{
 	/**
 	 * 设置球队简介界面
 	 */
-	public void setTeamProfilePanel(TeamProfileService panel,String teamName) {
+	public void setTeamProfile(TeamProfileService teamProfilePanel
+			,TeamDataService teamDataPanel,String teamName) {
 		//TODO 获取指定球队的信息
 		TeamPO teamInfo = dataService.getTeamInfo(teamName, emptyFilter);
 
@@ -173,13 +174,6 @@ public class TeamInfoController implements TeamInfoService{
 	}
 	
 	/**
-	 * 设置球队数据界面
-	 */
-	public void changeToTeamDataPanel(TeamDataService panel){
-		
-	}
-	
-	/**
 	 * 球队参与的比赛
 	 */
 	public void arrangeMatchForTeam(String season,String teamName){
@@ -193,5 +187,29 @@ public class TeamInfoController implements TeamInfoService{
 			StringBuffer participentsBuffer = new StringBuffer(match.getTeamA()+"  VS  "+match.getTeamB());
 			values[i] = new Object[]{dateBuffer.toString(),participentsBuffer.toString()};
 		}
+	}
+
+	@Override
+	public void setTeamProfilePanel(TeamProfileService panel, String teamName) {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	@Override
+	public void setTeamTotalData(TeamDataService panel, String teamName) {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	@Override
+	public void setTeamAvgData(TeamDataService panel, String teamName) {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	@Override
+	public void setTeamAdvancedlData(TeamDataService panel, String teamName) {
+		// TODO 自动生成的方法存根
+		
 	}
 }

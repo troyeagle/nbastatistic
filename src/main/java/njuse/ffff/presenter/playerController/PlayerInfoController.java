@@ -45,7 +45,8 @@ public class PlayerInfoController implements PlayerInfoService{
 	/**
 	 * 设置球员简介界面
 	 */
-	public void setPlayerProfilePanel(PlayerProfileService playerProfilePanel,String playerName) {
+	public void setPlayerProfile(PlayerProfileService playerProfilePanel
+			,PlayerDataService playerDataPanel,String playerName) {
 		//获取指定的球员信息
 		PlayerPO playerInfo = dataService.getPlayerInfo(playerName, emptyFilter);
 		String position = null;
@@ -166,13 +167,6 @@ public class PlayerInfoController implements PlayerInfoService{
 	}
 	
 	/**
-	 * 设置球员数据界面
-	 */
-	public void setPlayerDataPanel(PlayerDataService playerDataPanel){
-		
-	}
-	
-	/**
 	 * 球员参与的比赛
 	 */
 	public void arrangeMatchForPlayer(String season,String playerName){
@@ -187,4 +181,30 @@ public class PlayerInfoController implements PlayerInfoService{
 			values[i] = new Object[]{dateBuffer.toString(),participentsBuffer.toString()};
 		}
 	}
+
+	@Override
+	public void setPlayerProfilePanel(PlayerProfileService panel, String playerName) {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	@Override
+	public void setPlayerTotalData(PlayerDataService panel, String playerName) {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	@Override
+	public void setPlayerAvgData(PlayerDataService panel, String playerName) {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	@Override
+	public void setPlayerAdvancedData(PlayerDataService panel, String playerName) {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	
 }

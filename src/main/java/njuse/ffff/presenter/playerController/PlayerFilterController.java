@@ -48,10 +48,28 @@ public class PlayerFilterController implements PlayerFilterService{
 	/**
 	 * 将球员筛选结果显示到界面
 	 */
-	public void setPlayerFilterResult(PlayerFilterViewService panel, String position,
-			String league, String sort) {
+	public void setPlayerFilterResult(PlayerFilterViewService panel) {
 		char pos = 0;
 		String leagueInEnglish = null;
+		String sortCondition = null;
+		String[] filters = panel.getFilters();
+		String position = null;
+		String league = null;
+		for(int i=0;i<filters.length;i++){
+			String[] temp = filters[i].split(":");
+			if(temp.length==2){
+				if(temp[0].equals("位置")){
+					position = temp[1];
+				}
+				else if(temp[0].equals("联盟")){
+					league = temp[1];
+				}
+			}
+			else{
+				sortCondition = filters[i];
+			}
+		}
+		
 		if(position.equals("前锋")){
 			pos = 'F';
 		}
@@ -78,23 +96,31 @@ public class PlayerFilterController implements PlayerFilterService{
 			if(playerPO==null){
 				continue;
 			}
+			if(pos==0){
+				if(leagueInEnglish==null){
+					data_filtered.add(player);
+				}
+				else if(leagueInEnglish!=null&&leagueInEnglish.equals(player.getLeague())){
+					data_filtered.add(player);
+				}
+			}
 			if(pos!=0&&playerPO.getPosition()==pos){
+				if(leagueInEnglish==null){
+					data_filtered.add(player);
+				}
 				if(leagueInEnglish!=null&&leagueInEnglish.equals(player.getLeague())){
 					data_filtered.add(player);
 				}
 			}
 		}
 		
+//		String[] properties = {"编号","球员姓名","场均得分","场均篮板数","场均助攻数","得分/篮板/助攻"
+//				,"场均盖帽数","场均抢断数","场均犯规数","场均失误数","分钟","效率"
+//				,"投篮命中率","三分命中率","罚球命中率","两双"};
 		//排序条件
-		String[] conditions = sort.split(";");
-		
-		String[] properties = {"编号","球员姓名","场均得分","场均篮板数","场均助攻数","得分/篮板/助攻"
-				,"场均盖帽数","场均抢断数","场均犯规数","场均失误数","分钟","效率"
-				,"投篮命中率","三分命中率","罚球命中率","两双"};
-		
-		int[] conditionsOfSort = new int[conditions.length];
+		int[] conditionsOfSort = new int[1];
 
-		if(conditions[0].equals("两双")){
+		if(sortCondition.equals("两双")){
 			ArrayList<PlayerInAverage> player_withDD = new ArrayList<PlayerInAverage>();
 			ArrayList<PlayerInAverage> player_withoutDD = new ArrayList<PlayerInAverage>();
 			for(PlayerInAverage player:data_filtered){
@@ -126,52 +152,50 @@ public class PlayerFilterController implements PlayerFilterService{
 			}
 		}
 		else{
-			for(int i=0;i<conditions.length;i++){
-				int location = 0;
-				switch(conditions[i]){
-				case "得分":
-					location = 14;
-					break;
-				case "篮板":
-					location = 8;
-					break;
-				case "助攻":
-					location = 9;
-					break;
-				case "得分/篮板/助攻":
-					location = 30;
-					break;
-				case "盖帽":
-					location = 11;
-					break;
-				case "抢断":
-					location = 10;
-					break;
-				case "犯规":
-					location = 12;
-					break;
-				case "失误":
-					location = 13;
-					break;
-				case "分钟":
-					location = 15;
-					break;
-				case "效率":
-					location = 15;
-					break;
-				case "投篮":
-					location = 0;
-					break;
-				case "三分":
-					location = 2;
-					break;
-				case "罚球":
-					location = 4;
-					break;
-				}
-				conditionsOfSort[i] = location;
+			int location = 0;
+			switch(sortCondition){
+			case "得分":
+				location = 14;
+				break;
+			case "篮板":
+				location = 8;
+				break;
+			case "助攻":
+				location = 9;
+				break;
+			case "得分/篮板/助攻":
+				location = 30;
+				break;
+			case "盖帽":
+				location = 11;
+				break;
+			case "抢断":
+				location = 10;
+				break;
+			case "犯规":
+				location = 12;
+				break;
+			case "失误":
+				location = 13;
+				break;
+			case "分钟":
+				location = 15;
+				break;
+			case "效率":
+				location = 15;
+				break;
+			case "投篮":
+				location = 0;
+				break;
+			case "三分":
+				location = 2;
+				break;
+			case "罚球":
+				location = 4;
+				break;
 			}
-
+			conditionsOfSort[0] = location;
+			
 			//排序
 			Sort sortConductor = new Sort();
 			sortConductor.sortPlayer(data_filtered, conditionsOfSort);
@@ -207,6 +231,7 @@ public class PlayerFilterController implements PlayerFilterService{
 						};
 			}
 		}
-		
+		//设置界面显示
+		panel.setResult(values_average);
 	}
 }
