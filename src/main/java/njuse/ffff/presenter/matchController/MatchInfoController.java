@@ -1,11 +1,7 @@
 package njuse.ffff.presenter.matchController;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-
-import javax.swing.ImageIcon;
 
 import njuse.ffff.dataservice.DataReaderService;
 import njuse.ffff.po.MatchPO;
@@ -16,14 +12,14 @@ import njuse.ffff.presenterService.matchService.MatchInfoService;
 import njuse.ffff.uiservice.MatchViewService;
 import njuse.ffff.util.DealDecimal;
 import njuse.ffff.util.Filter;
-import njuse.ffff.util.SvgConverter;
-
-import org.apache.batik.transcoder.TranscoderException;
 
 public class MatchInfoController implements MatchInfoService{
 	private DataReaderService dataService;
 	private static MatchInfoController matchInfoController = null;
 	private static TotalUIController totalController = null;
+	
+	private Date presentDate = null;
+	private String presentTeam = null;
 	
 	private static final Filter emptyFilter;
 
@@ -49,40 +45,47 @@ public class MatchInfoController implements MatchInfoService{
 		MatchPO match = dataService.getMatch(date, team);
 		TeamPO teamA = dataService.getTeamInfo(match.getTeamA(), emptyFilter);
 		TeamPO teamB = dataService.getTeamInfo(match.getTeamB(), emptyFilter);
-		/**
-		 * 球队A的队徽
-		 */
-		File flie_svg = new File(teamA.getPathOfLogo());
-		String f = teamA.getPathOfLogo();
-		String pathOfLogo = f.substring(0, f.length()-4).concat(".png");
-		File flie_png = new File(pathOfLogo);
-		try {
-			SvgConverter.convertToPng(flie_svg, flie_png);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (TranscoderException e) {
-			e.printStackTrace();
-		}
-		ImageIcon icon_teamA = new ImageIcon(pathOfLogo);
-		/**
-		 * 球队B的队徽
-		 */
-		flie_svg = new File(teamB.getPathOfLogo());
-		f = teamB.getPathOfLogo();
-		pathOfLogo = f.substring(0, f.length()-4).concat(".png");
-		flie_png = new File(pathOfLogo);
-		try {
-			SvgConverter.convertToPng(flie_svg, flie_png);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (TranscoderException e) {
-			e.printStackTrace();
-		}
-		ImageIcon icon_teamB = new ImageIcon(pathOfLogo);
 		
-		String[] properties = {"球员","首发","时间","投篮","命中","出手","三分","命中","出手"
-				,"罚球","命中","出手","真实命中","篮板","前场","后场","助攻","抢断","盖帽"
-				,"失误","犯规","得分"};
+//		球队A的队徽
+//		File flie_svg = new File(teamA.getPathOfLogo());
+//		String f = teamA.getPathOfLogo();
+//		String pathOfLogo = f.substring(0, f.length()-4).concat(".png");
+//		File flie_png = new File(pathOfLogo);
+//		try {
+//			SvgConverter.convertToPng(flie_svg, flie_png);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} catch (TranscoderException e) {
+//			e.printStackTrace();
+//		}
+//		ImageIcon icon_teamA = new ImageIcon(pathOfLogo);
+//		球队B的队徽		
+//		flie_svg = new File(teamB.getPathOfLogo());
+//		f = teamB.getPathOfLogo();
+//		pathOfLogo = f.substring(0, f.length()-4).concat(".png");
+//		flie_png = new File(pathOfLogo);
+//		try {
+//			SvgConverter.convertToPng(flie_svg, flie_png);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} catch (TranscoderException e) {
+//			e.printStackTrace();
+//		}
+//		ImageIcon icon_teamB = new ImageIcon(pathOfLogo);
+		
+		//球队A、B的分数
+		ArrayList<Integer> score_A = match.getScoreA();
+		ArrayList<Integer> score_B = match.getScoreB();
+		int[] score_teamA = new int[5];
+		int[] score_teamB = new int[5];
+		for(int i=0;i<5;i++){
+			score_teamA[i] = score_A.get(i);
+			score_teamB[i] = score_B.get(i);
+		}
+		
+//		String[] properties = {"球员","首发","时间","投篮","命中","出手","三分","命中","出手"
+//				,"罚球","命中","出手","真实命中","篮板","前场","后场","助攻","抢断","盖帽"
+//				,"失误","犯规","得分"};
 		
 		//球队A的球员的数据
 		ArrayList<PlayerInMatchExtended> playerListForTeamA = match.getPlayerInAEx();
@@ -126,7 +129,6 @@ public class MatchInfoController implements MatchInfoService{
 			}
 		}
 		
-		
 		//球队B的球员的数据
 		ArrayList<PlayerInMatchExtended> playerListForTeamB = match.getPlayerInAEx();
 		ArrayList<int[]> dirty_teamB = new ArrayList<int[]>();  //脏数据位置
@@ -168,6 +170,18 @@ public class MatchInfoController implements MatchInfoService{
 				}
 			}
 		}
+		
+		int[][] dirty_A = null;
+		dirty_A = dirty_teamA.toArray(dirty_A);
+		int[][] dirty_B = null;
+		dirty_A = dirty_teamB.toArray(dirty_B);
+		
+		panel.setHostTeamInfo(teamA.getName(), score_teamA, values_teamA, dirty_A);
+		panel.setGuestTeamInfo(teamB.getName(), score_teamB, values_teamB, dirty_B);
+		
+		presentDate = date;
+		presentTeam = team;
+		totalController.setMatchViewService(panel);
 	}
 	
 	/**
@@ -234,4 +248,13 @@ public class MatchInfoController implements MatchInfoService{
 		}
 		return dirtyLoc;
 	}
+
+	public Date getPresentDate() {
+		return presentDate;
+	}
+
+	public String getPresentTeam() {
+		return presentTeam;
+	}
+	
 }

@@ -1,32 +1,36 @@
 package njuse.ffff.presenter.teamController;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.ImageIcon;
-
+import njuse.ffff.data.SeasonStatProcessor;
 import njuse.ffff.dataservice.DataReaderService;
 import njuse.ffff.po.MatchPO;
+import njuse.ffff.po.PlayerInMatch;
 import njuse.ffff.po.TeamInAverage;
+import njuse.ffff.po.TeamInMatch;
 import njuse.ffff.po.TeamPO;
 import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.presenterService.teamService.TeamInfoService;
-import njuse.ffff.ui.TeamPanel;
 import njuse.ffff.uiservice.TeamDataService;
 import njuse.ffff.uiservice.TeamProfileService;
 import njuse.ffff.util.DealDecimal;
 import njuse.ffff.util.Filter;
-import njuse.ffff.util.SvgConverter;
-
-import org.apache.batik.transcoder.TranscoderException;
 
 public class TeamInfoController implements TeamInfoService{
 	private DataReaderService dataService;
 	private static TeamInfoController teamInfoController = null;
 	private static TotalUIController totalController = null;
+	
+	private String[] seasonList = {"14-15","13-14","12-13"};//赛季列表
+	
+	private String teamProfile = null;
+	private String teamPlayer = null;
+	private String teamTotalData = null;
+	private String teamAvgData = null;
+	private String teamAdvancedData = null;
+	private String teamGameLog = null;
 	
 	private static final Filter emptyFilter;
 
@@ -46,176 +50,181 @@ public class TeamInfoController implements TeamInfoService{
 		return teamInfoController;
 	}
 
-	/**
-	 * 设置球队简介界面
-	 */
-	public void setTeamProfile(TeamProfileService teamProfilePanel
-			,TeamDataService teamDataPanel,String teamName) {
-		//TODO 获取指定球队的信息
-		TeamPO teamInfo = dataService.getTeamInfo(teamName, emptyFilter);
-
-		// 球队简介
-		String[][] properties = {
-				{ "简称", teamInfo.getAbbr() },
-				{ "所在地", teamInfo.getState() },
-				{ "联盟", teamInfo.getLeague() },
-				{ "次级联盟", teamInfo.getSubLeague() },
-				{ "主场", teamInfo.getHomeCourt() },
-				{ "成立时间", teamInfo.getTimeOfFoundation() }
-		};
-
-		//		dataService.getTeamAverage(teamName, emptyFilter);
-
-		// 球队队徽
-		//处理svg文件
-		File flie_svg = new File(teamInfo.getPathOfLogo());
-		String f = teamInfo.getPathOfLogo();
-		String pathOfLogo = f.substring(0, f.length()-4).concat(".png");
-		File flie_png = new File(pathOfLogo);
-		try {
-			SvgConverter.convertToPng(flie_svg, flie_png);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (TranscoderException e) {
-			e.printStackTrace();
-		}
-		ImageIcon icon = new ImageIcon(pathOfLogo);
-		
-		
-		TeamInAverage data = dataService.getTeamAverage(teamName, emptyFilter);
-		if(data!=null){
-			String[] properties1 = {"投篮命中数","投篮出手数","三分命中数","三分出手数","罚球命中数","罚球出手数"};
-			String[] properties1_2 = {"投篮命中率","三分命中率","罚球命中率"};
-			String[] properties2 = {"篮板数","进攻篮板数","防守篮板数","助攻数","抢断数","盖帽数","失误数","犯规数"};
-			String[] properties2_2 = {"进攻篮板率","防守篮板率","助攻率","抢断率","盖帽率","失误率"};
-			String[] properties3 = {"比赛场数","胜场数","胜率"};
-			String[] properties3_2 = {"进攻回合","进攻效率","防守效率"};
-			
-			//TODO
-			double[] total = data.getStatsTotal();
-			Object[][] values_total1 = new Object[1][];
-			values_total1[0] = new Object[]{
-					DealDecimal.formatChange(total[0])//properties1
-						,DealDecimal.formatChange(total[1])
-						,DealDecimal.formatChange(total[2])
-						,DealDecimal.formatChange(total[3])
-						,DealDecimal.formatChange(total[4])
-						,DealDecimal.formatChange(total[5])
-					};
-			Object[][] values_average1 = new Object[1][];
-			values_average1[0] = new Object[]{
-					DealDecimal.formatChange(data.getFieldGoalMade(),3)//properties1
-					,DealDecimal.formatChange(data.getFieldGoalAttempted(),3)
-					,DealDecimal.formatChange(data.getThreePointerMade(),3)
-					,DealDecimal.formatChange(data.getThreePointerAttempted(),3)
-					,DealDecimal.formatChange(data.getFreeThrowMade(),3)
-					,DealDecimal.formatChange(data.getFreeThrowAttempted(),3)
-			};
-			Object[][] values_ratio1 = new Object[1][];
-			values_ratio1[0] = new Object[]{
-					DealDecimal.formatChange(data.getFieldGoalRatio(),3)//properties1_2
-					,DealDecimal.formatChange(data.getThreePointerRatio(), 3)
-					,DealDecimal.formatChange(data.getFreeThrowRatio(), 3)
-			};
-			
-			Object[][] values_total2 = new Object[1][];
-			values_total2[0] = new Object[]{
-					DealDecimal.formatChange(total[8])//properties2
-					,DealDecimal.formatChange(total[6])
-					,DealDecimal.formatChange(total[7])
-					,DealDecimal.formatChange(total[9])
-					,DealDecimal.formatChange(total[10])
-					,DealDecimal.formatChange(total[11])
-					,DealDecimal.formatChange(total[12])
-					,DealDecimal.formatChange(total[13])
-			};
-			Object[][] values_average2 = new Object[1][];
-			values_average2[0] = new Object[]{
-					DealDecimal.formatChange(data.getRebound(),3)//properties2
-					,DealDecimal.formatChange(data.getOffensiveRebound(), 3)
-					,DealDecimal.formatChange(data.getDefensiveRebound(), 3)
-					,DealDecimal.formatChange(data.getAssist(), 3)
-					,DealDecimal.formatChange(data.getSteal(), 3)
-					,DealDecimal.formatChange(data.getBlock(), 3)
-					,DealDecimal.formatChange(data.getTurnover(), 3)
-					,DealDecimal.formatChange(data.getFoul(), 3)
-			};
-			Object[][] values_ratio2 = new Object[1][];
-			values_ratio2[0] = new Object[]{
-					DealDecimal.formatChange(data.getOffensiveReboundEf(),3)//properties2_2
-					,DealDecimal.formatChange(data.getDefensiveReboundEf(), 3)
-					,DealDecimal.formatChange(data.getAssistEf(), 3)
-					,DealDecimal.formatChange(data.getStealEf(),3)
-					,"",""//盖帽率,失误率
-			};
-			
-			Object[][] values3_1 = new Object[1][];
-			values3_1[0] = new Object[]{
-					DealDecimal.formatChange(data.getNumOfMatches())//properties3_1
-					,DealDecimal.formatChange(data.getNumOfWins())
-					,DealDecimal.formatChange(data.getWinningRatio(), 3)
-			};
-			Object[][] values3_2 = new Object[1][];
-			values3_2[0] = new Object[]{
-					DealDecimal.formatChange(data.getMyRounds(),3)//properties3_2
-					,DealDecimal.formatChange(data.getOffensiveEf(), 3)
-					,DealDecimal.formatChange(data.getDefensiveEf(), 3)
-			};
-			
-			TeamPanel teamPanel = new TeamPanel();
-			teamPanel.setProfile(teamInfo.getName(),icon,properties);
-			teamPanel.setData(teamInfo.getName(),properties1,properties1_2,properties2,properties2_2,properties3,properties3_2
-					,values_total1,values_average1,values_ratio1,values_total2,values_average2,values_ratio2
-					,values3_1,values3_2);
-			
-			totalController.addCurrentPanel(teamPanel);
-			totalController.switchToPanel(teamPanel);
-		}
+	public String[] getPresentTeam(){
+		return new String[]{teamProfile,teamPlayer,teamTotalData
+				,teamAvgData,teamAdvancedData,teamGameLog};
 	}
 	
 	/**
-	 * 球队参与的比赛
+	 * 设置球队简介界面
 	 */
-	public void arrangeMatchForTeam(String season,String teamName){
+	public void setTeamProfilePanel(TeamProfileService panel, String teamName) {
+		//获取指定球队的信息
+		TeamPO teamInfo = dataService.getTeamInfo(teamName, emptyFilter);
+		//设置球队简介
+		panel.setProfile(teamName, teamInfo.getAbbr(), teamInfo.getState()
+						, teamInfo.getLeague(), teamInfo.getSubLeague()
+						, teamInfo.getHomeCourt(), teamInfo.getTimeOfFoundation());
+		teamProfile = teamName;
+		totalController.setTeamProfileService(panel);
+	}
+	
+	/**
+	 * 设置球队的球员
+	 */
+	public void setPlayerForTeam(TeamDataService panel, String teamName) {
+		SeasonStatProcessor seasonProcess = dataService.getSeasonStatProcessor(dataService.getCurrentSeason());
+		ArrayList<TeamInMatch> matches = seasonProcess.getTeamStatistics(teamName, emptyFilter);
+		Object[][] playerForTeam = null;
+		if(matches.size()>0){
+			TeamInMatch match = matches.get(0);
+			ArrayList<PlayerInMatch> players = match.getPlayers();
+			playerForTeam = new Object[players.size()][];
+			for(int i=0;i<players.size();i++){
+				PlayerInMatch player = players.get(i);
+				playerForTeam[i] = new Object[]{i,player.getName()};
+			}
+			panel.setPlayers(playerForTeam);
+		}
+		teamPlayer = teamName;
+		totalController.setTeamDataService(panel);
+	}
+
+	/**
+	 * 设置球队总基础数据
+	 */
+	public void setTeamTotalData(TeamDataService panel, String teamName) {
+		ArrayList<String> valid_season = new ArrayList<String>();
+		for(String s:seasonList){
+			if(dataService.getSeasonStatProcessor(s) != null){
+				valid_season.add(s);
+			}
+		}
+		Object[][] totalData = new Object[valid_season.size()][];
+		for(int i=0;i<valid_season.size();i++){
+			SeasonStatProcessor seasonProcess = dataService.getSeasonStatProcessor(valid_season.get(i));
+			TeamInAverage team = seasonProcess.getTeamAverage(teamName, emptyFilter);
+			double[] total = team.getStatsTotal();
+			double[] average = team.getStatsAverage();
+			totalData[i] = new Object[]{
+					valid_season.get(i),		//赛季
+					team.getNumOfMatches(),		//比赛数
+					DealDecimal.formatChangeToPercentage(average[21]),	//投篮命中率
+					DealDecimal.formatChange(total[0]),					//投篮命中数
+					DealDecimal.formatChange(total[1]),					//投篮出手数
+					DealDecimal.formatChangeToPercentage(average[22]),	//三分命中率
+					DealDecimal.formatChange(total[2]),					//三分命中数
+					DealDecimal.formatChange(total[3]),					//三分出手数
+					DealDecimal.formatChangeToPercentage(average[23]),	//罚球命中率
+					DealDecimal.formatChange(total[4]),					//罚球命中数
+					DealDecimal.formatChange(total[5]),					//罚球出手数
+					DealDecimal.formatChange(total[8]),					//篮板
+					DealDecimal.formatChange(total[6]),					//前场篮板
+					DealDecimal.formatChange(total[7]),					//后场篮板
+					DealDecimal.formatChange(total[9]),					//助攻
+					DealDecimal.formatChange(total[10]),				//抢断
+					DealDecimal.formatChange(total[11]),				//盖帽
+					DealDecimal.formatChange(total[12]),				//失误
+					DealDecimal.formatChange(total[13]),				//犯规
+					DealDecimal.formatChange(total[14]),				//得分
+			};
+		}
+		panel.setTotalDataTable(totalData);
+		teamTotalData = teamName;
+		totalController.setTeamDataService(panel);
+	}
+
+	/**
+	 * 设置球队平均基础数据
+	 */
+	public void setTeamAvgData(TeamDataService panel, String teamName) {
+		ArrayList<String> valid_season = new ArrayList<String>();
+		for(String s:seasonList){
+			if(dataService.getSeasonStatProcessor(s) != null){
+				valid_season.add(s);
+			}
+		}
+		Object[][] averageData = new Object[valid_season.size()][];
+		for(int i=0;i<valid_season.size();i++){
+			SeasonStatProcessor seasonProcess = dataService.getSeasonStatProcessor(valid_season.get(i));
+			TeamInAverage team = seasonProcess.getTeamAverage(teamName, emptyFilter);
+			double[] average = team.getStatsAverage();
+			averageData[i] = new Object[]{
+					valid_season.get(i),		//赛季
+					DealDecimal.formatChangeToPercentage(average[21]),		//投篮命中率
+					DealDecimal.formatChange(average[0],1),					//投篮命中数
+					DealDecimal.formatChange(average[1],1),					//投篮出手数
+					DealDecimal.formatChangeToPercentage(average[22]),		//三分命中率
+					DealDecimal.formatChange(average[2],1),					//三分命中数
+					DealDecimal.formatChange(average[3],1),					//三分出手数
+					DealDecimal.formatChangeToPercentage(average[23]),		//罚球命中率
+					DealDecimal.formatChange(average[4],1),					//罚球命中数
+					DealDecimal.formatChange(average[5],1),					//罚球出手数
+					DealDecimal.formatChange(average[8],1),					//篮板
+					DealDecimal.formatChange(average[6],1),					//前场篮板
+					DealDecimal.formatChange(average[7],1),					//后场篮板
+					DealDecimal.formatChange(average[9],1),					//助攻
+					DealDecimal.formatChange(average[10],1),				//抢断
+					DealDecimal.formatChange(average[11],1),				//盖帽
+					DealDecimal.formatChange(average[12],1),				//失误
+					DealDecimal.formatChange(average[13],1),				//犯规
+					DealDecimal.formatChange(average[14],1),				//得分
+			};
+		}
+		panel.setAvgDataTable(averageData);
+		teamAvgData = teamName;
+		totalController.setTeamDataService(panel);
+	}
+
+	/**
+	 * 设置球队进阶数据
+	 */
+	public void setTeamAdvancedlData(TeamDataService panel, String teamName) {
+		ArrayList<String> valid_season = new ArrayList<String>();
+		for(String s:seasonList){
+			if(dataService.getSeasonStatProcessor(s) != null){
+				valid_season.add(s);
+			}
+		}
+		Object[][] advancedData = new Object[valid_season.size()][];
+		for(int i=0;i<valid_season.size();i++){
+			SeasonStatProcessor seasonProcess = dataService.getSeasonStatProcessor(valid_season.get(i));
+			TeamInAverage team = seasonProcess.getTeamAverage(teamName, emptyFilter);
+			double[] average = team.getStatsAverage();
+			advancedData[i] = new Object[]{
+					valid_season.get(i),		//赛季
+					DealDecimal.formatChangeToPercentage(average[24]),	//进攻回合
+					DealDecimal.formatChange(average[25]),				//进攻效率
+					DealDecimal.formatChange(average[26]),				//防守效率
+					DealDecimal.formatChangeToPercentage(average[27]),	//进攻篮板效率
+					DealDecimal.formatChange(average[28]),				//防守篮板效率
+					DealDecimal.formatChange(average[29]),				//抢断效率
+					DealDecimal.formatChangeToPercentage(average[30]),	//助攻效率
+			};
+		}
+		panel.setAdvancedDataTable(advancedData);
+		teamAdvancedData = teamName;
+		totalController.setTeamDataService(panel);
+	}
+
+	/**
+	 * 设置球队参与的比赛
+	 */
+	@SuppressWarnings("deprecation")
+	public void setTeamGameLog(TeamDataService panel, String teamName) {
 		List<MatchPO> matchList = dataService.getMatchForTeam(teamName);
-		String[] properties = {"比赛日期","比赛对阵"};
+//		String[] properties = {"比赛日期","比赛对阵"};
 		Object[][] values = new Object[matchList.size()][];
 		for(int i=0;i<matchList.size();i++){
 			MatchPO match = matchList.get(i);
 			Date date = match.getDate();
-			StringBuffer dateBuffer = new StringBuffer(date.getYear()+"-"+date.getMinutes()+"-"+date.getDay());
+			StringBuffer dateBuffer = new StringBuffer(date.getYear()+"-"+date.getMinutes()+"-"+date.getDate());
 			StringBuffer participentsBuffer = new StringBuffer(match.getTeamA()+"  VS  "+match.getTeamB());
 			values[i] = new Object[]{dateBuffer.toString(),participentsBuffer.toString()};
 		}
+		panel.setGameLog(values, null);
+		teamGameLog = teamName;
+		totalController.setTeamDataService(panel);
 	}
 
-	@Override
-	public void setTeamProfilePanel(TeamProfileService panel, String teamName) {
-		// TODO 自动生成的方法存根
-		
-	}
-
-	@Override
-	public void setTeamTotalData(TeamDataService panel, String teamName) {
-		// TODO 自动生成的方法存根
-		
-	}
-
-	@Override
-	public void setTeamAvgData(TeamDataService panel, String teamName) {
-		// TODO 自动生成的方法存根
-		
-	}
-
-	@Override
-	public void setTeamAdvancedlData(TeamDataService panel, String teamName) {
-		// TODO 自动生成的方法存根
-		
-	}
-
-	@Override
-	public void setTeamGameLog(TeamDataService panel, String teamName) {
-		// TODO 自动生成的方法存根
-		
-	}
 }

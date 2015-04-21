@@ -7,7 +7,6 @@ import njuse.ffff.dataservice.DataReaderService;
 import njuse.ffff.po.PlayerInAverage;
 import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.presenterService.playerService.PlayerCompareService;
-import njuse.ffff.ui.PlayerComparePanel;
 import njuse.ffff.uiservice.PlayersOverviewService;
 import njuse.ffff.util.DealDecimal;
 import njuse.ffff.util.Filter;
@@ -16,6 +15,8 @@ public class PlayerCompareController implements PlayerCompareService{
 	private DataReaderService dataService;
 	private static PlayerCompareController playerCompareController = null;
 	private static TotalUIController totalController = null;
+	
+	private String presentSeason = null;
 	
 	@SuppressWarnings("unused")
 	private static final Filter emptyFilter;
@@ -36,6 +37,10 @@ public class PlayerCompareController implements PlayerCompareService{
 		return playerCompareController;
 	}
 
+	public String getPresentSeason() {
+		return presentSeason;
+	}
+
 	/**
 	 * 设置球员信息一览界面
 	 */
@@ -44,14 +49,15 @@ public class PlayerCompareController implements PlayerCompareService{
 		SeasonStatProcessor seasonStatProcessor = dataService.getSeasonStatProcessor(season);
 		ArrayList<PlayerInAverage> players = seasonStatProcessor.getPlayerInAverage();
 
-		String[] properties_total = { "球员名称","所属球队","参赛场数","先发场数"
-				,"投篮命中数","投篮出手数","三分命中数","三分出手数","罚球命中数"
-				,"罚球出手数","篮板数","助攻数"/**,"在场时间","进攻数","防守数"*/
-				,"抢断数","盖帽数","失误数","犯规数","得分","效率"};
-		String[] properties_average = { "球员名称","所属球队"
-				,"篮板数","助攻数","在场时间","投篮命中率","三分命中率","罚球命中率"/**,"进攻数","防守数"*/
-				,"抢断数","盖帽数","失误数","犯规数","得分","效率","GmSc效率值","真实命中率","投篮效率"
-				,"篮板率","进攻篮板率","防守篮板率","助攻率","抢断率","盖帽率","失误率","使用率" };
+//		String[] properties_total = { "球员名称","所属球队","参赛场数","先发场数"
+//				,"投篮命中数","投篮出手数","三分命中数","三分出手数","罚球命中数"
+//				,"罚球出手数","篮板数","助攻数"/**,"在场时间","进攻数","防守数"*/
+//				,"抢断数","盖帽数","失误数","犯规数","得分","效率"};
+//		String[] properties_average = { "球员名称","所属球队"
+//				,"篮板数","助攻数","在场时间","投篮命中率","三分命中率","罚球命中率"/**,"进攻数","防守数"*/
+//				,"抢断数","盖帽数","失误数","犯规数","得分","效率","GmSc效率值","真实命中率","投篮效率"
+//				,"篮板率","进攻篮板率","防守篮板率","助攻率","抢断率","盖帽率","失误率","使用率" };
+
 		Object[][] values_total = new Object[players.size()][];
 		Object[][] values_average = new Object[players.size()][];
 		for (int i = 0; i < players.size(); i++) {
@@ -112,11 +118,10 @@ public class PlayerCompareController implements PlayerCompareService{
 			};
 		}
 
-		PlayerComparePanel playerComparePanel = new PlayerComparePanel();
-		playerComparePanel.setPlayersTotalInfo(properties_total, values_total,players);
-		playerComparePanel.setPlayerAverageInfo( properties_average, values_average);
-
-		totalController.addCurrentPanel(playerComparePanel);
-		totalController.switchToPanel(playerComparePanel);
+		playerViewPanel.setPlayersTotalInfo(values_total);
+		playerViewPanel.setPlayersAvgInfo(values_average);
+		
+		totalController.setPlayersOverviewService(playerViewPanel);
+		presentSeason = season;
 	}
 }

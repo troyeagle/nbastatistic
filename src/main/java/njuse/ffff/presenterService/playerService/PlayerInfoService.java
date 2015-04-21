@@ -14,4 +14,5 @@ public interface PlayerInfoService {
 	public void setPlayerAdvancedData(PlayerDataService panel,String playerName);
 	//设置球员参加的比赛
 	public void setPlayerGameLog(PlayerDataService panel,String playerName);
+	public String[] getPresentPlayer();
 }

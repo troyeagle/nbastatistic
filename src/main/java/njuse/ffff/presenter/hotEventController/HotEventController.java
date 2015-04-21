@@ -39,83 +39,119 @@ public class HotEventController implements HotEventService{
 	}
 	
 	/**
+	 * 设置热点界面
+	 */
+	public void setHotEventPanel(SpecialViewService panel) {
+		//设置当天热点球员
+		setBestPlayerForDayPanel(panel);
+		//设置赛季热点球员
+		setBestPlayerForSeasonPanel(panel);
+		//设置赛季热点球队
+		setBestTeamForSeasonPanel(panel);
+		//设置5佳进步球员
+		setProgressedPlayerPanel(panel);
+	}
+	
+	/**
 	 * 设置当天热点球员界面
 	 */
-	public void setBestPlayerForDayPanel() {
-		String[] properties = {"球员名称","所属球队","球员位置","该项数据"};
+	public void setBestPlayerForDayPanel(SpecialViewService panel) {
+//		String[] properties = {"球员名称","所属球队","球员位置","该项数据"};
 		//得分
 		Object[][] player_points = formPlayerValuesForDay(14);
+		panel.setHotPlayerToday("得分", player_points);
 		//篮板
 		Object[][] player_rebound = formPlayerValuesForDay(8);
+		panel.setHotPlayerToday("篮板", player_rebound);
 		//助攻
 		Object[][] player_assist = formPlayerValuesForDay(9);
+		panel.setHotPlayerToday("助攻", player_assist);
 		//盖帽
 		Object[][] player_block = formPlayerValuesForDay(11);
+		panel.setHotPlayerToday("盖帽", player_block);
 		//抢断
 		Object[][] player_steal = formPlayerValuesForDay(10);
+		panel.setHotPlayerToday("抢断", player_steal);
 		
+		totalController.setSpecialViewService(panel);
 	}
 
 	/**
 	 * 设置赛季热点球员界面
 	 */
-	public void setBestPlayerForSeasonPanel() {
-		String[] properties = {"球员名称","所属球队","球员位置","该项数据"};
+	public void setBestPlayerForSeasonPanel(SpecialViewService panel) {
+//		String[] properties = {"球员名称","所属球队","球员位置","该项数据"};
 		//场均得分
 		Object[][] player_points = formPlayerValuesForSeason(14);
+		panel.setHotPlayerSeason("场均得分", player_points);
 		//场均篮板
 		Object[][] player_rebound = formPlayerValuesForSeason(8);
+		panel.setHotPlayerSeason("场均篮板", player_rebound);
 		//场均助攻
 		Object[][] player_assist = formPlayerValuesForSeason(9);
+		panel.setHotPlayerSeason("场均助攻", player_assist);
 		//场均盖帽
 		Object[][] player_block = formPlayerValuesForSeason(11);
+		panel.setHotPlayerSeason("场均盖帽", player_block);
 		//场均抢断
 		Object[][] player_steal = formPlayerValuesForSeason(10);
+		panel.setHotPlayerSeason("场均抢断", player_steal);
 		//投篮命中率
 		Object[][] player_fieldGoalRatio = formPlayerValuesForSeason(29);
+		panel.setHotPlayerSeason("投篮命中率", player_fieldGoalRatio);
 		//三分命中率
 		Object[][] player_threePointerRatio = formPlayerValuesForSeason(28);
+		panel.setHotPlayerSeason("三分命中率", player_threePointerRatio);
 		//罚球命中率
 		Object[][] player_freeThrowRatio = formPlayerValuesForSeason(27);
-		
-		
+		panel.setHotPlayerSeason("罚球命中率", player_freeThrowRatio);
 	}
 
 	/**
 	 * 设置赛季热点球队界面
 	 */
-	public void setBestTeamForSeasonPanel() {
-		String[] properties = {"球队名称","所属联盟","该项数据"};
+	public void setBestTeamForSeasonPanel(SpecialViewService panel) {
+//		String[] properties = {"球队名称","所属联盟","该项数据"};
 		//场均得分
 		Object[][] team_score = formTeamValuesForSeason(14);
+		panel.setHotTeamSeason("场均得分", team_score);
 		//场均篮板
 		Object[][] team_rebound = formTeamValuesForSeason(8);
+		panel.setHotTeamSeason("场均篮板", team_rebound);
 		//场均助攻
 		Object[][] team_assist= formTeamValuesForSeason(9);
+		panel.setHotTeamSeason("场均助攻", team_assist);
 		//场均盖帽
 		Object[][] team_block = formTeamValuesForSeason(11);
+		panel.setHotTeamSeason("场均盖帽", team_block);
 		//场均抢断
 		Object[][] team_steal = formTeamValuesForSeason(10);
+		panel.setHotTeamSeason("场均抢断", team_steal);
 		//投篮命中率
 		Object[][] team_fieldGoalRatio = formTeamValuesForSeason(21);
+		panel.setHotTeamSeason("投篮命中率", team_fieldGoalRatio);
 		//三分命中率
 		Object[][] team_threePointerRatio = formTeamValuesForSeason(22);
+		panel.setHotTeamSeason("三分命中率", team_threePointerRatio);
 		//罚球命中率
 		Object[][] team_freeThrowRatio = formTeamValuesForSeason(23);
-		
+		panel.setHotTeamSeason("罚球命中率", team_freeThrowRatio);
 	}
 
 	/**
 	 * 设置5佳进步球员界面
 	 */
-	public void setProgressedPlayerPanel() {
-		String[] properties = {"球员姓名","所属球队","该项数据","近5场提升率"};
+	public void setProgressedPlayerPanel(SpecialViewService panel) {
+//		String[] properties = {"球员姓名","所属球队","该项数据","近5场提升率"};
 		//场均得分
 		Object[][] values_score = formPlayerValuesForImprove(14);
+		panel.setProgressPlayer("场均得分", values_score);
 		//场均篮板
 		Object[][] values_rebound = formPlayerValuesForImprove(8);
+		panel.setProgressPlayer("场均篮板", values_rebound);
 		//场均助攻
 		Object[][] values_assist = formPlayerValuesForImprove(9);
+		panel.setProgressPlayer("场均助攻", values_assist);
 	}
 	
 	/**
@@ -261,12 +297,6 @@ public class HotEventController implements HotEventService{
 					,DealDecimal.formatChange(player.getStatsAverage()[condition], 1),improvement};
 		}
 		return player_condition;
-	}
-
-	@Override
-	public void setHotEventPanel(SpecialViewService panel) {
-		// TODO 自动生成的方法存根
-		
 	}
 
 }

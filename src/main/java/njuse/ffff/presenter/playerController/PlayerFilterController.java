@@ -233,5 +233,6 @@ public class PlayerFilterController implements PlayerFilterService{
 		}
 		//设置界面显示
 		panel.setResult(values_average);
+		totalController.setPlayerFilterViewService(panel);
 	}
 }

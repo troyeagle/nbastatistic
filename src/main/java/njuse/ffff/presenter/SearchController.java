@@ -7,7 +7,6 @@ import njuse.ffff.po.PlayerPO;
 import njuse.ffff.po.TeamPO;
 import njuse.ffff.presenterService.SearchService;
 import njuse.ffff.ui.SearchPanel;
-import njuse.ffff.ui.SearchResultPanel;
 import njuse.ffff.uiservice.SearchResultService;
 import njuse.ffff.util.Filter;
 
@@ -65,30 +64,31 @@ public class SearchController implements SearchService{
 			}
 		}
 		//设置搜索结果界面
-		String[] properties = new String[]{"编号","分类","详细名称"};
-		Object[][] values = new Object[search_team.size()+search_player.size()][3];
+		String[] teamNames = new String[search_team.size()];
+		String[] playerNames = new String[search_player.size()];
 		for(int i=0;i<search_team.size();i++){
-			values[i][0] = i+1;
-			values[i][1] = "球队";
-			values[i][2] = search_team.get(i).getName();
+			teamNames[i] = search_team.get(i).getName();
 		}
 		for(int j=search_team.size();j<search_team.size()+search_player.size();j++){
-			values[j][0] = j+1;
-			values[j][1] = "球员";
-			values[j][2] = search_player.get(j-search_team.size()).getName();
+			playerNames[j] = search_player.get(j-search_team.size()).getName();
 		}
-		SearchResultPanel panel_searchResult = new SearchResultPanel();
-		panel_searchResult.setSearchResult(properties, values);
 		
-		totalController.addCurrentPanel(panel_searchResult);
-		totalController.switchToPanel(panel_searchResult);
+		searchResultPanel.setSearchResult(teamNames, playerNames);
 	}
 	
 	/**
 	 * 设置高级所示结果界面
 	 */
-	public void setAdvancedSearchPanel(SearchService searchPanel,SearchResultService searchResultPanel){
-		
+	public void setAdvancedSearchPanel(njuse.ffff.uiservice.SearchService searchPanel,SearchResultService searchResultPanel){
+		String[][] filters = searchPanel.getFilters();
+		for(int i=0;i<filters.length;i++){
+			switch(filters[i][0]){
+			//TODO
+			case "":
+				break;
+				
+			}
+		}
 	}
 
 }
