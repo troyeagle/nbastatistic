@@ -273,7 +273,7 @@ public class PlayerComparePanel extends JPanel implements PlayersOverviewService
 	}
 
 	@Override
-	public void setPlayersAvgInfo(Object[][] values) {
+	public void setPlayersAvgInfo(Object[][] values,String season) {
 		tableModel_playerCompare_average = new DefaultTableModel(values,properties_average){
 			public boolean isCellEditable(int row, int column)
             {
@@ -319,7 +319,7 @@ public class PlayerComparePanel extends JPanel implements PlayersOverviewService
 	}
 
 	@Override
-	public void setPlayersTotalInfo(Object[][] values) {
+	public void setPlayersTotalInfo(Object[][] values,String season) {
 		//球员信息比较表格----总数据
 		tableModel_playerCompare_total = new DefaultTableModel(values,properties_total){
 			public boolean isCellEditable(int row, int column)

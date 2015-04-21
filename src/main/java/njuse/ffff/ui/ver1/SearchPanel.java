@@ -127,7 +127,7 @@ public class SearchPanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到球队信息横向比较界面
-				panelFactory.createTeamComparePanel("12-13");
+				panelFactory.createTeamComparePanel();
 			}
 		});
 		

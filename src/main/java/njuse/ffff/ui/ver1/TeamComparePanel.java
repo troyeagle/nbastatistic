@@ -237,7 +237,7 @@ public class TeamComparePanel extends JPanel implements TeamsOverviewService{
 		this.repaint();
 	}
 	@Override
-	public void setTeamsAvgInfo(Object[][] values) {
+	public void setTeamsAvgInfo(Object[][] values,String season) {
 		//球队信息比较表格----平均数据
 				tableModel_teamCompare_average = new DefaultTableModel(values,properties_average){
 					public boolean isCellEditable(int row, int column)
@@ -283,7 +283,7 @@ public class TeamComparePanel extends JPanel implements TeamsOverviewService{
 				scrollPane_teamCompare_average.setBounds(25, 160, 1050, 515);
 	}
 	@Override
-	public void setTeamsTotalInfo(Object[][] values) {
+	public void setTeamsTotalInfo(Object[][] values,String season) {
 		//球队信息比较表格----总数据
 				tableModel_teamCompare_total = new DefaultTableModel(values,properties_total){
 					//设置表格单元格内容不可编辑
