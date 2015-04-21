@@ -6,7 +6,6 @@ import njuse.ffff.dataservice.DataReaderService;
 import njuse.ffff.po.PlayerPO;
 import njuse.ffff.po.TeamPO;
 import njuse.ffff.presenterService.SearchService;
-import njuse.ffff.ui.SearchPanel;
 import njuse.ffff.uiservice.SearchResultService;
 import njuse.ffff.util.Filter;
 
@@ -31,15 +30,6 @@ public class SearchController implements SearchService{
 			searchController = new SearchController();
 		}
 		return searchController;
-	}
-	
-	/**
-	 * 设置查询界面
-	 */
-	public void setSearchPanel() {
-		SearchPanel searchPanel = new SearchPanel();
-		totalController.addCurrentPanel(searchPanel);
-		totalController.switchToPanel(searchPanel);
 	}
 
 	/**
@@ -70,7 +60,7 @@ public class SearchController implements SearchService{
 			teamNames[i] = search_team.get(i).getName();
 		}
 		for(int j=search_team.size();j<search_team.size()+search_player.size();j++){
-			playerNames[j] = search_player.get(j-search_team.size()).getName();
+			playerNames[j-search_team.size()] = search_player.get(j-search_team.size()).getName();
 		}
 		
 		searchResultPanel.setSearchResult(teamNames, playerNames);

@@ -1,10 +1,9 @@
-package njuse.ffff.ui;
+package njuse.ffff.ui.ver1;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -14,27 +13,13 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import njuse.ffff.po.PlayerInAverage;
-import njuse.ffff.presenter.SearchController;
-import njuse.ffff.presenter.playerController.PlayerFilterController;
-import njuse.ffff.presenter.playerController.PlayerInfoController;
-import njuse.ffff.presenter.teamController.TeamCompareController;
-import njuse.ffff.presenterService.SearchService;
-import njuse.ffff.presenterService.playerService.PlayerFilterService;
-import njuse.ffff.presenterService.playerService.PlayerInfoService;
-import njuse.ffff.presenterService.teamService.TeamCompareService;
 import njuse.ffff.ui.table.MyTable;
+import njuse.ffff.uiservice.PlayersOverviewService;
 
 @SuppressWarnings("serial")
-public class PlayerComparePanel extends JPanel{
+public class PlayerComparePanel extends JPanel implements PlayersOverviewService{
 	private final int teamComparePanel_width = 1100;
 	private final int teamComparePanel_height = 700;
-	
-//	private ControllerService uiController;
-	private TeamCompareService teamCompareController;
-	private PlayerFilterService playerFilterController;
-	private PlayerInfoService playerInfoController;
-	private SearchService searchController;
 	
 	private JPanel panel;
 	private int tableDisplay;//0代表总数据，1代表平均数据
@@ -69,16 +54,19 @@ public class PlayerComparePanel extends JPanel{
 	private JLabel label_data_total;
 	private JLabel label_data_average;
 	
+	String[] properties_total = { "球员名称","所属球队","参赛场数","先发场数"
+			,"投篮命中数","投篮出手数","三分命中数","三分出手数","罚球命中数"
+			,"罚球出手数","篮板数","助攻数"/**,"在场时间","进攻数","防守数"*/
+			,"抢断数","盖帽数","失误数","犯规数","得分","效率"};
+	String[] properties_average = { "球员名称","所属球队"
+			,"篮板数","助攻数","在场时间","投篮命中率","三分命中率","罚球命中率"/**,"进攻数","防守数"*/
+			,"抢断数","盖帽数","失误数","犯规数","得分","效率","GmSc效率值","真实命中率","投篮效率"
+			,"篮板率","进攻篮板率","防守篮板率","助攻率","抢断率","盖帽率","失误率","使用率" };
+	
 	public PlayerComparePanel(){
 		this.setSize(teamComparePanel_width, teamComparePanel_height);
 		this.setBackground(background);
 		this.setVisible(true);
-		
-//		uiController = UIController.getInstance();
-		teamCompareController = TeamCompareController.getInstance();
-		playerFilterController = PlayerFilterController.getInstance();
-		playerInfoController = PlayerInfoController.getInstance();
-		searchController = SearchController.getInstance();
 		
 		panel = this;
 		menuPanel = new MenuPanel();
@@ -104,8 +92,6 @@ public class PlayerComparePanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到"球队信息横向比较"界面
-//				uiController.setTeamComparePanel();
-				teamCompareController.setTeamCompareInfoForSeason(null,"");
 			}
 		});
 		
@@ -152,8 +138,6 @@ public class PlayerComparePanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到搜索界面
-//				uiController.setSearchPanel();
-				searchController.setSearchPanel();
 			}
 		});
 		
@@ -184,8 +168,6 @@ public class PlayerComparePanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到球员筛选界面
-//				uiController.setPlayerFilterPanel();
-				playerFilterController.setPlayerFilterPanel();
 			}
 		});
 		
@@ -280,69 +262,19 @@ public class PlayerComparePanel extends JPanel{
 		this.add(label_menu);
 	}
 	
-	/**
-	 * 设置球员总数据表格数据
-	 * @param properties_total
-	 * @param values_total
-	 * @param properties_average
-	 * @param values_average
-	 *///TODO
-	public void setPlayersTotalInfo(String[] properties_total,Object[][] values_total,ArrayList<PlayerInAverage> players){
-		//球员信息比较表格----总数据
-		tableModel_playerCompare_total = new DefaultTableModel(values_total,properties_total){
-			public boolean isCellEditable(int row, int column)
-            {
-                return false;
-            }
-		};
-		table_playerCompare_total = new MyTable(tableModel_playerCompare_total);
-
-		TableColumn firstColumn_total = table_playerCompare_total.getColumnModel().getColumn(0);
-		firstColumn_total.setPreferredWidth(150);
-		firstColumn_total.setMaxWidth(150);
-		firstColumn_total.setMinWidth(150);
-		
-		//设置点击一个单元格，选中该单元格所在列
-		table_playerCompare_total.setColumnSelectionAllowed (true);
-		table_playerCompare_total.setRowSelectionAllowed (false);
-
-		table_playerCompare_total.addMouseListener(new MouseListener() {
-			public void mouseReleased(MouseEvent arg0) {}
-			public void mousePressed(MouseEvent arg0) {}
-			public void mouseExited(MouseEvent e) {
-				//鼠标移出第三列的某一个单元格，该单元格暗淡
-			}
-			public void mouseEntered(MouseEvent e) {
-				//鼠标进入第三列的某一个单元格，该单元格高亮
-			}
-			public void mouseClicked(MouseEvent e) {
-				// 点击某个球员或者球队，跳转到该球员或球队界面
-				int column = table_playerCompare_total.getSelectedColumn();
-				if(column==0){
-					int row = table_playerCompare_total.getSelectedRow();
-					String content = (String)table_playerCompare_total.getValueAt(row, column);
-//					uiController.setPlayerProfilePanel(content);
-					playerInfoController.setPlayerProfilePanel(null,content);
-				}
-			}
-		});
-		
-		scrollPane_playerCompare_total = new JScrollPane(table_playerCompare_total);
-		scrollPane_playerCompare_total.setOpaque(false);
-		scrollPane_playerCompare_total.getViewport().setOpaque(false);
-		scrollPane_playerCompare_total.setBounds(25, 160, 1050, 515);
-		
-		this.add(scrollPane_playerCompare_total);
-		tableDisplay = 0;
+	public void displayMenu(){
+		this.add(menuPanel,0);
+		this.repaint();
 	}
 	
-	/**
-	 * 球员信息比较表格----平均数据
-	 * @param properties_average
-	 * @param values_average
-	 */
-	public void setPlayerAverageInfo(String[] properties_average,Object[][] values_average){
-		tableModel_playerCompare_average = new DefaultTableModel(values_average,properties_average){
+	public void removeMenu(){
+		this.remove(menuPanel);
+		this.repaint();
+	}
+
+	@Override
+	public void setPlayersAvgInfo(Object[][] values) {
+		tableModel_playerCompare_average = new DefaultTableModel(values,properties_average){
 			public boolean isCellEditable(int row, int column)
             {
                 return false;
@@ -375,7 +307,7 @@ public class PlayerComparePanel extends JPanel{
 					int row = table_playerCompare_average.getSelectedRow();
 					String content = (String)table_playerCompare_average.getValueAt(row, column);
 //					uiController.setPlayerProfilePanel(content);
-					playerInfoController.setPlayerProfilePanel(null,content);
+//					playerInfoController.setPlayerProfile(null,content);
 				}
 			}
 		});
@@ -385,14 +317,54 @@ public class PlayerComparePanel extends JPanel{
 		scrollPane_playerCompare_average.getViewport().setOpaque(false);
 		scrollPane_playerCompare_average.setBounds(25, 160, 1050, 515);
 	}
-	
-	public void displayMenu(){
-		this.add(menuPanel,0);
-		this.repaint();
-	}
-	
-	public void removeMenu(){
-		this.remove(menuPanel);
-		this.repaint();
+
+	@Override
+	public void setPlayersTotalInfo(Object[][] values) {
+		//球员信息比较表格----总数据
+		tableModel_playerCompare_total = new DefaultTableModel(values,properties_total){
+			public boolean isCellEditable(int row, int column)
+            {
+                return false;
+            }
+		};
+		table_playerCompare_total = new MyTable(tableModel_playerCompare_total);
+
+		TableColumn firstColumn_total = table_playerCompare_total.getColumnModel().getColumn(0);
+		firstColumn_total.setPreferredWidth(150);
+		firstColumn_total.setMaxWidth(150);
+		firstColumn_total.setMinWidth(150);
+		
+		//设置点击一个单元格，选中该单元格所在列
+		table_playerCompare_total.setColumnSelectionAllowed (true);
+		table_playerCompare_total.setRowSelectionAllowed (false);
+
+		table_playerCompare_total.addMouseListener(new MouseListener() {
+			public void mouseReleased(MouseEvent arg0) {}
+			public void mousePressed(MouseEvent arg0) {}
+			public void mouseExited(MouseEvent e) {
+				//鼠标移出第三列的某一个单元格，该单元格暗淡
+			}
+			public void mouseEntered(MouseEvent e) {
+				//鼠标进入第三列的某一个单元格，该单元格高亮
+			}
+			public void mouseClicked(MouseEvent e) {
+				// 点击某个球员或者球队，跳转到该球员或球队界面
+				int column = table_playerCompare_total.getSelectedColumn();
+				if(column==0){
+					int row = table_playerCompare_total.getSelectedRow();
+					String content = (String)table_playerCompare_total.getValueAt(row, column);
+//							uiController.setPlayerProfilePanel(content);
+//							playerInfoController.setPlayerProfile(null,content);
+				}
+			}
+		});
+		
+		scrollPane_playerCompare_total = new JScrollPane(table_playerCompare_total);
+		scrollPane_playerCompare_total.setOpaque(false);
+		scrollPane_playerCompare_total.getViewport().setOpaque(false);
+		scrollPane_playerCompare_total.setBounds(25, 160, 1050, 515);
+		
+		this.add(scrollPane_playerCompare_total);
+		tableDisplay = 0;
 	}
 }

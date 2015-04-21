@@ -25,7 +25,7 @@ import njuse.ffff.presenterService.playerService.PlayerFilterService;
 import njuse.ffff.presenterService.playerService.PlayerInfoService;
 import njuse.ffff.presenterService.teamService.TeamCompareService;
 import njuse.ffff.presenterService.teamService.TeamInfoService;
-import njuse.ffff.ui.MainFrame;
+import njuse.ffff.ui.ver1.MainFrame;
 import njuse.ffff.uiservice.MatchViewService;
 import njuse.ffff.uiservice.MatchesLogOverviewService;
 import njuse.ffff.uiservice.PlayerDataService;

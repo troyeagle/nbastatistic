@@ -1,4 +1,4 @@
-package njuse.ffff.ui;
+package njuse.ffff.ui.ver1;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -16,19 +16,12 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.FontUIResource;
 
-import njuse.ffff.presenter.SearchController;
-import njuse.ffff.presenter.teamController.TeamCompareController;
-import njuse.ffff.presenterService.SearchService;
-import njuse.ffff.presenterService.teamService.TeamCompareService;
-
 @SuppressWarnings("serial")
 public class SearchPanel extends JPanel{
 	private final int searchPanel_width = 1100;
 	private final int searchPanel_height = 700;
 	
-//	private ControllerService uiController;
-	private TeamCompareService teamCompareController;
-	private SearchService searchController;
+	private PanelFactory panelFactory = null;
 	
 	private Color background = new Color(99,43,142);
 	private Color gray = new Color(127,127,127);
@@ -55,9 +48,8 @@ public class SearchPanel extends JPanel{
 		this.setBackground(background);
 		this.setVisible(true);
 		
-//		uiController = UIController.getInstance();
-		teamCompareController = TeamCompareController.getInstance();
-		searchController = SearchController.getInstance();
+		panelFactory = PanelFactory.getInstance();
+		
 		menuPanel = new MenuPanel();
 		menuPanel.setLocation(920, 400);
 		menuDisplay = 0;
@@ -108,9 +100,7 @@ public class SearchPanel extends JPanel{
 				//获得搜索的项
 				String search = text_searchInfo.getText();
 				//调用查找
-//				uiController.search(search);
-				searchController.search(null,search);
-				
+				panelFactory.createResultForSimpleSearch(search);
 			}
 		});
 		
@@ -137,8 +127,7 @@ public class SearchPanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到球队信息横向比较界面
-//				uiController.setTeamComparePanel();
-				teamCompareController.setTeamCompareInfoForSeason(null,"");
+				panelFactory.createTeamComparePanel("12-13");
 			}
 		});
 		

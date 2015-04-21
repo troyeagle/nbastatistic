@@ -1,4 +1,4 @@
-package njuse.ffff.ui;
+package njuse.ffff.ui.ver1;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -10,10 +10,8 @@ import java.awt.event.MouseMotionAdapter;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import njuse.ffff.uiservice.FrameService;
-
 @SuppressWarnings("serial")
-public class MainFrame extends JFrame implements FrameService{
+public class MainFrame extends JFrame{
 	private final int mainFrame_width = 1100;
 	private final int mainFrame_height = 700;
 	private int mainFrame_x;

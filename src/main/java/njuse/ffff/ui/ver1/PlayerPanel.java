@@ -1,4 +1,4 @@
-package njuse.ffff.ui;
+package njuse.ffff.ui.ver1;
 
 import java.awt.Color;
 import java.awt.Image;

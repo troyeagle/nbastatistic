@@ -1,4 +1,4 @@
-package njuse.ffff.ui;
+package njuse.ffff.ui.ver1;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -8,25 +8,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import njuse.ffff.presenter.SearchController;
-import njuse.ffff.presenter.playerController.PlayerCompareController;
-import njuse.ffff.presenter.playerController.PlayerFilterController;
-import njuse.ffff.presenter.teamController.TeamCompareController;
-import njuse.ffff.presenterService.SearchService;
-import njuse.ffff.presenterService.playerService.PlayerCompareService;
-import njuse.ffff.presenterService.playerService.PlayerFilterService;
-import njuse.ffff.presenterService.teamService.TeamCompareService;
-
 @SuppressWarnings("serial")
 public class MenuPanel extends JPanel{
 	private final int titlePanel_width = 150;
 	private final int titlePanel_height = 200;
 	
-//	private ControllerService uiController;
-	private PlayerCompareService playerCompareController;
-	private TeamCompareService teamCompareController;
-	private PlayerFilterService playerFilterController;
-	private SearchService searchController;
+	private PanelFactory panelFactory = null;
 	
 	private Color background = new Color(170,200,228);
 	private String img_search_URL = "picture/menuItem/search.jpg";
@@ -57,11 +44,7 @@ public class MenuPanel extends JPanel{
 		this.setBackground(background);
 		this.setVisible(true);
 		
-//		uiController = UIController.getInstance();
-		playerCompareController = PlayerCompareController.getInstance();
-		teamCompareController = TeamCompareController.getInstance();
-		playerFilterController = PlayerFilterController.getInstance();
-		searchController = SearchController.getInstance();
+		panelFactory = PanelFactory.getInstance();
 		
 		//搜索界面按钮
 		label_searchPanel = new JLabel();
@@ -81,9 +64,8 @@ public class MenuPanel extends JPanel{
 				label_searchPanel.setIcon(icon_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				//设置球队横向比较界面
-//				uiController.setTeamComparePanel();
-				searchController.setSearchPanel();
+				//设置搜索比较界面
+				panelFactory.createSearchPanel();
 			}
 		});
 		
@@ -106,8 +88,7 @@ public class MenuPanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//设置球队横向比较界面
-//				uiController.setTeamComparePanel();
-				teamCompareController.setTeamCompareInfoForSeason(null,"");
+				panelFactory.createTeamComparePanel("12-13");
 			}
 		});
 		
@@ -130,8 +111,7 @@ public class MenuPanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//设置球员横向比较界面
-//				uiController.setPlayerComparePanel();
-				playerCompareController.setPlayerCompareInfoForSeason(null,"");
+				panelFactory.createPlayerComparePanel("12-13");
 			}
 		});
 		
@@ -154,8 +134,7 @@ public class MenuPanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//设置球员筛选界面
-//				uiController.setPlayerFilterPanel();
-				playerFilterController.setPlayerFilterPanel();
+				panelFactory.createPlayerFilterPanel();
 			}
 		});
 		

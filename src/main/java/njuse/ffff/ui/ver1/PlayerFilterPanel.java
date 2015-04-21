@@ -1,4 +1,4 @@
-package njuse.ffff.ui;
+package njuse.ffff.ui.ver1;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -20,22 +20,15 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import njuse.ffff.presenter.SearchController;
-import njuse.ffff.presenter.playerController.PlayerCompareController;
-import njuse.ffff.presenter.playerController.PlayerFilterController;
-import njuse.ffff.presenterService.SearchService;
-import njuse.ffff.presenterService.playerService.PlayerCompareService;
-import njuse.ffff.presenterService.playerService.PlayerFilterService;
+import njuse.ffff.uiservice.PlayerFilterViewService;
 
 @SuppressWarnings("serial")
-public class PlayerFilterPanel extends JPanel{
+public class PlayerFilterPanel extends JPanel implements PlayerFilterViewService{
 	private final int teamComparePanel_width = 1100;
 	private final int teamComparePanel_height = 700;
 	
-//	private ControllerService uiController;
-	private PlayerCompareService playerCompareController;
-	private PlayerFilterService playerFilterController;
-	private SearchService searchController;
+	private PanelFactory panelFactory = null;
+	
 	private SelectPanel p;
 	private PlayerFilterPanel panel;
 	private MenuPanel menuPanel;
@@ -68,15 +61,17 @@ public class PlayerFilterPanel extends JPanel{
 	private JScrollPane scrollPane_filter_total;
 	private int table_exist = 0;//0代表未筛选过，1代表已经筛选过
 	
+	String[] properties = {"编号","球员姓名","场均得分","场均篮板数","场均助攻数","得分/篮板/助攻"
+			,"场均盖帽数","场均抢断数","场均犯规数","场均失误数","分钟","效率"
+			,"投篮命中率","三分命中率","罚球命中率","两双"};
+	
 	public PlayerFilterPanel(){
 		this.setSize(teamComparePanel_width, teamComparePanel_height);
 		this.setBackground(background);
 		this.setVisible(true);
 		
-//		uiController = UIController.getInstance();
-		playerCompareController = PlayerCompareController.getInstance();
-		playerFilterController = PlayerFilterController.getInstance();
-		searchController = SearchController.getInstance();
+		panelFactory = PanelFactory.getInstance();
+		
 		p = new SelectPanel();
 		p.setLocation(264, 168);
 		panel = this;
@@ -111,8 +106,6 @@ public class PlayerFilterPanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到"球员信息横向比较"界面
-//				uiController.setPlayerComparePanel();
-				playerCompareController.setPlayerCompareInfoForSeason(null,"");
 			}
 		});
 		
@@ -151,8 +144,6 @@ public class PlayerFilterPanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到搜索界面
-//				uiController.setSearchPanel();
-				searchController.setSearchPanel();
 			}
 		});
 		
@@ -204,15 +195,11 @@ public class PlayerFilterPanel extends JPanel{
 				label_searchIcon.setIcon(icon_search_changed);
 			}
 			public void mouseClicked(MouseEvent arg0) {
-				//获得搜索条件，开始搜索
-				String position = filter_position.getSelectedItem().toString();
-				String league = filter_league.getSelectedItem().toString();
-				String sortCondition = label_sort_condition.getText();
+				//开始搜索
 				if(table_exist==1){
 					panel.remove(scrollPane_filter_total);
 				}
-//				uiController.setPlayerFilterResult(panel ,position, league, sortCondition);
-				playerFilterController.setPlayerFilterResult(null, position, league, sortCondition);
+				panelFactory.searchResultForPlayerFilter();
 			}
 		});
 		
@@ -322,8 +309,32 @@ public class PlayerFilterPanel extends JPanel{
 		this.repaint();
 	}
 	
-	public void setFilterInfo(String[] properties_average,Object[][] values_average){
-		tableModel_filter_total = new DefaultTableModel(values_average,properties_average){
+	public void displayMenu(){
+		this.add(menuPanel,0);
+		this.repaint();
+	}
+	
+	public void removeMenu(){
+		this.remove(menuPanel);
+		this.repaint();
+	}
+
+	@Override
+	public String[] getFilters() {
+		String[] filters = new String[3];
+		StringBuffer stringBuffer = new StringBuffer("位置:");
+		stringBuffer.append(filter_position.getSelectedItem().toString());
+		filters[0] = stringBuffer.toString();
+		stringBuffer = new StringBuffer("联盟:");
+		stringBuffer.append(filter_league.getSelectedItem().toString());
+		filters[1] = stringBuffer.toString();
+		filters[2] = label_sort_condition.getText();
+		return null;
+	}
+
+	@Override
+	public void setResult(Object[][] data) {
+		tableModel_filter_total = new DefaultTableModel(data,properties){
 			public boolean isCellEditable(int row, int column)
             {
                 return false;
@@ -345,12 +356,6 @@ public class PlayerFilterPanel extends JPanel{
 		table_filter.setSelectionForeground(Color.CYAN);
 		//表格显示
 		table_filter.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-//		//实现表头折行显示
-//		HeaderRendererHh renderer = new HeaderRendererHh();
-//		TableColumnModel cmodel = table_playerCompare_total.getColumnModel();  
-//		for (int i = 0; i < cmodel.getColumnCount(); i++) {
-//		    cmodel.getColumn(i).setHeaderRenderer(renderer);
-//		}
 		TableColumn firstColumn_total = table_filter.getColumnModel().getColumn(0);
 		firstColumn_total.setPreferredWidth(50);
 		firstColumn_total.setMaxWidth(50);
@@ -385,15 +390,5 @@ public class PlayerFilterPanel extends JPanel{
 		this.add(scrollPane_filter_total);
 		this.repaint();
 		table_exist = 1;
-	}
-	
-	public void displayMenu(){
-		this.add(menuPanel,0);
-		this.repaint();
-	}
-	
-	public void removeMenu(){
-		this.remove(menuPanel);
-		this.repaint();
 	}
 }

@@ -7,7 +7,6 @@ import njuse.ffff.po.PlayerInAverage;
 import njuse.ffff.po.PlayerPO;
 import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.presenterService.playerService.PlayerFilterService;
-import njuse.ffff.ui.PlayerFilterPanel;
 import njuse.ffff.uiservice.PlayerFilterViewService;
 import njuse.ffff.util.DealDecimal;
 import njuse.ffff.util.Filter;
@@ -34,15 +33,6 @@ public class PlayerFilterController implements PlayerFilterService{
 			playerFilterController = new PlayerFilterController();
 		}
 		return playerFilterController;
-	}
-	
-	/**
-	 * 设置球员筛选界面
-	 */
-	public void setPlayerFilterPanel() {
-		PlayerFilterPanel playerFilterPanel = new PlayerFilterPanel();
-		totalController.addCurrentPanel(playerFilterPanel);
-		totalController.switchToPanel(playerFilterPanel);
 	}
 
 	/**

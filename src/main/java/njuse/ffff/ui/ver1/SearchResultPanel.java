@@ -1,4 +1,4 @@
-package njuse.ffff.ui;
+package njuse.ffff.ui.ver1;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -17,22 +17,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import njuse.ffff.presenter.SearchController;
-import njuse.ffff.presenter.playerController.PlayerInfoController;
-import njuse.ffff.presenter.teamController.TeamInfoController;
-import njuse.ffff.presenterService.SearchService;
-import njuse.ffff.presenterService.playerService.PlayerInfoService;
-import njuse.ffff.presenterService.teamService.TeamInfoService;
+import njuse.ffff.uiservice.SearchResultService;
 
 @SuppressWarnings("serial")
-public class SearchResultPanel extends JPanel{
+public class SearchResultPanel extends JPanel implements SearchResultService{
 	private final int searchResultPanel_width = 1100;
 	private final int searchResultPanel_height = 700;
 	
-//	private ControllerService uiController;
-	private PlayerInfoService playerInfoController;
-	private TeamInfoService teamInfoController;
-	private SearchService searchController;
 	private JLabel label_menu;
 	private MenuPanel menuPanel;
 	private int menuDisplay;
@@ -55,10 +46,6 @@ public class SearchResultPanel extends JPanel{
 		this.setBackground(background);
 		this.setVisible(true);
 		
-//		uiController = UIController.getInstance();
-		playerInfoController = PlayerInfoController.getInstance();
-		teamInfoController = TeamInfoController.getInstance();
-		searchController = SearchController.getInstance();
 		menuPanel = new MenuPanel();
 		menuPanel.setLocation(930, 110);
 		menuDisplay = 0;
@@ -82,8 +69,6 @@ public class SearchResultPanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//跳转到"搜索界面"
-//				uiController.setSearchPanel();
-				searchController.setSearchPanel();
 			}
 		});
 		
@@ -206,11 +191,11 @@ public class SearchResultPanel extends JPanel{
 					String content = (String)table_searchResult.getValueAt(row, column);
 					if(type.equals("球队")){
 //						uiController.setTeamProfilePanel(content);
-						teamInfoController.setTeamProfilePanel(null,content);
+//						teamInfoController.setTeamProfile(null,content);
 					}
 					else if(type.equals("球员")){
 //						uiController.setPlayerProfilePanel(content);
-						playerInfoController.setPlayerProfilePanel(null,content);
+//						playerInfoController.setPlayerProfile(null,content);
 					}
 				}
 			}
@@ -239,4 +224,11 @@ public class SearchResultPanel extends JPanel{
 		this.remove(menuPanel);
 		this.repaint();
 	}
+
+	@Override
+	public void setSearchResult(String[] teamNames, String[] playerNames) {
+		
+		
+	}
+
 }
