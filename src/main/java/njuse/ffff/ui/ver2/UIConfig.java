@@ -33,6 +33,8 @@ public class UIConfig {
 	public static Color TableHeaderBgColor;
 
 	public static Color TableHeaderFgColor;
+	
+	public static Font SmallFont;
 
 	/**
 	 * 初始化设定
@@ -54,6 +56,7 @@ public class UIConfig {
 		TitleFont = f.deriveFont(Font.PLAIN, 30);
 		SubTitleFont = f.deriveFont(Font.PLAIN, 18);
 		ContentFont = f.deriveFont(Font.PLAIN, 20);
+		SmallFont = f.deriveFont(Font.PLAIN, 15);
 
 		TitleBgColor = Color.GRAY;
 		TitleForeColor = Color.WHITE;

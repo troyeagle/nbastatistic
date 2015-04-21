@@ -14,7 +14,7 @@ public class SwitchButton extends ButtonEx {
 
 	private boolean isPressed;
 
-	private Color selectedColor;
+	private Color activeColor;
 
 	protected Icon[] icons;
 
@@ -35,7 +35,7 @@ public class SwitchButton extends ButtonEx {
 		icons = new Icon[2];
 		icons[0] = icon;
 
-		selectedColor = Color.WHITE;
+		activeColor = new Color(255, 255, 255, 192);
 
 		addActionListener(new ActionListener() {
 
@@ -48,7 +48,7 @@ public class SwitchButton extends ButtonEx {
 
 	public void setActive(boolean b) {
 		if (isPressed = b) {
-			setMaskColor(selectedColor);
+			setMaskColor(activeColor);
 			if (icons[1] != null)
 				setIcon(icons[1]);
 		} else {
@@ -63,5 +63,14 @@ public class SwitchButton extends ButtonEx {
 
 	public boolean isActive() {
 		return isPressed;
+	}
+
+	public void setActiveColor(Color c) {
+		activeColor = c;
+		repaint();
+	}
+
+	public Color getActiveColor() {
+		return activeColor;
 	}
 }

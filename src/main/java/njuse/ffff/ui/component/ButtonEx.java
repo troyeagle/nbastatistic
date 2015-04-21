@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Paint;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JButton;
 
@@ -62,7 +63,7 @@ public class ButtonEx extends JButton implements IComponentEx {
 	 * 初始化控件外观
 	 */
 	private void initLook() {
-		setBorder(null);		// 默认无边框（待定
+		setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));		// 默认边框
 		setFocusPainted(false);	// 默认不绘制焦点
 		setRolloverEnabled(false);
 		setContentAreaFilled(false);

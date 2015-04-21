@@ -1,14 +1,22 @@
 package njuse.ffff.ui.ver2;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.Timer;
 
+import njuse.ffff.presenter.TotalUIController;
+import njuse.ffff.presenterService.TotalControlService;
+import njuse.ffff.ui.component.PanelEx;
+import njuse.ffff.ui.ver2.component.SwitchEvent;
+import njuse.ffff.ui.ver2.component.SwitchListener;
 import njuse.ffff.ui.ver2.component.TabBar;
 import njuse.ffff.ui.ver2.component.TitleBar;
 
@@ -20,20 +28,47 @@ public class MainFrame extends JFrame {
 	private TitleBar titleBar;
 	private TabBar tabBar;
 
+	private PanelEx viewPanel;
+
+	private PlayerDetailPane playerPane;
+
 	private MainFrame() {
 		this.setUndecorated(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setSize(800, 600);
+		this.setSize(960, 720);
 		this.setLocationRelativeTo(null);
 
 		getContentPane().setBackground(Color.DARK_GRAY);
 
-		initTitleArea();
+		setLoadingPanel();
 
-		// TODO
-		add(new TeamsOverViewPanel());
+		viewPanel = new PanelEx(new CardLayout());
+		viewPanel.setOpaque(false);
+
+		UIEventManager.addListener(new UIEventHandler(), UIEventType.ALL);
 
 		this.setVisible(true);
+
+		initView();
+	}
+
+	private void initView() {
+		UIEventManager.notify(UIEventType.BUSY, this);
+
+		initTitleArea();
+		this.setTitle("主页");
+
+		playerPane = new PlayerDetailPane();
+
+		viewPanel.add("球队一览", new TeamsOverViewPanel());
+		viewPanel.add("球员一览", new PlayersOverViewPane());
+		viewPanel.add("球员详情", playerPane);
+
+		add(viewPanel);
+
+		getContentPane().repaint();
+
+		UIEventManager.notify(UIEventType.FINISH, this);
 	}
 
 	private void initTitleArea() {
@@ -42,13 +77,21 @@ public class MainFrame extends JFrame {
 
 		tabBar = new TabBar("主页", "球队一览", "球员一览", "球员筛选");
 		tabBar.setOpaque(false);
+		tabBar.addSwitchListener(new SwitchListener() {
 
-		JPanel titleArea = new JPanel(new BorderLayout(0, 0));
+			@Override
+			public void actionPerformed(SwitchEvent e) {
+				String name = e.getSource().getName();
+				setTitle(name);
+				((CardLayout) viewPanel.getLayout()).show(viewPanel, name);
+				// TODO
+			}
+		});
+
+		PanelEx titleArea = new PanelEx(new BorderLayout(0, 0));
 		titleArea.setBackground(UIConfig.TitleBgColor);
 		titleArea.add(titleBar, BorderLayout.NORTH);
 		titleArea.add(tabBar, BorderLayout.SOUTH);
-
-		add(titleArea, BorderLayout.NORTH);
 
 		MouseAdapter l = new MouseAdapter() {
 			Point p;
@@ -61,6 +104,8 @@ public class MainFrame extends JFrame {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				moved = false;
+				if (getY() < 0)
+					setLocation(getX(), 0);
 			}
 
 			@Override
@@ -77,6 +122,8 @@ public class MainFrame extends JFrame {
 		};
 		titleArea.addMouseListener(l);
 		titleArea.addMouseMotionListener(l);
+
+		add(titleArea, BorderLayout.NORTH);
 	}
 
 	public static MainFrame getInstance() {
@@ -88,10 +135,89 @@ public class MainFrame extends JFrame {
 	@Override
 	public void setTitle(String title) {
 		super.setTitle(title);
-		titleBar.setTitle(title);
+		if (titleBar != null)
+			titleBar.setTitle(title);
+	}
+
+	private class UIEventHandler implements UIEventListener {
+
+		int busyCount;
+
+		@Override
+		public void actionPerformed(UIEvent e) {
+			switch (e.getType()) {
+			case BUSY:
+				handleBusy();
+				break;
+			case FINISH:
+				handleFinish();
+				break;
+			case SWITCH:
+				handleSwitch(e.getMessage());
+			default:
+				break;
+			}
+		}
+
+		private void handleSwitch(String message) {
+			String[] mes = message.split(":");
+			switch (mes[0]) {
+			case "球员详情":
+				setPlayerPane(mes[1]);
+				break;
+			case "球队详情":
+				setTeamPane(mes[1]);
+				break;
+			}
+		}
+
+		private void handleBusy() {
+			busyCount++;
+			handleStatus();
+		}
+
+		private void handleFinish() {
+			busyCount--;
+			handleStatus();
+		}
+
+		private void handleStatus() {
+			Timer t = new Timer(0, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO
+					MainFrame.this.getGlassPane().setVisible(busyCount > 0);
+				}
+			});
+			if (busyCount < 0)
+				t.setInitialDelay(100);
+			t.setRepeats(false);
+			t.start();
+			if (busyCount < 0)
+				busyCount = 0;
+		}
+	}
+
+	private void setLoadingPanel() {
+		// TODO
+		setGlassPane(new LoadingPane());
+		getGlassPane().addMouseListener(new MouseAdapter() {
+		});	// loading时不能鼠标操作
+	}
+
+	public void setTeamPane(String teamName) {
+		tabBar.addTab("球队详情");
+		tabBar.switchTo("球队详情");
+	}
+
+	public void setPlayerPane(String playerName) {
+		playerPane.setPlayer(playerName);
+		tabBar.addTab("球员详情");
+		tabBar.switchTo("球员详情");
 	}
 
 	public static void main(String[] args) {
+		TotalUIController.getInstance().initSystem();
 		UIConfig.initialize();
 		MainFrame.getInstance();
 	}

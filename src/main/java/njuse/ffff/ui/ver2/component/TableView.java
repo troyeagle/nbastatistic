@@ -3,6 +3,7 @@ package njuse.ffff.ui.ver2.component;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.MouseListener;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -147,9 +148,37 @@ public class TableView extends PanelEx {
 
 	public void setHeaderBgColor(Color c) {
 		table.getTableHeader().setBackground(c);
+		PanelEx corner = new PanelEx();
+		corner.setBackground(c);
+		view.setCorner(JScrollPane.UPPER_RIGHT_CORNER, corner);
 	}
-	
+
 	public JTable getTable() {
 		return table;
+	}
+
+	@Override
+	public synchronized void addMouseListener(MouseListener l) {
+		super.addMouseListener(l);
+		table.addMouseListener(l);
+	}
+
+	@Override
+	public synchronized void removeMouseListener(MouseListener l) {
+		super.removeMouseListener(l);
+		table.removeMouseListener(l);
+	}
+
+	public int[] getSelectedCellLocation() {
+		int[] res = new int[2];
+
+		res[0] = table.getSelectedRow();
+		res[1] = table.getSelectedColumn();
+
+		return res;
+	}
+	
+	public Object getValueAt(int row, int column) {
+		return table.getValueAt(row, column);
 	}
 }

@@ -37,7 +37,7 @@ public class SwitchButtonGroup {
 	}
 
 	public void addButton(SwitchButton button) {
-		if (!buttonList.contains(button)) {
+		if (!contains(button)) {
 			buttonList.add(button);
 
 			button.addActionListener(switchListener);
@@ -65,6 +65,14 @@ public class SwitchButtonGroup {
 		}
 	}
 
+	public void switchTo(String name) {
+		for (int i = 0; i < buttonList.size(); i++)
+			if (buttonList.get(i).getName().equals(name)) {
+				switchTo(i);
+				break;
+			}
+	}
+
 	public int getActiveIndex() {
 		return activeIndex;
 	}
@@ -75,7 +83,31 @@ public class SwitchButtonGroup {
 		return buttonList.get(activeIndex);
 	}
 
+	public SwitchButton[] getButtons() {
+		return buttonList.toArray(new SwitchButton[0]);
+	}
+
+	public int getButtonsCount() {
+		return buttonList.size();
+	}
+
 	public void addSwitchListener(SwitchListener l) {
 		listenerList.add(l);
+	}
+
+	public void removeSwitchListener(SwitchListener l) {
+		listenerList.remove(l);
+	}
+	
+	public boolean contains(SwitchButton button) {
+		return buttonList.contains(button);
+	}
+	
+	public boolean contains(String title) {
+		for (SwitchButton btn : buttonList) {
+			if (btn.getName().equals(title))
+				return true;
+		}
+		return false;
 	}
 }
