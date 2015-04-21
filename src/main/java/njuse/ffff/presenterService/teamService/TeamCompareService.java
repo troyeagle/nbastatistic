@@ -4,6 +4,5 @@ import njuse.ffff.uiservice.TeamsOverviewService;
 
 public interface TeamCompareService {
 	//设置某一赛季的球队信息横向比较界面
-	public void setTeamCompareInfoForSeason(TeamsOverviewService panel,String season);
-	public String getPresentSeason();
+	public void setTeamCompareInfoForSeason(TeamsOverviewService panel);
 }

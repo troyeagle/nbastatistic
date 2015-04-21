@@ -329,7 +329,7 @@ public class PlayerFilterPanel extends JPanel implements PlayerFilterViewService
 		stringBuffer.append(filter_league.getSelectedItem().toString());
 		filters[1] = stringBuffer.toString();
 		filters[2] = label_sort_condition.getText();
-		return null;
+		return filters;
 	}
 
 	@Override

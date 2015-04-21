@@ -88,7 +88,7 @@ public class MenuPanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//设置球队横向比较界面
-				panelFactory.createTeamComparePanel("12-13");
+				panelFactory.createTeamComparePanel();
 			}
 		});
 		
@@ -111,7 +111,7 @@ public class MenuPanel extends JPanel{
 			}
 			public void mouseClicked(MouseEvent arg0) {
 				//设置球员横向比较界面
-				panelFactory.createPlayerComparePanel("12-13");
+				panelFactory.createPlayerComparePanel();
 			}
 		});
 		

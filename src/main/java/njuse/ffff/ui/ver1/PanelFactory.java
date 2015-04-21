@@ -63,19 +63,19 @@ public class PanelFactory {
 		return panelFactory;
 	}
 
-	public void createTeamComparePanel(String season){
+	public void createTeamComparePanel(){
 		if(teamComparePanel==null){
 			teamComparePanel = new TeamComparePanel();
 		}
-		teamCompareController.setTeamCompareInfoForSeason(teamComparePanel, season);
+		teamCompareController.setTeamCompareInfoForSeason(teamComparePanel);
 		totalController.switchToPanel(teamComparePanel);
 	}
 	
-	public void createPlayerComparePanel(String season){
+	public void createPlayerComparePanel(){
 		if(playerComparePanel==null){
 			playerComparePanel = new PlayerComparePanel();
 		}
-		playerCompareController.setPlayerCompareInfoForSeason(playerComparePanel, season);
+		playerCompareController.setPlayerCompareInfoForSeason(playerComparePanel);
 		totalController.switchToPanel(playerComparePanel);
 	}
 	

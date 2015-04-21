@@ -41,6 +41,8 @@ public class SearchResultPanel extends JPanel implements SearchResultService{
 	
 	private JLabel label_arrow_left;
 	
+	private String[] properties = {};
+	
 	public SearchResultPanel(){
 		this.setSize(searchResultPanel_width, searchResultPanel_height);
 		this.setBackground(background);
