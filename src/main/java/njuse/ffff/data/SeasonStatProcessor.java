@@ -46,7 +46,7 @@ public class SeasonStatProcessor {
 	public TeamInAverage getTeamAverage(String name, Filter filter) {
 		if(filter==null){filter = new Filter();}
 		for (TeamInAverage t : teamInAverage) {
-			if (t.getName().equals(name) && filter.filt(t)) {
+			if ((t.getName().equals(name)||t.getAbbr().equals(name)) && filter.filt(t)) {
 				return t;
 			}
 		}
@@ -68,7 +68,7 @@ public class SeasonStatProcessor {
 	public ArrayList<TeamInMatch> getTeamStatistics(String name, Filter filter) {
 		if(filter==null){filter = new Filter();}
 		for (TeamInAverage t : teamInAverage) {
-			if (t.getName().equals(name) && filter.filt(t)) {
+			if ((t.getName().equals(name)||t.getAbbr().equals(name)) && filter.filt(t)) {
 				return t.getTeamStats();
 			}
 		}
@@ -201,7 +201,7 @@ public class SeasonStatProcessor {
 		int[] attributes = new int[2];
 		attributes[0]=condition;
 		new Sort().sortTeam(teams, attributes);
-		return null;
+		return teams;
 	}
 	/**
 	 * Condition:

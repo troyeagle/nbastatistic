@@ -72,7 +72,7 @@ public class DataReadController implements DataReaderService {
 	public TeamInAverage getTeamAverage(String name, Filter filter) {
 		if(filter==null){filter = new Filter();}
 		for (TeamInAverage t : teamInAverage) {
-			if (t.getName().equals(name) && filter.filt(t)) {
+			if ((t.getName().equals(name)||t.getAbbr().equals(name)) && filter.filt(t)) {
 				return t;
 			}
 		}
@@ -82,7 +82,7 @@ public class DataReadController implements DataReaderService {
 	public TeamPO getTeamInfo(String name, Filter filter) {
 		if(filter==null){filter = new Filter();}
 		for (TeamPO t : TeamDataProcessor.teams) {
-			if (t.getName().equals(name) && filter.filt(t)) {
+			if ((t.getName().equals(name)||t.getAbbr().equals(name)) && filter.filt(t)) {
 				return t;
 			}
 		}
@@ -105,7 +105,7 @@ public class DataReadController implements DataReaderService {
 	public ArrayList<TeamInMatch> getTeamStatistics(String name, Filter filter) {
 		if(filter==null){filter = new Filter();}
 		for (TeamInAverage t : teamInAverage) {
-			if (t.getName().equals(name) && filter.filt(t)) {
+			if ((t.getName().equals(name)||t.getAbbr().equals(name)) && filter.filt(t)) {
 				return t.getTeamStats();
 			}
 		}
