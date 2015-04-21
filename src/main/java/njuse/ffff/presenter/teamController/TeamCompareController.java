@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import njuse.ffff.data.SeasonStatProcessor;
 import njuse.ffff.dataservice.DataReaderService;
 import njuse.ffff.po.TeamInAverage;
+import njuse.ffff.po.TeamPO;
 import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.presenterService.teamService.TeamCompareService;
 import njuse.ffff.uiservice.TeamsOverviewService;
@@ -45,12 +46,18 @@ public class TeamCompareController implements TeamCompareService{
 			if(seasonStatProcessor==null){
 				continue;
 			}
-			ArrayList<TeamInAverage> teams = seasonStatProcessor.getTeamInAverage();
+//			ArrayList<TeamInAverage> teams = seasonStatProcessor.getTeamInAverage();
+			ArrayList<TeamPO> teamPOs = dataService.getTeamInfoAll(null);
+			ArrayList<TeamInAverage> teams = new ArrayList<TeamInAverage>();
+			for(TeamPO team:teamPOs){
+				TeamInAverage t = dataService.getTeamAverage(team.getName(), null);
+				teams.add(t);
+			}
 			
-	//		String[] propertices_total = {"球队名称","比赛场数","投篮命中数","投篮出手数"
+	//		String[] propertices_total = {"球队名称","缩写","比赛场数","投篮命中数","投篮出手数"
 	//				,"三分命中数","三分出手数","罚球命中数","罚球出手数","进攻篮板数","防守篮板数","篮板数"
 	//				,"助攻数","抢断数","盖帽数","失误数","犯规数","比赛得分"};
-	//		String[] propertices_average = {"球队名称","比赛场数","投篮命中数","投篮出手数"
+	//		String[] propertices_average = {"球队名称","缩写","比赛场数","投篮命中数","投篮出手数"
 	//				,"三分命中数","三分出手数","罚球命中数","罚球出手数","进攻篮板数","防守篮板数","篮板数"
 	//				,"助攻数","抢断数","盖帽数","失误数","犯规数","比赛得分","投篮命中率","三分命中率"
 	//				,"罚球命中率","进攻回合","进攻效率","防守效率","进攻篮板效率","防守篮板效率"
@@ -66,7 +73,7 @@ public class TeamCompareController implements TeamCompareService{
 				double[] total = teamAvg.getStatsTotal();
 				double[] average = teamAvg.getStatsAverage();
 				values_total[i] = new Object[] {
-						teamAvg.getName(),teamAvg.getNumOfMatches()		//球队名，球队比赛场数
+						teamAvg.getName(),teamAvg.getAbbr(),teamAvg.getNumOfMatches()		//球队名，球队比赛场数
 						,DealDecimal.formatChange(total[0])				//投篮命中数
 						,DealDecimal.formatChange(total[1])				//投篮出手数
 						,DealDecimal.formatChange(total[2])				//三分命中数
@@ -84,7 +91,7 @@ public class TeamCompareController implements TeamCompareService{
 						,DealDecimal.formatChange(total[14])			//得分
 				};
 				values_average[i] = new Object[] {
-						teamAvg.getName(),teamAvg.getNumOfMatches()							//球队名称，球队比赛场数
+						teamAvg.getName(),teamAvg.getAbbr(),teamAvg.getNumOfMatches()							//球队名称，球队比赛场数
 						,DealDecimal.formatChange(average[0], 1)			//投篮命中数
 						,DealDecimal.formatChange(average[1], 1)		//投篮出手数
 						,DealDecimal.formatChange(average[2], 1)			//三分命中数

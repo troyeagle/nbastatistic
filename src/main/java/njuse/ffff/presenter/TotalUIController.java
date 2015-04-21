@@ -167,6 +167,17 @@ public class TotalUIController implements TotalControlService{
 			e.printStackTrace();
 		}
 	}
+	
+	public void initSys(){
+		try {
+			dataService.initialize();
+			createFrame();
+			updateController = UpdateController.getInstance();
+			updateController.checkForUpdate();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * 向界面列表添加当前界面
