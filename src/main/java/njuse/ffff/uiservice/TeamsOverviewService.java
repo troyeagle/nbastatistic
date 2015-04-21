@@ -14,7 +14,7 @@ public interface TeamsOverviewService {
 	 * 
 	 * @param values
 	 */
-	void setTeamsAvgInfo(Object[][] values);
+	void setTeamsAvgInfo(Object[][] values, String season);
 
-	void setTeamsTotalInfo(Object[][] values);
+	void setTeamsTotalInfo(Object[][] values, String season);
 }
