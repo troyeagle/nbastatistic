@@ -111,5 +111,11 @@ public class MatchPO implements Serializable,Comparable<MatchPO>{
 	public Date getDate() {
 		return date;
 	}
+	public ArrayList<Integer> getScoreA() {
+		return scoreA;
+	}
+	public ArrayList<Integer> getScoreB() {
+		return scoreB;
+	}
 	
 }

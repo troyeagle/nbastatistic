@@ -48,6 +48,10 @@ public class TeamInMatch implements Serializable {
 	double assistEf;
 	ArrayList<PlayerInMatch> players;
 	
+	public ArrayList<PlayerInMatch> getPlayers() {
+		return players;
+	}
+
 	public TeamInMatch(String name, ArrayList<PlayerInMatch> players,
 			TeamInMatch rival, ArrayList<Integer> score,
 			ArrayList<Integer> rivalScore) {

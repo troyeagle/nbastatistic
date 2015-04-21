@@ -114,6 +114,10 @@ public class DataReadController implements DataReaderService {
 	/**
 	 * 数据首次读取入口,程序核心方法
 	 */
+	
+	public void advancedInitialize(String path,int cacheLength){
+		//写着玩的
+	}
 	public void initialize() throws IOException {
 		/**
 		 * FileListener应该是最高优先级？
@@ -319,8 +323,7 @@ public class DataReadController implements DataReaderService {
 									averageProcessForNewMatch(oneMatch);
 									currentDate = oneMatch.getDate();
 									currentSeason = oneMatch.getName().substring(0, 5);
-									//FIXME 这里还需要调用一下“更新”接口
-									UpdateService up = new UpdateController();
+									UpdateService up = UpdateController.getInstance();//更新
 									up.informUpdate();
 									/**
 									 * Iteration 2 select season and process

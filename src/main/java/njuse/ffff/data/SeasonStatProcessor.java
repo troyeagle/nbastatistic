@@ -28,6 +28,9 @@ public class SeasonStatProcessor {
 	public ArrayList<PlayerInAverage> getPlayerInAverage() {
 		return playerInAverage;
 	}
+	public ArrayList<TeamInAverage> getTeamInAverage(){
+		return teamInAverage;
+	}
 
 	public PlayerInAverage getPlayerAverage(String name, Filter filter) {
 		if(filter==null){filter = new Filter();}

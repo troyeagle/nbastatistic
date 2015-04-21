@@ -79,6 +79,7 @@ public class PlayerInAverage {
 	private double recent5ScoreAdv;
 	private double recent5BlockAdv;
 	private double recent5AssistAdv;
+	
 	// 关键变量。用于存放该球员所有比赛数据
 	ArrayList<PlayerInMatchExtended> playerStats;
 
@@ -156,7 +157,6 @@ public class PlayerInAverage {
 			statsTotal[14] += p.points;
 
 			statsTotal[15] += p.playerEfficiencyRate;
-
 			teamSecondInTotal += p.getTeam().secondInTotal;
 			teamRebound += p.getTeam().rebound;
 			rivalRebound += p.getTeam().rival.rebound;
@@ -243,6 +243,7 @@ public class PlayerInAverage {
 			addOneMatchToAll(p);
 		}
 		averageProcess();
+		statsTotal[19]=this.firstOnMatch;
 	}
 
 	/**
@@ -258,6 +259,7 @@ public class PlayerInAverage {
 		}
 		addOneMatchToAll(p);
 		averageProcess();
+		statsTotal[19]=this.firstOnMatch;
 		calRecentFive();
 		statsTotal[21] = recent5ScoreAdv;
 		statsTotal[22] = recent5BlockAdv;
