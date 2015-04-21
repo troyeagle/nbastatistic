@@ -164,8 +164,8 @@ public class DataReadController implements DataReaderService {
 		Thread season = new Thread(){//增添赛季数据
 			public void run(){
 				seasons.add(new SeasonStatProcessor("12-13"));
-				seasons.add(new SeasonStatProcessor("13-14"));
-				seasons.add(new SeasonStatProcessor("14-15"));
+				//seasons.add(new SeasonStatProcessor("13-14"));
+				//seasons.add(new SeasonStatProcessor("14-15"));
 			}
 		};
 		exe.execute(main);
@@ -188,12 +188,12 @@ public class DataReadController implements DataReaderService {
 		team.loadSerial();
 		match.loadSerial();
 		match.processAll();
-
+		averageArrayIni();
 		average();
 
 	}
 	/**
-	 * 所有平均值计算
+	 * 所有平均值计算,必须确保averageIni已调用，及各平均数容器已经初始化
 	 */
 	public void average() {
 

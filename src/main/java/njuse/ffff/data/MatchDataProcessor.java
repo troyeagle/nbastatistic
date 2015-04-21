@@ -31,7 +31,9 @@ public class MatchDataProcessor {
 
 	private static String saveLoadPath = "./CSEIII data2/迭代一数据/matches";
 	static ArrayList<MatchPO> matches;
-
+	public static void setPath(String path){
+		MatchDataProcessor.path = path;
+	}
 	public void readAndAnalysisMatch(){
 		matches = new ArrayList<MatchPO>();
 		//System.out.println("INFO:MatchPO Info Initializing");

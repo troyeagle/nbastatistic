@@ -21,6 +21,10 @@ public class TeamDataProcessor {
 	static ArrayList<TeamPO> teams;
 	private final int numberOfTeams = 30;
 	private static String saveLoadPath = "./CSEIII data2/迭代一数据/team";
+	
+	public static void setPath(String path){
+		TeamDataProcessor.path = path;
+	}
 	public void readAndAnalysisTeam() throws IOException{
 		System.out.println("INFO:Team Info Initializing");
 		path = "./CSEIII data/迭代一数据/teams";

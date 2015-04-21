@@ -25,7 +25,9 @@ public class PlayersDataProcessor {
 	
 	private static String saveLoadPath = "./CSEIII data2/迭代一数据/players/info";
 	static ArrayList<PlayerPO> players;
-	
+	public static void setPath(String path){
+		PlayersDataProcessor.path = path;
+	}
 	public void readAndAnalysisPlayer() {
 		players = new ArrayList<PlayerPO>();
 //		System.out.println("INFO:Player Info Initializing");
