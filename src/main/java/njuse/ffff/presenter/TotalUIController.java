@@ -218,10 +218,7 @@ public class TotalUIController implements TotalControlService{
 		}
 		if(playersOverviewService!=null){
 			PlayerCompareService service = PlayerCompareController.getInstance();
-			String season = service.getPresentSeason();
-			if(season!=null){
-				service.setPlayerCompareInfoForSeason(playersOverviewService, season);
-			}
+			service.setPlayerCompareInfoForSeason(playersOverviewService);
 		}
 		if(playerFilterViewService!=null){
 			PlayerFilterService service = PlayerFilterController.getInstance();
@@ -252,10 +249,7 @@ public class TotalUIController implements TotalControlService{
 		}
 		if(teamsOverviewService!=null){
 			TeamCompareService service = TeamCompareController.getInstance();
-			String season = service.getPresentSeason();
-			if(season!=null){
-				service.setTeamCompareInfoForSeason(teamsOverviewService, season);
-			}
+			service.setTeamCompareInfoForSeason(teamsOverviewService);
 		}
 		if(teamProfileService!=null){
 			TeamInfoService service = TeamInfoController.getInstance();
