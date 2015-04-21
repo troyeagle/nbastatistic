@@ -160,7 +160,7 @@ public class TotalUIController implements TotalControlService{
 	public void initSystem() {
 		try {
 			dataService.initialize();
-			createFrame();
+//			createFrame();
 			updateController = UpdateController.getInstance();
 			updateController.checkForUpdate();
 		} catch (IOException e) {

@@ -38,17 +38,24 @@ public class UpdateController implements UpdateService{
 	 * 如果数据层更新了，就更新界面显示
 	 */
 	public void checkForUpdate(){
+		Thread thread = new Thread();
+		thread.run();
+	}
+	
+	class Run implements Runnable{
 		//循环检查
-		while(isUpdated==false){
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		public void run() {
+			while(isUpdated==false){
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
+			//调用更新界面显示
+			totalController.refreshView();
+			isUpdated = false;
 		}
-		//调用更新界面显示
-		totalController.refreshView();
-		isUpdated = false;
 	}
 
 }
