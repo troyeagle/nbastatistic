@@ -149,10 +149,15 @@ public class SeasonStatProcessor {
 	 */
 	void averageProcessForNewMatch(MatchPO m){
 		for(TeamInAverage ta:teamInAverage){
-			if(ta.getAbbr().equals(m.getName())){
-				ta.calAverageWithNew(m.getTeamStatA());
-			}else if(ta.getAbbr().equals(m.getTeamB())){
-				ta.calAverageWithNew(m.getTeamStatB());
+//			if(ta.getAbbr().equals(m.getName())){
+//				ta.calAverageWithNew(m.getTeamStatA());
+//			}else if(ta.getAbbr().equals(m.getTeamB())){
+//				ta.calAverageWithNew(m.getTeamStatB());
+//			}
+			if(isEqualTeam(ta.getAbbr(),m.getTeamA())){
+				ta.addMatch(m.getTeamStatA());
+			}else if(isEqualTeam(ta.getAbbr(),m.getTeamB())){
+				ta.addMatch(m.getTeamStatB());
 			}
 		}
 		
@@ -222,5 +227,15 @@ public class SeasonStatProcessor {
 	public String getSeason() {
 		return season;
 	}
-	
+	public boolean isEqualTeam(String abbrInTeam,String abbrInMatch){
+		if(abbrInTeam.equals(abbrInMatch)){
+			return true;
+		}
+		else if(this.season.equals("12-13")&&abbrInTeam.equals("NOP")&&abbrInMatch.equals("NOH")){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 }

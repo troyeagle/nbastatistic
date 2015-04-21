@@ -123,6 +123,7 @@ public class DataReadController implements DataReaderService {
 		 * FileListener应该是最高优先级？
 		 */
 		path="./CSEIII data/plus/matches";
+		currentSeason = "12-13";
 		File f = new File(path);
 		if(!f.exists()){
 			f.mkdirs();
@@ -146,11 +147,20 @@ public class DataReadController implements DataReaderService {
 
 		Thread main = new Thread() {//初始化以及处理初始数据
 			public void run() {
+				MatchDataProcessor.setPath("./CSEIII data/plus/matches");
 				MatchDataProcessor.matches = new ArrayList<MatchPO>();
-				//match.readAndAnalysisMatch();				
+				match.readAndAnalysisMatch();				
 				match.processAll();
 				averageArrayIni();
-				//average();
+				for(MatchPO m:MatchDataProcessor.matches){
+					for(SeasonStatProcessor ss:seasons){
+						if(m.getName().startsWith(ss.getSeason())){
+							ss.averageProcessForNewMatch(m);
+							break;
+						}
+					}
+				}
+				average();
 				try {
 					player.saveAsSerial();
 					team.saveAsSerial();
@@ -158,7 +168,7 @@ public class DataReadController implements DataReaderService {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
+				
 			}
 		};
 		Thread season = new Thread(){//增添赛季数据
@@ -218,9 +228,14 @@ public class DataReadController implements DataReaderService {
 
 	private void averageProcessForMatch(MatchPO m){
 		for(TeamInAverage ta:teamInAverage){
-			if(ta.getAbbr().equals(m.getTeamA())){
+//			if(ta.getAbbr().equals(m.getTeamA())){
+//				ta.addMatch(m.getTeamStatA());
+//			}else if(ta.getAbbr().equals(m.getTeamB())){
+//				ta.addMatch(m.getTeamStatB());
+//			}
+			if(isEqualTeam(ta.getAbbr(),m.getTeamA())){
 				ta.addMatch(m.getTeamStatA());
-			}else if(ta.getAbbr().equals(m.getTeamB())){
+			}else if(isEqualTeam(ta.getAbbr(),m.getTeamB())){
 				ta.addMatch(m.getTeamStatB());
 			}
 		}
@@ -453,5 +468,15 @@ public class DataReadController implements DataReaderService {
 		return null;
 	}
 
-
+	public boolean isEqualTeam(String abbrInTeam,String abbrInMatch){
+		if(abbrInTeam.equals(abbrInMatch)){
+			return true;
+		}
+		else if(this.currentSeason.equals("12-13")&&abbrInTeam.equals("NOP")&&abbrInMatch.equals("NOH")){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 }
