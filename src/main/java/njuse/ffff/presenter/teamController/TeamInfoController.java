@@ -1,7 +1,8 @@
 package njuse.ffff.presenter.teamController;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import njuse.ffff.data.SeasonStatProcessor;
@@ -62,10 +63,10 @@ public class TeamInfoController implements TeamInfoService{
 		//获取指定球队的信息
 		TeamPO teamInfo = dataService.getTeamInfo(teamName, emptyFilter);
 		//设置球队简介
-		panel.setProfile(teamName, teamInfo.getAbbr(), teamInfo.getState()
+		panel.setProfile(teamInfo.getName(), teamInfo.getAbbr(), teamInfo.getState()
 						, teamInfo.getLeague(), teamInfo.getSubLeague()
 						, teamInfo.getHomeCourt(), teamInfo.getTimeOfFoundation());
-		teamProfile = teamName;
+		teamProfile = teamInfo.getName();
 		totalController.setTeamProfileService(panel);
 	}
 	
@@ -151,6 +152,7 @@ public class TeamInfoController implements TeamInfoService{
 			double[] average = team.getStatsAverage();
 			averageData[i] = new Object[]{
 					valid_season.get(i),		//赛季
+					team.getNumOfMatches(),		//比赛数
 					DealDecimal.formatChangeToPercentage(average[21]),		//投篮命中率
 					DealDecimal.formatChange(average[0],1),					//投篮命中数
 					DealDecimal.formatChange(average[1],1),					//投篮出手数
@@ -210,15 +212,18 @@ public class TeamInfoController implements TeamInfoService{
 	/**
 	 * 设置球队参与的比赛
 	 */
-	@SuppressWarnings("deprecation")
 	public void setTeamGameLog(TeamDataService panel, String teamName) {
 		List<MatchPO> matchList = dataService.getMatchForTeam(teamName);
 //		String[] properties = {"比赛日期","比赛对阵"};
 		Object[][] values = new Object[matchList.size()][];
 		for(int i=0;i<matchList.size();i++){
 			MatchPO match = matchList.get(i);
-			Date date = match.getDate();
-			StringBuffer dateBuffer = new StringBuffer(date.getYear()+"-"+date.getMinutes()+"-"+date.getDate());
+			Calendar date = new GregorianCalendar();
+			date.setTime(match.getDate());
+			int year = date.get(Calendar.YEAR)-1900;//减去差值
+			int month = date.get(Calendar.MONTH)+1;
+			int day = date.get(Calendar.DAY_OF_MONTH);
+			StringBuffer dateBuffer = new StringBuffer(year+"-"+month+"-"+day);
 			StringBuffer participentsBuffer = new StringBuffer(match.getTeamA()+"  VS  "+match.getTeamB());
 			values[i] = new Object[]{dateBuffer.toString(),participentsBuffer.toString()};
 		}

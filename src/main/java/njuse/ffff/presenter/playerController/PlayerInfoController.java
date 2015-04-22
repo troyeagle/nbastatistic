@@ -1,7 +1,8 @@
 package njuse.ffff.presenter.playerController;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import njuse.ffff.data.SeasonStatProcessor;
@@ -75,9 +76,18 @@ public class PlayerInfoController implements PlayerInfoService{
 		if(experience.equals("R")){
 			experience = "Retired";
 		}
+		//格式化身高
+		String[] parts = playerInfo.getWeight().split("-");
+		String weight = null;
+		if(parts[1].equals("0")){
+			weight = parts[0];
+		}
+		else{
+			weight = playerInfo.getWeight();
+		}
 		PlayerInAverage data = dataService.getPlayerAverage(playerName, emptyFilter);
 		panel.setProfile(playerName, position, playerInfo.getNumber(), 
-				playerInfo.getHeight(), playerInfo.getWeight(),
+				playerInfo.getHeight(), weight,
 				playerInfo.getBirth(), String.valueOf(playerInfo.getAge()),
 				experience, playerInfo.getSchool(), data.getTeamName());
 		playerProfile = playerName;
@@ -215,15 +225,18 @@ public class PlayerInfoController implements PlayerInfoService{
 	/**
 	 * 设置球员参加的比赛
 	 */
-	@SuppressWarnings("deprecation")
 	public void setPlayerGameLog(PlayerDataService panel,String playerName) {
 		List<MatchPO> matchList = dataService.getMatchForPlayer(playerName);
 //		String[] properties = {"比赛日期","比赛对阵"};
 		Object[][] values = new Object[matchList.size()][];
 		for(int i=0;i<matchList.size();i++){
 			MatchPO match = matchList.get(i);
-			Date date = match.getDate();
-			StringBuffer dateBuffer = new StringBuffer(date.getYear()+"-"+date.getMinutes()+"-"+date.getDay());
+			Calendar date = new GregorianCalendar();
+			date.setTime(match.getDate());
+			int year = date.get(Calendar.YEAR)-1900;//减去差值
+			int month = date.get(Calendar.MONTH)+1;
+			int day = date.get(Calendar.DAY_OF_MONTH);
+			StringBuffer dateBuffer = new StringBuffer(year+"-"+month+"-"+day);
 			StringBuffer participentsBuffer = new StringBuffer(match.getTeamA()+"  VS  "+match.getTeamB());
 			values[i] = new Object[]{dateBuffer.toString(),participentsBuffer.toString()};
 		}
