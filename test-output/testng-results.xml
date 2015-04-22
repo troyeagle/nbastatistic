@@ -2,16 +2,16 @@
 <testng-results skipped="0" failed="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="392" started-at="2015-04-20T04:26:45Z" finished-at="2015-04-20T04:26:45Z">
+  <suite name="Default suite" duration-ms="196" started-at="2015-04-22T07:05:19Z" finished-at="2015-04-22T07:05:19Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="392" started-at="2015-04-20T04:26:45Z" finished-at="2015-04-20T04:26:45Z">
-      <class name="njuse.ffff.data.TotalTest">
-        <test-method status="PASS" signature="f()[pri:0, instance:njuse.ffff.data.TotalTest@1ab3a8c8]" name="f" duration-ms="333" started-at="2015-04-20T12:26:45Z" finished-at="2015-04-20T12:26:45Z">
+    <test name="Default test" duration-ms="196" started-at="2015-04-22T07:05:19Z" finished-at="2015-04-22T07:05:19Z">
+      <class name="njuse.ffff.data.MatchDataReaderTest">
+        <test-method status="PASS" signature="test()[pri:0, instance:njuse.ffff.data.MatchDataReaderTest@61a52fbd]" name="test" duration-ms="173" started-at="2015-04-22T15:05:19Z" finished-at="2015-04-22T15:05:19Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- f -->
-      </class> <!-- njuse.ffff.data.TotalTest -->
+        </test-method> <!-- test -->
+      </class> <!-- njuse.ffff.data.MatchDataReaderTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

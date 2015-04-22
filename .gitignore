@@ -59,7 +59,7 @@ $RECYCLE.BIN/
 !/.gitignore
 /target
 
-
+/test-output
 CSEIII data
 CSEIII data2
 .settings

@@ -10,8 +10,12 @@ public class TeamDataReaderTest {
 
 	@Test
 	public void test() throws IOException {
-		TeamDataProcessor team = new TeamDataProcessor();
-		//team.readAndAnalysisTeam();
+		DataReadController dr = new DataReadController();
+		  try {
+			dr.initialize();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		assertTrue(true);
 	}
 

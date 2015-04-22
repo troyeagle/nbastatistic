@@ -3,11 +3,11 @@
 <suite name="Failed suite [Default suite]">
   <test name="Default test(failed)">
     <classes>
-      <class name="njuse.ffff.data.TotalTest">
+      <class name="njuse.ffff.data.MatchDataReaderTest">
         <methods>
-          <include name="f"/>
+          <include name="test"/>
         </methods>
-      </class> <!-- njuse.ffff.data.TotalTest -->
+      </class> <!-- njuse.ffff.data.MatchDataReaderTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

@@ -10,11 +10,13 @@ public class PlayersDataReaderTest {
 
 	@Test
 	public void test() throws ClassNotFoundException, IOException {
-		//PlayersDataProcessor player = new PlayersDataProcessor();
-		//player.readAndAnalysisPlayer();
-		//assertEquals(448,PlayersDataProcessor.players.size());
-		//player.loadSerial();
-		//assertEquals(448,PlayersDataProcessor.players.size());
+		  DataReadController dr = new DataReadController();
+		  try {
+			dr.initialize();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		  assertNotEquals(null,PlayersDataProcessor.players);
 	}
 
 }
