@@ -38,6 +38,7 @@ import njuse.ffff.uiservice.SpecialViewService;
 import njuse.ffff.uiservice.TeamDataService;
 import njuse.ffff.uiservice.TeamProfileService;
 import njuse.ffff.uiservice.TeamsOverviewService;
+import njuse.ffff.util.TeamNameAndAbbr;
 
 public class TotalUIController implements TotalControlService{
 	private MainFrame frame = null;
@@ -210,7 +211,7 @@ public class TotalUIController implements TotalControlService{
 	 */
 	@SuppressWarnings("deprecation")
 	public void refreshView(){
-//		System.out.println("=======================update====================");
+		TeamNameAndAbbr.getInstance().updateTeams();
 		if(matchViewService!=null){
 			MatchInfoService service = MatchInfoController.getInstance();
 			Date date = service.getPresentDate();

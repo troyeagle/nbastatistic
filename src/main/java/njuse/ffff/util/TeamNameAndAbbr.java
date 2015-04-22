@@ -41,6 +41,23 @@ public class TeamNameAndAbbr {
 		}
 	}
 	
+	public void updateTeams(){
+		ArrayList<TeamPO> teams = TotalUIController.getInstance()
+				.getDataReadController().getTeamInfoAll(null);
+		if(teams!=null){
+			for(int i=0;i<teams.size();i++){
+				if(teams.get(i)!=null){
+					String name = teams.get(i).getName();
+					String abbr = teams.get(i).getAbbr();
+					if(list_abbr.get(name)!=null&&list_name.get(abbr)!=null){
+						list_abbr.put(name, abbr);
+						list_name.put(abbr, name);
+					}
+				}
+			}
+		}
+	}
+	
 	public String getName(String abbr){
 		return list_name.get(abbr);
 	}

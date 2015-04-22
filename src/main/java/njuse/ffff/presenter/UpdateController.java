@@ -8,7 +8,6 @@ public class UpdateController implements UpdateService{
 	
 	//数据层是否更新参数
 	private static boolean isUpdated = false;
-	private Thread thread;
 	
 	private UpdateController() {
 		totalController = TotalUIController.getInstance();
@@ -39,7 +38,7 @@ public class UpdateController implements UpdateService{
 	 * 如果数据层更新了，就更新界面显示
 	 */
 	public void checkForUpdate(){
-		thread = new Thread(new Run());
+		Thread thread = new Thread(new Run());
 		thread.start();
 	}
 	
