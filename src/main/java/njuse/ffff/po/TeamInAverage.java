@@ -71,6 +71,8 @@ public class TeamInAverage implements Serializable {
 	 */
 	public TeamInAverage(String name2, String abbr) {
 		teamStats = new ArrayList<TeamInMatch>();
+		statsAverage = new double[31];
+		statsTotal = new double[22];
 		this.name = name2;
 		this.abbr = abbr;
 	}
@@ -129,10 +131,11 @@ public class TeamInAverage implements Serializable {
 	}
 
 	private void averageProcess() {
+		makeTotalArray();
 		if(teamStats.size()==0){
 			return;
 		}
-		makeTotalArray();
+		
 		fieldGoalMade /= teamStats.size();
 		fieldGoalAttempted /= teamStats.size();
 		threePointerMade /= teamStats.size();
