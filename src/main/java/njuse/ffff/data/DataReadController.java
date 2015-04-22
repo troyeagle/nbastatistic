@@ -161,6 +161,7 @@ public class DataReadController implements DataReaderService {
 						}
 					}
 				}
+				currentDate = MatchDataProcessor.matches.get(MatchDataProcessor.matches.size()-1).getDate();
 				average();
 				try {
 					player.saveAsSerial();

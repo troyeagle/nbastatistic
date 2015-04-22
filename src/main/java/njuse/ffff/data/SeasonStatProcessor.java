@@ -148,6 +148,7 @@ public class SeasonStatProcessor {
 	 * @param m
 	 */
 	void averageProcessForNewMatch(MatchPO m){
+		
 		for(TeamInAverage ta:teamInAverage){
 //			if(ta.getAbbr().equals(m.getName())){
 //				ta.calAverageWithNew(m.getTeamStatA());
