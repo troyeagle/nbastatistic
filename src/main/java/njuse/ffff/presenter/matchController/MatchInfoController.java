@@ -171,9 +171,9 @@ public class MatchInfoController implements MatchInfoService{
 			}
 		}
 		
-		int[][] dirty_A = null;
+		int[][] dirty_A = new int[dirty_teamA.size()][];
 		dirty_A = dirty_teamA.toArray(dirty_A);
-		int[][] dirty_B = null;
+		int[][] dirty_B = new int[dirty_teamB.size()][];
 		dirty_A = dirty_teamB.toArray(dirty_B);
 		
 		panel.setHostTeamInfo(teamA.getName(), score_teamA, values_teamA, dirty_A);

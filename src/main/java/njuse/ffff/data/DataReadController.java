@@ -2,6 +2,7 @@ package njuse.ffff.data;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -397,8 +398,11 @@ public class DataReadController implements DataReaderService {
 
 	@Override
 	public MatchPO getMatch(Date date, String teamA) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		for(MatchPO m:MatchDataProcessor.matches){
-			if(m.getDate().equals(date)&&(m.getTeamA().equals(teamA)||m.getTeamB().equals(teamA))){
+		    String ds1 = sdf.format(m.getDate());
+		    String ds2 = sdf.format(date);
+			if(ds1.equals(ds2)&&(m.getTeamA().equals(teamA)||m.getTeamB().equals(teamA))){
 				return m;
 			}
 		}

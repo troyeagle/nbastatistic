@@ -121,8 +121,10 @@ public class MatchsViewController implements MatchsViewService{
 //		dateM.setYear(2015);
 //		dateM.setMonth(2);
 //		dateM.setDate(24);
-//		System.out.println(dateM.compareTo(dateEnd)<=0);
-//		System.out.println(dateM.compareTo(dateStart)>=0);
+////		System.out.println(dateM.compareTo(dateEnd)<=0);
+////		System.out.println(dateM.compareTo(dateStart)>=0);
+//		System.out.println(dateStart.compareTo(dateM));
+//		System.out.println(dateEnd.compareTo(dateM));
 //	}
 
 }
