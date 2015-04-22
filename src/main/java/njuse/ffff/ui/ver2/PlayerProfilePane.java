@@ -111,6 +111,13 @@ public class PlayerProfilePane extends PanelEx implements PlayerProfileService {
 		positionLabel.setText(position);
 		teamLabel.setText(team);
 
+		String[] h = height.split("-");
+		if (h.length > 1) {
+			height = h[0] + " 英尺 ";
+			if (!h[1].equals("0"))
+				height += h[1] + " 英寸";
+			weight += " 磅";
+		}
 		String[] properties = { height, weight, number, birthday, age, exp, school };
 		for (int i = 0; i < properties.length; i++) {
 			this.properties[i].setText(labelsName[i] + "　　" + properties[i]);

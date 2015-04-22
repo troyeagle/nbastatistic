@@ -5,6 +5,8 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Timer;
@@ -143,6 +145,18 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 		if (gamesTable == null) {
 			gamesTable = new TableView(data, gameHeader);
 			setTableUIConfig(gamesTable);
+			gamesTable.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					int[] point = gamesTable.getSelectedCellLocation();
+					if (point[0] >= 0) {
+						Object date = gamesTable.getValueAt(point[0], 0);
+						UIEventManager
+								.notify(UIEventType.SWITCH, "比赛详情:" + date + ":" + name);
+					}
+				}
+			});
+
 			tabBar.addTab("比赛数据");
 			viewPanel.add("比赛数据", gamesTable);
 			((DefaultTableCellRenderer) gamesTable.getTable()

@@ -28,10 +28,11 @@ public class MainFrame extends JFrame {
 	private TabBar tabBar;
 
 	private PanelEx viewPanel;
+	private PanelEx loadingPanel;
 
 	private PlayerDetailPane playerPane;
 	private TeamDetailPane teamPane;
-	private PanelEx loadingPanel;
+	private MatchViewPane matchPane;
 
 	private MainFrame() {
 		this.setUndecorated(true);
@@ -61,11 +62,13 @@ public class MainFrame extends JFrame {
 
 		playerPane = new PlayerDetailPane();
 		teamPane = new TeamDetailPane();
+		matchPane = new MatchViewPane();
 
 		viewPanel.add("球队一览", new TeamsOverViewPanel());
 		viewPanel.add("球员一览", new PlayersOverViewPane());
 		viewPanel.add("球员详情", playerPane);
 		viewPanel.add("球队详情", teamPane);
+		viewPanel.add("比赛详情", matchPane);
 
 		add(viewPanel);
 
@@ -169,7 +172,11 @@ public class MainFrame extends JFrame {
 				setPlayerPane(mes[1]);
 				break;
 			case "球队详情":
-				setTeamPane(mes[1]);
+				if (!mes[1].equals("N/A") && !mes[1].isEmpty())
+					setTeamPane(mes[1]);
+				break;
+			case "比赛详情":
+				setMatchPane(mes[1], mes[2]);
 				break;
 			}
 		}
@@ -205,9 +212,12 @@ public class MainFrame extends JFrame {
 		loadingPanel = new LoadingPane();
 		add(loadingPanel, 0);
 		loadingPanel.setVisible(false);
-		//		setGlassPane(new LoadingPane());
-		//		getGlassPane().addMouseListener(new MouseAdapter() {
-		//		});	// loading时不能鼠标操作
+	}
+
+	public void setPlayerPane(String playerName) {
+		playerPane.setPlayer(playerName);
+		tabBar.addTab("球员详情");
+		tabBar.switchTo("球员详情");
 	}
 
 	public void setTeamPane(String teamName) {
@@ -216,10 +226,10 @@ public class MainFrame extends JFrame {
 		tabBar.switchTo("球队详情");
 	}
 
-	public void setPlayerPane(String playerName) {
-		playerPane.setPlayer(playerName);
-		tabBar.addTab("球员详情");
-		tabBar.switchTo("球员详情");
+	public void setMatchPane(String date, String team) {
+		matchPane.setMatch(date, team);
+		tabBar.addTab("比赛详情");
+		tabBar.switchTo("比赛详情");
 	}
 
 	@Override
