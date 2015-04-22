@@ -85,7 +85,11 @@ public class PlayerInAverage {
 
 	public PlayerInAverage(String name) {
 		this.name = name;
-
+		if (statsAverage == null) {
+			statsAverage = new double[32];
+			statsTotal = new double[32];
+			statsDirty = new int[32];
+		}
 		playerStats = new ArrayList<PlayerInMatchExtended>();
 	}
 
@@ -257,6 +261,7 @@ public class PlayerInAverage {
 			statsTotal = new double[32];
 			statsDirty = new int[32];
 		}
+		playerStats.add(p);
 		addOneMatchToAll(p);
 		averageProcess();
 		statsTotal[19]=this.firstOnMatch;

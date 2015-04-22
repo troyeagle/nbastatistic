@@ -155,9 +155,9 @@ public class SeasonStatProcessor {
 //				ta.calAverageWithNew(m.getTeamStatB());
 //			}
 			if(isEqualTeam(ta.getAbbr(),m.getTeamA())){
-				ta.addMatch(m.getTeamStatA());
+				ta.calAverageWithNew(m.getTeamStatA());
 			}else if(isEqualTeam(ta.getAbbr(),m.getTeamB())){
-				ta.addMatch(m.getTeamStatB());
+				ta.calAverageWithNew(m.getTeamStatB());
 			}
 		}
 		
