@@ -12,7 +12,8 @@ public class SwitchButton extends ButtonEx {
 
 	private static final long serialVersionUID = 1L;
 
-	private boolean isPressed;
+	private boolean isActive;
+	private boolean clickCanelEnabled;
 
 	private Color activeColor;
 
@@ -41,13 +42,17 @@ public class SwitchButton extends ButtonEx {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				setActive(true);
+				if (clickCanelEnabled) {
+					setActive(!isActive);
+				} else {
+					setActive(true);
+				}
 			}
 		});
 	}
 
 	public void setActive(boolean b) {
-		if (isPressed = b) {
+		if (isActive = b) {
 			setMaskColor(activeColor);
 			if (icons[1] != null)
 				setIcon(icons[1]);
@@ -62,7 +67,7 @@ public class SwitchButton extends ButtonEx {
 	}
 
 	public boolean isActive() {
-		return isPressed;
+		return isActive;
 	}
 
 	public void setActiveColor(Color c) {
@@ -72,5 +77,9 @@ public class SwitchButton extends ButtonEx {
 
 	public Color getActiveColor() {
 		return activeColor;
+	}
+	
+	public void setClickCancelEnable(boolean b) {
+		this.clickCanelEnabled = b;
 	}
 }

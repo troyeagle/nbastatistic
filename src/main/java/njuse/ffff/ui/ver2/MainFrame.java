@@ -13,7 +13,6 @@ import javax.swing.JFrame;
 import javax.swing.Timer;
 
 import njuse.ffff.presenter.TotalUIController;
-import njuse.ffff.presenterService.TotalControlService;
 import njuse.ffff.ui.component.PanelEx;
 import njuse.ffff.ui.ver2.component.SwitchEvent;
 import njuse.ffff.ui.ver2.component.SwitchListener;
@@ -31,6 +30,7 @@ public class MainFrame extends JFrame {
 	private PanelEx viewPanel;
 
 	private PlayerDetailPane playerPane;
+	private PanelEx loadingPanel;
 
 	private MainFrame() {
 		this.setUndecorated(true);
@@ -186,7 +186,7 @@ public class MainFrame extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO
-					MainFrame.this.getGlassPane().setVisible(busyCount > 0);
+					loadingPanel.setVisible(busyCount > 0);
 				}
 			});
 			if (busyCount < 0)
@@ -200,9 +200,12 @@ public class MainFrame extends JFrame {
 
 	private void setLoadingPanel() {
 		// TODO
-		setGlassPane(new LoadingPane());
-		getGlassPane().addMouseListener(new MouseAdapter() {
-		});	// loading时不能鼠标操作
+		loadingPanel = new LoadingPane();
+		add(loadingPanel, 0);
+		loadingPanel.setVisible(false);
+//		setGlassPane(new LoadingPane());
+//		getGlassPane().addMouseListener(new MouseAdapter() {
+//		});	// loading时不能鼠标操作
 	}
 
 	public void setTeamPane(String teamName) {
@@ -214,6 +217,12 @@ public class MainFrame extends JFrame {
 		playerPane.setPlayer(playerName);
 		tabBar.addTab("球员详情");
 		tabBar.switchTo("球员详情");
+	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+		System.exit(0);
 	}
 
 	public static void main(String[] args) {

@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
+import njuse.ffff.presenter.playerController.PlayerInfoController;
 import njuse.ffff.ui.component.LabelEx;
 import njuse.ffff.ui.component.PanelEx;
 import njuse.ffff.uiservice.PlayerProfileService;
@@ -50,13 +51,13 @@ public class PlayerProfilePane extends PanelEx implements PlayerProfileService {
 		teamLabel = new LabelEx();
 		teamLabel.setOpaque(false);
 		teamLabel.setForeground(Color.BLACK);
-		teamLabel.setFont(UIConfig.SubTitleFont);
+		teamLabel.setFont(UIConfig.ContentFont);
 
 		teamLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (!teamLabel.getText().isEmpty())
-					UIEventManager.notify(UIEventType.SWITCH, "球队一览:" + teamLabel.getText());
+					UIEventManager.notify(UIEventType.SWITCH, "球队详情:" + teamLabel.getText());
 			}
 		});
 
@@ -65,13 +66,18 @@ public class PlayerProfilePane extends PanelEx implements PlayerProfileService {
 		namePane.add(nameLabel);
 		namePane.add(positionLabel);
 		namePane.add(teamLabel);
+		namePane.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
 
-		PanelEx propertyPane = new PanelEx(new GridLayout(4, 2, 20, 10));
+		PanelEx propertyPane = new PanelEx(new GridLayout(4, 2, 20, 0));
 		propertyPane.setOpaque(false);
+		propertyPane.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 		properties = new LabelEx[labelsName.length];
 		for (int i = 0; i < labelsName.length; i++) {
 			properties[i] = new LabelEx();
+			properties[i].setOpaque(false);
 			properties[i].setName(labelsName[i]);
+			properties[i].setFont(UIConfig.ContentFont);
+			properties[i].setForeground(Color.BLACK);
 			propertyPane.add(properties[i]);
 		}
 
@@ -85,23 +91,13 @@ public class PlayerProfilePane extends PanelEx implements PlayerProfileService {
 	}
 
 	public void setPlayer(String name) {
-		// TODO
-		ImageIcon icon = ImageUtils.getPlayerImg(name);
-		if (icon == null)
-			icon = new ImageIcon("./img/no_image.png");
-		Image img = icon.getImage();
-		int imgWidth = 200;
-		int imgHeight = (int) (icon.getIconHeight() / ((double) icon.getIconWidth()) * 200);
-		icon = new ImageIcon(img.getScaledInstance(imgWidth, imgHeight, Image.SCALE_SMOOTH));
-		portrait.setIcon(icon);
-
+		PlayerInfoController.getInstance().setPlayerProfilePanel(this, name);
 	}
 
 	@Override
 	public void setProfile(String name, String position, String number, String height,
 			String weight, String birthday, String age, String exp, String school,
 			String team) {
-		// 设置照片
 		ImageIcon icon = ImageUtils.getPlayerImg(name);
 		Image img = icon.getImage();
 		int imgWidth = 200;
@@ -115,7 +111,7 @@ public class PlayerProfilePane extends PanelEx implements PlayerProfileService {
 
 		String[] properties = { height, weight, number, birthday, age, exp, school };
 		for (int i = 0; i < properties.length; i++) {
-			this.properties[i].setText(labelsName[i] + "\t" + properties[i]);
+			this.properties[i].setText(labelsName[i] + "　　" + properties[i]);
 		}
 	}
 

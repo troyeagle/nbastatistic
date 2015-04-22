@@ -5,9 +5,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
@@ -78,13 +80,16 @@ public class TableView extends PanelEx {
 	public void hide(String columnName) {
 		int index = columnModel.getColumnIndex(columnName);
 		TableColumn column = columnModel.getColumn(index);
-		for (int i : hiddenColumns.keySet()) {
+		Integer[] keys = hiddenColumns.keySet().toArray(new Integer[0]);
+		Arrays.sort(keys);	// 防止因顺序出现问题？
+		for (int i : keys) {
 			if (index >= i) {
 				index++;
 			}
 		}
 		hiddenColumns.put(index, column);
 		columnModel.removeColumn(column);
+		TableUtils.FitTableColumns(table);
 	}
 
 	public void show(String columnName) {
@@ -101,12 +106,15 @@ public class TableView extends PanelEx {
 			return;	//未找到
 
 		// 确认插入位置(?
+		int dec = 0;	// 需要减少的量
 		for (int i : hiddenColumns.keySet()) {
 			if (index > i)
-				index--;
+				dec++;
 		}
+		index -= dec;
 		columnModel.addColumn(c);
 		columnModel.moveColumn(columnModel.getColumnCount() - 1, index);
+		TableUtils.FitTableColumns(table);
 	}
 
 	public List<String> getColumnNames() {
@@ -177,7 +185,7 @@ public class TableView extends PanelEx {
 
 		return res;
 	}
-	
+
 	public Object getValueAt(int row, int column) {
 		return table.getValueAt(row, column);
 	}

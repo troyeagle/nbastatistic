@@ -32,7 +32,7 @@ public class TableUtils {
 			@Override
 			public Class<?> getColumnClass(int columnIndex) {
 				Class<?> returnValue;
-				if ((columnIndex >= 0) && (columnIndex < getColumnCount())) {
+				if (columnIndex >= 0 && columnIndex < getColumnCount() && getRowCount() > 0) {
 					returnValue = getValueAt(0, columnIndex).getClass();
 				} else {
 					returnValue = Object.class;
@@ -110,13 +110,13 @@ public class TableUtils {
 
 		TableColumnModel columns = table.getColumnModel();
 		int columnCount = columns.getColumnCount();
-		
+
 		for (int i = 0; i < columnCount; i++) {
 			TableColumn column = table.getColumnModel().getColumn(i);
 			int col = header.getColumnModel().getColumnIndex(column.getIdentifier());
 			int width = (int) table.getTableHeader().getDefaultRenderer()
 					.getTableCellRendererComponent(table, column.getIdentifier()
-							, false, false, -1, col).getPreferredSize().getWidth();
+							, false, false, -1, col).getPreferredSize().getWidth() + 30;
 			if (Number.class.isAssignableFrom(table.getColumnClass(i)))
 				width += 30;
 			for (int row = 0; row < rowCount; row++) {

@@ -41,17 +41,17 @@ public class TabBar extends PanelEx implements UIConfigNotifier {
 			switchTo(0);
 	}
 
-	public int getActiveTabIndex() {
+	public synchronized int getActiveTabIndex() {
 		return group.getActiveIndex();
 	}
 
-	public String getActiveTabTitle() {
+	public synchronized String getActiveTabTitle() {
 		if (activeBtn == null)
 			return null;
 		return activeBtn.getName();
 	}
 
-	public void switchTo(int index) {
+	public synchronized void switchTo(int index) {
 		group.switchTo(index);
 		switchHandle();
 	}
@@ -65,7 +65,7 @@ public class TabBar extends PanelEx implements UIConfigNotifier {
 		}
 	}
 
-	public void switchTo(String title) {
+	public synchronized void switchTo(String title) {
 		SwitchButton[] buttons = group.getButtons();
 		for (int i = 0; i < buttons.length; i++) {
 			if (buttons[i].getName().equals(title)) {
