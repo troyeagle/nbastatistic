@@ -3,6 +3,7 @@ package njuse.ffff.ui.ver2;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -307,6 +308,7 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 
 				if (!avgTableMap.containsKey(season)) {
 					TableView avgTable = new TableView(values, avgTableHeader);
+					avgTable.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));
 					setTableUIConfig(avgTable);
 					avgTable.addMouseListener(new MouseAdapter() {
 						@Override
@@ -362,6 +364,7 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 					addSeason(season);
 
 					TableView totalTable = new TableView(values, totalTableHeader);
+					totalTable.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));
 					setTableUIConfig(totalTable);
 					totalTable.addMouseListener(new MouseAdapter() {
 						@Override

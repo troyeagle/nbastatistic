@@ -151,6 +151,9 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 					int[] point = gamesTable.getSelectedCellLocation();
 					if (point[0] >= 0) {
 						Object date = gamesTable.getValueAt(point[0], 0);
+						String name = gamesTable.getValueAt(point[0], 1).toString()
+								.split("VS")[0].trim();
+						System.out.println(name);
 						UIEventManager
 								.notify(UIEventType.SWITCH, "比赛详情:" + date + ":" + name);
 					}

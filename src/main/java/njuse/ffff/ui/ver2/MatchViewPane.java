@@ -133,7 +133,7 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 					month--;
 				}
 				Calendar c = Calendar.getInstance();
-				c.set(year, month, day);
+				c.set(year, month, day, 0, 0, 0);
 				Date time = c.getTime();
 				MatchInfoController.getInstance().setMatchInfoPanel(MatchViewPane.this, time,
 						team);
