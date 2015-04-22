@@ -96,7 +96,7 @@ public class TeamProfilePane extends PanelEx implements TeamProfileService {
 
 		String[] properties = { location, league, subleague, homeCourt, foundYear };
 		for (int i = 0; i < properties.length; i++) {
-			this.properties[i].setText(labelsName[i] + "　　" + properties[i]);
+			this.properties[i].setText(labelsName[i] + "　" + properties[i]);
 		}
 	}
 

@@ -120,7 +120,7 @@ public class PlayerProfilePane extends PanelEx implements PlayerProfileService {
 		}
 		String[] properties = { height, weight, number, birthday, age, exp, school };
 		for (int i = 0; i < properties.length; i++) {
-			this.properties[i].setText(labelsName[i] + "　　" + properties[i]);
+			this.properties[i].setText(labelsName[i] + "　" + properties[i]);
 		}
 	}
 

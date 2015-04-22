@@ -2,11 +2,14 @@ package njuse.ffff.ui.ver2;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -52,6 +55,7 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 		panelTable.setOpaque(false);
 		add(panelTable);
 		for (int i = 0; i < 2; i++) {
+			int align = i == 0 ? LabelEx.RIGHT : LabelEx.LEFT;
 			PanelEx teamPanel = new PanelEx(new BorderLayout());
 			teamPanel.setOpaque(false);
 			panelData.add(teamPanel);
@@ -61,18 +65,28 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 			labelIcon[i].setHorizontalAlignment(LabelEx.CENTER);
 			teamPanel.add(labelIcon[i]);
 
-			PanelEx panelInfo = new PanelEx(new GridLayout(6, 1));
+			PanelEx panelText = new PanelEx(new BorderLayout(0, 10));
+			panelText.setOpaque(false);
+			teamPanel.add(panelText, BorderLayout.SOUTH);
+			PanelEx panelInfo = new PanelEx(new GridLayout(5, 1));
 			panelInfo.setOpaque(false);
-			teamPanel.add(panelInfo);
+			panelText.add(panelInfo);
 
 			labelName[i] = new LabelEx();
-			labelName[i].setOpaque(false);
-			labelName[i].setHorizontalAlignment(LabelEx.CENTER);
-			labelName[i].setFont(UIConfig.SubTitleFont);
-			labelName[i].setForeground(Color.WHITE);
-			panelInfo.add(labelName[i]);
+			LabelEx name = labelName[i];
+			name.setOpaque(false);
+			name.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			name.setHorizontalAlignment(align);
+			name.setFont(UIConfig.TitleFont);
+			name.setForeground(Color.WHITE);
+			name.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					UIEventManager.notify(UIEventType.SWITCH, "球队详情:" + name.getText());
+				}
+			});
+			panelText.add(name, BorderLayout.NORTH);
 
-			int align = i == 1 ? LabelEx.RIGHT : LabelEx.LEFT;
 			for (int j = 0; j < 5; j++) {
 				labelScore[i][j] = new LabelEx();
 				labelScore[i][j].setOpaque(false);
@@ -84,7 +98,18 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 
 			Object[][] emptyValue = new Object[0][0];
 			table[i] = new TableView(emptyValue, tableHeader);
-			setTableUIConfig(table[i]);
+			TableView t = table[i];
+			setTableUIConfig(t);
+			t.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));
+			t.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+					int[] p = t.getSelectedCellLocation();
+					if (p[0] >= 0) {
+						Object v = t.getValueAt(p[0], 0);
+						UIEventManager.notify(UIEventType.SWITCH, "球员详情:" + v);
+					}
+				}
+			});
 			panelTable.add(table[i]);
 		}
 		PanelEx centerPanel = new PanelEx(new BorderLayout());
@@ -95,16 +120,19 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 		empty.setOpaque(false);
 		empty.setPreferredSize(new Dimension(200, 200));
 		centerPanel.add(empty);
-		PanelEx charPanel = new PanelEx(new GridLayout(6, 1));
+		PanelEx panelText = new PanelEx(new BorderLayout(0, 10));
+		panelText.setOpaque(false);
+		centerPanel.add(panelText, BorderLayout.SOUTH);
+		PanelEx charPanel = new PanelEx(new GridLayout(5, 1));
 		charPanel.setOpaque(false);
-		centerPanel.add(charPanel, BorderLayout.SOUTH);
+		panelText.add(charPanel);
 
 		LabelEx vs = new LabelEx("VS");
 		vs.setOpaque(false);
 		vs.setHorizontalAlignment(LabelEx.CENTER);
-		vs.setFont(UIConfig.SubTitleFont);
+		vs.setFont(UIConfig.TitleFont);
 		vs.setForeground(Color.WHITE);
-		charPanel.add(vs);
+		panelText.add(vs, BorderLayout.NORTH);
 
 		String[] labels = { "总分", "第一节", "第二节", "第三节", "第四节" };
 		for (int i = 0; i < 5; i++) {
@@ -176,7 +204,7 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 	}
 
 	private void setTableUIConfig(TableView table) {
-		table.setTableFont(UIConfig.ContentFont);
+		table.setTableFont(UIConfig.SmallFont);
 		table.setHeaderFont(UIConfig.SmallFont);
 		table.setRowHeight(UIConfig.ContentFont.getSize() + 5);
 		table.setForeground(Color.WHITE);

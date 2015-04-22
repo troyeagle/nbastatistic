@@ -156,7 +156,7 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 		ImageIcon unchecked = new ImageIcon("./img/btn/unchecked.png");
 		PanelEx avgSetting = new PanelEx(new GridLayout(0, 4, 20, 10));
 		avgSetting.setOpaque(false);
-		for (int i = 1; i < avgTableHeader.length; i++) {
+		for (int i = 2; i < avgTableHeader.length; i++) {
 			SwitchButton btn = new SwitchButton(avgTableHeader[i], unchecked);
 			btn.setName(avgTableHeader[i]);
 			btn.setBackground(new Color(0, 0, 0, 160));
@@ -182,7 +182,7 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 		settingContent.add("avgView", p1);
 		PanelEx totalSetting = new PanelEx(new GridLayout(0, 4, 20, 10));
 		totalSetting.setOpaque(false);
-		for (int i = 1; i < totalTableHeader.length; i++) {
+		for (int i = 2; i < totalTableHeader.length; i++) {
 			SwitchButton btn = new SwitchButton(totalTableHeader[i], unchecked);
 			btn.setName(totalTableHeader[i]);
 			btn.setBackground(new Color(0, 0, 0, 160));
@@ -335,16 +335,16 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 					if (dataGroup.getActiveIndex() == -1) {
 						avgView.doClick();
 					}
+
+					String[] playersName = new String[values.length];
+					for (int i = 0; i < values.length; i++) {
+						playersName[i] = (String) values[i][0];
+					}
+
+					setPlayersPortrait(playersName, season);
 				} else {
 					avgTableMap.get(season).setTable(values);
 				}
-
-				String[] playersName = new String[values.length];
-				for (int i = 0; i < values.length; i++) {
-					playersName[i] = (String) values[i][0];
-				}
-
-				setPlayersPortrait(playersName, season);
 
 				UIEventManager.notify(UIEventType.FINISH, this);	// 完成
 			}

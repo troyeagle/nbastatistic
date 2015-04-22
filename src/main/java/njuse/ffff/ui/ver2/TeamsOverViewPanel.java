@@ -314,21 +314,20 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 					avgView.setVisible(true);
 
 					addSeason(season);
+
+					String[] teamName = new String[values.length];
+					String[] teamAbbr = new String[values.length];
+					for (int i = 0; i < values.length; i++) {
+						teamName[i] = values[i][0].toString();
+						teamAbbr[i] = values[i][1].toString();
+					}
+					setTeamsIcon(teamName, teamAbbr, season);
 					if (dataGroup.getActiveIndex() == -1) {
 						avgView.doClick();
 					}
 				} else {
 					avgTableMap.get(season).setTable(values);
 				}
-
-				String[] teamName = new String[values.length];
-				String[] teamAbbr = new String[values.length];
-				for (int i = 0; i < values.length; i++) {
-					teamName[i] = values[i][0].toString();
-					teamAbbr[i] = values[i][1].toString();
-				}
-
-				setTeamsIcon(teamName, teamAbbr, season);
 
 				UIEventManager.notify(UIEventType.FINISH, this);	// 完成
 			}

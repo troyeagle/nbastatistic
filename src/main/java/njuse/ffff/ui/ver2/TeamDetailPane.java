@@ -3,16 +3,20 @@ package njuse.ffff.ui.ver2;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import njuse.ffff.presenter.teamController.TeamInfoController;
 import njuse.ffff.ui.component.ButtonEx;
@@ -293,8 +297,26 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 		if (gamesTable == null) {
 			gamesTable = new TableView(data, gameHeader);
 			setTableUIConfig(gamesTable);
+			gamesTable.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));
+			gamesTable.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					int[] point = gamesTable.getSelectedCellLocation();
+					if (point[0] >= 0) {
+						Object date = gamesTable.getValueAt(point[0], 0);
+						String name = gamesTable.getValueAt(point[0], 1).toString()
+								.split("VS")[0].trim();
+						UIEventManager
+								.notify(UIEventType.SWITCH, "比赛详情:" + date + ":" + name);
+					}
+				}
+			});
+
 			tabBar.addTab("比赛数据");
 			viewPanel.add("比赛数据", gamesTable);
+			((DefaultTableCellRenderer) gamesTable.getTable()
+					.getDefaultRenderer(Object.class))
+					.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
 		} else {
 			gamesTable.setTable(data);
 		}

@@ -64,6 +64,7 @@ public class MainFrame extends JFrame {
 		teamPane = new TeamDetailPane();
 		matchPane = new MatchViewPane();
 
+		viewPanel.add("主页", new MainPagePane());
 		viewPanel.add("球队一览", new TeamsOverViewPanel());
 		viewPanel.add("球员一览", new PlayersOverViewPane());
 		viewPanel.add("球员详情", playerPane);
@@ -150,7 +151,7 @@ public class MainFrame extends JFrame {
 		int busyCount;
 
 		@Override
-		public void actionPerformed(UIEvent e) {
+		public synchronized void actionPerformed(UIEvent e) {
 			switch (e.getType()) {
 			case BUSY:
 				handleBusy();
@@ -183,24 +184,27 @@ public class MainFrame extends JFrame {
 
 		private void handleBusy() {
 			busyCount++;
-			handleStatus();
+			handleStatus(busyCount > 0);
 		}
 
 		private void handleFinish() {
 			busyCount--;
-			handleStatus();
+			handleStatus(busyCount > 0);
 		}
 
-		private void handleStatus() {
+		private void handleStatus(boolean status) {
+			System.out.println(busyCount);
 			Timer t = new Timer(0, new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO
-					loadingPanel.setVisible(busyCount > 0);
+					loadingPanel.setVisible(status);
 				}
 			});
-			if (busyCount < 0)
+			if (busyCount <= 0)
 				t.setInitialDelay(100);
+			if (busyCount < 0)
+				busyCount = 0;
 			t.setRepeats(false);
 			t.start();
 			if (busyCount < 0)

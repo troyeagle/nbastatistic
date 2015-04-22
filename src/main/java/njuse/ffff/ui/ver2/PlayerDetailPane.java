@@ -3,6 +3,7 @@ package njuse.ffff.ui.ver2;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -145,6 +146,7 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 		if (gamesTable == null) {
 			gamesTable = new TableView(data, gameHeader);
 			setTableUIConfig(gamesTable);
+			gamesTable.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));
 			gamesTable.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -153,7 +155,6 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 						Object date = gamesTable.getValueAt(point[0], 0);
 						String name = gamesTable.getValueAt(point[0], 1).toString()
 								.split("VS")[0].trim();
-						System.out.println(name);
 						UIEventManager
 								.notify(UIEventType.SWITCH, "比赛详情:" + date + ":" + name);
 					}

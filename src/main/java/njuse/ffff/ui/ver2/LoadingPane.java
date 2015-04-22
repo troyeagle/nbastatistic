@@ -3,6 +3,7 @@ package njuse.ffff.ui.ver2;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.event.MouseAdapter;
 
 import njuse.ffff.ui.component.LabelEx;
 import njuse.ffff.ui.component.PanelEx;
@@ -22,5 +23,7 @@ public class LoadingPane extends PanelEx {
 		loading.setForeground(Color.WHITE);
 
 		add(loading);
+		addMouseListener(new MouseAdapter() {
+		});
 	}
 }
