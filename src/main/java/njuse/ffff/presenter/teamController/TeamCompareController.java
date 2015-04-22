@@ -46,13 +46,13 @@ public class TeamCompareController implements TeamCompareService{
 			if(seasonStatProcessor==null){
 				continue;
 			}
-//			ArrayList<TeamInAverage> teams = seasonStatProcessor.getTeamInAverage();
-			ArrayList<TeamPO> teamPOs = dataService.getTeamInfoAll(null);
-			ArrayList<TeamInAverage> teams = new ArrayList<TeamInAverage>();
-			for(TeamPO team:teamPOs){
-				TeamInAverage t = dataService.getTeamAverage(team.getName(), null);
-				teams.add(t);
-			}
+			ArrayList<TeamInAverage> teams = seasonStatProcessor.getTeamInAverage();
+//			ArrayList<TeamPO> teamPOs = dataService.getTeamInfoAll(null);
+//			ArrayList<TeamInAverage> teams = new ArrayList<TeamInAverage>();
+//			for(TeamPO team:teamPOs){
+//				TeamInAverage t = dataService.getTeamAverage(team.getName(), null);
+//				teams.add(t);
+//			}
 			
 	//		String[] propertices_total = {"球队名称","缩写","比赛场数","投篮命中数","投篮出手数"
 	//				,"三分命中数","三分出手数","罚球命中数","罚球出手数","进攻篮板数","防守篮板数","篮板数"
