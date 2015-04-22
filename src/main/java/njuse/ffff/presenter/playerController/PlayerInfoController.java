@@ -59,37 +59,50 @@ public class PlayerInfoController implements PlayerInfoService{
 	public void setPlayerProfilePanel(PlayerProfileService panel, String playerName) {
 		//获取指定的球员信息
 		PlayerPO playerInfo = dataService.getPlayerInfo(playerName, emptyFilter);
-		String position = null;
-		switch (Character.toUpperCase(playerInfo.getPosition())) {
-		case 'F':
-			position = "前锋";
-			break;
-		case 'C':
-			position = "中锋";
-			break;
-		case 'G':
-			position = "后卫";
-			break;
-		}
-		//退休球员
-		String experience = playerInfo.getExp();
-		if(experience.equals("R")){
-			experience = "Retired";
-		}
-		//格式化身高
-		String[] parts = playerInfo.getWeight().split("-");
-		String weight = null;
-		if(parts[1].equals("0")){
-			weight = parts[0];
-		}
+		if(playerInfo!=null){
+			String position = null;
+			switch (Character.toUpperCase(playerInfo.getPosition())) {
+			case 'F':
+				position = "前锋";
+				break;
+			case 'C':
+				position = "中锋";
+				break;
+			case 'G':
+				position = "后卫";
+				break;
+			}
+			//退休球员
+			String experience = playerInfo.getExp();
+			if(experience.equals("R")){
+				experience = "Retired";
+			}
+			//格式化身高
+//			String[] parts = playerInfo.getWeight().split("-");
+//			String weight = null;
+//			if(parts[1].equals("0")){
+//				weight = parts[0];
+//			}
+//			else{
+//				weight = playerInfo.getWeight();
+//			}
+			PlayerInAverage data = dataService.getPlayerAverage(playerName, emptyFilter);
+			panel.setProfile(playerName, position, playerInfo.getNumber(), 
+					playerInfo.getHeight(), playerInfo.getWeight(),
+					playerInfo.getBirth(), String.valueOf(playerInfo.getAge()),
+					experience, playerInfo.getSchool(), data.getTeamName());
+		}	
 		else{
-			weight = playerInfo.getWeight();
+			PlayerInAverage data = dataService.getPlayerAverage(playerName, emptyFilter);
+			String team = "不存在";
+			if(data!=null){
+				team = data.getTeamName();
+			}
+			panel.setProfile(playerName, "不存在", "不存在", 
+					"不存在", "不存在",
+					"不存在", "不存在",
+					"不存在", "不存在", team);
 		}
-		PlayerInAverage data = dataService.getPlayerAverage(playerName, emptyFilter);
-		panel.setProfile(playerName, position, playerInfo.getNumber(), 
-				playerInfo.getHeight(), weight,
-				playerInfo.getBirth(), String.valueOf(playerInfo.getAge()),
-				experience, playerInfo.getSchool(), data.getTeamName());
 		playerProfile = playerName;
 		totalController.setPlayerProfileService(panel);
 	}
@@ -108,6 +121,8 @@ public class PlayerInfoController implements PlayerInfoService{
 		for(int i=0;i<valid_season.size();i++){
 			SeasonStatProcessor seasonProcess = dataService.getSeasonStatProcessor(valid_season.get(i));
 			PlayerInAverage player = seasonProcess.getPlayerAverage(playerName, emptyFilter);
+			if(player==null)
+				continue;
 			double[] total = player.getStatsTotal();
 			double[] average = player.getStatsAverage();
 			totalData[i] = new Object[]{
@@ -154,6 +169,8 @@ public class PlayerInfoController implements PlayerInfoService{
 		for(int i=0;i<valid_season.size();i++){
 			SeasonStatProcessor seasonProcess = dataService.getSeasonStatProcessor(valid_season.get(i));
 			PlayerInAverage player = seasonProcess.getPlayerAverage(playerName, emptyFilter);
+			if(player==null)
+				continue;
 			double[] average = player.getStatsAverage();
 			averageData[i] = new Object[]{
 					valid_season.get(i),			//赛季
@@ -199,6 +216,8 @@ public class PlayerInfoController implements PlayerInfoService{
 		for(int i=0;i<valid_season.size();i++){
 			SeasonStatProcessor seasonProcess = dataService.getSeasonStatProcessor(valid_season.get(i));
 			PlayerInAverage player = seasonProcess.getPlayerAverage(playerName, emptyFilter);
+			if(player==null)
+				continue;
 			double[] average = player.getStatsAverage();
 			advancedData[i] = new Object[]{
 					valid_season.get(i),			//赛季
@@ -228,19 +247,32 @@ public class PlayerInfoController implements PlayerInfoService{
 	public void setPlayerGameLog(PlayerDataService panel,String playerName) {
 		List<MatchPO> matchList = dataService.getMatchForPlayer(playerName);
 //		String[] properties = {"比赛日期","比赛对阵"};
-		Object[][] values = new Object[matchList.size()][];
-		for(int i=0;i<matchList.size();i++){
-			MatchPO match = matchList.get(i);
-			Calendar date = new GregorianCalendar();
-			date.setTime(match.getDate());
-			int year = date.get(Calendar.YEAR)-1900;//减去差值
-			int month = date.get(Calendar.MONTH)+1;
-			int day = date.get(Calendar.DAY_OF_MONTH);
-			StringBuffer dateBuffer = new StringBuffer(year+"-"+month+"-"+day);
-			StringBuffer participentsBuffer = new StringBuffer(match.getTeamA()+"  VS  "+match.getTeamB());
-			values[i] = new Object[]{dateBuffer.toString(),participentsBuffer.toString()};
+		if(matchList.size()>0){
+			//比赛排序
+			for(int i=0;i<matchList.size()-1;i++){
+				for(int j=0;j<matchList.size()-i-1;j++){
+					if(matchList.get(j).getDate().before(matchList.get(j+1).getDate())){
+						MatchPO temp = matchList.get(j);
+						matchList.set(j, matchList.get(j+1));
+						matchList.set(j+1, temp);
+					}
+				}
+			}
+			//设置数据
+			Object[][] values = new Object[matchList.size()][];
+			for(int i=0;i<matchList.size();i++){
+				MatchPO match = matchList.get(i);
+				Calendar date = new GregorianCalendar();
+				date.setTime(match.getDate());
+				int year = date.get(Calendar.YEAR);//减去差值
+				int month = date.get(Calendar.MONTH)+1;
+				int day = date.get(Calendar.DAY_OF_MONTH);
+				StringBuffer dateBuffer = new StringBuffer(year+"-"+month+"-"+day);
+				StringBuffer participentsBuffer = new StringBuffer(match.getTeamA()+"  VS  "+match.getTeamB());
+				values[i] = new Object[]{dateBuffer.toString(),participentsBuffer.toString()};
+			}
+			panel.setGameLog(values, null);
 		}
-		panel.setGameLog(values, null);
 		playerGameLog = playerName;
 		totalController.setPlayerDataService(panel);
 	}

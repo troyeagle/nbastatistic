@@ -17,21 +17,21 @@ public class TeamInAverage implements Serializable {
 	private String name;
 	private String abbr;
 	private double secondInTotal;
-	private int fieldGoalMade = 0;
-	private int fieldGoalAttempted = 0;
-	private int threePointerMade = 0;
-	private int threePointerAttempted = 0;
-	private int freeThrowMade = 0;
-	private int freeThrowAttempted = 0;
-	private int offensiveRebound = 0;
-	private int defensiveRebound = 0;
-	private int rebound = 0;
-	private int assist = 0;
-	private int steal = 0;
-	private int block = 0;
-	private int turnover = 0;
-	private int foul = 0;
-	private int scores = 0;
+	private double fieldGoalMade = 0;
+	private double fieldGoalAttempted = 0;
+	private double threePointerMade = 0;
+	private double threePointerAttempted = 0;
+	private double freeThrowMade = 0;
+	private double freeThrowAttempted = 0;
+	private double offensiveRebound = 0;
+	private double defensiveRebound = 0;
+	private double rebound = 0;
+	private double assist = 0;
+	private double steal = 0;
+	private double block = 0;
+	private double turnover = 0;
+	private double foul = 0;
+	private double scores = 0;
 	private double fieldGoalRatio;
 	private double threePointerRatio;
 	private double freeThrowRatio;
@@ -43,13 +43,13 @@ public class TeamInAverage implements Serializable {
 	private double stealEf;
 	private double assistEf;
 
-	private int rivalScores;
+	private double rivalScores;
 	private double rivalRounds;
-	private int rivalOffensiveRebound;
-	private int rivalDefensiveRebound;
-	private int rivalRebounds;
-	private int rivalFieldGoalAttempted;
-	private int rivalThreePointerAttempted;
+	private double rivalOffensiveRebound;
+	private double rivalDefensiveRebound;
+	private double rivalRebounds;
+	private double rivalFieldGoalAttempted;
+	private double rivalThreePointerAttempted;
 
 	private double[] statsAverage;
 	private double[] statsTotal;
@@ -161,6 +161,7 @@ public class TeamInAverage implements Serializable {
 		calAll();
 		winningRatio = (double) numOfWins / numOfMatches;
 		makeArray();
+		restoreVariables();
 	}
 
 	// Iteration 2
@@ -232,6 +233,31 @@ public class TeamInAverage implements Serializable {
 		statsAverage[30] = assistEf;
 
 	}
+	
+	public void restoreVariables(){
+		fieldGoalMade = statsTotal[0];
+		fieldGoalAttempted = statsTotal[1];
+		threePointerMade = statsTotal[2];
+		threePointerAttempted = statsTotal[3];
+		freeThrowMade = statsTotal[4];
+		freeThrowAttempted = statsTotal[5];
+		offensiveRebound = statsTotal[6];
+		defensiveRebound = statsTotal[7];
+		rebound = statsTotal[8];
+		assist = statsTotal[9];
+		steal = statsTotal[10];
+		block = statsTotal[11];
+		turnover = statsTotal[12];
+		foul = statsTotal[13];
+		scores = statsTotal[14];
+		rivalScores = statsTotal[15];
+		rivalOffensiveRebound = statsTotal[16];
+		rivalDefensiveRebound = statsTotal[17];
+		rivalRebounds = statsTotal[18];
+		rivalFieldGoalAttempted = statsTotal[19];
+		rivalThreePointerAttempted = statsTotal[20];
+		secondInTotal = statsTotal[21];
+	}
 
 	public String getName() {
 		return name;
@@ -245,63 +271,63 @@ public class TeamInAverage implements Serializable {
 		return secondInTotal;
 	}
 
-	public int getFieldGoalMade() {
+	public double getFieldGoalMade() {
 		return fieldGoalMade;
 	}
 
-	public int getFieldGoalAttempted() {
+	public double getFieldGoalAttempted() {
 		return fieldGoalAttempted;
 	}
 
-	public int getThreePointerMade() {
+	public double getThreePointerMade() {
 		return threePointerMade;
 	}
 
-	public int getThreePointerAttempted() {
+	public double getThreePointerAttempted() {
 		return threePointerAttempted;
 	}
 
-	public int getFreeThrowMade() {
+	public double getFreeThrowMade() {
 		return freeThrowMade;
 	}
 
-	public int getFreeThrowAttempted() {
+	public double getFreeThrowAttempted() {
 		return freeThrowAttempted;
 	}
 
-	public int getOffensiveRebound() {
+	public double getOffensiveRebound() {
 		return offensiveRebound;
 	}
 
-	public int getDefensiveRebound() {
+	public double getDefensiveRebound() {
 		return defensiveRebound;
 	}
 
-	public int getRebound() {
+	public double getRebound() {
 		return rebound;
 	}
 
-	public int getAssist() {
+	public double getAssist() {
 		return assist;
 	}
 
-	public int getSteal() {
+	public double getSteal() {
 		return steal;
 	}
 
-	public int getBlock() {
+	public double getBlock() {
 		return block;
 	}
 
-	public int getTurnover() {
+	public double getTurnover() {
 		return turnover;
 	}
 
-	public int getFoul() {
+	public double getFoul() {
 		return foul;
 	}
 
-	public int getScores() {
+	public double getScores() {
 		return scores;
 	}
 
@@ -429,7 +455,7 @@ public class TeamInAverage implements Serializable {
 		freeThrowRatio = (double) freeThrowMade / freeThrowAttempted;
 	}
 
-	public int getRivalScores() {
+	public double getRivalScores() {
 		return rivalScores;
 	}
 
@@ -437,23 +463,23 @@ public class TeamInAverage implements Serializable {
 		return rivalRounds;
 	}
 
-	public int getRivalOffensiveRebound() {
+	public double getRivalOffensiveRebound() {
 		return rivalOffensiveRebound;
 	}
 
-	public int getRivalDefensiveRebound() {
+	public double getRivalDefensiveRebound() {
 		return rivalDefensiveRebound;
 	}
 
-	public int getRivalRebounds() {
+	public double getRivalRebounds() {
 		return rivalRebounds;
 	}
 
-	public int getRivalFieldGoalAttempted() {
+	public double getRivalFieldGoalAttempted() {
 		return rivalFieldGoalAttempted;
 	}
 
-	public int getRivalThreePointerAttempted() {
+	public double getRivalThreePointerAttempted() {
 		return rivalThreePointerAttempted;
 	}
 

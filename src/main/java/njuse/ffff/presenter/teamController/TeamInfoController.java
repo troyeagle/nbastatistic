@@ -109,7 +109,7 @@ public class TeamInfoController implements TeamInfoService{
 			double[] average = team.getStatsAverage();
 			totalData[i] = new Object[]{
 					valid_season.get(i),		//赛季
-					team.getNumOfMatches(),		//比赛数
+//					team.getNumOfMatches(),		//比赛数
 					DealDecimal.formatChangeToPercentage(average[21]),	//投篮命中率
 					DealDecimal.formatChange(total[0]),					//投篮命中数
 					DealDecimal.formatChange(total[1]),					//投篮出手数
@@ -170,7 +170,7 @@ public class TeamInfoController implements TeamInfoService{
 					DealDecimal.formatChange(average[11],1),				//盖帽
 					DealDecimal.formatChange(average[12],1),				//失误
 					DealDecimal.formatChange(average[13],1),				//犯规
-					DealDecimal.formatChange(average[14],1),				//得分
+					DealDecimal.formatChange(average[14],1)					//得分
 			};
 		}
 		panel.setAvgDataTable(averageData);
@@ -195,13 +195,13 @@ public class TeamInfoController implements TeamInfoService{
 			double[] average = team.getStatsAverage();
 			advancedData[i] = new Object[]{
 					valid_season.get(i),		//赛季
-					DealDecimal.formatChangeToPercentage(average[24]),	//进攻回合
-					DealDecimal.formatChange(average[25]),				//进攻效率
-					DealDecimal.formatChange(average[26]),				//防守效率
-					DealDecimal.formatChangeToPercentage(average[27]),	//进攻篮板效率
-					DealDecimal.formatChange(average[28]),				//防守篮板效率
-					DealDecimal.formatChange(average[29]),				//抢断效率
-					DealDecimal.formatChangeToPercentage(average[30]),	//助攻效率
+					DealDecimal.formatChange(average[24],1),	//进攻回合
+					DealDecimal.formatChange(average[25],1),				//进攻效率
+					DealDecimal.formatChange(average[26],1),				//防守效率
+					DealDecimal.formatChange(average[27],1),	//进攻篮板效率
+					DealDecimal.formatChange(average[28],1),				//防守篮板效率
+					DealDecimal.formatChange(average[29],1),				//抢断效率
+					DealDecimal.formatChange(average[30],1)			//助攻效率
 			};
 		}
 		panel.setAdvancedDataTable(advancedData);
@@ -215,19 +215,32 @@ public class TeamInfoController implements TeamInfoService{
 	public void setTeamGameLog(TeamDataService panel, String teamName) {
 		List<MatchPO> matchList = dataService.getMatchForTeam(teamName);
 //		String[] properties = {"比赛日期","比赛对阵"};
-		Object[][] values = new Object[matchList.size()][];
-		for(int i=0;i<matchList.size();i++){
-			MatchPO match = matchList.get(i);
-			Calendar date = new GregorianCalendar();
-			date.setTime(match.getDate());
-			int year = date.get(Calendar.YEAR)-1900;//减去差值
-			int month = date.get(Calendar.MONTH)+1;
-			int day = date.get(Calendar.DAY_OF_MONTH);
-			StringBuffer dateBuffer = new StringBuffer(year+"-"+month+"-"+day);
-			StringBuffer participentsBuffer = new StringBuffer(match.getTeamA()+"  VS  "+match.getTeamB());
-			values[i] = new Object[]{dateBuffer.toString(),participentsBuffer.toString()};
+		if(matchList.size()>0){
+			//比赛排序
+			for(int i=0;i<matchList.size()-1;i++){
+				for(int j=0;j<matchList.size()-i-1;j++){
+					if(matchList.get(j).getDate().before(matchList.get(j+1).getDate())){
+						MatchPO temp = matchList.get(j);
+						matchList.set(j, matchList.get(j+1));
+						matchList.set(j+1, temp);
+					}
+				}
+			}
+			//设置数据
+			Object[][] values = new Object[matchList.size()][];
+			for(int i=0;i<matchList.size();i++){
+				MatchPO match = matchList.get(i);
+				Calendar date = new GregorianCalendar();
+				date.setTime(match.getDate());
+				int year = date.get(Calendar.YEAR)-1900;//减去差值
+				int month = date.get(Calendar.MONTH)+1;
+				int day = date.get(Calendar.DAY_OF_MONTH);
+				StringBuffer dateBuffer = new StringBuffer(year+"-"+month+"-"+day);
+				StringBuffer participentsBuffer = new StringBuffer(match.getTeamA()+"  VS  "+match.getTeamB());
+				values[i] = new Object[]{dateBuffer.toString(),participentsBuffer.toString()};
+			}
+			panel.setGameLog(values, null);
 		}
-		panel.setGameLog(values, null);
 		teamGameLog = teamName;
 		totalController.setTeamDataService(panel);
 	}

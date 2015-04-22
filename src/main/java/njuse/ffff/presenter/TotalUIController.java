@@ -209,6 +209,7 @@ public class TotalUIController implements TotalControlService{
 	 */
 	@SuppressWarnings("deprecation")
 	public void refreshView(){
+		System.out.println("=======================update====================");
 		if(matchViewService!=null){
 			MatchInfoService service = MatchInfoController.getInstance();
 			Date date = service.getPresentDate();
