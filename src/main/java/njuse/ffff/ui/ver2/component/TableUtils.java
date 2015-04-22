@@ -18,6 +18,7 @@ import javax.swing.table.TableRowSorter;
 
 import sun.swing.table.DefaultTableCellHeaderRenderer;
 
+@SuppressWarnings("restriction")
 public class TableUtils {
 
 	public static JTable createTable(Object[][] value, Object[] columns) {
@@ -32,8 +33,12 @@ public class TableUtils {
 			@Override
 			public Class<?> getColumnClass(int columnIndex) {
 				Class<?> returnValue;
-				if (columnIndex >= 0 && columnIndex < getColumnCount() && getRowCount() > 0) {
-					returnValue = getValueAt(0, columnIndex).getClass();
+				if (columnIndex >= 0 && columnIndex < getColumnCount()) {
+					try {
+						returnValue = getValueAt(0, columnIndex).getClass();
+					} catch (Exception e) {
+						returnValue = Object.class;
+					}
 				} else {
 					returnValue = Object.class;
 				}
@@ -123,7 +128,7 @@ public class TableUtils {
 				int preferedWidth = (int) table.getCellRenderer(row, col)
 						.getTableCellRendererComponent(table,
 								table.getValueAt(row, col), false, false, row, col)
-						.getPreferredSize().getWidth();
+						.getPreferredSize().getWidth() + 20;
 				width = Math.max(width, preferedWidth);
 			}
 			header.setResizingColumn(column); // 此行很重要

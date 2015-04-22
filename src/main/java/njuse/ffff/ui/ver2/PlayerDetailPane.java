@@ -3,8 +3,12 @@ package njuse.ffff.ui.ver2;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.Timer;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import njuse.ffff.presenter.playerController.PlayerInfoController;
 import njuse.ffff.ui.component.PanelEx;
@@ -18,7 +22,7 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final String[] avgHeader = { "赛季", "球队", "首发", "时间", "投篮",
+	private static final String[] avgHeader = { "赛季", "球队", "首发", "时间",
 			"命中", "出手", "三分", "命中", "出手", "罚球", "命中", "出手", "篮板", "前场",
 			"后场", "助攻", "抢断", "盖帽", "失误", "犯规", "得分"
 	};
@@ -30,6 +34,8 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 	};
 
 	private static final String[] gameHeader = { "比赛日期", "比赛对阵" };
+
+	private String name;
 
 	private TabBar tabBar;
 	private PanelEx viewPanel;
@@ -43,7 +49,6 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 
 	public PlayerDetailPane() {
 		super(new BorderLayout());
-		// TODO
 		setOpaque(false);
 
 		profilePane = new PlayerProfilePane();
@@ -63,7 +68,7 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 
 		viewPanel = new PanelEx(new CardLayout());
 		viewPanel.setOpaque(false);
-		viewPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+		viewPanel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
 
 		PanelEx tabPanel = new PanelEx(new BorderLayout());
 		tabPanel.setOpaque(false);
@@ -73,12 +78,28 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 	}
 
 	public void setPlayer(String playerName) {
-		profilePane.setPlayer(playerName);
-		PlayerInfoController pic = PlayerInfoController.getInstance();
-		pic.setPlayerAvgData(this, playerName);
-		pic.setPlayerTotalData(this, playerName);
-		pic.setPlayerAdvancedData(this, playerName);
-		pic.setPlayerGameLog(this, playerName);
+
+		Timer t = new Timer(0, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				boolean isChanged = name == null || !playerName.equals(name);
+				name = playerName;
+
+				PlayerDetailPane p = PlayerDetailPane.this;
+				profilePane.setPlayer(playerName);
+				PlayerInfoController pic = PlayerInfoController.getInstance();
+				pic.setPlayerAvgData(p, playerName);
+				pic.setPlayerTotalData(p, playerName);
+				pic.setPlayerAdvancedData(p, playerName);
+				pic.setPlayerGameLog(p, playerName);
+
+				if (isChanged) {
+					tabBar.switchTo(0);
+				}
+			}
+		});
+		t.setRepeats(false);
+		t.start();
 	}
 
 	@Override
@@ -88,9 +109,6 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 			setTableUIConfig(avgTable);
 			tabBar.addTab("平均数据");
 			viewPanel.add("平均数据", avgTable);
-			if (tabBar.getActiveTabIndex() == -1) {
-				tabBar.switchTo(0);
-			}
 		} else {
 			avgTable.setTable(data);
 		}
@@ -103,9 +121,6 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 			setTableUIConfig(totalTable);
 			tabBar.addTab("总数据");
 			viewPanel.add("总数据", totalTable);
-			if (tabBar.getActiveTabIndex() == -1) {
-				tabBar.switchTo(0);
-			}
 		} else {
 			totalTable.setTable(data);
 		}
@@ -118,9 +133,6 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 			setTableUIConfig(advTable);
 			tabBar.addTab("进阶数据");
 			viewPanel.add("进阶数据", advTable);
-			if (tabBar.getActiveTabIndex() == -1) {
-				tabBar.switchTo(0);
-			}
 		} else {
 			advTable.setTable(data);
 		}
@@ -133,9 +145,9 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 			setTableUIConfig(gamesTable);
 			tabBar.addTab("比赛数据");
 			viewPanel.add("比赛数据", gamesTable);
-			if (tabBar.getActiveTabIndex() == -1) {
-				tabBar.switchTo(0);
-			}
+			((DefaultTableCellRenderer) gamesTable.getTable()
+					.getDefaultRenderer(Object.class))
+					.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
 		} else {
 			gamesTable.setTable(data);
 		}

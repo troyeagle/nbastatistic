@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -18,7 +17,6 @@ import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JTable;
 import javax.swing.Timer;
 
 import njuse.ffff.presenter.teamController.TeamCompareController;
@@ -102,6 +100,7 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 
 		settings = new SwitchButton(new ImageIcon("./img/btn/settings.png"));
 		settings.setVisible(false);
+		settings.setClickCancelEnable(true);
 		settings.setBackground(new Color(255, 255, 255, 64));
 		PanelEx settingBtn = new PanelEx(new FlowLayout(FlowLayout.LEFT, 10, 5));
 		settingBtn.setOpaque(false);
@@ -110,11 +109,16 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 		settings.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (settingPanel.isValid()) {
-					settings.setActive(false);
-					contentPanel.remove(dataPanel);
+				if (settings.isActive()) {
+					picView.setVisible(true);
+					contentPanel.remove(settingPanel);
+					//					contentPanel.validate();
+					contentPanel.repaint();
 				} else {
-					contentPanel.add(settingPanel);
+					picView.setVisible(false);
+					contentPanel.add(settingPanel, 0);
+					//					contentPanel.validate();
+					contentPanel.repaint();
 				}
 			}
 		});
@@ -224,15 +228,15 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 		seasonGroup.addSwitchListener(l);
 
 		dataGroup = new SwitchButtonGroup();
-		dataGroup.addButton(avgView);
 		dataGroup.addButton(totalView);
+		dataGroup.addButton(avgView);
 		dataGroup.addButton(picView);
 		dataGroup.addSwitchListener(l);
 
 		PanelEx switchPanel = new PanelEx(new FlowLayout(FlowLayout.LEFT, 10, 5));
 		switchPanel.setOpaque(false);
-		switchPanel.add(avgView);
 		switchPanel.add(totalView);
+		switchPanel.add(avgView);
 		switchPanel.add(picView);
 
 		controlPanel = new PanelEx(new BorderLayout());
@@ -287,7 +291,6 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				UIEventManager.notify(UIEventType.BUSY, this);	// 通知状态
-				System.out.println(123);
 
 				if (!avgTableMap.containsKey(season)) {
 					TableView avgTable = new TableView(values, avgTableHeader);
@@ -297,7 +300,7 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 						public void mouseClicked(MouseEvent e) {
 							int[] loc = avgTable.getSelectedCellLocation();
 							if (loc[0] >= 0 && loc[1] >= 0) {
-								Object v = avgTable.getValueAt(loc[0], loc[1]);
+								Object v = avgTable.getValueAt(loc[0], 0);
 								UIEventManager.notify(UIEventType.SWITCH, "球队详情:" + v);
 							}
 						}
@@ -316,12 +319,14 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 					avgTableMap.get(season).setTable(values);
 				}
 
-				String[] playersName = new String[values.length];
+				String[] teamName = new String[values.length];
+				String[] teamAbbr = new String[values.length];
 				for (int i = 0; i < values.length; i++) {
-					playersName[i] = (String) values[i][1];
+					teamName[i] = values[i][0].toString();
+					teamAbbr[i] = values[i][1].toString();
 				}
 
-				setTeamsIcon(playersName, season);
+				setTeamsIcon(teamName, teamAbbr, season);
 
 				UIEventManager.notify(UIEventType.FINISH, this);	// 完成
 			}
@@ -348,7 +353,7 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 						public void mouseClicked(MouseEvent e) {
 							int[] loc = totalTable.getSelectedCellLocation();
 							if (loc[0] >= 0 && loc[1] >= 0) {
-								Object v = totalTable.getValueAt(loc[0], loc[1]);
+								Object v = totalTable.getValueAt(loc[0], 0);
 								UIEventManager.notify(UIEventType.SWITCH, "球队详情:" + v);
 							}
 						}
@@ -373,7 +378,7 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 		t.start();
 	}
 
-	private void setTeamsIcon(String[] teamAbbr, String season) {
+	private void setTeamsIcon(String[] teamName, String[] teamAbbr, String season) {
 		if (iconPanelMap.containsKey(season)) {
 			iconPanelMap.get(season).removeAll();
 		} else {
@@ -408,8 +413,8 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 					ImageIcon portrait = ImageUtils.getTeamIcon(teamAbbr[index]);
 					if (portrait == null)
 						portrait = new ImageIcon("./img/no_image.png");
-					ButtonEx teamBtn = new ButtonEx(teamAbbr[index], portrait);
-					teamBtn.setName(teamAbbr[index]);
+					ButtonEx teamBtn = new ButtonEx(teamName[index], portrait);
+					teamBtn.setName(teamName[index]);
 					teamBtn.setOpaque(false);
 					teamBtn.setBackground(new Color(255, 255, 255, 64));
 					teamBtn.setForeground(Color.WHITE);
@@ -459,6 +464,31 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 				}
 			}
 		}
+
+		if (pageCount > 1) {
+			PanelEx switchPanel = new PanelEx();
+			switchPanel.setOpaque(false);
+			iconPanel.add(switchPanel, BorderLayout.SOUTH);
+
+			SwitchButtonGroup group = new SwitchButtonGroup();
+			group.addSwitchListener(new SwitchListener() {
+				@Override
+				public void actionPerformed(SwitchEvent e) {
+					((CardLayout) pagePanel.getLayout()).show(pagePanel, e.getSource()
+							.getName());
+				}
+			});
+			for (int i = 0; i < pageCount; i++) {
+				SwitchButton pageIndex = new SwitchButton(String.valueOf(i + 1));
+				pageIndex.setName(String.valueOf(i + 1));
+				pageIndex.setBackground(new Color(255, 255, 255, 64));
+				pageIndex.setForeground(Color.WHITE);
+				pageIndex.setFont(UIConfig.SmallFont);
+				switchPanel.add(pageIndex);
+				group.addButton(pageIndex);
+			}
+			group.switchTo(0);
+		}
 	}
 
 	@Override
@@ -492,36 +522,6 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 		button.setBackground(new Color(255, 255, 255, 64));
 		button.setForeground(Color.WHITE);
 		button.setFont(UIConfig.SubTitleFont);
-	}
-
-	@Override
-	public void paint(Graphics g) {
-		avgTableMap
-				.forEach((season, tableView) -> {
-					JTable table = tableView.getTable();
-					if (table != null) {
-						int mode = table.getPreferredSize().getWidth() <= tableView
-								.getWidth() ? JTable.AUTO_RESIZE_ALL_COLUMNS
-								: JTable.AUTO_RESIZE_OFF;
-						if (table.getAutoResizeMode() != mode) {
-							table.setAutoResizeMode(mode);
-						}
-					}
-				});
-
-		totalTableMap
-				.forEach((season, tableView) -> {
-					JTable table = tableView.getTable();
-					if (table != null) {
-						int mode = table.getPreferredSize().getWidth() <= tableView
-								.getWidth() ? JTable.AUTO_RESIZE_ALL_COLUMNS
-								: JTable.AUTO_RESIZE_OFF;
-						if (table.getAutoResizeMode() != mode) {
-							table.setAutoResizeMode(mode);
-						}
-					}
-				});
-		super.paint(g);
 	}
 
 }

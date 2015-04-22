@@ -30,6 +30,7 @@ public class MainFrame extends JFrame {
 	private PanelEx viewPanel;
 
 	private PlayerDetailPane playerPane;
+	private TeamDetailPane teamPane;
 	private PanelEx loadingPanel;
 
 	private MainFrame() {
@@ -59,10 +60,12 @@ public class MainFrame extends JFrame {
 		this.setTitle("主页");
 
 		playerPane = new PlayerDetailPane();
+		teamPane = new TeamDetailPane();
 
 		viewPanel.add("球队一览", new TeamsOverViewPanel());
 		viewPanel.add("球员一览", new PlayersOverViewPane());
 		viewPanel.add("球员详情", playerPane);
+		viewPanel.add("球队详情", teamPane);
 
 		add(viewPanel);
 
@@ -199,16 +202,16 @@ public class MainFrame extends JFrame {
 	}
 
 	private void setLoadingPanel() {
-		// TODO
 		loadingPanel = new LoadingPane();
 		add(loadingPanel, 0);
 		loadingPanel.setVisible(false);
-//		setGlassPane(new LoadingPane());
-//		getGlassPane().addMouseListener(new MouseAdapter() {
-//		});	// loading时不能鼠标操作
+		//		setGlassPane(new LoadingPane());
+		//		getGlassPane().addMouseListener(new MouseAdapter() {
+		//		});	// loading时不能鼠标操作
 	}
 
 	public void setTeamPane(String teamName) {
+		teamPane.setTeam(teamName);
 		tabBar.addTab("球队详情");
 		tabBar.switchTo("球队详情");
 	}
@@ -218,7 +221,7 @@ public class MainFrame extends JFrame {
 		tabBar.addTab("球员详情");
 		tabBar.switchTo("球员详情");
 	}
-	
+
 	@Override
 	public void dispose() {
 		super.dispose();

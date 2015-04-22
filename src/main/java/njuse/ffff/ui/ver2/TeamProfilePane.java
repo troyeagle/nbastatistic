@@ -4,71 +4,56 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
-import njuse.ffff.presenter.playerController.PlayerInfoController;
+import njuse.ffff.presenter.teamController.TeamInfoController;
 import njuse.ffff.ui.component.LabelEx;
 import njuse.ffff.ui.component.PanelEx;
-import njuse.ffff.uiservice.PlayerProfileService;
+import njuse.ffff.uiservice.TeamProfileService;
 
-public class PlayerProfilePane extends PanelEx implements PlayerProfileService {
+public class TeamProfilePane extends PanelEx implements TeamProfileService {
 
 	private static final long serialVersionUID = 1L;
 
-	private final String[] labelsName = { "身高", "体重", "编号", "生日",
-			"年龄", "经历", "学校" };
+	private static final String[] labelsName = { "位置", "联盟", "副联盟", "主场", "创建时间" };
 
-	private LabelEx portrait;	// 照片
+	private LabelEx teamIcon;
 
-	private LabelEx nameLabel;	// 名字
-	private LabelEx positionLabel;	// 位置
-	private LabelEx teamLabel;
+	private LabelEx nameLabel;
+	private LabelEx abbrLabel;
 
-	private LabelEx[] properties;	// 其他各项属性 
+	private LabelEx[] properties;
 
-	public PlayerProfilePane() {
+	public TeamProfilePane() {
 		super(new BorderLayout(10, 10));
 		setBackground(Color.LIGHT_GRAY);
 		setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
 
-		portrait = new LabelEx();
-		portrait.setOpaque(false);
+		teamIcon = new LabelEx();
+		teamIcon.setOpaque(false);
 
 		nameLabel = new LabelEx();
 		nameLabel.setOpaque(false);
 		nameLabel.setForeground(Color.BLACK);
 		nameLabel.setFont(UIConfig.TitleFont);
 
-		positionLabel = new LabelEx();
-		positionLabel.setOpaque(false);
-		positionLabel.setForeground(Color.BLACK);
-		positionLabel.setFont(UIConfig.SubTitleFont);
-
-		teamLabel = new LabelEx();
-		teamLabel.setOpaque(false);
-		teamLabel.setForeground(Color.BLACK);
-		teamLabel.setFont(UIConfig.ContentFont);
-
-		teamLabel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (!teamLabel.getText().isEmpty())
-					UIEventManager.notify(UIEventType.SWITCH, "球队详情:" + teamLabel.getText());
-			}
-		});
+		abbrLabel = new LabelEx();
+		abbrLabel.setOpaque(false);
+		abbrLabel.setForeground(Color.BLACK);
+		abbrLabel.setFont(UIConfig.SubTitleFont);
 
 		PanelEx namePane = new PanelEx(new GridLayout(3, 1));
 		namePane.setOpaque(false);
 		namePane.add(nameLabel);
-		namePane.add(positionLabel);
-		namePane.add(teamLabel);
+		namePane.add(abbrLabel);
+		PanelEx p = new PanelEx();
+		p.setOpaque(false);
+		namePane.add(p);
 		namePane.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
 
-		PanelEx propertyPane = new PanelEx(new GridLayout(4, 2, 20, 0));
+		PanelEx propertyPane = new PanelEx(new GridLayout(3, 2, 20, 0));
 		propertyPane.setOpaque(false);
 		propertyPane.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 		properties = new LabelEx[labelsName.length];
@@ -86,32 +71,30 @@ public class PlayerProfilePane extends PanelEx implements PlayerProfileService {
 		detailPane.add(propertyPane);
 		detailPane.add(namePane, BorderLayout.WEST);
 
-		add(portrait, BorderLayout.WEST);
+		add(teamIcon, BorderLayout.WEST);
 		add(detailPane);
 	}
 
-	public void setPlayer(String name) {
-		PlayerInfoController.getInstance().setPlayerProfilePanel(this, name);
+	public void setTeam(String name) {
+		TeamInfoController.getInstance().setTeamProfilePanel(this, name);
 	}
 
 	@Override
-	public void setProfile(String name, String position, String number, String height,
-			String weight, String birthday, String age, String exp, String school,
-			String team) {
-		ImageIcon icon = ImageUtils.getPlayerImg(name);
+	public void setProfile(String name, String abbr, String location, String league,
+			String subleague, String homeCourt, String foundYear) {
+		ImageIcon icon = ImageUtils.getTeamIcon(abbr);
 		if (icon == null)
 			icon = new ImageIcon("./img/no_image.png");
 		Image img = icon.getImage();
 		int imgWidth = 200;
 		int imgHeight = (int) (icon.getIconHeight() / ((double) icon.getIconWidth()) * 200);
 		icon = new ImageIcon(img.getScaledInstance(imgWidth, imgHeight, Image.SCALE_SMOOTH));
-		portrait.setIcon(icon);
+		teamIcon.setIcon(icon);
 
 		nameLabel.setText(name);
-		positionLabel.setText(position);
-		teamLabel.setText(team);
+		abbrLabel.setText(abbr);
 
-		String[] properties = { height, weight, number, birthday, age, exp, school };
+		String[] properties = { location, league, subleague, homeCourt, foundYear };
 		for (int i = 0; i < properties.length; i++) {
 			this.properties[i].setText(labelsName[i] + "　　" + properties[i]);
 		}

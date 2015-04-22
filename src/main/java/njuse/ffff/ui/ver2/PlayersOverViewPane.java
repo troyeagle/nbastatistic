@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -18,11 +17,9 @@ import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JTable;
 import javax.swing.Timer;
 
 import njuse.ffff.presenter.playerController.PlayerCompareController;
-import njuse.ffff.presenter.teamController.TeamCompareController;
 import njuse.ffff.ui.component.ButtonEx;
 import njuse.ffff.ui.component.LabelEx;
 import njuse.ffff.ui.component.PanelEx;
@@ -74,9 +71,6 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 	public PlayersOverViewPane() {
 		super(new BorderLayout());
 		setOpaque(false);
-
-		System.out.println(totalTableHeader.length);
-		System.out.println(avgTableHeader.length);
 
 		avgTableMap = new HashMap<>();
 		totalTableMap = new HashMap<>();
@@ -234,15 +228,15 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 		seasonGroup.addSwitchListener(l);
 
 		dataGroup = new SwitchButtonGroup();
-		dataGroup.addButton(avgView);
 		dataGroup.addButton(totalView);
+		dataGroup.addButton(avgView);
 		dataGroup.addButton(picView);
 		dataGroup.addSwitchListener(l);
 
 		PanelEx switchPanel = new PanelEx(new FlowLayout(FlowLayout.LEFT, 10, 5));
 		switchPanel.setOpaque(false);
-		switchPanel.add(avgView);
 		switchPanel.add(totalView);
+		switchPanel.add(avgView);
 		switchPanel.add(picView);
 
 		controlPanel = new PanelEx(new BorderLayout());
@@ -265,7 +259,7 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 
 	private void initData() {
 		// TODO 获取数据？
-//		PlayerCompareController.getInstance().setPlayerCompareInfoForSeason(this);
+		//		PlayerCompareController.getInstance().setPlayerCompareInfoForSeason(this);
 
 		Timer t = new Timer(0, new ActionListener() {
 			@Override
@@ -276,16 +270,16 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 		});
 		t.setRepeats(false);
 		t.start();
-//				avgTableHeader = new String[] { "c1", "c2", "c3" };
-//		Object[][] values = new Object[460][3];
-//				for (int i = 0; i < 460; i++) {
-//					values[i][0] = "Aaron Brooks";
-//					values[i][1] = 1;
-//					values[i][2] = "aaa";
-//				}
-//		setPlayersAvgInfo(values, "2014");
-//				totalTableHeader = new String[] { "c1", "c2", "c3" };
-//		setPlayersTotalInfo(values, "2014");
+		//				avgTableHeader = new String[] { "c1", "c2", "c3" };
+		//		Object[][] values = new Object[460][3];
+		//				for (int i = 0; i < 460; i++) {
+		//					values[i][0] = "Aaron Brooks";
+		//					values[i][1] = 1;
+		//					values[i][2] = "aaa";
+		//				}
+		//		setPlayersAvgInfo(values, "2014");
+		//				totalTableHeader = new String[] { "c1", "c2", "c3" };
+		//		setPlayersTotalInfo(values, "2014");
 	}
 
 	private void addSeason(String season) {
@@ -319,10 +313,11 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 						public void mouseClicked(MouseEvent e) {
 							int[] loc = avgTable.getSelectedCellLocation();
 							if (loc[0] >= 0 && loc[1] >= 0) {
-								Object v = avgTable.getValueAt(loc[0], loc[1]);
 								if (loc[1] == 1) {
+									Object v = avgTable.getValueAt(loc[0], 1);
 									UIEventManager.notify(UIEventType.SWITCH, "球队详情:" + v);
 								} else {
+									Object v = avgTable.getValueAt(loc[0], 0);
 									UIEventManager.notify(UIEventType.SWITCH, "球员详情:" + v);
 								}
 							}
@@ -373,10 +368,11 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 						public void mouseClicked(MouseEvent e) {
 							int[] loc = totalTable.getSelectedCellLocation();
 							if (loc[0] >= 0 && loc[1] >= 0) {
-								Object v = totalTable.getValueAt(loc[0], loc[1]);
 								if (loc[1] == 1) {
+									Object v = totalTable.getValueAt(loc[0], 1);
 									UIEventManager.notify(UIEventType.SWITCH, "球队详情:" + v);
 								} else {
+									Object v = totalTable.getValueAt(loc[0], 0);
 									UIEventManager.notify(UIEventType.SWITCH, "球员详情:" + v);
 								}
 							}
@@ -546,35 +542,5 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 		button.setBackground(new Color(255, 255, 255, 64));
 		button.setForeground(Color.WHITE);
 		button.setFont(UIConfig.SubTitleFont);
-	}
-
-	@Override
-	public void paint(Graphics g) {
-		avgTableMap
-				.forEach((season, tableView) -> {
-					JTable table = tableView.getTable();
-					if (table != null) {
-						int mode = table.getPreferredSize().getWidth() <= tableView
-								.getWidth() ? JTable.AUTO_RESIZE_ALL_COLUMNS
-								: JTable.AUTO_RESIZE_OFF;
-						if (table.getAutoResizeMode() != mode) {
-							table.setAutoResizeMode(mode);
-						}
-					}
-				});
-
-		totalTableMap
-				.forEach((season, tableView) -> {
-					JTable table = tableView.getTable();
-					if (table != null) {
-						int mode = table.getPreferredSize().getWidth() <= tableView
-								.getWidth() ? JTable.AUTO_RESIZE_ALL_COLUMNS
-								: JTable.AUTO_RESIZE_OFF;
-						if (table.getAutoResizeMode() != mode) {
-							table.setAutoResizeMode(mode);
-						}
-					}
-				});
-		super.paint(g);
 	}
 }

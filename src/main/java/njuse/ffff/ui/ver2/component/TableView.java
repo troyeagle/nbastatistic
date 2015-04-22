@@ -3,6 +3,7 @@ package njuse.ffff.ui.ver2.component;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -46,6 +47,7 @@ public class TableView extends PanelEx {
 	public void setTable(Object[][] values) {
 		((DefaultTableModel) table.getModel()).setDataVector(values, columnNames);
 		table.clearSelection();
+		TableUtils.FitTableColumns(table);
 		table.repaint();
 	}
 
@@ -186,5 +188,18 @@ public class TableView extends PanelEx {
 
 	public Object getValueAt(int row, int column) {
 		return table.getValueAt(row, column);
+	}
+
+	@Override
+	public void paint(Graphics g) {
+		if (table != null) {
+			int mode = table.getPreferredSize().getWidth() <= getWidth()
+					? JTable.AUTO_RESIZE_ALL_COLUMNS
+					: JTable.AUTO_RESIZE_OFF;
+			if (table.getAutoResizeMode() != mode) {
+				table.setAutoResizeMode(mode);
+			}
+		}
+		super.paint(g);
 	}
 }
