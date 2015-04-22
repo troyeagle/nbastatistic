@@ -22,6 +22,7 @@ import javax.swing.JTable;
 import javax.swing.Timer;
 
 import njuse.ffff.presenter.playerController.PlayerCompareController;
+import njuse.ffff.presenter.teamController.TeamCompareController;
 import njuse.ffff.ui.component.ButtonEx;
 import njuse.ffff.ui.component.LabelEx;
 import njuse.ffff.ui.component.PanelEx;
@@ -266,16 +267,25 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 		// TODO 获取数据？
 //		PlayerCompareController.getInstance().setPlayerCompareInfoForSeason(this);
 
-				avgTableHeader = new String[] { "c1", "c2", "c3" };
-		Object[][] values = new Object[460][3];
-				for (int i = 0; i < 460; i++) {
-					values[i][0] = "Aaron Brooks";
-					values[i][1] = 1;
-					values[i][2] = "aaa";
-				}
-		setPlayersAvgInfo(values, "2014");
-				totalTableHeader = new String[] { "c1", "c2", "c3" };
-		setPlayersTotalInfo(values, "2014");
+		Timer t = new Timer(0, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PlayerCompareController.getInstance().setPlayerCompareInfoForSeason(
+						PlayersOverViewPane.this);
+			}
+		});
+		t.setRepeats(false);
+		t.start();
+//				avgTableHeader = new String[] { "c1", "c2", "c3" };
+//		Object[][] values = new Object[460][3];
+//				for (int i = 0; i < 460; i++) {
+//					values[i][0] = "Aaron Brooks";
+//					values[i][1] = 1;
+//					values[i][2] = "aaa";
+//				}
+//		setPlayersAvgInfo(values, "2014");
+//				totalTableHeader = new String[] { "c1", "c2", "c3" };
+//		setPlayersTotalInfo(values, "2014");
 	}
 
 	private void addSeason(String season) {

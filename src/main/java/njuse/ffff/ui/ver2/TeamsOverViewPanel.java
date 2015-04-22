@@ -254,7 +254,15 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 	}
 
 	private void initData() {
-//		TeamCompareController.getInstance().setTeamCompareInfoForSeason(this);
+		Timer t = new Timer(0, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TeamCompareController.getInstance().setTeamCompareInfoForSeason(
+						TeamsOverViewPanel.this);
+			}
+		});
+		t.setRepeats(false);
+		t.start();
 	}
 
 	private void addSeason(String season) {
@@ -280,7 +288,7 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 			public void actionPerformed(ActionEvent e) {
 				UIEventManager.notify(UIEventType.BUSY, this);	// 通知状态
 				System.out.println(123);
-				
+
 				if (!avgTableMap.containsKey(season)) {
 					TableView avgTable = new TableView(values, avgTableHeader);
 					setTableUIConfig(avgTable);
@@ -294,12 +302,12 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 							}
 						}
 					});
-					
+
 					dataPanel.add("avgView" + season, avgTable);
 					avgTableMap.put(season, avgTable);
-					
+
 					avgView.setVisible(true);
-					
+
 					addSeason(season);
 					if (dataGroup.getActiveIndex() == -1) {
 						avgView.doClick();
@@ -307,14 +315,14 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 				} else {
 					avgTableMap.get(season).setTable(values);
 				}
-				
+
 				String[] playersName = new String[values.length];
 				for (int i = 0; i < values.length; i++) {
 					playersName[i] = (String) values[i][1];
 				}
-				
+
 				setTeamsIcon(playersName, season);
-				
+
 				UIEventManager.notify(UIEventType.FINISH, this);	// 完成
 			}
 		});

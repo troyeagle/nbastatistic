@@ -18,15 +18,18 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 
 	private static final long serialVersionUID = 1L;
 
-	private static String[] simpleHeader = { "赛季", "球队", "首发", "时间", "投篮", "命中",
-			"出手", "三分", "命中", "出手", "罚球", "命中", "出手", "篮板", "前场", "后场",
-			"助攻", "抢断", "盖帽", "失误", "犯规", "得分"
+	private static final String[] avgHeader = { "赛季", "球队", "首发", "时间", "投篮",
+			"命中", "出手", "三分", "命中", "出手", "罚球", "命中", "出手", "篮板", "前场",
+			"后场", "助攻", "抢断", "盖帽", "失误", "犯规", "得分"
 	};
+	private static final String[] totalHeader = avgHeader;
 
-	private static String[] advHeader = { "赛季", "球队", "篮板率", "进攻板", "防守板",
+	private static final String[] advHeader = { "赛季", "球队", "篮板率", "进攻板", "防守板",
 			"助攻率", "抢断率", "盖帽率", "失误率", "使用率", "效率", "GmSc效率值",
 			"真实命中", "投篮效率"
 	};
+
+	private static final String[] gameHeader = { "比赛日期", "比赛对阵" };
 
 	private TabBar tabBar;
 	private PanelEx viewPanel;
@@ -81,7 +84,7 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 	@Override
 	public void setAvgData(Object[][] data) {
 		if (avgTable == null) {
-			avgTable = new TableView(data, simpleHeader);
+			avgTable = new TableView(data, avgHeader);
 			setTableUIConfig(avgTable);
 			tabBar.addTab("平均数据");
 			viewPanel.add("平均数据", avgTable);
@@ -95,17 +98,47 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 
 	@Override
 	public void setTotalData(Object[][] data) {
-
+		if (totalTable == null) {
+			totalTable = new TableView(data, totalHeader);
+			setTableUIConfig(totalTable);
+			tabBar.addTab("总数据");
+			viewPanel.add("总数据", totalTable);
+			if (tabBar.getActiveTabIndex() == -1) {
+				tabBar.switchTo(0);
+			}
+		} else {
+			totalTable.setTable(data);
+		}
 	}
 
 	@Override
 	public void setAdvancedData(Object[][] data) {
-
+		if (advTable == null) {
+			advTable = new TableView(data, advHeader);
+			setTableUIConfig(advTable);
+			tabBar.addTab("进阶数据");
+			viewPanel.add("进阶数据", advTable);
+			if (tabBar.getActiveTabIndex() == -1) {
+				tabBar.switchTo(0);
+			}
+		} else {
+			advTable.setTable(data);
+		}
 	}
 
 	@Override
 	public void setGameLog(Object[][] data, int[][] dirty) {
-
+		if (gamesTable == null) {
+			gamesTable = new TableView(data, gameHeader);
+			setTableUIConfig(gamesTable);
+			tabBar.addTab("比赛数据");
+			viewPanel.add("比赛数据", gamesTable);
+			if (tabBar.getActiveTabIndex() == -1) {
+				tabBar.switchTo(0);
+			}
+		} else {
+			gamesTable.setTable(data);
+		}
 	}
 
 	private void setTableUIConfig(TableView table) {

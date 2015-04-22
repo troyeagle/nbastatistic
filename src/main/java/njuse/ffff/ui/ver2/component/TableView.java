@@ -5,11 +5,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
@@ -45,10 +43,10 @@ public class TableView extends PanelEx {
 		columnModel = table.getColumnModel();
 	}
 
-	public JTable setTable(Object[][] values) {
+	public void setTable(Object[][] values) {
 		((DefaultTableModel) table.getModel()).setDataVector(values, columnNames);
 		table.clearSelection();
-		return table;
+		table.repaint();
 	}
 
 	private JTable createTable(Object[][] values, String[] columns) {
