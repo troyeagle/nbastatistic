@@ -232,7 +232,7 @@ public class TeamInfoController implements TeamInfoService{
 				MatchPO match = matchList.get(i);
 				Calendar date = new GregorianCalendar();
 				date.setTime(match.getDate());
-				int year = date.get(Calendar.YEAR)-1900;//减去差值
+				int year = date.get(Calendar.YEAR);//减去差值
 				int month = date.get(Calendar.MONTH)+1;
 				int day = date.get(Calendar.DAY_OF_MONTH);
 				StringBuffer dateBuffer = new StringBuffer(year+"-"+month+"-"+day);
