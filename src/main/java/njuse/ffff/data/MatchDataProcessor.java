@@ -145,7 +145,7 @@ public class MatchDataProcessor {
 			while ((playerStat = br.readLine()).length() > 6) {
 				String[] split = playerStat.split(";");
 				firstFive++;
-				if(firstFive <5){
+				if(firstFive <6){
 					firstOnMatch = true;
 				}else{
 					firstOnMatch = false;
