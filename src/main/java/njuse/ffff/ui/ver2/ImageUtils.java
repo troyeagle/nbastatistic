@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import javax.swing.ImageIcon;
 
 import njuse.ffff.util.SvgConverter;
+import njuse.ffff.util.TeamNameAndAbbr;
 
 import org.apache.batik.transcoder.TranscoderException;
 
@@ -31,7 +32,11 @@ public class ImageUtils {
 	 * @return
 	 */
 	public static ImageIcon getTeamIcon(String teamName) {
-		return getImgFromPngOrSvg(teamName, getTeamImgPath());
+		String abbr = TeamNameAndAbbr.getInstance().getAbbr(teamName);
+		if(abbr==null){
+			abbr = teamName;
+		}
+		return getImgFromPngOrSvg(abbr, getTeamImgPath());
 	}
 
 	/**

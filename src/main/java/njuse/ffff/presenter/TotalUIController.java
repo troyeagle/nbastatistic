@@ -163,6 +163,7 @@ public class TotalUIController implements TotalControlService{
 //			createFrame();
 			updateController = UpdateController.getInstance();
 			updateController.checkForUpdate();
+//			initTeamAndAbbr();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -209,7 +210,7 @@ public class TotalUIController implements TotalControlService{
 	 */
 	@SuppressWarnings("deprecation")
 	public void refreshView(){
-		System.out.println("=======================update====================");
+//		System.out.println("=======================update====================");
 		if(matchViewService!=null){
 			MatchInfoService service = MatchInfoController.getInstance();
 			Date date = service.getPresentDate();

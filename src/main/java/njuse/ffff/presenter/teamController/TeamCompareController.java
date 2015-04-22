@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import njuse.ffff.data.SeasonStatProcessor;
 import njuse.ffff.dataservice.DataReaderService;
 import njuse.ffff.po.TeamInAverage;
-import njuse.ffff.po.TeamPO;
 import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.presenterService.teamService.TeamCompareService;
 import njuse.ffff.uiservice.TeamsOverviewService;
