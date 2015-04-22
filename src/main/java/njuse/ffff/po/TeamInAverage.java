@@ -129,6 +129,9 @@ public class TeamInAverage implements Serializable {
 	}
 
 	private void averageProcess() {
+		if(teamStats.size()==0){
+			return;
+		}
 		makeTotalArray();
 		fieldGoalMade /= teamStats.size();
 		fieldGoalAttempted /= teamStats.size();
