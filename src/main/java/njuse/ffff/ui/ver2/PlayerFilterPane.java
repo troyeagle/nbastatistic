@@ -26,7 +26,7 @@ public class PlayerFilterPane extends PanelEx implements PlayerFilterViewService
 
 	private static final long serialVersionUID = 1L;
 
-	private static final String[] tableHeader = { "编号", "姓名", "场均得分",
+	private static final String[] tableHeader = { "", "姓名", "场均得分",
 			"场均篮板", "场均助攻", "得分/篮板/助攻", "场均盖帽", "场均抢断",
 			"场均犯规", "场均失误", "分钟", "效率", "投篮命中率", "三分命中率",
 			"罚球命中率", "两双"

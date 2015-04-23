@@ -5,6 +5,7 @@ import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
@@ -36,6 +37,8 @@ public class TableUtils {
 				if (columnIndex >= 0 && columnIndex < getColumnCount()) {
 					try {
 						returnValue = getValueAt(0, columnIndex).getClass();
+						if (returnValue.equals(Boolean.class))
+							returnValue = Object.class;
 					} catch (Exception e) {
 						returnValue = Object.class;
 					}
@@ -64,9 +67,12 @@ public class TableUtils {
 					public Component getTableCellRendererComponent(JTable table,
 							Object value,
 							boolean isSelected, boolean hasFocus, int row, int column) {
-						JComponent c = (JComponent) super.getTableCellRendererComponent(
+						JLabel c = (JLabel) super.getTableCellRendererComponent(
 								table, value, isSelected, hasFocus, row, column);
-						c.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+						if (!Number.class.isAssignableFrom(table.getModel().getColumnClass(
+								column))) {
+							c.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+						}
 						return c;
 					}
 				});
@@ -82,9 +88,14 @@ public class TableUtils {
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value,
 					boolean isSelected, boolean hasFocus, int row, int column) {
-				JComponent c = (JComponent) super.getTableCellRendererComponent(table,
+				JLabel c = (JLabel) super.getTableCellRendererComponent(table,
 						value, isSelected, hasFocus, row, column);
-				c.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 25));
+				if (c.getText().endsWith("%")) {
+					c.setHorizontalAlignment(JLabel.RIGHT);
+				} else {
+					c.setHorizontalAlignment(JLabel.LEFT);
+				}
+				c.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 				return c;
 			}
 		};
@@ -122,8 +133,6 @@ public class TableUtils {
 			int width = (int) table.getTableHeader().getDefaultRenderer()
 					.getTableCellRendererComponent(table, column.getIdentifier()
 							, false, false, -1, col).getPreferredSize().getWidth() + 30;
-			if (Number.class.isAssignableFrom(table.getColumnClass(i)))
-				width += 30;
 			for (int row = 0; row < rowCount; row++) {
 				int preferedWidth = (int) table.getCellRenderer(row, col)
 						.getTableCellRendererComponent(table,
