@@ -123,6 +123,7 @@ public class SeasonStatProcessor {
 		
 		for (PlayerInMatchExtended p : m.getPlayerInAEx()) {
 			for (PlayerInAverage pa : playerInAverage) {
+				boolean in = false;
 				if (pa.getName().equals(p.getName())) {
 					pa.addOneMatchStat(p);
 					for(TeamPO tpo:TeamDataProcessor.teams){
@@ -130,9 +131,16 @@ public class SeasonStatProcessor {
 							pa.setLeague(tpo.getLeague());
 						}
 					}
+					in = true;
 					
 				}
+				if(!in){
+					PlayerInAverage newplayer = new PlayerInAverage(p.getName());
+					playerInAverage.add(newplayer);
+					newplayer.addOneMatchStat(p);
+				}
 			}
+			
 		}
 		for (PlayerInMatchExtended p : m.getPlayerInBEx()) {
 			for (PlayerInAverage pa : playerInAverage) {
@@ -172,6 +180,7 @@ public class SeasonStatProcessor {
 			}
 			if(!in){
 				PlayerInAverage newplayer = new PlayerInAverage(p.getName());
+				playerInAverage.add(newplayer);
 				newplayer.calAverageAsArrayNew(p);
 			}
 		}
@@ -185,6 +194,7 @@ public class SeasonStatProcessor {
 			}
 			if(!in){
 				PlayerInAverage newplayer = new PlayerInAverage(p.getName());
+				playerInAverage.add(newplayer);
 				newplayer.calAverageAsArrayNew(p);
 			}
 		}
