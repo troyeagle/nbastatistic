@@ -42,12 +42,13 @@ public class SearchResultPane extends PanelEx implements SearchResultService {
 		players = new TableView(new Object[0][], new String[] { "球员名" });
 		players.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));
 		setTableUIConfig(players);
-		teams.getTable().addMouseListener(new MouseAdapter() {
+		players.getTable().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int[] p = players.getSelectedCellLocation();
 				if (p[0] >= 0) {
 					Object v = players.getValueAt(p[0], 0);
+					System.out.println(v);
 					UIEventManager.notify(UIEventType.SWITCH, "球员详情:" + v);
 				}
 			}

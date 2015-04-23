@@ -227,7 +227,7 @@ public class MainFrame extends JFrame {
 	private void handleSearch(String message) {
 		SearchController.getInstance().search(searchResPane, message);
 		tabBar.addTab("搜索结果", 4);
-		tabBar.switchTo(4);
+		tabBar.switchTo("搜索结果");
 	}
 
 	public void setPlayerPane(String playerName) {
