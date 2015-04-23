@@ -200,9 +200,15 @@ public class HotEventController implements HotEventService{
 		for(int i=0;i<5;i++){
 			PlayerInMatchExtended player = list.get(i);
 			PlayerInAverage playerAvg = dataService.getPlayerAverage(player.getName(), emptyFilter);
-			String team = playerAvg.getTeamName();
+			String team = "N/A";
+			if(playerAvg!=null){
+				team = playerAvg.getTeamName();
+			}
 			PlayerPO playerPO = dataService.getPlayerInfo(player.getName(), emptyFilter);
-			String position = judgePlayerPosition(playerPO.getPosition());
+			String position = "N/A";
+			if(playerPO!=null){
+				position = judgePlayerPosition(playerPO.getPosition());
+			}
 			player_condition[i] = new Object[]{player.getName(),team,position
 					,DealDecimal.formatChange(player.getArray()[condition])};
 		}
@@ -220,7 +226,10 @@ public class HotEventController implements HotEventService{
 		for(int i=0;i<5;i++){
 			PlayerInAverage player = list.get(i);
 			PlayerPO playerPO = dataService.getPlayerInfo(player.getName(), emptyFilter);
-			String position = judgePlayerPosition(playerPO.getPosition());
+			String position = "N/A";
+			if(playerPO!=null){
+				position = judgePlayerPosition(playerPO.getPosition());
+			}
 			switch(condition){
 			case 14:
 			case 8:
@@ -251,7 +260,10 @@ public class HotEventController implements HotEventService{
 		for(int i=0;i<5;i++){
 			TeamInAverage team = list.get(i);
 			TeamPO teamPO = dataService.getTeamInfo(team.getName(), emptyFilter);
-			String league = judgeTeamLeague(teamPO.getLeague());
+			String league = "N/A";
+			if(teamPO!=null){
+				league = judgeTeamLeague(teamPO.getLeague());
+			}
 			switch(condition){
 			case 14:
 			case 8:
