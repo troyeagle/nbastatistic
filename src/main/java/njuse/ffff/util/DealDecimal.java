@@ -42,7 +42,7 @@ public class DealDecimal {
 	 */
 	public static String formatChangeToPercentage(double number){
 		NumberFormat num = NumberFormat.getPercentInstance(); 
-		num.setMaximumIntegerDigits(3); 
+		num.setMaximumIntegerDigits(4); 
 		num.setMaximumFractionDigits(1); 
 		String res = num.format(number);
 		return res;

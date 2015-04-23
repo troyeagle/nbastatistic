@@ -144,13 +144,13 @@ public class HotEventController implements HotEventService{
 	public void setProgressedPlayerPanel(SpecialViewService panel) {
 //		String[] properties = {"球员姓名","所属球队","该项数据","近5场提升率"};
 		//场均得分
-		Object[][] values_score = formPlayerValuesForImprove(14);
+		Object[][] values_score = formPlayerValuesForImprove(21);
 		panel.setProgressPlayer("场均得分", values_score);
 		//场均篮板
-		Object[][] values_rebound = formPlayerValuesForImprove(8);
+		Object[][] values_rebound = formPlayerValuesForImprove(22);
 		panel.setProgressPlayer("场均篮板", values_rebound);
 		//场均助攻
-		Object[][] values_assist = formPlayerValuesForImprove(9);
+		Object[][] values_assist = formPlayerValuesForImprove(23);
 		panel.setProgressPlayer("场均助攻", values_assist);
 	}
 	
@@ -206,7 +206,7 @@ public class HotEventController implements HotEventService{
 			player_condition[i] = new Object[]{player.getName(),team,position
 					,DealDecimal.formatChange(player.getArray()[condition])};
 		}
-		return null;
+		return player_condition;
 	}
 	
 	/**
@@ -228,13 +228,13 @@ public class HotEventController implements HotEventService{
 			case 11:
 			case 10:
 				double data = DealDecimal.formatChange(player.getStatsAverage()[condition], 1);
-				player_condition[i] = new Object[]{i,player.getName(),player.getTeamName(),position,data};
+				player_condition[i] = new Object[]{player.getName(),player.getTeamName(),position,data};
 				break;
 			case 29:
 			case 28:
 			case 27:
 				String data_percent = DealDecimal.formatChangeToPercentage(player.getStatsAverage()[condition]);
-				player_condition[i] = new Object[]{i,player.getName(),player.getTeamName(),position,data_percent};
+				player_condition[i] = new Object[]{player.getName(),player.getTeamName(),position,data_percent};
 			}
 		}
 		return player_condition;
@@ -284,13 +284,13 @@ public class HotEventController implements HotEventService{
 			PlayerInAverage player = list.get(i);
 			String improvement = null;
 			switch(condition){
-			case 14:
+			case 21:
 				improvement = DealDecimal.formatChangeToPercentage(player.getRecent5ScoreAdv());
 				break;
-			case 8:
+			case 22:
 				improvement = DealDecimal.formatChangeToPercentage(player.getRecent5BlockAdv());
 				break;
-			case 9:
+			case 23:
 				improvement = DealDecimal.formatChangeToPercentage(player.getRecent5AssistAdv());
 			}
 			player_condition[i] = new Object[]{player.getName(),player.getTeamName()

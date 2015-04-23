@@ -529,12 +529,20 @@ public class PlayerInAverage {
 		}
 		recent5.calAverageAsArray();
 
-		recent5ScoreAdv = recent5.statsAverage[14] / history.statsAverage[14]
-				- 1;
-		recent5BlockAdv = recent5.statsAverage[11] / history.statsAverage[11]
-				- 1;
-		recent5AssistAdv = recent5.statsAverage[9] / history.statsAverage[9]
-				- 1;
+
+		if(history.statsAverage[14]!=0){
+			recent5ScoreAdv = recent5.statsAverage[14] / history.statsAverage[14]
+					- 1;
+		}
+		if(history.statsAverage[11]!=0){
+			recent5BlockAdv = recent5.statsAverage[11] / history.statsAverage[11]
+					- 1;
+		}
+		if(history.statsAverage[9]!=0){
+			recent5AssistAdv = recent5.statsAverage[9] / history.statsAverage[9]
+					- 1;
+		}
+
 
 	}
 
