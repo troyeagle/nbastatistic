@@ -145,6 +145,7 @@ public class DataReadController implements DataReaderService {
 		player.readAndAnalysisPlayer();
 
 		team.readAndAnalysisTeam();
+		seasons.add(new SeasonStatProcessor("12-13"));
 		MatchDataProcessor.setPath("./CSEIII data/plus/matches");
 		MatchDataProcessor.matches = new ArrayList<MatchPO>();
 		match.readAndAnalysisMatch();				
@@ -175,7 +176,7 @@ public class DataReadController implements DataReaderService {
 		};
 		Thread season = new Thread(){//增添赛季数据
 			public void run(){
-				seasons.add(new SeasonStatProcessor("12-13"));
+				//seasons.add(new SeasonStatProcessor("12-13"));
 				//seasons.add(new SeasonStatProcessor("13-14"));
 				//seasons.add(new SeasonStatProcessor("14-15"));
 			}
