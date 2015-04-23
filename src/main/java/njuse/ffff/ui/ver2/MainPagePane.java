@@ -32,10 +32,10 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 	private static final long serialVersionUID = 1L;
 
 	private static final String[][] headers = {
-			{ "球员名称", "所属球队", "球员位置", "" },
-			{ "球员名称", "所属球队", "球员位置", "" },
-			{ "球员姓名", "所属球队", "", "近5场提升率" },
-			{ "球队名称", "所属联盟", "" }
+			{ "球员名", "球队", "位置", "" },
+			{ "球员名", "球队", "位置", "" },
+			{ "球员名", "球队", "", "近5场提升率" },
+			{ "球队名", "联盟", "" }
 	};
 
 	private static final String[] switchStr = {
@@ -57,7 +57,7 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 
 	@SuppressWarnings("unchecked")
 	public MainPagePane() {
-		super(new GridLayout(2, 2, 60, 60));
+		super(new GridLayout(2, 2, 20, 20));
 		setOpaque(false);
 		setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
 

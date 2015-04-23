@@ -3,12 +3,14 @@ package njuse.ffff.ui.ver2;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
@@ -37,10 +39,13 @@ public class MainFrame extends JFrame {
 	private SearchResultPane searchResPane;
 
 	private MainFrame() {
-		this.setUndecorated(true);
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setSize(960, 720);
-		this.setLocationRelativeTo(null);
+		setUndecorated(true);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setSize(960, 720);
+		setLocationRelativeTo(null);
+		setTitle("NBA数据查询系统");
+		ImageIcon icon = new ImageIcon("./img/nba.png");
+		setIconImage(icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
 
 		getContentPane().setBackground(Color.DARK_GRAY);
 
@@ -51,7 +56,7 @@ public class MainFrame extends JFrame {
 
 		UIEventManager.addListener(new UIEventHandler(), UIEventType.ALL);
 
-		this.setVisible(true);
+		setVisible(true);
 
 		initView();
 	}
@@ -60,7 +65,7 @@ public class MainFrame extends JFrame {
 		UIEventManager.notify(UIEventType.BUSY, this);
 
 		initTitleArea();
-		this.setTitle("主页");
+		setTitle("主页");
 
 		playerPane = new PlayerDetailPane();
 		teamPane = new TeamDetailPane();
@@ -86,6 +91,7 @@ public class MainFrame extends JFrame {
 	private void initTitleArea() {
 		titleBar = new TitleBar(this);
 		titleBar.setOpaque(false);
+		titleBar.setTitle("NBA数据查询系统");
 
 		tabBar = new TabBar("主页", "球队一览", "球员一览", "球员筛选");
 		tabBar.setOpaque(false);
@@ -94,7 +100,6 @@ public class MainFrame extends JFrame {
 			@Override
 			public void actionPerformed(SwitchEvent e) {
 				String name = e.getSource().getName();
-				setTitle(name);
 				((CardLayout) viewPanel.getLayout()).show(viewPanel, name);
 				// TODO
 			}
@@ -144,13 +149,6 @@ public class MainFrame extends JFrame {
 		return frame;
 	}
 
-	@Override
-	public void setTitle(String title) {
-		super.setTitle(title);
-		if (titleBar != null)
-			titleBar.setTitle(title);
-	}
-
 	private class UIEventHandler implements UIEventListener {
 
 		int busyCount;
@@ -193,20 +191,20 @@ public class MainFrame extends JFrame {
 
 		private void handleBusy() {
 			busyCount++;
-			handleStatus(busyCount > 0);
+			handleStatus();
 		}
 
 		private void handleFinish() {
 			busyCount--;
-			handleStatus(busyCount > 0);
+			handleStatus();
 		}
 
-		private void handleStatus(boolean status) {
+		private void handleStatus() {
 			Timer t = new Timer(0, new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO
-					loadingPanel.setVisible(status);
+					loadingPanel.setVisible(busyCount > 0);
 				}
 			});
 			if (busyCount <= 0)

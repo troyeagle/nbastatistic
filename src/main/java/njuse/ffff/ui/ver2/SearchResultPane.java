@@ -48,7 +48,7 @@ public class SearchResultPane extends PanelEx implements SearchResultService {
 				int[] p = players.getSelectedCellLocation();
 				if (p[0] >= 0) {
 					Object v = players.getValueAt(p[0], 0);
-					UIEventManager.notify(UIEventType.SWITCH, "球队详情:" + v);
+					UIEventManager.notify(UIEventType.SWITCH, "球员详情:" + v);
 				}
 			}
 		});
