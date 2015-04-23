@@ -145,24 +145,24 @@ public class DataReadController implements DataReaderService {
 		player.readAndAnalysisPlayer();
 
 		team.readAndAnalysisTeam();
-
+		MatchDataProcessor.setPath("./CSEIII data/plus/matches");
+		MatchDataProcessor.matches = new ArrayList<MatchPO>();
+		match.readAndAnalysisMatch();				
+		match.processAll();
+		averageArrayIni();
+		for(MatchPO m:MatchDataProcessor.matches){
+			for(SeasonStatProcessor ss:seasons){
+				if(m.getName().startsWith(ss.getSeason())){
+					ss.averageProcessForNewMatch(m);
+					break;
+				}
+			}
+		}
+		currentDate = MatchDataProcessor.matches.get(MatchDataProcessor.matches.size()-1).getDate();
+		average();
 		Thread main = new Thread() {//初始化以及处理初始数据
 			public void run() {
-				MatchDataProcessor.setPath("./CSEIII data/plus/matches");
-				MatchDataProcessor.matches = new ArrayList<MatchPO>();
-				match.readAndAnalysisMatch();				
-				match.processAll();
-				averageArrayIni();
-				for(MatchPO m:MatchDataProcessor.matches){
-					for(SeasonStatProcessor ss:seasons){
-						if(m.getName().startsWith(ss.getSeason())){
-							ss.averageProcessForNewMatch(m);
-							break;
-						}
-					}
-				}
-				currentDate = MatchDataProcessor.matches.get(MatchDataProcessor.matches.size()-1).getDate();
-				average();
+				
 				try {
 					player.saveAsSerial();
 					team.saveAsSerial();
