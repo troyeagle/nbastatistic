@@ -163,17 +163,29 @@ public class SeasonStatProcessor {
 		}
 		
 		for (PlayerInMatchExtended p : m.getPlayerInAEx()) {
+			boolean in = false;
 			for (PlayerInAverage pa : playerInAverage) {
 				if (pa.getName().equals(p.getName())) {
-					pa.calAverageAsArrayNew(p);				
+					pa.calAverageAsArrayNew(p);	
+					in = true;
 				}
+			}
+			if(!in){
+				PlayerInAverage newplayer = new PlayerInAverage(p.getName());
+				newplayer.calAverageAsArrayNew(p);
 			}
 		}
 		for (PlayerInMatchExtended p : m.getPlayerInBEx()) {
+			boolean in = false;
 			for (PlayerInAverage pa : playerInAverage) {
 				if (pa.getName().equals(p.getName())) {
 					pa.calAverageAsArrayNew(p);
+					in = true;
 				}
+			}
+			if(!in){
+				PlayerInAverage newplayer = new PlayerInAverage(p.getName());
+				newplayer.calAverageAsArrayNew(p);
 			}
 		}
 	}

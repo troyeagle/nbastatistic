@@ -24,6 +24,7 @@ import njuse.ffff.presenterService.UpdateService;
 import njuse.ffff.util.FileListener;
 import njuse.ffff.util.Filter;
 import njuse.ffff.util.Sort;
+
 /**
  * 数据层读取处理入口和中心控制
  * 
@@ -38,19 +39,22 @@ public class DataReadController implements DataReaderService {
 	ArrayList<PlayerInAverage> playerInAverage;
 	ArrayList<SeasonStatProcessor> seasons = new ArrayList<SeasonStatProcessor>();
 	ExecutorService exe = Executors.newCachedThreadPool();
-	
+
 	String path;
-	
+
 	Date currentDate;
 	String currentSeason;
-	
+
 	Queue<String> eventQ = new LinkedList<String>();
+
 	public ArrayList<PlayerInAverage> getPlayerInAverage() {
 		return playerInAverage;
 	}
 
 	public PlayerInAverage getPlayerAverage(String name, Filter filter) {
-		if(filter==null){filter = new Filter();}
+		if (filter == null) {
+			filter = new Filter();
+		}
 		for (PlayerInAverage p : playerInAverage) {
 			if (p.getName().equals(name) && filter.filt(p)) {
 				return p;
@@ -61,7 +65,9 @@ public class DataReadController implements DataReaderService {
 	}
 
 	public PlayerPO getPlayerInfo(String name, Filter filter) {
-		if(filter==null){filter = new Filter();}
+		if (filter == null) {
+			filter = new Filter();
+		}
 		for (PlayerPO p : PlayersDataProcessor.players) {
 			if (p.getName().equals(name) && filter.filt(p)) {
 				return p;
@@ -71,9 +77,12 @@ public class DataReadController implements DataReaderService {
 	}
 
 	public TeamInAverage getTeamAverage(String name, Filter filter) {
-		if(filter==null){filter = new Filter();}
+		if (filter == null) {
+			filter = new Filter();
+		}
 		for (TeamInAverage t : teamInAverage) {
-			if ((t.getName().equals(name)||t.getAbbr().equals(name)) && filter.filt(t)) {
+			if ((t.getName().equals(name) || t.getAbbr().equals(name))
+					&& filter.filt(t)) {
 				return t;
 			}
 		}
@@ -81,9 +90,12 @@ public class DataReadController implements DataReaderService {
 	}
 
 	public TeamPO getTeamInfo(String name, Filter filter) {
-		if(filter==null){filter = new Filter();}
+		if (filter == null) {
+			filter = new Filter();
+		}
 		for (TeamPO t : TeamDataProcessor.teams) {
-			if ((t.getName().equals(name)||t.getAbbr().equals(name)) && filter.filt(t)) {
+			if ((t.getName().equals(name) || t.getAbbr().equals(name))
+					&& filter.filt(t)) {
 				return t;
 			}
 		}
@@ -93,7 +105,9 @@ public class DataReadController implements DataReaderService {
 
 	public ArrayList<PlayerInMatchExtended> getPlayerStatistics(String name,
 			Filter filter) {
-		if(filter==null){filter = new Filter();}
+		if (filter == null) {
+			filter = new Filter();
+		}
 		for (PlayerInAverage p : playerInAverage) {
 			if (p.getName().equals(name) && filter.filt(p)) {
 				return p.getPlayerStats();
@@ -104,34 +118,39 @@ public class DataReadController implements DataReaderService {
 	}
 
 	public ArrayList<TeamInMatch> getTeamStatistics(String name, Filter filter) {
-		if(filter==null){filter = new Filter();}
+		if (filter == null) {
+			filter = new Filter();
+		}
 		for (TeamInAverage t : teamInAverage) {
-			if ((t.getName().equals(name)||t.getAbbr().equals(name)) && filter.filt(t)) {
+			if ((t.getName().equals(name) || t.getAbbr().equals(name))
+					&& filter.filt(t)) {
 				return t.getTeamStats();
 			}
 		}
 		return null;
 	}
+
 	/**
 	 * 数据首次读取入口,程序核心方法
 	 */
-	
-	public void advancedInitialize(String path,int cacheLength){
-		//写着玩的
+
+	public void advancedInitialize(String path, int cacheLength) {
+		// 写着玩的
 	}
+
 	public void initialize() throws IOException {
 		/**
 		 * FileListener应该是最高优先级？
 		 */
-		path="./CSEIII data/plus/matches";
+		path = "./CSEIII data/plus/matches";
 		currentSeason = "12-13";
 		File f = new File(path);
-		if(!f.exists()){
+		if (!f.exists()) {
 			f.mkdirs();
 		}
-		
-		Thread fileListener = new Thread(){
-			public void run(){
+
+		Thread fileListener = new Thread() {
+			public void run() {
 				FileListener fl = new FileListener(path);
 				try {
 					fl.startNewWatch(eventQ);
@@ -141,29 +160,31 @@ public class DataReadController implements DataReaderService {
 			}
 		};
 		exe.execute(fileListener);
-		
+
 		player.readAndAnalysisPlayer();
 
 		team.readAndAnalysisTeam();
 		seasons.add(new SeasonStatProcessor("12-13"));
+		seasons.add(new SeasonStatProcessor("13-14"));
 		MatchDataProcessor.setPath("./CSEIII data/plus/matches");
 		MatchDataProcessor.matches = new ArrayList<MatchPO>();
-		match.readAndAnalysisMatch();				
+		match.readAndAnalysisMatch();
 		match.processAll();
 		averageArrayIni();
-		for(MatchPO m:MatchDataProcessor.matches){
-			for(SeasonStatProcessor ss:seasons){
-				if(m.getName().startsWith(ss.getSeason())){
+		for (MatchPO m : MatchDataProcessor.matches) {
+			for (SeasonStatProcessor ss : seasons) {
+				if (m.getName().startsWith(ss.getSeason())) {
 					ss.averageProcessForNewMatch(m);
 					break;
 				}
 			}
 		}
-		currentDate = MatchDataProcessor.matches.get(MatchDataProcessor.matches.size()-1).getDate();
+		currentDate = MatchDataProcessor.matches.get(
+				MatchDataProcessor.matches.size() - 1).getDate();
 		average();
-		Thread main = new Thread() {//初始化以及处理初始数据
+		Thread main = new Thread() {// 初始化以及处理初始数据
 			public void run() {
-				
+
 				try {
 					player.saveAsSerial();
 					team.saveAsSerial();
@@ -171,14 +192,14 @@ public class DataReadController implements DataReaderService {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				
+
 			}
 		};
-		Thread season = new Thread(){//增添赛季数据
-			public void run(){
-				//seasons.add(new SeasonStatProcessor("12-13"));
-				//seasons.add(new SeasonStatProcessor("13-14"));
-				//seasons.add(new SeasonStatProcessor("14-15"));
+		Thread season = new Thread() {// 增添赛季数据
+			public void run() {
+				// seasons.add(new SeasonStatProcessor("12-13"));
+				// seasons.add(new SeasonStatProcessor("13-14"));
+				// seasons.add(new SeasonStatProcessor("14-15"));
 			}
 		};
 		exe.execute(main);
@@ -186,16 +207,17 @@ public class DataReadController implements DataReaderService {
 		processNewMatch();
 	}
 
-	private void averageArrayIni(){
+	private void averageArrayIni() {
 		playerInAverage = new ArrayList<PlayerInAverage>();
 		teamInAverage = new ArrayList<TeamInAverage>();
 		for (PlayerPO p : PlayersDataProcessor.players) {
 			playerInAverage.add(new PlayerInAverage(p.getName()));
 		}
-		for(TeamPO p:TeamDataProcessor.teams){
-			teamInAverage.add(new TeamInAverage(p.getName(),p.getAbbr()));
+		for (TeamPO p : TeamDataProcessor.teams) {
+			teamInAverage.add(new TeamInAverage(p.getName(), p.getAbbr()));
 		}
 	}
+
 	public void load() throws ClassNotFoundException, IOException {
 		player.loadSerial();
 		team.loadSerial();
@@ -205,18 +227,17 @@ public class DataReadController implements DataReaderService {
 		average();
 
 	}
+
 	/**
 	 * 所有平均值计算,必须确保averageIni已调用，及各平均数容器已经初始化
 	 */
 	public void average() {
-
 
 		/*
 		 * for (PlayerPO p : PlayersDataProcessor.players) {
 		 * playerInAverage.add(new PlayerInAverage(p.getName(),
 		 * MatchDataProcessor.matches)); }
 		 */// This method is too stupid.
-
 
 		for (MatchPO m : MatchDataProcessor.matches) {
 			averageProcessForMatch(m);
@@ -229,59 +250,77 @@ public class DataReadController implements DataReaderService {
 		}
 	}
 
-	private void averageProcessForMatch(MatchPO m){
-		for(TeamInAverage ta:teamInAverage){
-//			if(ta.getAbbr().equals(m.getTeamA())){
-//				ta.addMatch(m.getTeamStatA());
-//			}else if(ta.getAbbr().equals(m.getTeamB())){
-//				ta.addMatch(m.getTeamStatB());
-//			}
-			if(isEqualTeam(ta.getAbbr(),m.getTeamA())){
+	private void averageProcessForMatch(MatchPO m) {
+		for (TeamInAverage ta : teamInAverage) {
+			// if(ta.getAbbr().equals(m.getTeamA())){
+			// ta.addMatch(m.getTeamStatA());
+			// }else if(ta.getAbbr().equals(m.getTeamB())){
+			// ta.addMatch(m.getTeamStatB());
+			// }
+			if (isEqualTeam(ta.getAbbr(), m.getTeamA())) {
 				ta.addMatch(m.getTeamStatA());
-			}else if(isEqualTeam(ta.getAbbr(),m.getTeamB())){
+			} else if (isEqualTeam(ta.getAbbr(), m.getTeamB())) {
 				ta.addMatch(m.getTeamStatB());
 			}
 		}
-		
+
 		for (PlayerInMatchExtended p : m.getPlayerInAEx()) {
+			boolean in = false;
 			for (PlayerInAverage pa : playerInAverage) {
 				if (pa.getName().equals(p.getName())) {
 					pa.addOneMatchStat(p);
-					for(TeamPO tpo:TeamDataProcessor.teams){
-						if(tpo.getAbbr().equals(p.getTeam().getNameAbbr())){
+					in = true;
+					for (TeamPO tpo : TeamDataProcessor.teams) {
+						if (tpo.getAbbr().equals(p.getTeam().getNameAbbr())) {
 							pa.setLeague(tpo.getLeague());
 						}
 					}
-					
+
 				}
+			}
+
+			if (!in) {
+				PlayerInAverage newplayer = new PlayerInAverage(p.getName());
+				playerInAverage.add(newplayer);
+				newplayer.addOneMatchStat(p);
+
 			}
 		}
 		for (PlayerInMatchExtended p : m.getPlayerInBEx()) {
+			boolean in = false;
 			for (PlayerInAverage pa : playerInAverage) {
 				if (pa.getName().equals(p.getName())) {
 					pa.addOneMatchStat(p);
+					in= true;
 				}
+			}
+			if (!in) {
+				PlayerInAverage newplayer = new PlayerInAverage(p.getName());
+				playerInAverage.add(newplayer);
+				newplayer.addOneMatchStat(p);
+
 			}
 		}
 	}
+
 	/**
-	 * Iteration 2
-	 * Process a new Match with its average
+	 * Iteration 2 Process a new Match with its average
+	 * 
 	 * @param m
 	 */
-	private void averageProcessForNewMatch(MatchPO m){
-		for(TeamInAverage ta:teamInAverage){
-			if(ta.getAbbr().equals(m.getName())){
+	private void averageProcessForNewMatch(MatchPO m) {
+		for (TeamInAverage ta : teamInAverage) {
+			if (ta.getAbbr().equals(m.getName())) {
 				ta.calAverageWithNew(m.getTeamStatA());
-			}else if(ta.getAbbr().equals(m.getTeamB())){
+			} else if (ta.getAbbr().equals(m.getTeamB())) {
 				ta.calAverageWithNew(m.getTeamStatB());
 			}
 		}
-		
+
 		for (PlayerInMatchExtended p : m.getPlayerInAEx()) {
 			for (PlayerInAverage pa : playerInAverage) {
 				if (pa.getName().equals(p.getName())) {
-					pa.calAverageAsArrayNew(p);				
+					pa.calAverageAsArrayNew(p);
 				}
 			}
 		}
@@ -293,14 +332,16 @@ public class DataReadController implements DataReaderService {
 			}
 		}
 	}
-		
+
 	public static void main(String[] args) throws IOException,
 			ClassNotFoundException {
 		new DataReadController().initialize();
 	}
 
 	public ArrayList<PlayerPO> getPlayerInfoAll(Filter filter) {
-		if(filter==null){filter = new Filter();}
+		if (filter == null) {
+			filter = new Filter();
+		}
 		ArrayList<PlayerPO> arr = new ArrayList<PlayerPO>();
 		for (PlayerPO p : PlayersDataProcessor.players) {
 			if (filter.filt(p)) {
@@ -311,7 +352,9 @@ public class DataReadController implements DataReaderService {
 	}
 
 	public ArrayList<TeamPO> getTeamInfoAll(Filter filter) {
-		if(filter==null){filter = new Filter();}
+		if (filter == null) {
+			filter = new Filter();
+		}
 		ArrayList<TeamPO> arr = new ArrayList<TeamPO>();
 		for (TeamPO t : TeamDataProcessor.teams) {
 			if (filter.filt(t)) {
@@ -320,45 +363,50 @@ public class DataReadController implements DataReaderService {
 		}
 		return arr;
 	}
+
 	/**
 	 * Iteration 2 main method
 	 */
-	public void processNewMatch(){
-		
-		Thread watch = new Thread(){
-			public void run(){
+	public void processNewMatch() {
 
-				while(true){
-					synchronized(this){
-						if(eventQ.size()>2){
+		Thread watch = new Thread() {
+			public void run() {
+
+				while (true) {
+					synchronized (this) {
+						if (eventQ.size() > 2) {
 							String[] name = eventQ.poll().split(";");
-							
-							if(name[0].equals("ENTRY_CREATE")){
-								
-									System.out.println(name[0]+"start:"+name[1]);
-									MatchPO oneMatch = MatchDataProcessor.readAndAnalyzeNew(path,name[1]);
-									oneMatch.teamProcess();
-									averageProcessForNewMatch(oneMatch);
-									currentDate = oneMatch.getDate();
-									currentSeason = oneMatch.getName().substring(0, 5);
-									UpdateService up = UpdateController.getInstance();//更新
-									up.informUpdate();
-									/**
-									 * Iteration 2 select season and process
-									 */
-									for(SeasonStatProcessor ss:seasons){
-										if(oneMatch.getName().startsWith(ss.getSeason())){
-											ss.averageProcessForNewMatch(oneMatch);
-											break;
-										}
+
+							if (name[0].equals("ENTRY_CREATE")) {
+
+								System.out
+										.println(name[0] + "start:" + name[1]);
+								MatchPO oneMatch = MatchDataProcessor
+										.readAndAnalyzeNew(path, name[1]);
+								oneMatch.teamProcess();
+								averageProcessForNewMatch(oneMatch);
+								currentDate = oneMatch.getDate();
+								currentSeason = oneMatch.getName().substring(0,
+										5);
+								UpdateService up = UpdateController
+										.getInstance();// 更新
+								up.informUpdate();
+								/**
+								 * Iteration 2 select season and process
+								 */
+								for (SeasonStatProcessor ss : seasons) {
+									if (oneMatch.getName().startsWith(
+											ss.getSeason())) {
+										ss.averageProcessForNewMatch(oneMatch);
+										break;
 									}
-								
-								
+								}
+
 							}
-							
+
 						}
 					}
-					
+
 				}
 			}
 		};
@@ -368,8 +416,8 @@ public class DataReadController implements DataReaderService {
 	@Override
 	public List<MatchPO> getMatchForTeam(String team) {
 		List<MatchPO> matchForTeam = new ArrayList<MatchPO>();
-		for(MatchPO m:MatchDataProcessor.matches){
-			if(m.getTeamA().equals(team)||m.getTeamB().equals(team)){
+		for (MatchPO m : MatchDataProcessor.matches) {
+			if (m.getTeamA().equals(team) || m.getTeamB().equals(team)) {
 				matchForTeam.add(m);
 			}
 		}
@@ -379,8 +427,8 @@ public class DataReadController implements DataReaderService {
 	@Override
 	public List<MatchPO> getMatchForPlayer(String player) {
 		List<MatchPO> matchForTeam = new ArrayList<MatchPO>();
-		for(MatchPO m:MatchDataProcessor.matches){
-			if(m.getMembers().contains(player)){
+		for (MatchPO m : MatchDataProcessor.matches) {
+			if (m.getMembers().contains(player)) {
 				matchForTeam.add(m);
 			}
 		}
@@ -390,8 +438,9 @@ public class DataReadController implements DataReaderService {
 	@Override
 	public List<MatchPO> getMatchInPeriod(Date date1, Date date2) {
 		List<MatchPO> matchForTeam = new ArrayList<MatchPO>();
-		for(MatchPO m:MatchDataProcessor.matches){
-			if(m.getDate().compareTo(date1)>=0&&m.getDate().compareTo(date2)>=0){
+		for (MatchPO m : MatchDataProcessor.matches) {
+			if (m.getDate().compareTo(date1) >= 0
+					&& m.getDate().compareTo(date2) >= 0) {
 				matchForTeam.add(m);
 			}
 		}
@@ -401,10 +450,12 @@ public class DataReadController implements DataReaderService {
 	@Override
 	public MatchPO getMatch(Date date, String teamA) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		for(MatchPO m:MatchDataProcessor.matches){
-		    String ds1 = sdf.format(m.getDate());
-		    String ds2 = sdf.format(date);
-			if(ds1.equals(ds2)&&(m.getTeamA().equals(teamA)||m.getTeamB().equals(teamA))){
+		for (MatchPO m : MatchDataProcessor.matches) {
+			String ds1 = sdf.format(m.getDate());
+			String ds2 = sdf.format(date);
+			if (ds1.equals(ds2)
+					&& (m.getTeamA().equals(teamA) || m.getTeamB()
+							.equals(teamA))) {
 				return m;
 			}
 		}
@@ -412,25 +463,27 @@ public class DataReadController implements DataReaderService {
 	}
 
 	@Override
-	public List<PlayerInMatchExtended> getLeadPlayerForDay(Date date, int condition) {
+	public List<PlayerInMatchExtended> getLeadPlayerForDay(Date date,
+			int condition) {
 		List<PlayerInMatchExtended> players = new ArrayList<PlayerInMatchExtended>();
-		for(MatchPO m:MatchDataProcessor.matches){
-			if(m.getDate().equals(date)){
+		for (MatchPO m : MatchDataProcessor.matches) {
+			if (m.getDate().equals(date)) {
 				players.addAll(m.getPlayerInAEx());
 				players.addAll(m.getPlayerInBEx());
 			}
 		}
 		int[] attributes = new int[2];
-		attributes[0]=condition;
+		attributes[0] = condition;
 		new Sort().sortPlayerSingle(players, attributes);
-		
+
 		return players;
 	}
 
 	@Override
-	public List<PlayerInAverage> getLeadPlayerForSeason(String season, int condition) {
-		for(SeasonStatProcessor ss:seasons){
-			if(ss.season.equals(season)){
+	public List<PlayerInAverage> getLeadPlayerForSeason(String season,
+			int condition) {
+		for (SeasonStatProcessor ss : seasons) {
+			if (ss.season.equals(season)) {
 				return ss.getLeadPlayerForSeason(condition);
 			}
 		}
@@ -439,8 +492,8 @@ public class DataReadController implements DataReaderService {
 
 	@Override
 	public List<TeamInAverage> getLeadTeamForSeason(String season, int condition) {
-		for(SeasonStatProcessor ss:seasons){
-			if(ss.season.equals(season)){
+		for (SeasonStatProcessor ss : seasons) {
+			if (ss.season.equals(season)) {
 				return ss.getLeadTeamForSeason(condition);
 			}
 		}
@@ -449,8 +502,8 @@ public class DataReadController implements DataReaderService {
 
 	@Override
 	public List<PlayerInAverage> getImprovePlayer(String season, int condition) {
-		for(SeasonStatProcessor ss:seasons){
-			if(ss.season.equals(season)){
+		for (SeasonStatProcessor ss : seasons) {
+			if (ss.season.equals(season)) {
 				return ss.getImprovePlayer(condition);
 			}
 		}
@@ -464,24 +517,23 @@ public class DataReadController implements DataReaderService {
 	public String getCurrentSeason() {
 		return currentSeason;
 	}
-	
-	public SeasonStatProcessor getSeasonStatProcessor(String season){
-		for(SeasonStatProcessor ss:seasons){
-			if(season.equals(ss.season)){
+
+	public SeasonStatProcessor getSeasonStatProcessor(String season) {
+		for (SeasonStatProcessor ss : seasons) {
+			if (season.equals(ss.season)) {
 				return ss;
 			}
 		}
 		return null;
 	}
 
-	public boolean isEqualTeam(String abbrInTeam,String abbrInMatch){
-		if(abbrInTeam.equals(abbrInMatch)){
+	public boolean isEqualTeam(String abbrInTeam, String abbrInMatch) {
+		if (abbrInTeam.equals(abbrInMatch)) {
 			return true;
-		}
-		else if(this.currentSeason.equals("12-13")&&abbrInTeam.equals("NOP")&&abbrInMatch.equals("NOH")){
+		} else if (this.currentSeason.equals("12-13")
+				&& abbrInTeam.equals("NOP") && abbrInMatch.equals("NOH")) {
 			return true;
-		}
-		else{
+		} else {
 			return false;
 		}
 	}
