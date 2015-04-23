@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +24,7 @@ import njuse.ffff.ui.ver2.component.SwitchButtonGroup;
 import njuse.ffff.ui.ver2.component.SwitchEvent;
 import njuse.ffff.ui.ver2.component.SwitchListener;
 import njuse.ffff.ui.ver2.component.TableView;
+import njuse.ffff.ui.ver2.component.WrapLayout;
 import njuse.ffff.uiservice.SpecialViewService;
 
 public class MainPagePane extends PanelEx implements SpecialViewService {
@@ -89,7 +88,7 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 			labelTitle.setFont(UIConfig.TitleFont);
 			labelTitle.setForeground(Color.WHITE);
 
-			tabPanel[i] = new PanelEx(new FlowLayout(FlowLayout.LEFT));
+			tabPanel[i] = new PanelEx(new WrapLayout(WrapLayout.LEFT));
 			tabPanel[i].setOpaque(false);
 
 			PanelEx tablePanel = new PanelEx(new BorderLayout());
@@ -103,7 +102,6 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 			dataPanel.add(tablePanel);
 			add(dataPanel);
 		}
-		tabPanel[HotSeason].setPreferredSize(new Dimension(0, 80));
 
 		initListener();
 		initData();

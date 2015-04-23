@@ -3,8 +3,6 @@ package njuse.ffff.ui.ver2;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -21,6 +19,7 @@ import njuse.ffff.ui.ver2.component.SwitchButtonGroup;
 import njuse.ffff.ui.ver2.component.SwitchEvent;
 import njuse.ffff.ui.ver2.component.SwitchListener;
 import njuse.ffff.ui.ver2.component.TableView;
+import njuse.ffff.ui.ver2.component.WrapLayout;
 import njuse.ffff.uiservice.PlayerFilterViewService;
 
 public class PlayerFilterPane extends PanelEx implements PlayerFilterViewService {
@@ -42,7 +41,7 @@ public class PlayerFilterPane extends PanelEx implements PlayerFilterViewService
 	private SwitchButtonGroup[] groups;
 
 	public PlayerFilterPane() {
-		super(new BorderLayout());
+		super(new BorderLayout(0, 20));
 		setOpaque(false);
 		setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
 
@@ -83,7 +82,7 @@ public class PlayerFilterPane extends PanelEx implements PlayerFilterViewService
 		for (int i = 0; i < titleStr.length; i++) {
 			groups[i] = new SwitchButtonGroup();
 
-			conditions[i] = new PanelEx(new FlowLayout(FlowLayout.LEFT));
+			conditions[i] = new PanelEx(new WrapLayout(WrapLayout.LEFT));
 			conditions[i].setOpaque(false);
 
 			LabelEx typeLabel = new LabelEx(typeStr[i]);
@@ -114,8 +113,6 @@ public class PlayerFilterPane extends PanelEx implements PlayerFilterViewService
 				}
 			});
 		}
-
-		conditions[2].setPreferredSize(new Dimension(0, 80));
 
 		filterPanel.add(conditions[0], BorderLayout.NORTH);
 		filterPanel.add(conditions[1]);

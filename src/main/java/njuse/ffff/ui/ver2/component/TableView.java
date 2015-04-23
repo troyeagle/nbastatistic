@@ -18,9 +18,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
-
 import njuse.ffff.ui.component.PanelEx;
+
+import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 
 @SuppressWarnings("restriction")
 public class TableView extends PanelEx {
