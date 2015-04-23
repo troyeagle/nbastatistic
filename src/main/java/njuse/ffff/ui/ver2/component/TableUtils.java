@@ -93,9 +93,9 @@ public class TableUtils {
 				if (c.getText().endsWith("%")) {
 					c.setHorizontalAlignment(JLabel.RIGHT);
 				} else {
-					c.setHorizontalAlignment(JLabel.LEFT);
+					c.setHorizontalAlignment(JLabel.CENTER);
 				}
-				c.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+				c.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 5));
 				return c;
 			}
 		};
