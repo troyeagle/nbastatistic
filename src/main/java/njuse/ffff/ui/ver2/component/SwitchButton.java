@@ -3,6 +3,8 @@ package njuse.ffff.ui.ver2.component;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Icon;
 
@@ -18,6 +20,8 @@ public class SwitchButton extends ButtonEx {
 	private Color activeColor;
 
 	protected Icon[] icons;
+
+	protected List<ConditionChangeListener> listeners;
 
 	public SwitchButton() {
 		this(null, null);
@@ -36,6 +40,8 @@ public class SwitchButton extends ButtonEx {
 		icons = new Icon[2];
 		icons[0] = icon;
 
+		listeners = new ArrayList<>();
+
 		activeColor = new Color(255, 255, 255, 192);
 
 		addActionListener(new ActionListener() {
@@ -52,6 +58,16 @@ public class SwitchButton extends ButtonEx {
 	}
 
 	public void setActive(boolean b) {
+		if (isActive != b) {
+			setStatus(b);
+			ConditionChangeEvent e = new ConditionChangeEvent(b, this);
+			listeners.forEach(l -> {
+				l.actionPerformed(e);
+			});
+		}
+	}
+
+	void setStatus(boolean b) {
 		if (isActive = b) {
 			setMaskColor(activeColor);
 			if (icons[1] != null)
@@ -78,8 +94,12 @@ public class SwitchButton extends ButtonEx {
 	public Color getActiveColor() {
 		return activeColor;
 	}
-	
+
 	public void setClickCancelEnable(boolean b) {
 		this.clickCanelEnabled = b;
+	}
+
+	public void addConditionChangeListener(ConditionChangeListener l) {
+		listeners.add(l);
 	}
 }

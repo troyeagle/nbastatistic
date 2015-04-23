@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -87,19 +89,21 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 			labelTitle.setFont(UIConfig.TitleFont);
 			labelTitle.setForeground(Color.WHITE);
 
-			tabPanel[i] = new PanelEx();
+			tabPanel[i] = new PanelEx(new FlowLayout(FlowLayout.LEFT));
 			tabPanel[i].setOpaque(false);
 
 			PanelEx tablePanel = new PanelEx(new BorderLayout());
+			tablePanel.setOpaque(false);
 			tablePanel.add(tabPanel[i], BorderLayout.NORTH);
 			tablePanel.add(tableView[i]);
 
 			PanelEx dataPanel = new PanelEx(new BorderLayout());
 			dataPanel.setOpaque(false);
 			dataPanel.add(labelTitle, BorderLayout.NORTH);
-			dataPanel.add(tableView[i]);
+			dataPanel.add(tablePanel);
 			add(dataPanel);
 		}
+		tabPanel[HotSeason].setPreferredSize(new Dimension(0, 80));
 
 		initListener();
 		initData();
@@ -180,6 +184,8 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 			SwitchButton btn = new SwitchButton(type);
 			btn.setName(type);
 			btn.setFont(UIConfig.SubTitleFont);
+			btn.setBackground(new Color(255, 255, 255, 64));
+			btn.setForeground(Color.WHITE);
 
 			tabPanel[tableType].add(btn);
 			hotGroup[tableType].addButton(btn);
@@ -194,7 +200,7 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 
 	private void setTableUIConfig(TableView table) {
 		table.setTableFont(UIConfig.ContentFont);
-		table.setHeaderFont(UIConfig.SmallFont);
+		table.setHeaderFont(UIConfig.ContentFont);
 		table.setRowHeight(UIConfig.ContentFont.getSize() + 5);
 		table.setForeground(Color.WHITE);
 		table.setSelectionBgColor(UIConfig.TableSelectionBgColor);

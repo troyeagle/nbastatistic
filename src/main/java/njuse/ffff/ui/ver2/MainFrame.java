@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
+import njuse.ffff.presenter.SearchController;
 import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.ui.component.PanelEx;
 import njuse.ffff.ui.ver2.component.SwitchEvent;
@@ -33,6 +34,7 @@ public class MainFrame extends JFrame {
 	private PlayerDetailPane playerPane;
 	private TeamDetailPane teamPane;
 	private MatchViewPane matchPane;
+	private SearchResultPane searchResPane;
 
 	private MainFrame() {
 		this.setUndecorated(true);
@@ -63,10 +65,13 @@ public class MainFrame extends JFrame {
 		playerPane = new PlayerDetailPane();
 		teamPane = new TeamDetailPane();
 		matchPane = new MatchViewPane();
+		searchResPane = new SearchResultPane();
 
 		viewPanel.add("主页", new MainPagePane());
 		viewPanel.add("球队一览", new TeamsOverViewPanel());
 		viewPanel.add("球员一览", new PlayersOverViewPane());
+		viewPanel.add("球员筛选", new PlayerFilterPane());
+		viewPanel.add("搜索结果", searchResPane);
 		viewPanel.add("球员详情", playerPane);
 		viewPanel.add("球队详情", teamPane);
 		viewPanel.add("比赛详情", matchPane);
@@ -161,6 +166,10 @@ public class MainFrame extends JFrame {
 				break;
 			case SWITCH:
 				handleSwitch(e.getMessage());
+				break;
+			case SEARCH:
+				handleSearch(e.getMessage());
+				break;
 			default:
 				break;
 			}
@@ -193,7 +202,6 @@ public class MainFrame extends JFrame {
 		}
 
 		private void handleStatus(boolean status) {
-			System.out.println(busyCount);
 			Timer t = new Timer(0, new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -216,6 +224,12 @@ public class MainFrame extends JFrame {
 		loadingPanel = new LoadingPane();
 		add(loadingPanel, 0);
 		loadingPanel.setVisible(false);
+	}
+
+	private void handleSearch(String message) {
+		SearchController.getInstance().search(searchResPane, message);
+		tabBar.addTab("搜索结果", 4);
+		tabBar.switchTo(4);
 	}
 
 	public void setPlayerPane(String playerName) {

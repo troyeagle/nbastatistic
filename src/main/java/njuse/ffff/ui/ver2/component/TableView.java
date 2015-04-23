@@ -18,8 +18,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
+
 import njuse.ffff.ui.component.PanelEx;
 
+@SuppressWarnings("restriction")
 public class TableView extends PanelEx {
 
 	private static final long serialVersionUID = 1L;
@@ -65,6 +68,8 @@ public class TableView extends PanelEx {
 		view.getColumnHeader().setOpaque(false);
 		view.getViewport().setOpaque(false);
 		view.setBorder(BorderFactory.createEmptyBorder());
+		view.getHorizontalScrollBar().setUI(new WindowsScrollBarUI());
+		view.getVerticalScrollBar().setUI(new WindowsScrollBarUI());
 
 		TableUtils.FitTableColumns(table);
 		return view;

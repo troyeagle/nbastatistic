@@ -51,20 +51,8 @@ public class TitleBar extends PanelEx implements UIConfigNotifier {
 		listener.setInPressColor(new Color(200, 0, 0));
 		listener.setOutPressColor(null);
 		exit.setButtonExListener(listener);
-		//		try {
-		//			Font f = Font.createFont(Font.TRUETYPE_FONT, new File("./font/webdings.ttf"))
-		//					.deriveFont(Font.PLAIN, 24);
-		//			f = new Font("webdings", Font.PLAIN, 24);
-		//			minimize.setFont(f);
-		//			minimize.setForeground(Color.WHITE);
-		//			minimize.setText("0");
-		//			exit.setFont(f);
-		//			exit.setForeground(Color.WHITE);
-		//			exit.setText("r");
-		//		} catch (FontFormatException | IOException e) {
 		minimize.setIcon(new ImageIcon("./img/btn/min.png"));
 		exit.setIcon(new ImageIcon("./img/btn/exit.png"));
-		//		}
 
 		initAction();
 

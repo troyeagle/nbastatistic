@@ -531,7 +531,7 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 
 	private void setTableUIConfig(TableView table) {
 		table.setTableFont(UIConfig.ContentFont);
-		table.setHeaderFont(UIConfig.SmallFont);
+		table.setHeaderFont(UIConfig.ContentFont);
 		table.setRowHeight(UIConfig.ContentFont.getSize() + 5);
 		table.setForeground(Color.WHITE);
 		table.setSelectionBgColor(UIConfig.TableSelectionBgColor);
