@@ -18,6 +18,7 @@ import njuse.ffff.uiservice.TeamDataService;
 import njuse.ffff.uiservice.TeamProfileService;
 import njuse.ffff.util.DealDecimal;
 import njuse.ffff.util.Filter;
+import njuse.ffff.util.TeamNameAndAbbr;
 
 public class TeamInfoController implements TeamInfoService{
 	private DataReaderService dataService;
@@ -213,7 +214,11 @@ public class TeamInfoController implements TeamInfoService{
 	 * 设置球队参与的比赛
 	 */
 	public void setTeamGameLog(TeamDataService panel, String teamName) {
-		List<MatchPO> matchList = dataService.getMatchForTeam(teamName);
+		String teamAbbr = TeamNameAndAbbr.getInstance().getAbbr(teamName);
+		if(teamAbbr==null){
+			teamAbbr = teamName;
+		}
+		List<MatchPO> matchList = dataService.getMatchForTeam(teamAbbr);
 //		String[] properties = {"比赛日期","比赛对阵"};
 		if(matchList.size()>0){
 			//比赛排序
@@ -240,6 +245,9 @@ public class TeamInfoController implements TeamInfoService{
 				values[i] = new Object[]{dateBuffer.toString(),participentsBuffer.toString()};
 			}
 			panel.setGameLog(values, null);
+		}
+		else{
+			panel.setGameLog(new Object[0][2],null);
 		}
 		teamGameLog = teamName;
 		totalController.setTeamDataService(panel);

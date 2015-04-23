@@ -273,6 +273,9 @@ public class PlayerInfoController implements PlayerInfoService{
 			}
 			panel.setGameLog(values, null);
 		}
+		else{
+			panel.setGameLog(new Object[0][2], null);
+		}
 		playerGameLog = playerName;
 		totalController.setPlayerDataService(panel);
 	}
