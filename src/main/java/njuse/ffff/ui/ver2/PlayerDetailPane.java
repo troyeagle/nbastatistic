@@ -26,10 +26,13 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 	private static final long serialVersionUID = 1L;
 
 	private static final String[] avgHeader = { "赛季", "球队", "首发", "时间",
-			"命中", "出手", "三分", "命中", "出手", "罚球", "命中", "出手", "篮板", "前场",
+			"投篮","命中", "出手", "三分", "命中", "出手", "罚球", "命中", "出手", "篮板", "前场",
 			"后场", "助攻", "抢断", "盖帽", "失误", "犯规", "得分"
 	};
-	private static final String[] totalHeader = avgHeader;
+	private static final String[] totalHeader = { "赛季", "球队", "首发", "上场数",
+		"投篮","命中", "出手", "三分", "命中", "出手", "罚球", "命中", "出手", "篮板", "前场",
+		"后场", "助攻", "抢断", "盖帽", "失误", "犯规", "得分"
+};
 
 	private static final String[] advHeader = { "赛季", "球队", "篮板率", "进攻板", "防守板",
 			"助攻率", "抢断率", "盖帽率", "失误率", "使用率", "效率", "GmSc效率值",

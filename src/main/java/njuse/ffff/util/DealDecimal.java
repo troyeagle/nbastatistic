@@ -48,6 +48,21 @@ public class DealDecimal {
 		return res;
 	}
 	
+	public static String formatChangeTime(double second){
+		String timeInMinute = null;
+		int minute = (int)second/60;
+		int secondL = (int)second%60;
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(minute);
+		buffer.append(":");
+		if(String.valueOf(secondL).length()==1){
+			buffer.append("0");
+		}
+		buffer.append(secondL);
+		timeInMinute = buffer.toString();
+		return timeInMinute;
+	}
+	
 	public static void main(String[] args) {
 //		Date date1 = new Date();
 //		date1.setYear(1912);

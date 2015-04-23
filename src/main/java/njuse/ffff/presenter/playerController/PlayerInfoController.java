@@ -129,7 +129,7 @@ public class PlayerInfoController implements PlayerInfoService{
 					valid_season.get(i),			//赛季
 					player.getTeamName(),			//球队
 					player.getFirstOnMatch(),		//首发场数
-					player.getMinute(),				//出场时间
+					player.getEffective(),			//比赛场数
 					DealDecimal.formatChangeToPercentage(average[29]),	//投篮命中率
 					DealDecimal.formatChange(total[0]),					//投篮命中数
 					DealDecimal.formatChange(total[1]),					//投篮出手数
@@ -176,7 +176,7 @@ public class PlayerInfoController implements PlayerInfoService{
 					valid_season.get(i),			//赛季
 					player.getTeamName(),			//球队
 					player.getFirstOnMatch(),		//首发场数
-					DealDecimal.formatChange(player.getSecond(), 1),		//出场时间
+					DealDecimal.formatChangeTime(average[31]),		//出场时间
 					DealDecimal.formatChangeToPercentage(average[29]),		//投篮命中率
 					DealDecimal.formatChange(average[0],1),					//投篮命中数
 					DealDecimal.formatChange(average[1],1),					//投篮出手数

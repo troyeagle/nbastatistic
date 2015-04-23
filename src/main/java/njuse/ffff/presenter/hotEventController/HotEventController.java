@@ -283,18 +283,22 @@ public class HotEventController implements HotEventService{
 		for(int i=0;i<5;i++){
 			PlayerInAverage player = list.get(i);
 			String improvement = null;
+			int dataLoc = -1;
 			switch(condition){
 			case 21:
 				improvement = DealDecimal.formatChangeToPercentage(player.getRecent5ScoreAdv());
+				dataLoc = 14;
 				break;
 			case 22:
 				improvement = DealDecimal.formatChangeToPercentage(player.getRecent5BlockAdv());
+				dataLoc = 8;
 				break;
 			case 23:
 				improvement = DealDecimal.formatChangeToPercentage(player.getRecent5AssistAdv());
+				dataLoc = 9;
 			}
 			player_condition[i] = new Object[]{player.getName(),player.getTeamName()
-					,DealDecimal.formatChange(player.getStatsAverage()[condition], 1),improvement};
+					,DealDecimal.formatChange(player.getStatsAverage()[dataLoc], 1),improvement};
 		}
 		return player_condition;
 	}
