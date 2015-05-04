@@ -54,6 +54,7 @@ public interface DataReaderService {
 	//获得指定时间、某个球队打的的比赛，
 	public MatchPO getMatch(Date date,String teamA);
 	//初始化
+	public void advancedInitialize(String path, int cacheLength);
 	public void initialize() throws IOException;
 	public void load() throws ClassNotFoundException, IOException;
 	

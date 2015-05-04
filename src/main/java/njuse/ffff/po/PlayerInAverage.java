@@ -581,4 +581,8 @@ public class PlayerInAverage {
 		return playerStats.get(playerStats.size() - 1).getTeam().nameAbbr;
 	}
 
+	public char getPosition() {
+		return position;
+	}
+
 }
