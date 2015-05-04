@@ -110,10 +110,18 @@ public class TeamCommand extends GameCommand{
 		else if(dataType==0){
 			//排序
 			int[] condition = new int[sort_field.length];
+			boolean[] order = new boolean[sort_field.length];
 			for(int i=0;i<sort_field.length;i++){
-				switch(sort_field[i]){
+				String[] parts = sort_field[i].split("[.]");
+				if(parts[1].equals("desc")){
+					order[i] = true;
+				}
+				else{
+					order[i] = false;
+				}
+				switch(parts[0]){
 				case "winRate":
-					condition[i] = -1;//TODO
+					condition[i] = 23;
 					break;
 				case "offendRound":
 					condition[i] = 24;
@@ -141,7 +149,7 @@ public class TeamCommand extends GameCommand{
 			SeasonStatProcessor seasonProcessor = readService.getSeasonStatProcessor(readService.getCurrentSeason());
 			ArrayList<TeamInAverage> teamList = seasonProcessor.getTeamInAverage();
 			Sort sort = new Sort();
-			sort.sortTeam(teamList, condition);
+			sort.sortTeam(teamList, condition, order[0]);//TODO
 			for(int i=0;i<Math.min(number,teamList.size());i++){
 				result.add(formHighTeam(teamList.get(i)));
 			}
@@ -149,8 +157,16 @@ public class TeamCommand extends GameCommand{
 		else{
 			//排序
 			int[] condition = new int[sort_field.length];
+			boolean[] order = new boolean[sort_field.length];
 			for(int i=0;i<sort_field.length;i++){
-				switch(sort_field[i]){
+				String[] parts = sort_field[i].split("[.]");
+				if(parts[1].equals("desc")){
+					order[i] = true;
+				}
+				else{
+					order[i] = false;
+				}
+				switch(parts[0]){
 				case "point":
 					condition[i] = 17;
 					break;
@@ -193,7 +209,7 @@ public class TeamCommand extends GameCommand{
 			ArrayList<TeamInAverage> teamList = seasonProcessor.getTeamInAverage();
 			Sort sort = new Sort();
 			if(dataFormat==1){
-				sort.sortTeam(teamList, condition);
+				sort.sortTeam(teamList, condition, order[0]);//TODO
 			}
 			else{
 				//TODO sortTeamTotal

@@ -138,8 +138,16 @@ public class PlayerCommand extends GameCommand{
 		}
 		else if(dataType==0){
 			int[] condition = new int[sort_field.length];
+			boolean[] order = new boolean[sort_field.length];
 			for(int i=0;i<sort_field.length;i++){
-				switch(sort_field[i]){
+				String[] parts = sort_field[i].split("[.]");
+				if(parts[1].equals("desc")){
+					order[i] = true;
+				}
+				else{
+					order[i] = false;
+				}
+				switch(parts[0]){
 				case "realShot":
 					condition[i] = 17;
 					break;
@@ -178,7 +186,7 @@ public class PlayerCommand extends GameCommand{
 			SeasonStatProcessor seasonProcessor = readService.getSeasonStatProcessor(readService.getCurrentSeason());
 			ArrayList<PlayerInAverage> playerList = seasonProcessor.getPlayerInAverage();
 			Sort sort = new Sort();
-			sort.sortPlayer(playerList, condition,true);
+			sort.sortPlayer(playerList, condition, order[0]);//TODO
 			for(int i=0;i<Math.min(number,playerList.size());i++){
 				result.add(formHighPlayer(playerList.get(i)));
 			}
@@ -252,8 +260,16 @@ public class PlayerCommand extends GameCommand{
 			}
 			//排序
 			int[] condition = new int[sort_field.length];
+			boolean[] order = new boolean[sort_field.length];
 			for(int i=0;i<sort_field.length;i++){
-				switch(sort_field[i]){
+				String[] parts = sort_field[i].split("[.]");
+				if(parts[1].equals("desc")){
+					order[i] = true;
+				}
+				else{
+					order[i] = false;
+				}
+				switch(parts[0]){
 				case "point":
 					condition[i] = 17;
 					break;
@@ -297,10 +313,10 @@ public class PlayerCommand extends GameCommand{
 			}
 			Sort sort = new Sort();
 			if(dataFormat==1){
-				sort.sortPlayer(playerList, condition,true);
+				sort.sortPlayer(playerList, condition, order[0]);//TODO
 			}
 			else{
-				sort.sortPlayerTotal(playerList, condition,true);
+				sort.sortPlayerTotal(playerList, condition, order[0]);
 			}
 			for(int i=0;i<Math.min(number,playerList.size());i++){
 				PlayerPO player = readService.getPlayerInfo(playerList.get(i).getName(), null);
