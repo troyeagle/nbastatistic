@@ -24,5 +24,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Mebleyev.G.Longinus/Downloads/软工III/测试相关文档/功能测试/testData.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
