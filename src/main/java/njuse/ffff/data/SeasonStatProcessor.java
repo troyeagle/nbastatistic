@@ -209,7 +209,7 @@ public class SeasonStatProcessor {
 			}
 		}
 		int[] attributes = new int[2];
-		new Sort().sortPlayerSingle(players, attributes);
+		new Sort().sortPlayerSingle(players, attributes,true);
 		
 		return players;
 	}
@@ -219,7 +219,7 @@ public class SeasonStatProcessor {
 		players.addAll(playerInAverage);
 		int[] attributes = new int[2];
 		attributes[0]=condition;
-		new Sort().sortPlayer(players, attributes);
+		new Sort().sortPlayer(players, attributes,true);
 		return players;
 	}
 	
@@ -228,7 +228,7 @@ public class SeasonStatProcessor {
 		teams.addAll(teamInAverage);
 		int[] attributes = new int[2];
 		attributes[0]=condition;
-		new Sort().sortTeam(teams, attributes);
+		new Sort().sortTeam(teams, attributes,true);
 		return teams;
 	}
 	/**
@@ -244,7 +244,7 @@ public class SeasonStatProcessor {
 		players.addAll(playerInAverage);
 		int[] attributes = new int[2];
 		attributes[0]=condition;
-		new Sort().sortPlayerTotal(players, attributes);
+		new Sort().sortPlayerTotal(players, attributes,true);
 		return players;
 	}
 	public String getSeason() {

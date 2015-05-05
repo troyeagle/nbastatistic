@@ -474,7 +474,7 @@ public class DataReadController implements DataReaderService {
 		}
 		int[] attributes = new int[2];
 		attributes[0] = condition;
-		new Sort().sortPlayerSingle(players, attributes);
+		new Sort().sortPlayerSingle(players, attributes,true);
 
 		return players;
 	}
