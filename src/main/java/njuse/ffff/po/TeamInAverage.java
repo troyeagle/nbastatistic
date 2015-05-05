@@ -173,7 +173,7 @@ public class TeamInAverage implements Serializable {
 	}
 
 	public void makeTotalArray() {
-		statsTotal = new double[22];
+		statsTotal = new double[32];
 		statsTotal[0] = fieldGoalMade;
 		statsTotal[1] = fieldGoalAttempted;
 		statsTotal[2] = threePointerMade;
