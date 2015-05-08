@@ -141,9 +141,12 @@ public class PlayerCommand extends GameCommand{
 			boolean[] order = new boolean[sort_field.length];
 			for(int i=0;i<sort_field.length;i++){
 				String[] parts = sort_field[i].split("[.]");
-				if(parts[1].equals("desc")){
-					order[i] = true;
+				if(parts.length==2){//暂时默认升序
+					if(parts[1].equals("desc")){
+						order[i] = true;
+					}
 				}
+				
 				else{
 					order[i] = false;
 				}
@@ -263,9 +266,12 @@ public class PlayerCommand extends GameCommand{
 			boolean[] order = new boolean[sort_field.length];
 			for(int i=0;i<sort_field.length;i++){
 				String[] parts = sort_field[i].split("[.]");
-				if(parts[1].equals("desc")){
-					order[i] = true;
+				if(parts.length>=2){//默认升序
+					if(parts[1].equals("desc")){
+						order[i] = true;
+					}
 				}
+				
 				else{
 					order[i] = false;
 				}
