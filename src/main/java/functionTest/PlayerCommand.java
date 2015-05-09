@@ -396,7 +396,7 @@ public class PlayerCommand extends GameCommand{
 	private PlayerHighInfo formHighPlayer(PlayerInAverage player){
 		PlayerHighInfo highPlayer = new PlayerHighInfo();
 		highPlayer.setName(player.getName());
-		highPlayer.setPosition(String.valueOf(player.getPosition()));
+		highPlayer.setPosition(String.valueOf(player.getPosition()[0]));
 		highPlayer.setTeamName(player.getTeamName());
 		highPlayer.setLeague(player.getLeague());
 		double[] average = player.getStatsAverage();

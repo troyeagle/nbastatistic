@@ -207,7 +207,7 @@ public class HotEventController implements HotEventService{
 			PlayerPO playerPO = dataService.getPlayerInfo(player.getName(), emptyFilter);
 			String position = "N/A";
 			if(playerPO!=null){
-				position = judgePlayerPosition(playerPO.getPosition());
+				position = judgePlayerPosition(playerPO.getPosition()[0]);
 			}
 			player_condition[i] = new Object[]{player.getName(),team,position
 					,DealDecimal.formatChange(player.getArray()[condition])};
@@ -228,7 +228,7 @@ public class HotEventController implements HotEventService{
 			PlayerPO playerPO = dataService.getPlayerInfo(player.getName(), emptyFilter);
 			String position = "N/A";
 			if(playerPO!=null){
-				position = judgePlayerPosition(playerPO.getPosition());
+				position = judgePlayerPosition(playerPO.getPosition()[0]);
 			}
 			switch(condition){
 			case 14:

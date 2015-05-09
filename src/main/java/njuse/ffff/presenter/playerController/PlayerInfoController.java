@@ -61,7 +61,7 @@ public class PlayerInfoController implements PlayerInfoService{
 		PlayerPO playerInfo = dataService.getPlayerInfo(playerName, emptyFilter);
 		if(playerInfo!=null){
 			String position = null;
-			switch (Character.toUpperCase(playerInfo.getPosition())) {
+			switch (Character.toUpperCase(playerInfo.getPosition()[0])) {
 			case 'F':
 				position = "前锋";
 				break;

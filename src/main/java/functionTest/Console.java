@@ -67,7 +67,7 @@ public class Console {
 	
 	public static void main(String[] args) {
 		Console con = new Console();
-		//con.execute(System.out, args);
+//		con.execute(System.out, args);
 		String[] m=new String[2];
 		m[0]="--dataresource";
 		m[1]="C:/Users/Mebleyev.G.Longinus/Documents/GitHub/nbastatistic/CSEIII data/迭代一数据";

@@ -1,7 +1,5 @@
 package njuse.ffff.po;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -10,7 +8,7 @@ import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import njuse.ffff.data.TeamDataProcessor;
+import njuse.ffff.data.PlayersDataProcessor;
 
 @SuppressWarnings("unused")
 /**
@@ -25,7 +23,7 @@ public class PlayerInAverage {
 	double[] statsTotal;
 	int effective; // 有效记录数，即出场数
 	String name;
-	char position;
+	char[] position=new char[2];
 	String minute;
 	double second;// Advanced
 	int firstOnMatch;
@@ -93,6 +91,15 @@ public class PlayerInAverage {
 			statsDirty = new int[32];
 		}
 		playerStats = new ArrayList<PlayerInMatchExtended>();
+		boolean in=false;
+		for(PlayerPO p:PlayersDataProcessor.players){
+			if(p.name==this.name){
+				this.position=p.position;
+				in=true;
+			}
+		}if(!in){
+			this.position[0]='N';
+		}
 	}
 
 	/**
@@ -129,9 +136,7 @@ public class PlayerInAverage {
 	private void addOneMatchToAll(PlayerInMatchExtended p) {
 		if (p.second != 0) {
 			effective++;
-			if(position!='C'&&position!='G'&&position!='F'){
-				position=p.position;
-			}
+
 			
 			if (p.firstOnMatch) {
 				this.firstOnMatch++;
@@ -587,7 +592,7 @@ public class PlayerInAverage {
 		return playerStats.get(playerStats.size() - 1).getTeam().nameAbbr;
 	}
 
-	public char getPosition() {
+	public char[] getPosition() {
 		return position;
 	}
 	public boolean takePartInMatch(){

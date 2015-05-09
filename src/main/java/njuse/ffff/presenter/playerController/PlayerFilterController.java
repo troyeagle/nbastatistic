@@ -94,7 +94,7 @@ public class PlayerFilterController implements PlayerFilterService{
 					data_filtered.add(player);
 				}
 			}
-			if(pos!=0&&playerPO.getPosition()==pos){
+			if(pos!=0&&playerPO.getPosition()[0]==pos){
 				if(leagueInEnglish==null){
 					data_filtered.add(player);
 				}

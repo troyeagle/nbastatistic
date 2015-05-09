@@ -24,7 +24,7 @@ public class PlayersDataProcessor {
 	private static String path="./CSEIII data/迭代一数据/players";
 	
 	private static String saveLoadPath = "./CSEIII data2/迭代一数据/players/info";
-	static ArrayList<PlayerPO> players;
+	public static ArrayList<PlayerPO> players;
 	public static void setPath(String path){
 		PlayersDataProcessor.path = path;
 	}
@@ -50,7 +50,9 @@ public class PlayersDataProcessor {
 				br.readLine();
 				String number = matchPattern(p,br.readLine());
 				br.readLine();
-				char position = matchPattern(p,br.readLine()).charAt(0);
+				String positions = matchPattern(p,br.readLine());
+				positions.split("-");
+				char[] position = positions.toCharArray();
 				br.readLine();
 				String height = matchPattern(p,br.readLine());
 				br.readLine();

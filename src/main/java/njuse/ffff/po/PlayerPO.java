@@ -14,7 +14,7 @@ public class PlayerPO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	String name;
 	String number;
-	char position;
+	char[] position;
 	String height;
 	String weight;
 	String birth;
@@ -26,12 +26,12 @@ public class PlayerPO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "PlayerPO [name=" + name + ", number=" + number + ", position=" + position
+		return "PlayerPO [name=" + name + ", number=" + number + ", position=" + String.valueOf(position)
 				+ ", height=" + height + ", weight=" + weight + ", birth=" + birth + ", age="
 				+ age + ", exp=" + exp + ", school=" + school + "]";
 	}
 
-	public PlayerPO(String name, String number, char position, String height, String weight,
+	public PlayerPO(String name, String number, char position[], String height, String weight,
 			String birth, int age, String exp, String school, String playerPath) {
 		super();
 		this.name = name;
@@ -55,7 +55,7 @@ public class PlayerPO implements Serializable {
 		return number;
 	}
 
-	public char getPosition() {
+	public char[] getPosition() {
 		return position;
 	}
 
