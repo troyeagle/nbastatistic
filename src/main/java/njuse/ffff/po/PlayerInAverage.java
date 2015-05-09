@@ -74,7 +74,8 @@ public class PlayerInAverage {
 	private int rivalThreePointerAttempted;
 	private double rivalRounds;
 
-	private boolean doubledouble;
+	private boolean doubledoubleavg;
+	private double doubledouble;
 
 	private double recent5ScoreAdv;
 	private double recent5BlockAdv;
@@ -86,7 +87,7 @@ public class PlayerInAverage {
 	public PlayerInAverage(String name) {
 		this.name = name;
 		if (statsAverage == null) {
-			statsAverage = new double[32];
+			statsAverage = new double[37];
 			statsTotal = new double[32];
 			statsDirty = new int[32];
 		}
@@ -137,7 +138,9 @@ public class PlayerInAverage {
 		if (p.second != 0) {
 			effective++;
 
-			
+			if(p.doubledouble){
+				this.doubledouble++;
+			}
 			if (p.firstOnMatch) {
 				this.firstOnMatch++;
 			}
@@ -259,6 +262,8 @@ public class PlayerInAverage {
 		}
 		averageProcess();
 		statsTotal[19]=this.firstOnMatch;
+		statsAverage[32]=this.firstOnMatch;
+		statsAverage[36]=this.doubledouble;
 	}
 
 	/**
@@ -280,6 +285,11 @@ public class PlayerInAverage {
 		statsTotal[21] = recent5ScoreAdv;
 		statsTotal[22] = recent5BlockAdv;
 		statsTotal[23] = recent5AssistAdv;
+		statsAverage[33]=recent5ScoreAdv;
+		statsAverage[34]=recent5BlockAdv;
+		statsAverage[35]=recent5AssistAdv;
+		statsAverage[36]=doubledouble;
+		statsAverage[36]=this.doubledouble;
 	}
 
 	/*
@@ -364,7 +374,7 @@ public class PlayerInAverage {
 	}
 
 	public boolean getDoubledouble() {
-		return doubledouble;
+		return doubledoubleavg;
 	}
 
 	public void calAllAverage() {
@@ -402,9 +412,9 @@ public class PlayerInAverage {
 		arr.add(block);
 		Collections.sort(arr);
 		if (arr.get(3) >= 10 && arr.get(2) < 10) {
-			doubledouble = true;
+			doubledoubleavg = true;
 		} else {
-			doubledouble = false;
+			doubledoubleavg = false;
 		}
 
 	}

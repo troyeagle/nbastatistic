@@ -71,7 +71,7 @@ public class TeamInAverage implements Serializable {
 	 */
 	public TeamInAverage(String name2, String abbr) {
 		teamStats = new ArrayList<TeamInMatch>();
-		statsAverage = new double[31];
+		statsAverage = new double[32];
 		statsTotal = new double[22];
 		this.name = name2;
 		this.abbr = abbr;
@@ -199,7 +199,7 @@ public class TeamInAverage implements Serializable {
 	}
 
 	public void makeArray() {
-		statsTotal[23]=winningRatio;
+		
 		statsAverage = new double[31];
 		statsAverage[0] = fieldGoalMade;
 		statsAverage[1] = fieldGoalAttempted;
@@ -232,7 +232,7 @@ public class TeamInAverage implements Serializable {
 		statsAverage[28] = defensiveReboundEf;
 		statsAverage[29] = stealEf;
 		statsAverage[30] = assistEf;
-
+		statsAverage[31]=winningRatio;
 	}
 	
 	public void restoreVariables(){
