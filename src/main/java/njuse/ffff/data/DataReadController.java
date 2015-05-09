@@ -48,7 +48,14 @@ public class DataReadController implements DataReaderService {
 	Queue<String> eventQ = new LinkedList<String>();
 
 	public ArrayList<PlayerInAverage> getPlayerInAverage() {
-		return playerInAverage;
+		// return playerInAverage;
+		ArrayList<PlayerInAverage> newAverage = new ArrayList<PlayerInAverage>();
+		for (PlayerInAverage p : playerInAverage) {
+			if (p.takePartInMatch()) {
+				newAverage.add(p);
+			}
+		}
+		return newAverage;
 	}
 
 	public PlayerInAverage getPlayerAverage(String name, Filter filter) {
@@ -132,17 +139,22 @@ public class DataReadController implements DataReaderService {
 
 	/**
 	 * 数据首次读取入口,程序核心方法
+	 * @throws IOException 
 	 */
 
-	public void advancedInitialize(String path, int cacheLength) {
+	public void advancedInitialize(String path, int cacheLength) throws IOException {
 		// 写着玩的
+		this.path=path;
+		
+		initialize();
+
 	}
 
 	public void initialize() throws IOException {
 		/**
 		 * FileListener应该是最高优先级？
 		 */
-		path = "./CSEIII data/plus/matches";
+		//path = "./CSEIII data/plus/matches";
 		currentSeason = "12-13";
 		File f = new File(path);
 		if (!f.exists()) {
@@ -160,13 +172,14 @@ public class DataReadController implements DataReaderService {
 			}
 		};
 		exe.execute(fileListener);
-
+		PlayersDataProcessor.setPath(path+"/players");
 		player.readAndAnalysisPlayer();
-
+		TeamDataProcessor.setPath(path+"/team");
 		team.readAndAnalysisTeam();
 		seasons.add(new SeasonStatProcessor("12-13"));
 		seasons.add(new SeasonStatProcessor("13-14"));
-		MatchDataProcessor.setPath("./CSEIII data/plus/matches");
+		seasons.add(new SeasonStatProcessor("14-15"));
+		MatchDataProcessor.setPath(this.path+"/matches");
 		MatchDataProcessor.matches = new ArrayList<MatchPO>();
 		match.readAndAnalysisMatch();
 		match.processAll();
@@ -182,6 +195,7 @@ public class DataReadController implements DataReaderService {
 		currentDate = MatchDataProcessor.matches.get(
 				MatchDataProcessor.matches.size() - 1).getDate();
 		average();
+		
 		Thread main = new Thread() {// 初始化以及处理初始数据
 			public void run() {
 
@@ -195,15 +209,15 @@ public class DataReadController implements DataReaderService {
 
 			}
 		};
-		Thread season = new Thread() {// 增添赛季数据
-			public void run() {
-				// seasons.add(new SeasonStatProcessor("12-13"));
-				// seasons.add(new SeasonStatProcessor("13-14"));
-				// seasons.add(new SeasonStatProcessor("14-15"));
-			}
-		};
-		exe.execute(main);
-		exe.execute(season);
+//		Thread season = new Thread() {// 增添赛季数据
+//			public void run() {
+//				// seasons.add(new SeasonStatProcessor("12-13"));
+//				// seasons.add(new SeasonStatProcessor("13-14"));
+//				// seasons.add(new SeasonStatProcessor("14-15"));
+//			}
+//		};
+		//exe.execute(main);
+		//exe.execute(season);
 		processNewMatch();
 	}
 
@@ -291,7 +305,7 @@ public class DataReadController implements DataReaderService {
 			for (PlayerInAverage pa : playerInAverage) {
 				if (pa.getName().equals(p.getName())) {
 					pa.addOneMatchStat(p);
-					in= true;
+					in = true;
 				}
 			}
 			if (!in) {
@@ -474,7 +488,7 @@ public class DataReadController implements DataReaderService {
 		}
 		int[] attributes = new int[2];
 		attributes[0] = condition;
-		new Sort().sortPlayerSingle(players, attributes,true);
+		new Sort().sortPlayerSingle(players, attributes, new boolean[2]);
 
 		return players;
 	}
@@ -537,4 +551,5 @@ public class DataReadController implements DataReaderService {
 			return false;
 		}
 	}
+
 }

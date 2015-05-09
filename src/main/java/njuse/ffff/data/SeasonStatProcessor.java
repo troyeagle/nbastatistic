@@ -26,7 +26,14 @@ public class SeasonStatProcessor {
 		averageArrayIni();
 	}
 	public ArrayList<PlayerInAverage> getPlayerInAverage() {
-		return playerInAverage;
+		// return playerInAverage;
+		ArrayList<PlayerInAverage> newAverage = new ArrayList<PlayerInAverage>();
+		for (PlayerInAverage p : playerInAverage) {
+			if (p.takePartInMatch()) {
+				newAverage.add(p);
+			}
+		}
+		return newAverage;
 	}
 	public ArrayList<TeamInAverage> getTeamInAverage(){
 		return teamInAverage;
@@ -209,7 +216,7 @@ public class SeasonStatProcessor {
 			}
 		}
 		int[] attributes = new int[2];
-		new Sort().sortPlayerSingle(players, attributes,true);
+		new Sort().sortPlayerSingle(players, attributes,new boolean[2]);
 		
 		return players;
 	}
@@ -219,7 +226,7 @@ public class SeasonStatProcessor {
 		players.addAll(playerInAverage);
 		int[] attributes = new int[2];
 		attributes[0]=condition;
-		new Sort().sortPlayer(players, attributes,true);
+		new Sort().sortPlayer(players, attributes,new boolean[2]);
 		return players;
 	}
 	
@@ -228,7 +235,7 @@ public class SeasonStatProcessor {
 		teams.addAll(teamInAverage);
 		int[] attributes = new int[2];
 		attributes[0]=condition;
-		new Sort().sortTeam(teams, attributes,true);
+		new Sort().sortTeam(teams, attributes,new boolean[2]);
 		return teams;
 	}
 	/**
@@ -244,7 +251,7 @@ public class SeasonStatProcessor {
 		players.addAll(playerInAverage);
 		int[] attributes = new int[2];
 		attributes[0]=condition;
-		new Sort().sortPlayerTotal(players, attributes,true);
+		new Sort().sortPlayerTotal(players, attributes,new boolean[2]);
 		return players;
 	}
 	public String getSeason() {

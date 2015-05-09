@@ -189,7 +189,7 @@ public class PlayerCommand extends GameCommand{
 			SeasonStatProcessor seasonProcessor = readService.getSeasonStatProcessor(readService.getCurrentSeason());
 			ArrayList<PlayerInAverage> playerList = seasonProcessor.getPlayerInAverage();
 			Sort sort = new Sort();
-			sort.sortPlayer(playerList, condition, order[0]);//TODO
+			sort.sortPlayer(playerList, condition, order);//TODO
 			for(int i=0;i<Math.min(number,playerList.size());i++){
 				result.add(formHighPlayer(playerList.get(i)));
 			}
@@ -319,10 +319,10 @@ public class PlayerCommand extends GameCommand{
 			}
 			Sort sort = new Sort();
 			if(dataFormat==1){
-				sort.sortPlayer(playerList, condition, order[0]);//TODO
+				sort.sortPlayer(playerList, condition, order);//TODO
 			}
 			else{
-				sort.sortPlayerTotal(playerList, condition, order[0]);
+				sort.sortPlayerTotal(playerList, condition, order);
 			}
 			for(int i=0;i<Math.min(number,playerList.size());i++){
 				PlayerPO player = readService.getPlayerInfo(playerList.get(i).getName(), null);

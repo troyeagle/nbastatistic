@@ -584,5 +584,9 @@ public class PlayerInAverage {
 	public char getPosition() {
 		return position;
 	}
-
+	public boolean takePartInMatch(){
+		if(this.getPlayerStats().size()<1){
+			return false;
+		}return true;
+	}
 }

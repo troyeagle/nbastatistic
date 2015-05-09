@@ -123,7 +123,7 @@ public class PlayerFilterController implements PlayerFilterService{
 			}
 			conditionsOfSort[0] = 30;
 			Sort sortConductor = new Sort();
-			sortConductor.sortPlayer(player_withDD, conditionsOfSort,true);
+			sortConductor.sortPlayer(player_withDD, conditionsOfSort,new boolean[2]);
 			
 			if(player_withDD.size()>=50){
 				for(int i=0;i<50;i++){
@@ -135,7 +135,7 @@ public class PlayerFilterController implements PlayerFilterService{
 					data_display.add(player_withDD.get(i));
 				}
 				Sort sortConductor2 = new Sort();
-				sortConductor2.sortPlayer(player_withoutDD, conditionsOfSort,true);
+				sortConductor2.sortPlayer(player_withoutDD, conditionsOfSort,new boolean[2]);
 				for(int j=0;j<Math.min(50-player_withDD.size(),player_withoutDD.size());j++){
 					data_display.add(player_withoutDD.get(j));
 				}
@@ -188,7 +188,7 @@ public class PlayerFilterController implements PlayerFilterService{
 			
 			//排序
 			Sort sortConductor = new Sort();
-			sortConductor.sortPlayer(data_filtered, conditionsOfSort,true);
+			sortConductor.sortPlayer(data_filtered, conditionsOfSort,new boolean[2]);
 			
 			for(int i=0;i<Math.min(50, data_filtered.size());i++){
 				data_display.add(data_filtered.get(i));

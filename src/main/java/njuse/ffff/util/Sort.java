@@ -15,22 +15,26 @@ import njuse.ffff.po.TeamInAverage;
  */
 enum option{TOTAL,AVERAGE};
 public class Sort {
-	public void sortPlayer(List<PlayerInAverage> players, int[] attributes,boolean dec) {
+	public void sortPlayer(List<PlayerInAverage> players, int[] attributes,boolean[] dec) {
 		//Collections.sort(players, new PlayerComparator(attributes,dec));
 		Collections.sort(players, new AttributeComparator(attributes,dec,true));
 	}
-	public void sortTeam(List<TeamInAverage> teams,int[] attributes,boolean dec){
+	public void sortTeam(List<TeamInAverage> teams,int[] attributes,boolean[] dec){
 		//Collections.sort(teams,new TeamComparator(attributes,dec));
 		Collections.sort(teams,new AttributeComparator(attributes,dec,true));
 	}
-	public void sortPlayerTotal(List<PlayerInAverage> players,int[] attributes,boolean dec){
-		//Collections.sort(players,new PlayerTotalComparator(attributes,dec));
-		Collections.sort(players,new AttributeComparator(attributes,dec,true));
+	public void sortTeamTotal(List<TeamInAverage> teams,int[]attributes,boolean[] dec){
+		Collections.sort(teams,new AttributeComparator(attributes,dec,false));
 	}
-	public void sortPlayerSingle(List<PlayerInMatchExtended> players,int[] attributes,boolean dec){
+	public void sortPlayerTotal(List<PlayerInAverage> players,int[] attributes,boolean[] dec){
+		//Collections.sort(players,new PlayerTotalComparator(attributes,dec));
+		Collections.sort(players,new AttributeComparator(attributes,dec,false));
+	}
+	public void sortPlayerSingle(List<PlayerInMatchExtended> players,int[] attributes,boolean[] dec){
 		//Collections.sort(players,new PlayerSingleComparator(attributes,dec));
 		Collections.sort(players,new AttributeComparator(attributes,dec,true));
 	}
+	/*
 	private class PlayerComparator implements Comparator<PlayerInAverage> {
 		int[] attributes;
 		boolean dec;
@@ -98,8 +102,8 @@ public class Sort {
 
 	private class PlayerTotalComparator implements Comparator<PlayerInAverage>{
 		int[] attributes;
-		boolean dec;
-		PlayerTotalComparator(int[] attributes,boolean dec) {
+		boolean[] dec;
+		PlayerTotalComparator(int[] attributes,boolean[] dec) {
 			this.attributes = attributes;
 			this.dec = dec;
 		}
@@ -155,14 +159,14 @@ public class Sort {
 		}
 		
 	}
-
+*/
 	private class AttributeComparator implements Comparator<Object>{
 		int[] attributes;
-		boolean dec;
+		boolean[] dec;
 		double array1[]=new double[32];
 		double array2[]= new double[32];
 		boolean ave;
-		public AttributeComparator(int[] attributes,boolean dec,boolean ave){
+		public AttributeComparator(int[] attributes,boolean[] dec,boolean ave){
 			this.attributes=attributes;
 			this.dec=dec;
 			this.ave=ave;
@@ -205,7 +209,7 @@ public class Sort {
 				}
 				if ((int) result == 0) {
 				} else {
-					if(!dec){
+					if(!dec[i]){
 						return (int)result;
 					}
 					return -(int) result;
