@@ -149,7 +149,7 @@ public class TeamCommand extends GameCommand{
 			SeasonStatProcessor seasonProcessor = readService.getSeasonStatProcessor(readService.getCurrentSeason());
 			ArrayList<TeamInAverage> teamList = seasonProcessor.getTeamInAverage();
 			Sort sort = new Sort();
-			sort.sortTeam(teamList, condition, order);//TODO
+			sort.sortTeam(teamList, condition, order);
 			for(int i=0;i<Math.min(number,teamList.size());i++){
 				result.add(formHighTeam(teamList.get(i)));
 			}
@@ -209,10 +209,10 @@ public class TeamCommand extends GameCommand{
 			ArrayList<TeamInAverage> teamList = seasonProcessor.getTeamInAverage();
 			Sort sort = new Sort();
 			if(dataFormat==1){
-				sort.sortTeam(teamList, condition, order);//TODO
+				sort.sortTeam(teamList, condition, order);
 			}
 			else{
-				//TODO sortTeamTotal
+				sort.sortTeamTotal(teamList, condition, order);
 			}
 			for(int i=0;i<Math.min(number, teamList.size());i++){
 				result.add(formNormalTeam(teamList.get(i)));
@@ -223,7 +223,7 @@ public class TeamCommand extends GameCommand{
 	
 	private TeamHotInfo formHotTeam(TeamInAverage team,int loc){
 		TeamHotInfo hotTeam = new TeamHotInfo();
-		hotTeam.setTeamName(team.getName());
+		hotTeam.setTeamName(team.getAbbr());
 		TeamPO t = readService.getTeamInfo(team.getName(), null);
 		if(t!=null)
 			hotTeam.setLeague(t.getLeague());
@@ -235,7 +235,7 @@ public class TeamCommand extends GameCommand{
 	
 	private TeamHighInfo formHighTeam(TeamInAverage team){
 		TeamHighInfo highTeam = new TeamHighInfo();
-		highTeam.setTeamName(team.getName());
+		highTeam.setTeamName(team.getAbbr());
 		double[] average = team.getStatsAverage();
 		highTeam.setWinRate(team.getWinningRatio());
 		highTeam.setOffendRound(average[24]);
@@ -250,7 +250,7 @@ public class TeamCommand extends GameCommand{
 	
 	private TeamNormalInfo formNormalTeam(TeamInAverage team){
 		TeamNormalInfo normalTeam = new TeamNormalInfo();
-		normalTeam.setTeamName(team.getName());
+		normalTeam.setTeamName(team.getAbbr());
 		double[] data = null;
 		if(dataFormat==1){
 			data = team.getStatsAverage();
@@ -259,6 +259,10 @@ public class TeamCommand extends GameCommand{
 			normalTeam.setPenalty(data[23]);
 		}
 		else{
+			double[] data_average = team.getStatsAverage();
+			normalTeam.setShot(data_average[21]);
+			normalTeam.setThree(data_average[22]);
+			normalTeam.setPenalty(data_average[23]);
 			data = team.getStatsTotal();
 		}
 		normalTeam.setPoint(data[14]);

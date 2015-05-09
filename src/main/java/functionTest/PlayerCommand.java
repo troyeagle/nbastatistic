@@ -9,7 +9,6 @@ import njuse.ffff.po.PlayerInAverage;
 import njuse.ffff.po.PlayerInMatchExtended;
 import njuse.ffff.po.PlayerPO;
 import njuse.ffff.util.Sort;
-import njuse.ffff.util.TeamNameAndAbbr;
 import test.data.PlayerHighInfo;
 import test.data.PlayerHotInfo;
 import test.data.PlayerKingInfo;
@@ -360,7 +359,7 @@ public class PlayerCommand extends GameCommand{
 		if(player_day!=null){
 			kingPlayer.setName(player_day.getName());
 			kingPlayer.setPosition(String.valueOf(player_day.getPosition()));
-			kingPlayer.setTeamName(TeamNameAndAbbr.getInstance().getName(player_day.getTeam().getNameAbbr()));
+			kingPlayer.setTeamName(player_day.getTeam().getNameAbbr());
 			kingPlayer.setField(king_field);
 			switch(loc){
 			case 14:
@@ -425,22 +424,26 @@ public class PlayerCommand extends GameCommand{
 		double[] data = null;
 		if(dataFormat==1){
 			data = playerInfo.getStatsAverage();
-			normalPlayer.setDefend(data[21]);
-			normalPlayer.setOffend(data[20]);
 			normalPlayer.setPenalty(data[27]);
 			normalPlayer.setShot(data[29]);
 			normalPlayer.setThree(data[28]);
-			normalPlayer.setStart(playerInfo.getFirstOnMatch());
 		}
 		else{
+			double[] data_average = playerInfo.getStatsAverage();
+			normalPlayer.setPenalty(data_average[27]);
+			normalPlayer.setShot(data_average[29]);
+			normalPlayer.setThree(data_average[28]);
 			data = playerInfo.getStatsTotal();
 		}
+		normalPlayer.setStart(playerInfo.getFirstOnMatch());
+		normalPlayer.setDefend(data[7]);
+		normalPlayer.setOffend(data[6]);
 		normalPlayer.setAssist(data[9]);
 		normalPlayer.setBlockShot(data[11]);
 		normalPlayer.setEfficiency(data[15]);
 		normalPlayer.setFault(data[12]);
 		normalPlayer.setFoul(data[13]);
-		normalPlayer.setMinute(data[31]/playerInfo.getEffective());
+		normalPlayer.setMinute(data[31]/60);
 		normalPlayer.setPoint(data[14]);
 		normalPlayer.setRebound(data[8]);
 		normalPlayer.setSteal(data[10]);

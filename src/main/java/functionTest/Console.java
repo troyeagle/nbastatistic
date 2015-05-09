@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import njuse.ffff.data.DataReadController;
 import njuse.ffff.dataservice.DataReaderService;
-import njuse.ffff.util.TeamNameAndAbbr;
 import de.tototec.cmdoption.CmdlineParser;
 
 public class Console {
@@ -21,8 +20,7 @@ public class Console {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			TeamNameAndAbbr.getInstance();
-			out.println("========Info initialized========");
+//			out.println("========Info initialized========");
 		}
 		else{
 			GameCommand cmd = new GameCommand();
