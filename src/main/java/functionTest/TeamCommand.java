@@ -69,22 +69,22 @@ public class TeamCommand extends GameCommand{
 			int loc = -1;
 			switch(hot_field){
 			case "score":
-				loc = 21;
+				loc = 14;
 				break;
 			case "rebound":
-				loc = 22;
+				loc = 8;
 				break;
 			case "assist":
-				loc = 23;
+				loc = 9;
 				break;
 			case "blockShot":
-				loc = 21;
+				loc = 11;
 				break;
 			case "steal":
-				loc = 22;
+				loc = 10;
 				break;
 			case "foul":
-				loc = 23;
+				loc = 13;
 				break;
 			case "shot":
 				loc = 21;
@@ -96,10 +96,10 @@ public class TeamCommand extends GameCommand{
 				loc = 23;
 				break;
 			case "defendRebound":
-				loc = 21;
+				loc = 7;
 				break;
 			case "offendRebound":
-				loc = 22;
+				loc = 6;
 				break;
 			}
 			List<TeamInAverage> teamList = readService.getLeadTeamForSeason(readService.getCurrentSeason(), loc);
@@ -121,7 +121,6 @@ public class TeamCommand extends GameCommand{
 				}
 				switch(parts[0]){
 				case "winRate":
-					condition[i] = 23;
 					break;
 				case "offendRound":
 					condition[i] = 24;
@@ -168,40 +167,40 @@ public class TeamCommand extends GameCommand{
 				}
 				switch(parts[0]){
 				case "point":
-					condition[i] = 17;
+					condition[i] = 14;
 					break;
 				case "rebound":
-					condition[i] = 16;
+					condition[i] = 8;
 					break;
 				case "assist":
-					condition[i] = 18;
+					condition[i] = 9;
 					break;
 				case "blockShot":
-					condition[i] = 19;
+					condition[i] = 11;
 					break;
 				case "steal":
-					condition[i] = 20;
+					condition[i] = 10;
 					break;
 				case "foul":
-					condition[i] = 21;
+					condition[i] = 13;
 					break;
 				case "fault":
-					condition[i] = 22;
+					condition[i] = 12;
 					break;
 				case "shot":
-					condition[i] = 25;
+					condition[i] = 21;
 					break;
 				case "three":
-					condition[i] = 26;
+					condition[i] = 22;
 					break;
 				case "penalty":
-					condition[i] = 26;
+					condition[i] = 23;
 					break;
 				case "defendRebound":
-					condition[i] = 26;
+					condition[i] = 7;
 					break;
 				case "offendRebound":
-					condition[i] = 26;
+					condition[i] = 6;
 					break;
 				}
 			}

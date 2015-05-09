@@ -125,13 +125,13 @@ public class PlayerCommand extends GameCommand{
 			if(show_king_daily==1){
 				List<PlayerInMatchExtended> playerList = readService.getLeadPlayerForDay(readService.getCurrentDate(), loc);
 				for(int i=0;i<number;i++){
-					result.add(formKingPlayer(playerList.get(i), null, loc));
+					result.add(formKingPlayerDaily(playerList.get(i), loc));
 				}
 			}
 			else{
 				List<PlayerInAverage> playerList = readService.getLeadPlayerForSeason(readService.getCurrentSeason(), loc);
 				for(int i=0;i<Math.min(number,playerList.size());i++){
-					result.add(formKingPlayer(null, playerList.get(i), loc));
+					result.add(formKingPlayerSeasonly(playerList.get(i), loc));
 				}
 			}
 		}
@@ -145,7 +145,6 @@ public class PlayerCommand extends GameCommand{
 						order[i] = true;
 					}
 				}
-				
 				else{
 					order[i] = false;
 				}
@@ -188,7 +187,7 @@ public class PlayerCommand extends GameCommand{
 			SeasonStatProcessor seasonProcessor = readService.getSeasonStatProcessor(readService.getCurrentSeason());
 			ArrayList<PlayerInAverage> playerList = seasonProcessor.getPlayerInAverage();
 			Sort sort = new Sort();
-			sort.sortPlayer(playerList, condition, order);//TODO
+			sort.sortPlayer(playerList, condition, order);
 			for(int i=0;i<Math.min(number,playerList.size());i++){
 				result.add(formHighPlayer(playerList.get(i)));
 			}
@@ -205,7 +204,7 @@ public class PlayerCommand extends GameCommand{
 					case "position":
 						if(!parts[1].equals("All")){
 							for(PlayerInAverage player:playerList){
-								if(String.valueOf(player.getPosition()).equals(parts[1])){
+								if(formatChangePos(player.getPosition()).contains(parts[1])){
 									players_filtered.add(player);
 								}
 							}
@@ -276,49 +275,49 @@ public class PlayerCommand extends GameCommand{
 				}
 				switch(parts[0]){
 				case "point":
-					condition[i] = 17;
+					condition[i] = 14;
 					break;
 				case "rebound":
-					condition[i] = 16;
+					condition[i] = 8;
 					break;
 				case "assist":
-					condition[i] = 18;
+					condition[i] = 9;
 					break;
 				case "blockShot":
-					condition[i] = 19;
+					condition[i] = 11;
 					break;
 				case "steal":
-					condition[i] = 20;
+					condition[i] = 10;
 					break;
 				case "foul":
-					condition[i] = 21;
+					condition[i] = 13;
 					break;
 				case "fault":
-					condition[i] = 22;
+					condition[i] = 12;
 					break;
 				case "minute":
-					condition[i] = 23;
+					condition[i] = 31;
 					break;
 				case "efficient":
-					condition[i] = 24;
+					condition[i] = 15;
 					break;
 				case "shot":
-					condition[i] = 25;
+					condition[i] = 29;
 					break;
 				case "three":
-					condition[i] = 26;
+					condition[i] = 28;
 					break;
 				case "penalty":
-					condition[i] = 26;
+					condition[i] = 27;
 					break;
 				case "doubleTwo":
-					condition[i] = 26;
+					condition[i] = 36;
 					break;
 				}
 			}
 			Sort sort = new Sort();
 			if(dataFormat==1){
-				sort.sortPlayer(playerList, condition, order);//TODO
+				sort.sortPlayer(playerList, condition, order);
 			}
 			else{
 				sort.sortPlayerTotal(playerList, condition, order);
@@ -334,7 +333,7 @@ public class PlayerCommand extends GameCommand{
 	private PlayerHotInfo formHotPlayer(PlayerInAverage player,int loc){
 		PlayerHotInfo hotPlayer = new PlayerHotInfo();
 		hotPlayer.setName(player.getName());
-		hotPlayer.setPosition(String.valueOf(player.getPosition()));
+		hotPlayer.setPosition(formatChangePos(player.getPosition()));
 		hotPlayer.setTeamName(player.getTeamName());
 		hotPlayer.setField(hot_field);
 		switch(loc){
@@ -354,7 +353,7 @@ public class PlayerCommand extends GameCommand{
 		return hotPlayer;
 	}
 	
-	private PlayerKingInfo formKingPlayer(PlayerInMatchExtended player_day,PlayerInAverage player_season,int loc){
+	private PlayerKingInfo formKingPlayerDaily(PlayerInMatchExtended player_day,int loc){
 		PlayerKingInfo kingPlayer = new PlayerKingInfo();
 		if(player_day!=null){
 			kingPlayer.setName(player_day.getName());
@@ -373,9 +372,14 @@ public class PlayerCommand extends GameCommand{
 				break;
 			}
 		}
-		else if(player_season!=null){
+		return kingPlayer;
+	}
+	
+	private PlayerKingInfo formKingPlayerSeasonly(PlayerInAverage player_season,int loc){
+		PlayerKingInfo kingPlayer = new PlayerKingInfo();
+		if(player_season!=null){
 			kingPlayer.setName(player_season.getName());
-			kingPlayer.setPosition(String.valueOf(player_season.getPosition()));
+			kingPlayer.setPosition(formatChangePos(player_season.getPosition()));
 			kingPlayer.setTeamName(player_season.getTeamName());
 			kingPlayer.setField(king_field);
 			switch(loc){
@@ -396,7 +400,7 @@ public class PlayerCommand extends GameCommand{
 	private PlayerHighInfo formHighPlayer(PlayerInAverage player){
 		PlayerHighInfo highPlayer = new PlayerHighInfo();
 		highPlayer.setName(player.getName());
-		highPlayer.setPosition(String.valueOf(player.getPosition()[0]));
+		highPlayer.setPosition(formatChangePos(player.getPosition()));
 		highPlayer.setTeamName(player.getTeamName());
 		highPlayer.setLeague(player.getLeague());
 		double[] average = player.getStatsAverage();
@@ -448,5 +452,16 @@ public class PlayerCommand extends GameCommand{
 		normalPlayer.setRebound(data[8]);
 		normalPlayer.setSteal(data[10]);
 		return normalPlayer;
+	}
+	
+	private String formatChangePos(char[] pos){
+		StringBuffer resultBuf = new StringBuffer();
+		for(int i=0;i<pos.length;i++){
+			resultBuf.append(pos[i]);
+			if(i!=pos.length-1){
+				resultBuf.append("-");
+			}
+		}
+		return resultBuf.toString();
 	}
 }
