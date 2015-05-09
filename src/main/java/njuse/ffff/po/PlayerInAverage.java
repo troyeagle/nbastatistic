@@ -10,6 +10,8 @@ import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import njuse.ffff.data.TeamDataProcessor;
+
 @SuppressWarnings("unused")
 /**
  * 负责储存球员所有比赛的平均数据
@@ -127,6 +129,10 @@ public class PlayerInAverage {
 	private void addOneMatchToAll(PlayerInMatchExtended p) {
 		if (p.second != 0) {
 			effective++;
+			if(position!='C'&&position!='G'&&position!='F'){
+				position=p.position;
+			}
+			
 			if (p.firstOnMatch) {
 				this.firstOnMatch++;
 			}
@@ -588,5 +594,17 @@ public class PlayerInAverage {
 		if(this.getPlayerStats().size()<1){
 			return false;
 		}return true;
+	}
+	/**
+	 * 根据比赛动态设定球员所在联盟
+	 * @param teams
+	 * @param p
+	 */
+	public void setLeagueAuto(ArrayList<TeamPO> teams,PlayerInMatchExtended p){
+		for (TeamPO tpo : teams) {
+			if (tpo.getAbbr().equals(p.getTeam().getNameAbbr())) {
+				setLeague(tpo.getLeague());
+			}
+		}
 	}
 }

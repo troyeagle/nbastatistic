@@ -16,7 +16,7 @@ public class PlayerInMatch implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	String name;
-	char position;
+	char position='N';
 	String minute;
 	
 	Date date;

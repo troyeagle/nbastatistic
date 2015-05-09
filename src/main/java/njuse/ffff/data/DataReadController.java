@@ -196,7 +196,7 @@ public class DataReadController implements DataReaderService {
 				MatchDataProcessor.matches.size() - 1).getDate();
 		average();
 		
-		Thread main = new Thread() {// 初始化以及处理初始数据
+/*		Thread main = new Thread() {// 初始化以及处理初始数据
 			public void run() {
 
 				try {
@@ -208,7 +208,7 @@ public class DataReadController implements DataReaderService {
 				}
 
 			}
-		};
+		};*/
 //		Thread season = new Thread() {// 增添赛季数据
 //			public void run() {
 //				// seasons.add(new SeasonStatProcessor("12-13"));
@@ -284,12 +284,7 @@ public class DataReadController implements DataReaderService {
 				if (pa.getName().equals(p.getName())) {
 					pa.addOneMatchStat(p);
 					in = true;
-					for (TeamPO tpo : TeamDataProcessor.teams) {
-						if (tpo.getAbbr().equals(p.getTeam().getNameAbbr())) {
-							pa.setLeague(tpo.getLeague());
-						}
-					}
-
+					pa.setLeagueAuto(TeamDataProcessor.teams, p);
 				}
 			}
 
@@ -306,6 +301,7 @@ public class DataReadController implements DataReaderService {
 				if (pa.getName().equals(p.getName())) {
 					pa.addOneMatchStat(p);
 					in = true;
+					pa.setLeagueAuto(TeamDataProcessor.teams, p);
 				}
 			}
 			if (!in) {
@@ -335,6 +331,7 @@ public class DataReadController implements DataReaderService {
 			for (PlayerInAverage pa : playerInAverage) {
 				if (pa.getName().equals(p.getName())) {
 					pa.calAverageAsArrayNew(p);
+					pa.setLeagueAuto(TeamDataProcessor.teams, p);
 				}
 			}
 		}
@@ -342,6 +339,7 @@ public class DataReadController implements DataReaderService {
 			for (PlayerInAverage pa : playerInAverage) {
 				if (pa.getName().equals(p.getName())) {
 					pa.calAverageAsArrayNew(p);
+					pa.setLeagueAuto(TeamDataProcessor.teams, p);
 				}
 			}
 		}

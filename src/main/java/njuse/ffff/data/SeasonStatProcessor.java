@@ -183,6 +183,7 @@ public class SeasonStatProcessor {
 				if (pa.getName().equals(p.getName())) {
 					pa.calAverageAsArrayNew(p);	
 					in = true;
+					pa.setLeagueAuto(TeamDataProcessor.teams, p);
 				}
 			}
 			if(!in){
@@ -197,6 +198,7 @@ public class SeasonStatProcessor {
 				if (pa.getName().equals(p.getName())) {
 					pa.calAverageAsArrayNew(p);
 					in = true;
+					pa.setLeagueAuto(TeamDataProcessor.teams, p);
 				}
 			}
 			if(!in){
