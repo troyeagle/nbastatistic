@@ -48,14 +48,20 @@ public class Console {
 			}
 			if(player!=null){
 				ArrayList<Object> list = player.getPlayInfo();
+				int i=1;
 				for(Object o:list){
-					out.print(o);
+					out.println(i);
+					out.println(o);
+					i++;
 				}
 			}
 			else if(team!=null){
 				ArrayList<Object> list = team.getTeamInfo();
+				int i=1;
 				for(Object o:list){
-					out.print(o);
+					out.println(i);
+					out.println(o);
+					i++;
 				}
 			}
 		}
