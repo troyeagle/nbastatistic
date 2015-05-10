@@ -79,7 +79,7 @@ public class MatchPO implements Serializable,Comparable<MatchPO>{
 			playerInAEx.add(playerEx);
 		}
 		for(PlayerInMatch p : playerInTeamB){
-			PlayerInMatchExtended playerEx = new PlayerInMatchExtended(p,teamStatA);
+			PlayerInMatchExtended playerEx = new PlayerInMatchExtended(p,teamStatB);
 			playerEx.calAll(teamStatB, teamStatA);
 			playerInBEx.add(playerEx);
 		}

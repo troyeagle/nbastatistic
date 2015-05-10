@@ -15,7 +15,7 @@ public class TestConsole {
 //		con.execute(System.out, "-player -total -all -n 10 -sort shot".split("\\s"));
 //		con.execute(System.out, "-team -hot assist -n 4".split("\\s"));
 //		con.execute(System.out, "-team -total -all -n 4".split("\\s"));
-		con.execute(System.out, "-team -all -total".split("\\s"));
+//		con.execute(System.out, "-team -all -total".split("\\s"));
 		con.execute(System.out, "-player -all -n 50 -total".split("\\s"));
 //		con.execute(System.out, "-player -all -n 50 -total".split("\\s"));
 	}
