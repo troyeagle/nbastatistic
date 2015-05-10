@@ -278,6 +278,9 @@ public class PlayerCommand extends GameCommand{
 				case "point":
 					condition[i] = 14;
 					break;
+				case "score":
+					condition[i] = 14;
+					break;
 				case "rebound":
 					condition[i] = 8;
 					break;
