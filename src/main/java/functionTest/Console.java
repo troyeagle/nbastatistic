@@ -12,7 +12,7 @@ public class Console {
 	private DataReaderService service = null;
 	
 	public void execute(PrintStream out,String[] args){
-		if(args[0].equals("--dataresource")){
+		if(args[0].equals("--datasource")){
 			service = new DataReadController();
 
 			try {
@@ -20,7 +20,7 @@ public class Console {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-//			out.println("========Info initialized========");
+			//out.println("========Info initialized========");
 		}
 		else{
 			GameCommand cmd = new GameCommand();

@@ -177,8 +177,8 @@ public class DataReadController implements DataReaderService {
 		TeamDataProcessor.setPath(path+"/team");
 		team.readAndAnalysisTeam();
 		seasons.add(new SeasonStatProcessor("12-13"));
-		seasons.add(new SeasonStatProcessor("13-14"));
-		seasons.add(new SeasonStatProcessor("14-15"));
+		//seasons.add(new SeasonStatProcessor("13-14"));
+		//seasons.add(new SeasonStatProcessor("14-15"));
 		MatchDataProcessor.setPath(this.path+"/matches");
 		MatchDataProcessor.matches = new ArrayList<MatchPO>();
 		match.readAndAnalysisMatch();
