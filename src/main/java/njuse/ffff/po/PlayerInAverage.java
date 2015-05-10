@@ -253,7 +253,7 @@ public class PlayerInAverage {
 	 */
 	// 核心方法
 	public void calAverageAsArray() {
-		statsAverage = new double[32];
+		statsAverage = new double[37];
 		statsTotal = new double[32];
 		statsDirty = new int[32];
 		// For each PlayerInMatchExtended, add basic statistics.

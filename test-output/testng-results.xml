@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="0" total="1" passed="1">
+<testng-results skipped="0" failed="0" total="0" passed="0">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="196" started-at="2015-04-22T07:05:19Z" finished-at="2015-04-22T07:05:19Z">
+  <suite name="Default suite" duration-ms="16" started-at="2015-05-10T02:32:03Z" finished-at="2015-05-10T02:32:03Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="196" started-at="2015-04-22T07:05:19Z" finished-at="2015-04-22T07:05:19Z">
-      <class name="njuse.ffff.data.MatchDataReaderTest">
-        <test-method status="PASS" signature="test()[pri:0, instance:njuse.ffff.data.MatchDataReaderTest@61a52fbd]" name="test" duration-ms="173" started-at="2015-04-22T15:05:19Z" finished-at="2015-04-22T15:05:19Z">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- test -->
-      </class> <!-- njuse.ffff.data.MatchDataReaderTest -->
+    <test name="Default test" duration-ms="16" started-at="2015-05-10T02:32:03Z" finished-at="2015-05-10T02:32:03Z">
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>
