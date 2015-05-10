@@ -177,14 +177,17 @@ public class DataReadController implements DataReaderService {
 		TeamDataProcessor.setPath(path+"/teams");
 		team.readAndAnalysisTeam();
 		seasons.add(new SeasonStatProcessor("12-13"));
-		//seasons.add(new SeasonStatProcessor("13-14"));
-		//seasons.add(new SeasonStatProcessor("14-15"));
+		seasons.add(new SeasonStatProcessor("13-14"));
+		seasons.add(new SeasonStatProcessor("14-15"));
 		MatchDataProcessor.setPath(this.path+"/matches");
 		MatchDataProcessor.matches = new ArrayList<MatchPO>();
 		match.readAndAnalysisMatch();
 		match.processAll();
+		currentSeason = MatchDataProcessor.matches.get(MatchDataProcessor.matches.size()-1).getName().substring(0, 5);
+		currentDate = MatchDataProcessor.matches.get(MatchDataProcessor.matches.size()-1).getDate();
 		averageArrayIni();
 		for (MatchPO m : MatchDataProcessor.matches) {
+			
 			for (SeasonStatProcessor ss : seasons) {
 				if (m.getName().startsWith(ss.getSeason())) {
 					ss.averageProcessForNewMatch(m);
