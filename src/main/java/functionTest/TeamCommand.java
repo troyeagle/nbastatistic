@@ -255,6 +255,7 @@ public class TeamCommand extends GameCommand{
 	private TeamNormalInfo formNormalTeam(TeamInAverage team){
 		TeamNormalInfo normalTeam = new TeamNormalInfo();
 		normalTeam.setTeamName(team.getAbbr());
+		normalTeam.setNumOfGame(team.getNumOfMatches());
 		double[] data = null;
 		if(dataFormat==1){
 			data = team.getStatsAverage();
