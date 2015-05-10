@@ -5,10 +5,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,16 +35,17 @@ public class PlayersDataProcessor {
 		File file = new File(path+"/info");
 		File[] files = file.listFiles();
 		System.out.println(file.getAbsolutePath());
-		FileReader fr;
+		File fr;
 		
 		
 		for (int i = 0; i <files.length; i++) {
 			try {
 				PlayerPO tempPlayerPO;
 				
-				fr = new FileReader(files[i]);
+				fr = files[i];
 
-				BufferedReader br = new BufferedReader(fr);
+				//BufferedReader br = new BufferedReader(fr);
+				BufferedReader br =Files.newBufferedReader(fr.toPath(),StandardCharsets.UTF_8 );
 				Pattern p = Pattern.compile("│(.*)║");
 				br.readLine();
 				String name = matchPattern(p,br.readLine());
@@ -51,8 +53,10 @@ public class PlayersDataProcessor {
 				String number = matchPattern(p,br.readLine());
 				br.readLine();
 				String positions = matchPattern(p,br.readLine());
-				
 				char[] position = new char[2];
+				if(positions==null){
+					positions="N";
+				}
 				if(positions.length()>1){
 					position[1]=positions.charAt(2);
 				}position[0]=positions.charAt(0);
@@ -64,7 +68,13 @@ public class PlayersDataProcessor {
 				br.readLine();
 				String birth = matchPattern(p,br.readLine());
 				br.readLine();
-				int age = Integer.parseInt(matchPattern(p,br.readLine()));
+				int age;
+				try{
+					age= Integer.parseInt(matchPattern(p,br.readLine()));
+				}catch(NumberFormatException e){
+					age=0;
+				}
+				
 				br.readLine();
 				String exp = matchPattern(p,br.readLine());
 				br.readLine();

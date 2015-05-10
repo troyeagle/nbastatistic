@@ -9,7 +9,7 @@ import njuse.ffff.dataservice.DataReaderService;
 import de.tototec.cmdoption.CmdlineParser;
 
 public class Console {
-	private DataReaderService service = null;
+	private static DataReaderService service = null;
 	
 	public void execute(PrintStream out,String[] args){
 		if(args[0].equals("--datasource")){

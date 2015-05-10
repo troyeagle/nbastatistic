@@ -6,7 +6,7 @@ public class TestConsole {
 //		con.execute(System.out, args);
 		String[] m=new String[2];
 		m[0]="--datasource";
-		m[1]="C:/Users/Mebleyev.G.Longinus/Documents/GitHub/nbastatistic/CSEIII data/迭代一数据";
+		m[1]="d:/nba/sta";
 		con.execute(System.out, m);
 //		con.execute(System.out, "-player -high -n 10 -sort frequency".split("\\s"));
 //		con.execute(System.out, "-player -hot assist -n 5".split("\\s"));
@@ -17,6 +17,6 @@ public class TestConsole {
 //		con.execute(System.out, "-team -total -all -n 4".split("\\s"));
 		con.execute(System.out, "-team -all -total".split("\\s"));
 		con.execute(System.out, "-player -all -n 50 -total".split("\\s"));
-		//con.execute(System.out, "-player -all -n 50 -total".split("\\s"));
+//		con.execute(System.out, "-player -all -n 50 -total".split("\\s"));
 	}
 }

@@ -174,7 +174,7 @@ public class DataReadController implements DataReaderService {
 		exe.execute(fileListener);
 		PlayersDataProcessor.setPath(path+"/players");
 		player.readAndAnalysisPlayer();
-		TeamDataProcessor.setPath(path+"/team");
+		TeamDataProcessor.setPath(path+"/teams");
 		team.readAndAnalysisTeam();
 		seasons.add(new SeasonStatProcessor("12-13"));
 		//seasons.add(new SeasonStatProcessor("13-14"));

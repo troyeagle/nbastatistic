@@ -4,10 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 import njuse.ffff.po.TeamPO;
@@ -27,9 +28,9 @@ public class TeamDataProcessor {
 	}
 	public void readAndAnalysisTeam() throws IOException{
 		System.out.println("INFO:Team Info Initializing");
-		path = "./CSEIII data/迭代一数据/teams";
-		FileReader fr = new FileReader(path+"/teams");
-		BufferedReader br = new BufferedReader(fr);
+		//path = "./CSEIII data/迭代一数据/teams";
+		File fr = new File(path+"/teams");
+		BufferedReader br = Files.newBufferedReader(fr.toPath(),StandardCharsets.UTF_8);
 		
 		teams = new ArrayList<TeamPO>();
 		br.readLine();

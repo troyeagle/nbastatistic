@@ -5,10 +5,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -100,7 +101,7 @@ public class MatchDataProcessor {
 	public static synchronized MatchPO readAndAnalyzeNew(String path,String fileName){
 		
 		try {
-			FileReader fr = new FileReader(path+"/"+fileName);
+			File fr = new File(path+"/"+fileName);
 			Date date;
 			String teamA, teamB;
 			ArrayList<String> members = new ArrayList<String>();
@@ -116,7 +117,7 @@ public class MatchDataProcessor {
 			/**
 			 * 数据是0怎么办？！
 			 */
-			BufferedReader br = new BufferedReader(fr);
+			BufferedReader br = Files.newBufferedReader(fr.toPath(), StandardCharsets.UTF_8);
 			String[] total = br.readLine().split(";");//FIXME Null Pointer?
 			String year[] = fileName.substring(0, 5).split("-");
 			if(total[0].startsWith("1")||total[0].startsWith("09")){

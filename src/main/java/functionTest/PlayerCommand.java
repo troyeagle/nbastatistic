@@ -193,6 +193,7 @@ public class PlayerCommand extends GameCommand{
 			}
 		}
 		else{
+			System.out.println(readService.getCurrentSeason());
 			SeasonStatProcessor seasonProcessor = readService.getSeasonStatProcessor(readService.getCurrentSeason());
 			ArrayList<PlayerInAverage> playerList = seasonProcessor.getPlayerInAverage();
 			//筛选

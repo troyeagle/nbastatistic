@@ -205,6 +205,7 @@ public class TeamCommand extends GameCommand{
 					break;
 				}
 			}
+			System.out.println(readService.getCurrentSeason());
 			SeasonStatProcessor seasonProcessor = readService.getSeasonStatProcessor(readService.getCurrentSeason());
 			ArrayList<TeamInAverage> teamList = seasonProcessor.getTeamInAverage();
 			Sort sort = new Sort();
