@@ -174,49 +174,55 @@ public class Sort {
 		
 		@Override
 		public int compare(Object o1, Object o2) {
-			double result = 0;
-			if(o1 instanceof PlayerInMatchExtended){
-				array1 = ((PlayerInMatchExtended)o1).getArray();
-				array2 = ((PlayerInMatchExtended)o2).getArray();
-			}
-			else if(o1 instanceof PlayerInAverage){
-				if(ave){
-					array1 = ((PlayerInAverage)o1).getStatsAverage();
-					array2 = ((PlayerInAverage)o2).getStatsAverage();
-				}else{
-					array1 = ((PlayerInAverage)o1).getStatsTotal();
-					array2 = ((PlayerInAverage)o2).getStatsTotal();
+			try{
+				double result = 0;
+				if(o1 instanceof PlayerInMatchExtended){
+					array1 = ((PlayerInMatchExtended)o1).getArray();
+					array2 = ((PlayerInMatchExtended)o2).getArray();
 				}
-				
-			}
-			else if(o1 instanceof TeamInAverage){
-				if(ave){
-					array1 = ((TeamInAverage)o1).getStatsAverage();
-					array2 = ((TeamInAverage)o2).getStatsAverage();
-				}else{
-					array1 = ((TeamInAverage)o1).getStatsTotal();
-					array2 = ((TeamInAverage)o2).getStatsTotal();
-				}
-				
-			}
-			
-			for (int i = 0; i < attributes.length; i++) {
-				try {
-					result = 1000*array1[attributes[i]]
-							- 1000*array2[attributes[i]];
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				}
-				if ((int) result == 0) {
-				} else {
-					if(!dec[i]){
-						return (int)result;
+				else if(o1 instanceof PlayerInAverage){
+					if(ave){
+						array1 = ((PlayerInAverage)o1).getStatsAverage();
+						array2 = ((PlayerInAverage)o2).getStatsAverage();
+					}else{
+						array1 = ((PlayerInAverage)o1).getStatsTotal();
+						array2 = ((PlayerInAverage)o2).getStatsTotal();
 					}
-					return -(int) result;
+					
 				}
+				else if(o1 instanceof TeamInAverage){
+					if(ave){
+						array1 = ((TeamInAverage)o1).getStatsAverage();
+						array2 = ((TeamInAverage)o2).getStatsAverage();
+					}else{
+						array1 = ((TeamInAverage)o1).getStatsTotal();
+						array2 = ((TeamInAverage)o2).getStatsTotal();
+					}
+					
+				}
+				
+				for (int i = 0; i < attributes.length; i++) {
+					try {
+						result = 1000*array1[attributes[i]]
+								- 1000*array2[attributes[i]];
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					}
+					if ((int) result == 0) {
+					} else {
+						if(!dec[i]){
+							return (int)result;
+						}
+						return -(int) result;
+					}
+				
+			}
+				return -1;
+			}catch(Exception e){
+				e.printStackTrace();
+				return -1;
+			}
 			
-		}
-			return 0;
 		
 	}
 }
