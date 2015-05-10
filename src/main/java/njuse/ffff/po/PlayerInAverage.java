@@ -99,6 +99,7 @@ public class PlayerInAverage {
 				in=true;
 			}
 		}if(!in){
+			this.position = new char[1];
 			this.position[0]='N';
 		}
 	}

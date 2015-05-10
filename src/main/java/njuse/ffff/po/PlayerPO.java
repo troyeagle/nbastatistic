@@ -36,7 +36,13 @@ public class PlayerPO implements Serializable {
 		super();
 		this.name = name;
 		this.number = number;
-		this.position = position;
+		if(position[1]!='F'&&position[1]!='G'&&position[1]!='C'){
+			this.position = new char[1];
+			this.position[0]= position[0];
+		}else{
+			this.position = position;
+		}
+		
 		this.height = height;
 		this.weight = weight;
 		this.birth = birth;

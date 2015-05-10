@@ -51,8 +51,12 @@ public class PlayersDataProcessor {
 				String number = matchPattern(p,br.readLine());
 				br.readLine();
 				String positions = matchPattern(p,br.readLine());
-				positions.split("-");
-				char[] position = positions.toCharArray();
+				
+				char[] position = new char[2];
+				if(positions.length()>1){
+					position[1]=positions.charAt(2);
+				}position[0]=positions.charAt(0);
+				
 				br.readLine();
 				String height = matchPattern(p,br.readLine());
 				br.readLine();
