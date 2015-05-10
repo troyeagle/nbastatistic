@@ -105,7 +105,7 @@ public class PlayerCommand extends GameCommand{
 				break;
 			}
 			List<PlayerInAverage> playerList = readService.getImprovePlayer(readService.getCurrentSeason(), loc);
-			for(int i=0;i<Math.min(number,playerList.size());i++){
+			for(int i=playerList.size()-1;i>=Math.max(0, playerList.size()-number);i--){
 				result.add(formHotPlayer(playerList.get(i), loc));
 			}
 		}
@@ -124,13 +124,13 @@ public class PlayerCommand extends GameCommand{
 			}
 			if(show_king_daily==1){
 				List<PlayerInMatchExtended> playerList = readService.getLeadPlayerForDay(readService.getCurrentDate(), loc);
-				for(int i=0;i<number;i++){
+				for(int i=playerList.size()-1;i>=Math.max(0,playerList.size()-number);i--){
 					result.add(formKingPlayerDaily(playerList.get(i), loc));
 				}
 			}
 			else{
 				List<PlayerInAverage> playerList = readService.getLeadPlayerForSeason(readService.getCurrentSeason(), loc);
-				for(int i=0;i<Math.min(number,playerList.size());i++){
+				for(int i=playerList.size()-1;i>=Math.max(0,playerList.size()-number);i--){
 					result.add(formKingPlayerSeasonly(playerList.get(i), loc));
 				}
 			}

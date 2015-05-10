@@ -103,7 +103,7 @@ public class TeamCommand extends GameCommand{
 				break;
 			}
 			List<TeamInAverage> teamList = readService.getLeadTeamForSeason(readService.getCurrentSeason(), loc);
-			for(int i=0;i<Math.min(number, teamList.size());i++){
+			for(int i=teamList.size()-1;i>=Math.max(0, teamList.size()-number);i--){
 				result.add(formHotTeam(teamList.get(i), loc));
 			}
 		}
@@ -121,6 +121,7 @@ public class TeamCommand extends GameCommand{
 				}
 				switch(parts[0]){
 				case "winRate":
+					condition[i] = 31;
 					break;
 				case "offendRound":
 					condition[i] = 24;
