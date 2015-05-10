@@ -193,7 +193,6 @@ public class PlayerCommand extends GameCommand{
 			}
 		}
 		else{
-			System.out.println(readService.getCurrentSeason());
 			SeasonStatProcessor seasonProcessor = readService.getSeasonStatProcessor(readService.getCurrentSeason());
 			ArrayList<PlayerInAverage> playerList = seasonProcessor.getPlayerInAverage();
 			//筛选
@@ -229,28 +228,30 @@ public class PlayerCommand extends GameCommand{
 							for(PlayerInAverage player:playerList){
 								PlayerPO p = readService.getPlayerInfo(player.getName(), null);
 								if(p!=null){
-									switch(parts[1]){
-									case "<=22":
-										if(p.getAge()<=22){
-											players_filtered.add(player);
+									try{
+										switch(parts[1]){
+										case "<=22":
+											if(p.getAge()<=22){
+												players_filtered.add(player);
+											}
+											break;
+										case "22<X<=25":
+											if(p.getAge()>22&&p.getAge()<=25){
+												players_filtered.add(player);
+											}
+											break;
+										case "25<X<=30":
+											if(p.getAge()>25&&p.getAge()<=30){
+												players_filtered.add(player);
+											}
+											break;
+										case ">30":
+											if(p.getAge()>30){
+												players_filtered.add(player);
+											}
+											break;
 										}
-										break;
-									case "22<X<=25":
-										if(p.getAge()>22&&p.getAge()<=25){
-											players_filtered.add(player);
-										}
-										break;
-									case "25<X<=30":
-										if(p.getAge()>25&&p.getAge()<=30){
-											players_filtered.add(player);
-										}
-										break;
-									case ">30":
-										if(p.getAge()>30){
-											players_filtered.add(player);
-										}
-										break;
-									}
+									}catch(NumberFormatException e){}
 								}
 							}
 							playerList = players_filtered;
