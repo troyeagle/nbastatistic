@@ -17,20 +17,17 @@ public class SwitchButtonGroup {
 		buttonList = new Vector<>();
 		listenerList = new Vector<>();
 
-		switchListener = new ConditionChangeListener() {
-			@Override
-			public void actionPerformed(ConditionChangeEvent e) {
-				int destination = -1;
-				if (e.isActive()) {
-					for (int i = 0; i < buttonList.size(); i++) {
-						if (buttonList.get(i) == e.getSource()) {
-							destination = i;
-							break;
-						}
+		switchListener = (e) -> {
+			int destination = -1;
+			if (e.isActive()) {
+				for (int i = 0; i < buttonList.size(); i++) {
+					if (buttonList.get(i) == e.getSource()) {
+						destination = i;
+						break;
 					}
 				}
-				switchTo(destination);
 			}
+			switchTo(destination);
 		};
 		//		switchListener = new ActionListener() {
 		//

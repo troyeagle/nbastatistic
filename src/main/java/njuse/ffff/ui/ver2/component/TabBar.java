@@ -18,7 +18,7 @@ public class TabBar extends PanelEx implements UIConfigNotifier {
 	private SwitchButton activeBtn;
 
 	private Color activeColor;
-	
+
 	public static final int CENTER = FlowLayout.CENTER;
 	public static final int LEFT = FlowLayout.LEFT;
 	public static final int RIGHT = FlowLayout.RIGHT;
@@ -28,12 +28,7 @@ public class TabBar extends PanelEx implements UIConfigNotifier {
 		setOpaque(false);
 
 		group = new SwitchButtonGroup();
-		group.addSwitchListener(new SwitchListener() {
-			@Override
-			public void actionPerformed(SwitchEvent e) {
-				switchHandle();
-			}
-		});
+		group.addSwitchListener(e -> switchHandle());
 
 		addTabs(titles);
 
@@ -144,7 +139,7 @@ public class TabBar extends PanelEx implements UIConfigNotifier {
 		}
 
 	}
-	
+
 	public void setAlignment(int align) {
 		((FlowLayout) getLayout()).setAlignment(align);
 	}

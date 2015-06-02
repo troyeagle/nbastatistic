@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -79,20 +77,8 @@ public class TitleBar extends PanelEx implements UIConfigNotifier {
 	}
 
 	private void initAction() {
-		minimize.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				window.setExtendedState(JFrame.ICONIFIED);
-			}
-		});
-
-		exit.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				window.dispose();
-			}
-		});
-
+		minimize.addActionListener(e -> window.setExtendedState(JFrame.ICONIFIED));
+		exit.addActionListener(e -> window.dispose());
 	}
 
 	public void setTitle(String text) {

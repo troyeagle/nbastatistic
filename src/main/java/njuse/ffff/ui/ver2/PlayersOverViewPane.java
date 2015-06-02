@@ -6,11 +6,8 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
@@ -26,7 +23,6 @@ import njuse.ffff.ui.component.LabelEx;
 import njuse.ffff.ui.component.PanelEx;
 import njuse.ffff.ui.ver2.component.SwitchButton;
 import njuse.ffff.ui.ver2.component.SwitchButtonGroup;
-import njuse.ffff.ui.ver2.component.SwitchEvent;
 import njuse.ffff.ui.ver2.component.SwitchListener;
 import njuse.ffff.ui.ver2.component.TableView;
 import njuse.ffff.uiservice.PlayersOverviewService;
@@ -72,7 +68,6 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 	public PlayersOverViewPane() {
 		super(new BorderLayout());
 		setOpaque(false);
-
 		avgTableMap = new HashMap<>();
 		totalTableMap = new HashMap<>();
 		iconPanelMap = new HashMap<>();
@@ -107,21 +102,12 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 		settingBtn.setOpaque(false);
 		settingBtn.add(settings);
 
-		settings.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (settings.isActive()) {
-					picView.setVisible(true);
-					contentPanel.remove(settingPanel);
-					//					contentPanel.validate();
-					contentPanel.repaint();
-				} else {
-					picView.setVisible(false);
-					contentPanel.add(settingPanel, 0);
-					//					contentPanel.validate();
-					contentPanel.repaint();
-				}
-			}
+		settings.addActionListener(e -> {
+			boolean b = settings.isActive();
+			picView.setVisible(b);
+			contentPanel.setVisible(!b);
+			//			contentPanel.validate();
+			contentPanel.repaint();
 		});
 
 		settingPanel = new PanelEx(new BorderLayout(30, 0));
@@ -134,13 +120,8 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 		ok.setFont(UIConfig.TitleFont);
 		ok.setBackground(new Color(0, 140, 230));
 		ok.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-		ok.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				settings.doClick();
-			}
-		});
 		settingPanel.add(ok, BorderLayout.SOUTH);
+		ok.addActionListener(e -> settings.doClick());
 
 		settingContent = new PanelEx(new CardLayout());
 		settingContent.setOpaque(false);
@@ -166,13 +147,10 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 			btn.setClickCancelEnable(true);
 			btn.setActiveIcon(checked);
 			btn.setActive(true);
-			btn.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					avgTableMap.forEach((season, table) -> {
-						table.setDisplay(btn.getName(), !btn.isActive());
-					});
-				}
+			btn.addActionListener(e -> {
+				avgTableMap.forEach((season, table) ->
+						table.setDisplay(btn.getName(), !btn.isActive())
+						);
 			});
 			avgSetting.add(btn);
 		}
@@ -192,13 +170,10 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 			btn.setClickCancelEnable(true);
 			btn.setActiveIcon(checked);
 			btn.setActive(true);
-			btn.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					totalTableMap.forEach((season, table) -> {
-						table.setDisplay(btn.getName(), !btn.isActive());
-					});
-				}
+			btn.addActionListener(e -> {
+				totalTableMap.forEach((season, table) -> {
+					table.setDisplay(btn.getName(), !btn.isActive());
+				});
 			});
 			totalSetting.add(btn);
 		}
@@ -210,19 +185,16 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 		seasonPanel = new PanelEx(new FlowLayout(FlowLayout.LEFT, 10, 5));
 		seasonPanel.setOpaque(false);
 
-		SwitchListener l = new SwitchListener() {
-			@Override
-			public void actionPerformed(SwitchEvent e) {
-				SwitchButton type = dataGroup.getActiveButton();
-				SwitchButton season = seasonGroup.getActiveButton();
-				if (type != null && season != null) {
-					((CardLayout) dataPanel.getLayout()).show(dataPanel, type.getName()
-							+ season.getName());
-					((CardLayout) settingContent.getLayout()).show(settingContent,
-							type.getName());
-				}
-				settings.setVisible(type != picView);
+		SwitchListener l = e -> {
+			SwitchButton type = dataGroup.getActiveButton();
+			SwitchButton season = seasonGroup.getActiveButton();
+			if (type != null && season != null) {
+				((CardLayout) dataPanel.getLayout()).show(dataPanel, type.getName()
+						+ season.getName());
+				((CardLayout) settingContent.getLayout()).show(settingContent,
+						type.getName());
 			}
+			settings.setVisible(type != picView);
 		};
 
 		seasonGroup = new SwitchButtonGroup();
@@ -247,6 +219,8 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 
 		contentPanel = new PanelEx(new BorderLayout());
 		contentPanel.setOpaque(false);
+		contentPanel.add(settingPanel);
+		settingPanel.setVisible(false);
 		contentPanel.add(dataPanel);
 		contentPanel.add(controlPanel, BorderLayout.NORTH);
 
@@ -262,13 +236,9 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 		// TODO 获取数据？
 		//		PlayerCompareController.getInstance().setPlayerCompareInfoForSeason(this);
 
-		Timer t = new Timer(0, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				PlayerCompareController.getInstance().setPlayerCompareInfoForSeason(
-						PlayersOverViewPane.this);
-			}
-		});
+		Timer t = new Timer(0, e ->
+				PlayerCompareController.getInstance().setPlayerCompareInfoForSeason(this)
+				);
 		t.setRepeats(false);
 		t.start();
 		//				avgTableHeader = new String[] { "c1", "c2", "c3" };
@@ -309,7 +279,6 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 				if (!avgTableMap.containsKey(season)) {
 					TableView avgTable = new TableView(values, avgTableHeader);
 					avgTable.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));
-					setTableUIConfig(avgTable);
 					avgTable.addMouseListener(new MouseAdapter() {
 						@Override
 						public void mouseClicked(MouseEvent e) {
@@ -365,7 +334,6 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 
 					TableView totalTable = new TableView(values, totalTableHeader);
 					totalTable.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));
-					setTableUIConfig(totalTable);
 					totalTable.addMouseListener(new MouseAdapter() {
 						@Override
 						public void mouseClicked(MouseEvent e) {
@@ -433,9 +401,8 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 			for (int i = 0; i < r * c; i++) {
 				int index = pageCount * r * c + i;
 				if (index < playersName.length) {
-					ImageIcon portrait = ImageUtils.getPlayerImg(playersName[index]);
-					if (portrait == null)
-						portrait = new ImageIcon("./img/no_image.png");
+					ImageIcon portrait = ImageUtilsEx.getPlayerImg(playersName[index],
+							ImageUtilsEx.M);
 					ButtonEx player = new ButtonEx(playersName[index], portrait);
 					player.setName(playersName[index]);
 					player.setOpaque(false);
@@ -447,38 +414,9 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 					player.setIconTextGap(10);
 					iconPage.add(player);
 
-					player.addComponentListener(new ComponentAdapter() {
-						public void componentResized(ComponentEvent e) {
-							ImageIcon icon = (ImageIcon) player.getIcon();
-							double icoRatio = icon.getIconWidth()
-									/ (double) icon.getIconHeight();
-							double btnRaito = (player.getWidth() - 20)
-									/ (double) (player.getHeight() - player.getFont()
-											.getSize() - player.getIconTextGap() - 10);
-							int icoWidth;
-							int icoHeight;
-							if (icoRatio > btnRaito) { // 图片“过高”
-								icoWidth = player.getWidth() - 20;
-								icoHeight = (int) (icoWidth / icoRatio);
-							} else {
-								icoHeight = player.getHeight() - player.getFont().getSize()
-										- player.getIconTextGap() - 10;
-								icoWidth = (int) (icoHeight * icoRatio);
-							}
-							Image temp = icon.getImage().getScaledInstance(icoWidth,
-									icoHeight, Image.SCALE_SMOOTH);
-							icon = new ImageIcon(temp);
-							player.setIcon(icon);
-						}
-					});
-
-					player.addActionListener(new ActionListener() {
-
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							UIEventManager.notify(UIEventType.SWITCH,
-									"球员详情:" + player.getName());
-						}
+					player.addActionListener(e -> {
+						UIEventManager.notify(UIEventType.SWITCH,
+								"球员详情:" + player.getName());
 					});
 				} else {
 					PanelEx p = new PanelEx();
@@ -494,13 +432,10 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 			iconPanel.add(switchPanel, BorderLayout.SOUTH);
 
 			SwitchButtonGroup group = new SwitchButtonGroup();
-			group.addSwitchListener(new SwitchListener() {
-				@Override
-				public void actionPerformed(SwitchEvent e) {
+			group.addSwitchListener(e ->
 					((CardLayout) pagePanel.getLayout()).show(pagePanel, e.getSource()
-							.getName());
-				}
-			});
+							.getName())
+					);
 			for (int i = 0; i < pageCount; i++) {
 				SwitchButton pageIndex = new SwitchButton(String.valueOf(i + 1));
 				pageIndex.setName(String.valueOf(i + 1));
@@ -516,30 +451,8 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 
 	@Override
 	public void notifyChange() {
-		setUIConfig();
 	}
 
-	private void setUIConfig() {
-		avgTableMap.forEach((season, table) -> {
-			setTableUIConfig(table);
-		});
-
-		totalTableMap.forEach((season, table) -> {
-			setTableUIConfig(table);
-		});
-	}
-
-	private void setTableUIConfig(TableView table) {
-		table.setTableFont(UIConfig.ContentFont);
-		table.setHeaderFont(UIConfig.ContentFont);
-		table.setRowHeight(UIConfig.ContentFont.getSize() + 5);
-		table.setForeground(Color.WHITE);
-		table.setSelectionBgColor(UIConfig.TableSelectionBgColor);
-		table.setSelectionFgColor(UIConfig.TableSelectionFgColor);
-		table.setTableFgColor(UIConfig.TableFgColor);
-		table.setHeaderBgColor(UIConfig.TableHeaderBgColor);
-		table.setHeaderFgColor(UIConfig.TableHeaderFgColor);
-	}
 
 	private void setButtonUI(ButtonEx button) {
 		button.setBackground(new Color(255, 255, 255, 64));

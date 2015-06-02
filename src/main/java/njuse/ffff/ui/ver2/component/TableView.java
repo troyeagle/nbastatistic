@@ -5,27 +5,31 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseListener;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JViewport;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.ScrollBarUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import njuse.ffff.ui.component.PanelEx;
 
-import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
-
-@SuppressWarnings("restriction")
 public class TableView extends PanelEx {
 
 	private static final long serialVersionUID = 1L;
+
+	private static TableViewUI ui;
 
 	private JTable table;
 	private JScrollPane view;
@@ -45,6 +49,36 @@ public class TableView extends PanelEx {
 		add(createView(createTable(values, columns)));
 
 		columnModel = table.getColumnModel();
+		setTableUI(ui);
+	}
+
+	public void setTableUI(TableViewUI ui) {
+		if (ui != null) {
+			setHeaderFont(ui.getHeaderFont());
+			setHeaderFgColor(ui.getHeaderFgColor());
+			setHeaderBgColor(ui.getHeaderBgColor());
+
+			setTableFont(ui.getTableFont());
+			setTableFgColor(ui.getTableFgColor());
+			setRowHeight(ui.getTableFont().getSize() + 5);
+
+			setSelectionFgColor(ui.getSelectionFgColor());
+			setSelectionBgColor(ui.getSelectionBgColor());
+
+			setScrollBarUI(ui.getScrollBarUI());
+		}
+	}
+
+	private void setScrollBarUI(ScrollBarUI ui) {
+		if (ui != null) {
+			try {
+				Class<?> clazz = ui.getClass();
+				Method m = clazz.getMethod("createUI", JComponent.class);
+				view.getHorizontalScrollBar().setUI((ScrollBarUI) m.invoke(null, this));
+				view.getVerticalScrollBar().setUI((ScrollBarUI) m.invoke(null, this));
+			} catch (Exception e) {
+			}
+		}
 	}
 
 	public void setTable(Object[][] values) {
@@ -68,8 +102,6 @@ public class TableView extends PanelEx {
 		view.getColumnHeader().setOpaque(false);
 		view.getViewport().setOpaque(false);
 		view.setBorder(BorderFactory.createEmptyBorder());
-		view.getHorizontalScrollBar().setUI(new WindowsScrollBarUI());
-		view.getVerticalScrollBar().setUI(new WindowsScrollBarUI());
 
 		TableUtils.FitTableColumns(table);
 		return view;
@@ -207,5 +239,12 @@ public class TableView extends PanelEx {
 		}
 		super.paint(g);
 	}
-	
+
+	public static void setDefaultTableViewUI(TableViewUI ui) {
+		TableView.ui = ui;
+		if (ui != null) {
+			UIManager.put("Table.background", new ColorUIResource(ui.getRowColor1()));
+			UIManager.put("Table.alternateRowColor", ui.getRowColor2());
+		}
+	}
 }

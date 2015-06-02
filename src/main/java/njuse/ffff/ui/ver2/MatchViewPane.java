@@ -6,11 +6,10 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Calendar;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -99,7 +98,6 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 			Object[][] emptyValue = new Object[0][0];
 			table[i] = new TableView(emptyValue, tableHeader);
 			TableView t = table[i];
-			setTableUIConfig(t);
 			t.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));
 			t.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
@@ -147,25 +145,16 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 	}
 
 	public void setMatch(String date, String team) {
-		Timer t = new Timer(0, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String[] d = date.split("-");
-				int year = Integer.parseInt(d[0]);
-				int month = Integer.parseInt(d[1]);
-				int day = Integer.parseInt(d[2]);
-				if (year < 1900) {
-					year += 1900;
-					day++;
-				} else {
-					month--;
-				}
-				Calendar c = Calendar.getInstance();
-				c.set(year, month, day, 0, 0, 0);
-				Date time = c.getTime();
-				MatchInfoController.getInstance().setMatchInfoPanel(MatchViewPane.this, time,
-						team);
+		Timer t = new Timer(0, e -> {
+			DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+			Date time;
+			try {
+				time = df.parse(date);
+			} catch (Exception e1) {
+				time = new Date();
 			}
+			MatchInfoController.getInstance().setMatchInfoPanel(MatchViewPane.this, time,
+					team);
 		});
 		t.setRepeats(false);
 		t.start();
@@ -201,18 +190,6 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 			labelScore[index][i].setText(String.valueOf(score[i]));
 		}
 		table[index].setTable(data);
-	}
-
-	private void setTableUIConfig(TableView table) {
-		table.setTableFont(UIConfig.SmallFont);
-		table.setHeaderFont(UIConfig.SmallFont);
-		table.setRowHeight(UIConfig.ContentFont.getSize() + 5);
-		table.setForeground(Color.WHITE);
-		table.setSelectionBgColor(UIConfig.TableSelectionBgColor);
-		table.setSelectionFgColor(UIConfig.TableSelectionFgColor);
-		table.setTableFgColor(UIConfig.TableFgColor);
-		table.setHeaderBgColor(UIConfig.TableHeaderBgColor);
-		table.setHeaderFgColor(UIConfig.TableHeaderFgColor);
 	}
 
 }

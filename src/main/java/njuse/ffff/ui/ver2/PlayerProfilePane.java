@@ -3,7 +3,6 @@ package njuse.ffff.ui.ver2;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -98,13 +97,7 @@ public class PlayerProfilePane extends PanelEx implements PlayerProfileService {
 	public void setProfile(String name, String position, String number, String height,
 			String weight, String birthday, String age, String exp, String school,
 			String team) {
-		ImageIcon icon = ImageUtils.getPlayerImg(name);
-		if (icon == null)
-			icon = new ImageIcon("./img/no_image.png");
-		Image img = icon.getImage();
-		int imgWidth = 200;
-		int imgHeight = (int) (icon.getIconHeight() / ((double) icon.getIconWidth()) * 200);
-		icon = new ImageIcon(img.getScaledInstance(imgWidth, imgHeight, Image.SCALE_SMOOTH));
+		ImageIcon icon = ImageUtilsEx.getPlayerImg(name, ImageUtilsEx.XL);
 		portrait.setIcon(icon);
 
 		nameLabel.setText(name);

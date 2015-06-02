@@ -5,11 +5,8 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -23,8 +20,6 @@ import njuse.ffff.ui.component.ButtonEx;
 import njuse.ffff.ui.component.PanelEx;
 import njuse.ffff.ui.ver2.component.SwitchButton;
 import njuse.ffff.ui.ver2.component.SwitchButtonGroup;
-import njuse.ffff.ui.ver2.component.SwitchEvent;
-import njuse.ffff.ui.ver2.component.SwitchListener;
 import njuse.ffff.ui.ver2.component.TabBar;
 import njuse.ffff.ui.ver2.component.TableView;
 import njuse.ffff.uiservice.TeamDataService;
@@ -71,13 +66,10 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 		tabBar.setAlignment(TabBar.CENTER);
 		tabBar.setOpaque(true);
 		tabBar.setBackground(UIConfig.TitleBgColor);
-		tabBar.addSwitchListener(new SwitchListener() {
-			@Override
-			public void actionPerformed(SwitchEvent e) {
+		tabBar.addSwitchListener(e ->
 				((CardLayout) viewPanel.getLayout()).show(viewPanel,
-						tabBar.getActiveTabTitle());
-			}
-		});
+						tabBar.getActiveTabTitle())
+				);
 
 		viewPanel = new PanelEx(new CardLayout());
 		viewPanel.setOpaque(false);
@@ -147,7 +139,8 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 			for (int i = 0; i < r * c; i++) {
 				int index = pageCount * r * c + i;
 				if (index < playersName.length) {
-					ImageIcon portrait = ImageUtils.getPlayerImg(playersName[index]);
+					ImageIcon portrait = ImageUtilsEx.getPlayerImg(playersName[index],
+							ImageUtilsEx.M);
 					if (portrait == null)
 						portrait = new ImageIcon("./img/no_image.png");
 					ButtonEx player = new ButtonEx(playersName[index], portrait);
@@ -161,39 +154,10 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 					player.setIconTextGap(10);
 					iconPage.add(player);
 
-					player.addComponentListener(new ComponentAdapter() {
-						public void componentResized(ComponentEvent e) {
-							ImageIcon icon = (ImageIcon) player.getIcon();
-							double icoRatio = icon.getIconWidth()
-									/ (double) icon.getIconHeight();
-							double btnRaito = (player.getWidth() - 20)
-									/ (double) (player.getHeight() - player.getFont()
-											.getSize() - player.getIconTextGap() - 10);
-							int icoWidth;
-							int icoHeight;
-							if (icoRatio > btnRaito) { // 图片“过高”
-								icoWidth = player.getWidth() - 20;
-								icoHeight = (int) (icoWidth / icoRatio);
-							} else {
-								icoHeight = player.getHeight() - player.getFont().getSize()
-										- player.getIconTextGap() - 10;
-								icoWidth = (int) (icoHeight * icoRatio);
-							}
-							Image temp = icon.getImage().getScaledInstance(icoWidth,
-									icoHeight, Image.SCALE_SMOOTH);
-							icon = new ImageIcon(temp);
-							player.setIcon(icon);
-						}
-					});
-
-					player.addActionListener(new ActionListener() {
-
-						@Override
-						public void actionPerformed(ActionEvent e) {
+					player.addActionListener(e ->
 							UIEventManager.notify(UIEventType.SWITCH,
-									"球员详情:" + player.getName());
-						}
-					});
+									"球员详情:" + player.getName())
+							);
 				} else {
 					PanelEx p = new PanelEx();
 					p.setOpaque(false);
@@ -207,13 +171,10 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 				iconPanel.add(switchPanel, BorderLayout.SOUTH);
 
 				SwitchButtonGroup group = new SwitchButtonGroup();
-				group.addSwitchListener(new SwitchListener() {
-					@Override
-					public void actionPerformed(SwitchEvent e) {
+				group.addSwitchListener(e ->
 						((CardLayout) pagePanel.getLayout()).show(pagePanel, e.getSource()
-								.getName());
-					}
-				});
+								.getName())
+						);
 				for (int i = 0; i < pageCount; i++) {
 					SwitchButton pageIndex = new SwitchButton(String.valueOf(i + 1));
 					pageIndex.setName(String.valueOf(i + 1));
@@ -233,13 +194,10 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 			iconPanel.add(switchPanel, BorderLayout.SOUTH);
 
 			SwitchButtonGroup group = new SwitchButtonGroup();
-			group.addSwitchListener(new SwitchListener() {
-				@Override
-				public void actionPerformed(SwitchEvent e) {
+			group.addSwitchListener(e ->
 					((CardLayout) pagePanel.getLayout()).show(pagePanel, e.getSource()
-							.getName());
-				}
-			});
+							.getName())
+					);
 			for (int i = 0; i < pageCount; i++) {
 				SwitchButton pageIndex = new SwitchButton(String.valueOf(i + 1));
 				pageIndex.setName(String.valueOf(i + 1));
@@ -257,7 +215,6 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 	public void setAvgDataTable(Object[][] data) {
 		if (avgTable == null) {
 			avgTable = new TableView(data, avgHeader);
-			setTableUIConfig(avgTable);
 			tabBar.addTab("平均数据");
 			viewPanel.add("平均数据", avgTable);
 			if (tabBar.getActiveTabIndex() == -1) {
@@ -272,7 +229,6 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 	public void setTotalDataTable(Object[][] data) {
 		if (totalTable == null) {
 			totalTable = new TableView(data, totalHeader);
-			setTableUIConfig(totalTable);
 			tabBar.addTab("总数据");
 			viewPanel.add("总数据", totalTable);
 		} else {
@@ -284,7 +240,6 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 	public void setAdvancedDataTable(Object[][] data) {
 		if (advTable == null) {
 			advTable = new TableView(data, advHeader);
-			setTableUIConfig(advTable);
 			tabBar.addTab("进阶数据");
 			viewPanel.add("进阶数据", advTable);
 		} else {
@@ -296,7 +251,6 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 	public void setGameLog(Object[][] data, int[][] dirty) {
 		if (gamesTable == null) {
 			gamesTable = new TableView(data, gameHeader);
-			setTableUIConfig(gamesTable);
 			gamesTable.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));
 			gamesTable.addMouseListener(new MouseAdapter() {
 				@Override
@@ -320,17 +274,5 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 		} else {
 			gamesTable.setTable(data);
 		}
-	}
-
-	private void setTableUIConfig(TableView table) {
-		table.setTableFont(UIConfig.ContentFont);
-		table.setHeaderFont(UIConfig.ContentFont);
-		table.setRowHeight(UIConfig.ContentFont.getSize() + 5);
-		table.setForeground(Color.WHITE);
-		table.setSelectionBgColor(UIConfig.TableSelectionBgColor);
-		table.setSelectionFgColor(UIConfig.TableSelectionFgColor);
-		table.setTableFgColor(UIConfig.TableFgColor);
-		table.setHeaderBgColor(UIConfig.TableHeaderBgColor);
-		table.setHeaderFgColor(UIConfig.TableHeaderFgColor);
 	}
 }

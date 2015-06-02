@@ -2,20 +2,22 @@ package njuse.ffff.ui.ver2.component;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.RowSorter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 import sun.swing.table.DefaultTableCellHeaderRenderer;
 
@@ -56,8 +58,8 @@ public class TableUtils {
 		table.setShowGrid(false);
 		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(dtm);
-		table.setRowSorter(sorter);
+//		RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(dtm);
+//		table.setRowSorter(sorter);
 
 		table.setDefaultRenderer(Object.class,
 				new DefaultTableCellRenderer() {
@@ -81,7 +83,24 @@ public class TableUtils {
 	}
 
 	public static void setTableHeader(JTable table) {
+		JPopupMenu menu = new JPopupMenu();
+		JMenuItem item = new JMenuItem();
+		item.add(new JCheckBox("test3"));
+		menu.add(item);
+
 		JTableHeader header = table.getTableHeader();
+		header.setComponentPopupMenu(menu);
+
+		header.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON3) {
+					JPopupMenu menu = header.getComponentPopupMenu();
+					menu.show(header, e.getX(), e.getY());
+				}
+			}
+		});
+
 		DefaultTableCellRenderer dtr = new DefaultTableCellRenderer() {
 			private static final long serialVersionUID = 1L;
 
@@ -95,7 +114,7 @@ public class TableUtils {
 				} else {
 					c.setHorizontalAlignment(JLabel.CENTER);
 				}
-				c.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 5));
+				c.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 				return c;
 			}
 		};
@@ -132,12 +151,12 @@ public class TableUtils {
 			int col = header.getColumnModel().getColumnIndex(column.getIdentifier());
 			int width = (int) table.getTableHeader().getDefaultRenderer()
 					.getTableCellRendererComponent(table, column.getIdentifier()
-							, false, false, -1, col).getPreferredSize().getWidth() + 30;
+							, false, false, -1, col).getPreferredSize().getWidth() + 10;
 			for (int row = 0; row < rowCount; row++) {
 				int preferedWidth = (int) table.getCellRenderer(row, col)
 						.getTableCellRendererComponent(table,
 								table.getValueAt(row, col), false, false, row, col)
-						.getPreferredSize().getWidth() + 20;
+						.getPreferredSize().getWidth() + 10;
 				width = Math.max(width, preferedWidth);
 			}
 			header.setResizingColumn(column); // 此行很重要

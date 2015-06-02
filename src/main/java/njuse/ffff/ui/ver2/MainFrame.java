@@ -17,8 +17,6 @@ import javax.swing.Timer;
 import njuse.ffff.presenter.SearchController;
 import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.ui.component.PanelEx;
-import njuse.ffff.ui.ver2.component.SwitchEvent;
-import njuse.ffff.ui.ver2.component.SwitchListener;
 import njuse.ffff.ui.ver2.component.TabBar;
 import njuse.ffff.ui.ver2.component.TitleBar;
 
@@ -95,14 +93,10 @@ public class MainFrame extends JFrame {
 
 		tabBar = new TabBar("主页", "球队一览", "球员一览", "球员筛选");
 		tabBar.setOpaque(false);
-		tabBar.addSwitchListener(new SwitchListener() {
-
-			@Override
-			public void actionPerformed(SwitchEvent e) {
-				String name = e.getSource().getName();
-				((CardLayout) viewPanel.getLayout()).show(viewPanel, name);
-				// TODO
-			}
+		tabBar.addSwitchListener(e -> {
+			String name = e.getSource().getName();
+			((CardLayout) viewPanel.getLayout()).show(viewPanel, name);
+			// TODO
 		});
 
 		PanelEx titleArea = new PanelEx(new BorderLayout(0, 0));

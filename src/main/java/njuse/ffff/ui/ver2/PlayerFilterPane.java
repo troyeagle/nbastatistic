@@ -16,8 +16,6 @@ import njuse.ffff.ui.component.LabelEx;
 import njuse.ffff.ui.component.PanelEx;
 import njuse.ffff.ui.ver2.component.SwitchButton;
 import njuse.ffff.ui.ver2.component.SwitchButtonGroup;
-import njuse.ffff.ui.ver2.component.SwitchEvent;
-import njuse.ffff.ui.ver2.component.SwitchListener;
 import njuse.ffff.ui.ver2.component.TableView;
 import njuse.ffff.ui.ver2.component.WrapLayout;
 import njuse.ffff.uiservice.PlayerFilterViewService;
@@ -47,7 +45,6 @@ public class PlayerFilterPane extends PanelEx implements PlayerFilterViewService
 
 		groups = new SwitchButtonGroup[3];
 		resTable = new TableView(new Object[0][], tableHeader);
-		setTableUIConfig(resTable);
 		resTable.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));
 		resTable.getTable().addMouseListener(new MouseAdapter() {
 			@Override
@@ -106,12 +103,7 @@ public class PlayerFilterPane extends PanelEx implements PlayerFilterViewService
 				groups[i].switchTo(0);
 		}
 		for (SwitchButtonGroup group : groups) {
-			group.addSwitchListener(new SwitchListener() {
-				@Override
-				public void actionPerformed(SwitchEvent e) {
-					getResult();
-				}
-			});
+			group.addSwitchListener(e -> getResult());
 		}
 
 		filterPanel.add(conditions[0], BorderLayout.NORTH);
@@ -146,17 +138,5 @@ public class PlayerFilterPane extends PanelEx implements PlayerFilterViewService
 	@Override
 	public void setResult(Object[][] data) {
 		resTable.setTable(data);
-	}
-
-	private void setTableUIConfig(TableView table) {
-		table.setTableFont(UIConfig.ContentFont);
-		table.setHeaderFont(UIConfig.ContentFont);
-		table.setRowHeight(UIConfig.ContentFont.getSize() + 5);
-		table.setForeground(Color.WHITE);
-		table.setSelectionBgColor(UIConfig.TableSelectionBgColor);
-		table.setSelectionFgColor(UIConfig.TableSelectionFgColor);
-		table.setTableFgColor(UIConfig.TableFgColor);
-		table.setHeaderBgColor(UIConfig.TableHeaderBgColor);
-		table.setHeaderFgColor(UIConfig.TableHeaderFgColor);
 	}
 }

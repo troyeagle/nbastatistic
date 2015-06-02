@@ -28,7 +28,6 @@ public class SearchResultPane extends PanelEx implements SearchResultService {
 
 		teams = new TableView(new Object[0][], new String[] { "球队名" });
 		teams.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));
-		setTableUIConfig(teams);
 		teams.getTable().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -41,7 +40,6 @@ public class SearchResultPane extends PanelEx implements SearchResultService {
 		});
 		players = new TableView(new Object[0][], new String[] { "球员名" });
 		players.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));
-		setTableUIConfig(players);
 		players.getTable().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -97,17 +95,5 @@ public class SearchResultPane extends PanelEx implements SearchResultService {
 		}
 		validate();
 		repaint();
-	}
-
-	private void setTableUIConfig(TableView table) {
-		table.setTableFont(UIConfig.ContentFont);
-		table.setHeaderFont(UIConfig.ContentFont);
-		table.setRowHeight(UIConfig.ContentFont.getSize() + 5);
-		table.setForeground(Color.WHITE);
-		table.setSelectionBgColor(UIConfig.TableSelectionBgColor);
-		table.setSelectionFgColor(UIConfig.TableSelectionFgColor);
-		table.setTableFgColor(UIConfig.TableFgColor);
-		table.setHeaderBgColor(UIConfig.TableHeaderBgColor);
-		table.setHeaderFgColor(UIConfig.TableHeaderFgColor);
 	}
 }
