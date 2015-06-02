@@ -40,8 +40,8 @@ public class DataReadController implements DataReaderService {
 	ArrayList<SeasonStatProcessor> seasons = new ArrayList<SeasonStatProcessor>();
 	ExecutorService exe = Executors.newCachedThreadPool();
 
-	String path= "C:/Users/Mebleyev.G.Longinus/Documents/GitHub/nbastatistic/CSEIII data/迭代一数据";
-
+	String path = "CSEIII data/迭代一数据";
+	
 	Date currentDate;
 	String currentSeason;
 
