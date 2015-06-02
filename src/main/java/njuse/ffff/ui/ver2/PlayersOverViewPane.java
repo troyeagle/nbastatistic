@@ -6,8 +6,6 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
@@ -30,40 +28,37 @@ import njuse.ffff.uiservice.PlayersOverviewService;
 public class PlayersOverViewPane extends PanelEx implements PlayersOverviewService,
 		UIConfigNotifier {
 
-	private static final long serialVersionUID = 1L;
+	private static final long		serialVersionUID	= 1L;
 
-	private PanelEx dataPanel;
-	private PanelEx controlPanel;
-	private PanelEx contentPanel;
+	private PanelEx					dataPanel;
+	private PanelEx					controlPanel;
+	private PanelEx					contentPanel;
 
-	private PanelEx seasonPanel;
-	private SwitchButtonGroup seasonGroup;
+	private PanelEx					seasonPanel;
+	private SwitchButtonGroup		seasonGroup;
 
-	private Map<String, TableView> avgTableMap;
-	private Map<String, TableView> totalTableMap;
-	private Map<String, PanelEx> iconPanelMap;
+	private Map<String, TableView>	avgTableMap;
+	private Map<String, TableView>	totalTableMap;
+	private Map<String, PanelEx>	iconPanelMap;
 
-	private String[] totalTableHeader = new String[] { "姓名", "球队", "参赛场数",
-			"先发场数", "投篮命中数", "出手数", "三分命中数", "三分出手数", "罚球命中数",
-			"罚球出手数", "篮板", "助攻", "抢断", "盖帽", "失误", "犯规", "得分",
-			"效率"
+	private String[] totalTableHeader = new String[] { "姓名", "球队", "出场",
+			"首发", "投篮", "出手", "三分", "出手", "罚球","出手",
+			"篮板", "助攻", "抢断", "盖帽", "失误", "犯规", "得分", "效率"
 	};
-	private String[] avgTableHeader = new String[] { "姓名", "球队", "篮板", "助攻",
-			"在场时间", "投篮命中率", "三分命中率", "罚球命中率", "抢断", "盖帽", "失误",
-			"犯规", "得分", "效率", "GmSc效率值", "真实命中率", "投篮效率", "篮板率",
-			"进攻篮板率", "防守篮板率", "助攻率", "抢断率", "盖帽率", "失误率", "使用率"
+	private String[] avgTableHeader	= new String[] { "姓名", "球队", "篮板", "助攻",
+			"时间", "投篮", "三分", "罚球", "抢断", "盖帽", "失误",
+			"犯规", "得分", "效率", "GmSc", "真实命中率", "投篮效率", "篮板率",
+			"进攻板", "防守板", "助攻率", "抢断率", "盖帽率", "失误率", "使用率"
 	};
-	// private final boolean[] totalIsHidden = new boolean[totalTableHeader.length];
-	// private final boolean[] avgIsHidden = new boolean[avgTableHeader.length];
 
-	private SwitchButton avgView;
-	private SwitchButton totalView;
-	private SwitchButton picView;
-	private SwitchButtonGroup dataGroup;
+	private SwitchButton			avgView;
+	private SwitchButton			totalView;
+	private SwitchButton			picView;
+	private SwitchButtonGroup		dataGroup;
 
-	private SwitchButton settings;
-	private PanelEx settingPanel;
-	private PanelEx settingContent;
+	private SwitchButton			settings;
+	private PanelEx					settingPanel;
+	private PanelEx					settingContent;
 
 	public PlayersOverViewPane() {
 		super(new BorderLayout());
@@ -104,17 +99,19 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 
 		settings.addActionListener(e -> {
 			boolean b = settings.isActive();
+			if (settings.isActive()) {
+				contentPanel.remove(settingPanel);
+			} else {
+				contentPanel.add(settingPanel, 0);
+			}
 			picView.setVisible(b);
-			contentPanel.setVisible(!b);
-			//			contentPanel.validate();
 			contentPanel.repaint();
 		});
 
 		settingPanel = new PanelEx(new BorderLayout(30, 0));
 		settingPanel.setBackground(new Color(255, 255, 255, 200));
 		settingPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
-		settingPanel.addMouseListener(new MouseAdapter() {
-		});
+		settingPanel.addMouseListener(new MouseAdapter() {});
 		ButtonEx ok = new ButtonEx("确定");
 		ok.setForeground(Color.WHITE);
 		ok.setFont(UIConfig.TitleFont);
@@ -219,8 +216,6 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 
 		contentPanel = new PanelEx(new BorderLayout());
 		contentPanel.setOpaque(false);
-		contentPanel.add(settingPanel);
-		settingPanel.setVisible(false);
 		contentPanel.add(dataPanel);
 		contentPanel.add(controlPanel, BorderLayout.NORTH);
 
@@ -233,24 +228,11 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 	}
 
 	private void initData() {
-		// TODO 获取数据？
-		//		PlayerCompareController.getInstance().setPlayerCompareInfoForSeason(this);
-
 		Timer t = new Timer(0, e ->
 				PlayerCompareController.getInstance().setPlayerCompareInfoForSeason(this)
 				);
 		t.setRepeats(false);
 		t.start();
-		//				avgTableHeader = new String[] { "c1", "c2", "c3" };
-		//		Object[][] values = new Object[460][3];
-		//				for (int i = 0; i < 460; i++) {
-		//					values[i][0] = "Aaron Brooks";
-		//					values[i][1] = 1;
-		//					values[i][2] = "aaa";
-		//				}
-		//		setPlayersAvgInfo(values, "2014");
-		//				totalTableHeader = new String[] { "c1", "c2", "c3" };
-		//		setPlayersTotalInfo(values, "2014");
 	}
 
 	private void addSeason(String season) {
@@ -271,10 +253,8 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 
 	@Override
 	public void setPlayersAvgInfo(Object[][] values, String season) {
-		Timer t = new Timer(0, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				UIEventManager.notify(UIEventType.BUSY, this);	// 通知状态
+		Timer t = new Timer(0, e -> {
+			UIEventManager.notify(UIEventType.BUSY, this);	// 通知状态
 
 				if (!avgTableMap.containsKey(season)) {
 					TableView avgTable = new TableView(values, avgTableHeader);
@@ -316,18 +296,15 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 				}
 
 				UIEventManager.notify(UIEventType.FINISH, this);	// 完成
-			}
-		});
+			});
 		t.setRepeats(false);
 		t.start();
 	}
 
 	@Override
 	public void setPlayersTotalInfo(Object[][] values, String season) {
-		Timer t = new Timer(0, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				UIEventManager.notify(UIEventType.BUSY, this);	// 通知状态
+		Timer t = new Timer(0, e -> {
+			UIEventManager.notify(UIEventType.BUSY, this);	// 通知状态
 
 				if (!totalTableMap.containsKey(season)) {
 					addSeason(season);
@@ -362,8 +339,7 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 				}
 
 				UIEventManager.notify(UIEventType.FINISH, this);	// 完成
-			}
-		});
+			});
 		t.setRepeats(false);
 		t.start();
 	}
@@ -450,9 +426,7 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 	}
 
 	@Override
-	public void notifyChange() {
-	}
-
+	public void notifyChange() {}
 
 	private void setButtonUI(ButtonEx button) {
 		button.setBackground(new Color(255, 255, 255, 64));

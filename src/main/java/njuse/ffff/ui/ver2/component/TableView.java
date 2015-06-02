@@ -49,10 +49,10 @@ public class TableView extends PanelEx {
 		add(createView(createTable(values, columns)));
 
 		columnModel = table.getColumnModel();
-		setTableUI(ui);
+		setTableViewUI(ui);
 	}
 
-	public void setTableUI(TableViewUI ui) {
+	public void setTableViewUI(TableViewUI ui) {
 		if (ui != null) {
 			setHeaderFont(ui.getHeaderFont());
 			setHeaderFgColor(ui.getHeaderFgColor());
@@ -72,8 +72,7 @@ public class TableView extends PanelEx {
 	private void setScrollBarUI(ScrollBarUI ui) {
 		if (ui != null) {
 			try {
-				Class<?> clazz = ui.getClass();
-				Method m = clazz.getMethod("createUI", JComponent.class);
+				Method m = ui.getClass().getMethod("createUI", JComponent.class);
 				view.getHorizontalScrollBar().setUI((ScrollBarUI) m.invoke(null, this));
 				view.getVerticalScrollBar().setUI((ScrollBarUI) m.invoke(null, this));
 			} catch (Exception e) {
@@ -194,8 +193,12 @@ public class TableView extends PanelEx {
 	public void setHeaderBgColor(Color c) {
 		table.getTableHeader().setBackground(c);
 		PanelEx corner = new PanelEx();
+		PanelEx corner2 = new PanelEx(new BorderLayout());
 		corner.setBackground(c);
-		view.setCorner(JScrollPane.UPPER_RIGHT_CORNER, corner);
+		corner2.setBorder(BorderFactory.createEmptyBorder(1, 0, 1, 0));
+		corner2.setOpaque(false);
+		corner2.add(corner);
+		view.setCorner(JScrollPane.UPPER_RIGHT_CORNER, corner2);
 	}
 
 	public JTable getTable() {
@@ -229,17 +232,29 @@ public class TableView extends PanelEx {
 
 	@Override
 	public void paint(Graphics g) {
+		if (fitTable()) {
+			repaint();
+			return;
+		}
+		super.paint(g);
+	}
+
+	private boolean fitTable() {
 		if (table != null) {
 			int mode = table.getPreferredSize().getWidth() <= getWidth()
 					? JTable.AUTO_RESIZE_ALL_COLUMNS
 					: JTable.AUTO_RESIZE_OFF;
 			if (table.getAutoResizeMode() != mode) {
 				table.setAutoResizeMode(mode);
+//				if (mode == JTable.AUTO_RESIZE_OFF) {
+					TableUtils.FitTableColumns(table);
+//				}
+				return true;
 			}
 		}
-		super.paint(g);
+		return false;
 	}
-
+	
 	public static void setDefaultTableViewUI(TableViewUI ui) {
 		TableView.ui = ui;
 		if (ui != null) {

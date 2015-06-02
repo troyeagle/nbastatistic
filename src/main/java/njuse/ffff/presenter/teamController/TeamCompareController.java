@@ -92,30 +92,30 @@ public class TeamCompareController implements TeamCompareService{
 				values_average[i] = new Object[] {
 						teamAvg.getName(),teamAvg.getAbbr(),teamAvg.getNumOfMatches()							//球队名称，球队比赛场数
 						,DealDecimal.formatChange(average[0], 1)			//投篮命中数
+						,DealDecimal.formatChangeToPercentage(average[21])			//投篮命中率
 						,DealDecimal.formatChange(average[1], 1)		//投篮出手数
+						,DealDecimal.formatChangeToPercentage(average[22])		//三分命中率
 						,DealDecimal.formatChange(average[2], 1)			//三分命中数
 						,DealDecimal.formatChange(average[3], 1)	//三分出手数
+						,DealDecimal.formatChangeToPercentage(average[23])			//罚球命中率
 						,DealDecimal.formatChange(average[4], 1)			//罚球命中数
 						,DealDecimal.formatChange(average[5], 1)		//罚球出手数
 						,DealDecimal.formatChange(average[6], 1)			//进攻篮板数
+						,DealDecimal.formatChange(average[27], 1)		//进攻篮板效率
 						,DealDecimal.formatChange(average[7], 1)			//防守篮板数
+						,DealDecimal.formatChange(average[28], 1)		//防守篮板效率
 						,DealDecimal.formatChange(average[8], 1)					//篮板数
 						,DealDecimal.formatChange(average[9], 1)					//助攻数
+						,DealDecimal.formatChange(average[30], 1)					//助攻效率
 						,DealDecimal.formatChange(average[10], 1)					//抢断数
+						,DealDecimal.formatChange(average[29], 1)					//抢断效率
 						,DealDecimal.formatChange(average[11], 1)					//盖帽数
 						,DealDecimal.formatChange(average[12], 1)					//失误数
 						,DealDecimal.formatChange(average[13], 1)						//犯规数
 						,DealDecimal.formatChange(average[14], 1)					//得分
-						,DealDecimal.formatChangeToPercentage(average[21])			//投篮命中率
-						,DealDecimal.formatChangeToPercentage(average[22])		//三分命中率
-						,DealDecimal.formatChangeToPercentage(average[23])			//罚球命中率
 						,DealDecimal.formatChange(average[24], 1)					//进攻回合
 						,DealDecimal.formatChange(average[25], 1)				//进攻效率
 						,DealDecimal.formatChange(average[26], 1)				//防守效率
-						,DealDecimal.formatChange(average[27], 1)		//进攻篮板效率
-						,DealDecimal.formatChange(average[28], 1)		//防守篮板效率
-						,DealDecimal.formatChange(average[29], 1)					//抢断效率
-						,DealDecimal.formatChange(average[30], 1)					//助攻效率
 				};
 			}
 			

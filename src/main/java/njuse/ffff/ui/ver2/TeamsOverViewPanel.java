@@ -6,8 +6,6 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
@@ -44,15 +42,14 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 	private Map<String, TableView> totalTableMap;
 	private Map<String, PanelEx> iconPanelMap;
 
-	private String[] totalTableHeader = new String[] { "队名", "缩写", "比赛场数", "命中",
-			"出手", "三分命中", "三分出手", "罚球命中", "罚球出手", "进攻篮板",
-			"防守篮板", "篮板", "助攻", "抢断", "盖帽", "失误", "犯规", "得分"
+	private String[] totalTableHeader = new String[] { "队名", "缩写", "场数", "命中",
+			"出手", "三分", "出手", "罚球", "出手", "进攻板",
+			"防守板", "篮板", "助攻", "抢断", "盖帽", "失误", "犯规", "得分"
 	};
-	private String[] avgTableHeader = new String[] { "队名", "缩写", "比赛场数", "投篮命中数",
-			"投篮出手数", "三分命中数", "三分出手数", "罚球命中数", "罚球出手数", "进攻篮板数",
-			"防守篮板数", "篮板数", "助攻数", "抢断数", "盖帽数", "失误数", "犯规数", "比赛得分",
-			"投篮命中率", "三分命中率", "罚球命中率", "进攻回合", "进攻效率", "防守效率",
-			"进攻篮板效率", "防守篮板效率", "抢断效率", "助攻效率"
+	private String[] avgTableHeader = new String[] { "队名", "缩写", "场数",
+			"投篮", "命中", "出手", "三分", "命中", "出手", "罚球", "命中", "出手",
+			"进攻板", "效率", "防守板", "效率", "篮板", "助攻", "效率", "抢断", "效率",
+			"盖帽", "失误", "犯规", "得分", "进攻回合", "进攻效率", "防守效率"
 	};
 	// private final boolean[] totalIsHidden = new boolean[totalTableHeader.length];
 	// private final boolean[] avgIsHidden = new boolean[avgTableHeader.length];
@@ -106,9 +103,12 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 
 		settings.addActionListener(e -> {
 			boolean b = settings.isActive();
+			if (settings.isActive()) {
+				contentPanel.remove(settingPanel);
+			} else {
+				contentPanel.add(settingPanel, 0);
+			}
 			picView.setVisible(b);
-			settingPanel.setVisible(!b);
-			//					contentPanel.validate();
 			contentPanel.repaint();
 		});
 
@@ -224,8 +224,6 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 
 		contentPanel = new PanelEx(new BorderLayout());
 		contentPanel.setOpaque(false);
-		contentPanel.add(settingPanel);
-		settingPanel.setVisible(false);
 		contentPanel.add(dataPanel);
 		contentPanel.add(controlPanel, BorderLayout.NORTH);
 
@@ -263,9 +261,7 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 
 	@Override
 	public void setTeamsAvgInfo(Object[][] values, String season) {
-		Timer t = new Timer(0, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		Timer t = new Timer(0, e -> {
 				UIEventManager.notify(UIEventType.BUSY, this);	// 通知状态
 
 				if (!avgTableMap.containsKey(season)) {
@@ -304,7 +300,6 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 				}
 
 				UIEventManager.notify(UIEventType.FINISH, this);	// 完成
-			}
 		});
 		t.setRepeats(false);
 		t.start();
@@ -313,9 +308,7 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 	@Override
 	public void setTeamsTotalInfo(Object[][] values, String season) {
 
-		Timer t = new Timer(0, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		Timer t = new Timer(0, e -> {
 				UIEventManager.notify(UIEventType.BUSY, this);	// 通知状态
 
 				if (!totalTableMap.containsKey(season)) {
@@ -346,7 +339,6 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 				}
 
 				UIEventManager.notify(UIEventType.FINISH, this);	// 完成
-			}
 		});
 
 		t.setRepeats(false);
