@@ -151,6 +151,7 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 	}
 
 	private TableView setTable(String type, Object[][] data, String[] header, int tableType) {
+		type = type.replaceAll("场均", "").replaceAll("命中率", "");
 		if (!tableMap[tableType].containsKey(type)) {
 			TableView table = new TableView(data, header);
 			table.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));

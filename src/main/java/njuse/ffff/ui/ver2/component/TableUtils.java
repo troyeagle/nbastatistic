@@ -3,15 +3,10 @@ package njuse.ffff.ui.ver2.component;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
@@ -87,23 +82,7 @@ public class TableUtils {
 	}
 
 	public static void setTableHeader(JTable table) {
-		JPopupMenu menu = new JPopupMenu();
-		JMenuItem item = new JMenuItem();
-		item.add(new JCheckBox("test3"));
-		menu.add(item);
-
 		JTableHeader header = table.getTableHeader();
-		header.setComponentPopupMenu(menu);
-
-		header.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON3) {
-					JPopupMenu menu = header.getComponentPopupMenu();
-					menu.show(header, e.getX(), e.getY());
-				}
-			}
-		});
 
 		DefaultTableCellRenderer dtr = new DefaultTableCellRenderer() {
 			private static final long	serialVersionUID	= 1L;

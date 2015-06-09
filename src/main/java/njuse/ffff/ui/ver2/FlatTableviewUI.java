@@ -13,7 +13,7 @@ public class FlatTableviewUI extends TableViewUI {
 		rowColor1 = new Color(255, 255, 255, 64);
 		rowColor2 = new Color(255, 255, 255, 128);
 		
-		headerFont = UIConfig.TableFont;
+		headerFont = UIConfig.SmallFont;
 		headerFgColor = UIConfig.TableHeaderFgColor;
 		headerBgColor = UIConfig.TableHeaderBgColor;
 		
