@@ -7,9 +7,8 @@ import java.util.List;
 
 import njuse.ffff.ui.component.PanelEx;
 import njuse.ffff.ui.ver2.UIConfig;
-import njuse.ffff.ui.ver2.UIConfigNotifier;
 
-public class TabBar extends PanelEx implements UIConfigNotifier {
+public class TabBar extends PanelEx {
 
 	private static final long serialVersionUID = 1L;
 
@@ -110,11 +109,6 @@ public class TabBar extends PanelEx implements UIConfigNotifier {
 
 	public void setSpace(int width) {
 		setLayout(new FlowLayout(FlowLayout.LEFT, width, 0));
-	}
-
-	@Override
-	public void notifyChange() {
-
 	}
 
 	public void addSwitchListener(SwitchListener l) {

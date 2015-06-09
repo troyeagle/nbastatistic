@@ -25,8 +25,7 @@ import njuse.ffff.ui.ver2.component.SwitchListener;
 import njuse.ffff.ui.ver2.component.TableView;
 import njuse.ffff.uiservice.PlayersOverviewService;
 
-public class PlayersOverViewPane extends PanelEx implements PlayersOverviewService,
-		UIConfigNotifier {
+public class PlayersOverViewPane extends PanelEx implements PlayersOverviewService {
 
 	private static final long		serialVersionUID	= 1L;
 
@@ -424,9 +423,6 @@ public class PlayersOverViewPane extends PanelEx implements PlayersOverviewServi
 			group.switchTo(0);
 		}
 	}
-
-	@Override
-	public void notifyChange() {}
 
 	private void setButtonUI(ButtonEx button) {
 		button.setBackground(new Color(255, 255, 255, 64));

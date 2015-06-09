@@ -26,8 +26,7 @@ import njuse.ffff.ui.ver2.component.SwitchListener;
 import njuse.ffff.ui.ver2.component.TableView;
 import njuse.ffff.uiservice.TeamsOverviewService;
 
-public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
-		UIConfigNotifier {
+public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService {
 
 	private static final long serialVersionUID = 1L;
 
@@ -423,10 +422,6 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 			}
 			group.switchTo(0);
 		}
-	}
-
-	@Override
-	public void notifyChange() {
 	}
 
 	private void setButtonUI(ButtonEx button) {

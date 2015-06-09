@@ -15,9 +15,8 @@ import njuse.ffff.ui.component.ButtonEx;
 import njuse.ffff.ui.component.LabelEx;
 import njuse.ffff.ui.component.PanelEx;
 import njuse.ffff.ui.ver2.UIConfig;
-import njuse.ffff.ui.ver2.UIConfigNotifier;
 
-public class TitleBar extends PanelEx implements UIConfigNotifier {
+public class TitleBar extends PanelEx {
 
 	private static final long serialVersionUID = 1L;
 
@@ -83,11 +82,6 @@ public class TitleBar extends PanelEx implements UIConfigNotifier {
 
 	public void setTitle(String text) {
 		titleLabel.setText(text);
-	}
-
-	@Override
-	public void notifyChange() {
-		setUIConfig();
 	}
 
 	private void setUIConfig() {

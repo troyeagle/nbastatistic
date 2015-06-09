@@ -17,11 +17,10 @@ import njuse.ffff.ui.component.ButtonEx;
 import njuse.ffff.ui.component.ComponentExUtilities;
 import njuse.ffff.ui.component.PanelEx;
 import njuse.ffff.ui.ver2.UIConfig;
-import njuse.ffff.ui.ver2.UIConfigNotifier;
 import njuse.ffff.ui.ver2.UIEventManager;
 import njuse.ffff.ui.ver2.UIEventType;
 
-public class SearchField extends PanelEx implements UIConfigNotifier {
+public class SearchField extends PanelEx  {
 
 	private static final long serialVersionUID = 1L;
 
@@ -85,11 +84,6 @@ public class SearchField extends PanelEx implements UIConfigNotifier {
 
 	public String getText() {
 		return textField.getText();
-	}
-
-	@Override
-	public void notifyChange() {
-		setUIConfig();
 	}
 
 	@Override
