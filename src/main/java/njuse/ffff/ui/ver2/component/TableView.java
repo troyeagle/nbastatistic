@@ -241,6 +241,7 @@ public class TableView extends PanelEx {
 			table.setAutoResizeMode(mode);
 			if (mode == JTable.AUTO_RESIZE_OFF)
 				TableUtils.FitTableColumns(table);
+			repaint();
 		} else {
 			super.paint(g);
 		}
