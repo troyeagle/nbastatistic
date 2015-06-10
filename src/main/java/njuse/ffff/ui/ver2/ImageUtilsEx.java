@@ -55,7 +55,7 @@ public class ImageUtilsEx extends ImageUtils {
                 h = 90;
                 break;
             case S:
-                h = 40;
+                h = 20;
                 break;
         }
         int w = h * icon.getIconWidth() / icon.getIconHeight();
