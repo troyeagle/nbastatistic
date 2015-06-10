@@ -75,16 +75,16 @@ public class TableView extends PanelEx {
 				Method m = ui.getClass().getMethod("createUI", JComponent.class);
 				view.getHorizontalScrollBar().setUI((ScrollBarUI) m.invoke(null, this));
 				view.getVerticalScrollBar().setUI((ScrollBarUI) m.invoke(null, this));
-			} catch (Exception e) {
-			}
+			} catch (Exception e) {}
 		}
 	}
 
 	public void setTable(Object[][] values) {
 		((DefaultTableModel) table.getModel()).setDataVector(values, columnNames);
 		table.clearSelection();
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		TableUtils.FitTableColumns(table);
-		table.repaint();
+		repaint();
 	}
 
 	private JTable createTable(Object[][] values, String[] columns) {
@@ -114,18 +114,20 @@ public class TableView extends PanelEx {
 	}
 
 	public void hide(String columnName) {
-		int index = columnModel.getColumnIndex(columnName);
-		TableColumn column = columnModel.getColumn(index);
-		Integer[] keys = hiddenColumns.keySet().toArray(new Integer[0]);
-		Arrays.sort(keys);	// 防止因顺序出现问题？
-		for (int i : keys) {
-			if (index >= i) {
-				index++;
+		try {
+			int index = columnModel.getColumnIndex(columnName);
+			TableColumn column = columnModel.getColumn(index);
+			Integer[] keys = hiddenColumns.keySet().toArray(new Integer[0]);
+			Arrays.sort(keys);	// 防止因顺序出现问题？
+			for (int i : keys) {
+				if (index >= i) {
+					index++;
+				}
 			}
-		}
-		hiddenColumns.put(index, column);
-		columnModel.removeColumn(column);
-		TableUtils.FitTableColumns(table);
+			hiddenColumns.put(index, column);
+			columnModel.removeColumn(column);
+			TableUtils.FitTableColumns(table);
+		} catch (Exception e) {}
 	}
 
 	public void show(String columnName) {
@@ -232,29 +234,18 @@ public class TableView extends PanelEx {
 
 	@Override
 	public void paint(Graphics g) {
-		if (fitTable()) {
-			repaint();
-			return;
+		int mode = table.getWidth() <= getWidth()
+				? JTable.AUTO_RESIZE_ALL_COLUMNS
+				: JTable.AUTO_RESIZE_OFF;
+		if (table.getAutoResizeMode() != mode) {
+			table.setAutoResizeMode(mode);
+			if (mode == JTable.AUTO_RESIZE_OFF)
+				TableUtils.FitTableColumns(table);
+		} else {
+			super.paint(g);
 		}
-		super.paint(g);
 	}
 
-	private boolean fitTable() {
-		if (table != null) {
-			int mode = table.getPreferredSize().getWidth() <= getWidth()
-					? JTable.AUTO_RESIZE_ALL_COLUMNS
-					: JTable.AUTO_RESIZE_OFF;
-			if (table.getAutoResizeMode() != mode) {
-				table.setAutoResizeMode(mode);
-//				if (mode == JTable.AUTO_RESIZE_OFF) {
-					TableUtils.FitTableColumns(table);
-//				}
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	public static void setDefaultTableViewUI(TableViewUI ui) {
 		TableView.ui = ui;
 		if (ui != null) {
