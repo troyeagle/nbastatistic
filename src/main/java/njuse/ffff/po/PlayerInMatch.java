@@ -18,7 +18,7 @@ public class PlayerInMatch implements Serializable {
 	String name;
 	char position;
 	String minute;
-	
+	int playerId;
 	Date date;
 
 	protected int fieldGoalMade;
@@ -122,6 +122,28 @@ public class PlayerInMatch implements Serializable {
 
 	public PlayerInMatch() {
 
+	}
+	public PlayerInMatch(String[] split){
+		this.playerId = Integer.parseInt(split[0]);
+		this.name=split[1].replace("_", " ");
+		this.firstOnMatch = split[2].equals("1");
+		this.minute=split[3]+":00";
+		this.fieldGoalMade=Integer.parseInt(split[5]);
+		this.fieldGoalAttempted=Integer.parseInt(split[6]);
+		this.threePointerMade = Integer.parseInt(split[8]);
+		this.threePointerAttempted = Integer.parseInt(split[9]);
+		this.freeThrowMade= Integer.parseInt(split[11]);
+		this.freeThrowAttempted=Integer.parseInt(split[12]);
+		this.rebound = Integer.parseInt(split[14]);
+		this.offensiveRebound = Integer.parseInt(split[15]);
+		this.defensiveRebound = Integer.parseInt(split[16]);
+		this.assist = Integer.parseInt(split[17]);
+		this.steal = Integer.parseInt(split[18]);
+		this.block = Integer.parseInt(split[19]);
+		this.turnover = Integer.parseInt(split[20]);
+		this.foul = Integer.parseInt(split[21]);
+		this.points = Integer.parseInt(split[22]);
+		
 	}
 
 	/**
@@ -313,5 +335,8 @@ public class PlayerInMatch implements Serializable {
 	public int getSecond() {
 		return second;
 	}
-
+	@Override
+	public String toString(){
+		return name;
+	}
 }

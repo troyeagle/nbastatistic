@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="njuse.ffff.util.Mapper">
+	<select id="getAllMatch" resultType="njuse.ffff.po.MatchPO">
+		SELECT idmatchInfo as id
+		FROM matchinfo
+	</select>
+	<insert id="insertAMatch" parameterType="java.util.HashMap">
+		INSERT INTO 
+		matchinfo(idmatchinfo,season,date,teamA,teamB,host,scoreInSectionA,scoreInSectionB) 
+		VALUES(#{idmatchinfo},#{season},#{date},#{teamA},#{teamB},#{host},#{scoreInSectionA},#{scoreInSectionB})
+	</insert>
+	<select id="selectByName" resultType="njuse.ffff.sqlpo.PlayerInfo">
+		Select 
+	</select>
+	
+	 <insert id="insert" >
+        insert into ${tableName}
+        <foreach item="value" index="key" collection="data" open="(" separator="," close=")">
+            ${key}
+        </foreach>
+        values
+        <foreach item="value" index="key" collection="data" open="(" separator="," close=")">
+            #{value}
+        </foreach>
+    </insert>
+    
+    <insert id="insertWithKey" useGeneratedKeys="true" keyProperty="data.pkey">
+        insert into ${tableName}
+        <foreach item="value" index="key" collection="data" open="(" separator="," close=")">
+            ${key}
+        </foreach>
+        values
+        <foreach item="value" index="key" collection="data" open="(" separator="," close=")">
+            #{value}
+        </foreach>
+    </insert>
+	<select id="selectOne" resultType="map">
+        select
+        <choose>
+            <when test="target != null">
+                <foreach item="item" index="index" collection="target" open="" separator="," close="">
+                    ${item}
+                </foreach>
+            </when>
+            <otherwise>
+                *
+            </otherwise>
+        </choose>
+        from ${tableName} where
+        <foreach item="value" index="key" collection="filter" open="" separator="and" close="">
+            ${key}=#{value}
+        </foreach>
+        limit 1
+    </select>
+</mapper>

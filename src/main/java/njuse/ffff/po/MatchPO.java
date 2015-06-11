@@ -17,6 +17,8 @@ public class MatchPO implements Serializable,Comparable<MatchPO>{
 	Date date;
 	String teamA,teamB;
 	ArrayList<String> members;
+	String hostTeam;
+	
 	ArrayList<Integer> scoreA,scoreB;
 	ArrayList<PlayerInMatch> playerInTeamA;
 	ArrayList<PlayerInMatch> playerInTeamB;
@@ -117,5 +119,10 @@ public class MatchPO implements Serializable,Comparable<MatchPO>{
 	public ArrayList<Integer> getScoreB() {
 		return scoreB;
 	}
-	
+	public String getHostTeam() {
+		return hostTeam;
+	}
+	public void setHostTeam(String hostTeam) {
+		this.hostTeam = hostTeam;
+	}
 }

@@ -23,7 +23,8 @@ public class PlayerPO implements Serializable {
 	String school;
 	String pathOfPortrait;
 	String pathOfAction;
-
+	String birthCity;
+	int salary;
 	@Override
 	public String toString() {
 		return "PlayerPO [name=" + name + ", number=" + number + ", position=" + String.valueOf(position)
@@ -36,12 +37,12 @@ public class PlayerPO implements Serializable {
 		super();
 		this.name = name;
 		this.number = number;
-		if(position[1]!='F'&&position[1]!='G'&&position[1]!='C'){
-			this.position = new char[1];
-			this.position[0]= position[0];
-		}else{
+//		if(position[1]!='F'&&position[1]!='G'&&position[1]!='C'){
+//			this.position = new char[1];
+//			this.position[0]= position[0];
+//		}else{
 			this.position = position;
-		}
+//		}
 		
 		this.height = height;
 		this.weight = weight;
@@ -95,6 +96,18 @@ public class PlayerPO implements Serializable {
 
 	public String getPathOfAction() {
 		return pathOfAction;
+	}
+
+	public void setExp(String exp) {
+		this.exp = exp;
+	}
+
+	public void setBirthCity(String birthCity) {
+		this.birthCity = birthCity;
+	}
+
+	public void setSalary(int salary) {
+		this.salary = salary;
 	}
 
 }
