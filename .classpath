@@ -25,16 +25,16 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="testData.jar"/>
 	<classpathentry kind="lib" path="de.tototec.cmdoption-0.3.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Mebleyev.G.Longinus/Documents/GitHub/Hw-Server/target/classes/mysql-connector-java-5.1.33-bin.jar"/>
-	<classpathentry kind="lib" path="D:/Program Files (x86)/Java/httpcomponents-client-4.4/lib/commons-codec-1.9.jar" sourcepath="C:/Users/Mebleyev.G.Longinus/Downloads/httpcomponents-client-4.4-src"/>
-	<classpathentry kind="lib" path="D:/Program Files (x86)/Java/httpcomponents-client-4.4/lib/commons-logging-1.2.jar"/>
-	<classpathentry kind="lib" path="D:/Program Files (x86)/Java/httpcomponents-client-4.4/lib/fluent-hc-4.4.jar"/>
-	<classpathentry kind="lib" path="D:/Program Files (x86)/Java/httpcomponents-client-4.4/lib/httpclient-4.4.jar" sourcepath="C:/Users/Mebleyev.G.Longinus/Downloads/httpcomponents-client-4.4-src"/>
-	<classpathentry kind="lib" path="D:/Program Files (x86)/Java/httpcomponents-client-4.4/lib/httpclient-cache-4.4.jar"/>
-	<classpathentry kind="lib" path="D:/Program Files (x86)/Java/httpcomponents-client-4.4/lib/httpclient-win-4.4.jar"/>
-	<classpathentry kind="lib" path="D:/Program Files (x86)/Java/httpcomponents-client-4.4/lib/httpcore-4.4.jar" sourcepath="C:/Users/Mebleyev.G.Longinus/Downloads/httpcomponents-client-4.4-src"/>
-	<classpathentry kind="lib" path="D:/Program Files (x86)/Java/httpcomponents-client-4.4/lib/httpmime-4.4.jar"/>
-	<classpathentry kind="lib" path="D:/Program Files (x86)/Java/httpcomponents-client-4.4/lib/jna-4.1.0.jar"/>
-	<classpathentry kind="lib" path="D:/Program Files (x86)/Java/httpcomponents-client-4.4/lib/jna-platform-4.1.0.jar"/>
+	<classpathentry kind="lib" path="mysql-connector-java-5.1.33-bin.jar"/>
+	<classpathentry kind="lib" path="httpcomponents-client-4.4/lib/commons-codec-1.9.jar"/>
+	<classpathentry kind="lib" path="httpcomponents-client-4.4/lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="httpcomponents-client-4.4/lib/fluent-hc-4.4.jar"/>
+	<classpathentry kind="lib" path="httpcomponents-client-4.4/lib/httpclient-4.4.jar"/>
+	<classpathentry kind="lib" path="httpcomponents-client-4.4/lib/httpclient-cache-4.4.jar"/>
+	<classpathentry kind="lib" path="httpcomponents-client-4.4/lib/httpclient-win-4.4.jar"/>
+	<classpathentry kind="lib" path="httpcomponents-client-4.4/lib/httpcore-4.4.jar"/>
+	<classpathentry kind="lib" path="httpcomponents-client-4.4/lib/httpmime-4.4.jar"/>
+	<classpathentry kind="lib" path="httpcomponents-client-4.4/lib/jna-4.1.0.jar"/>
+	<classpathentry kind="lib" path="httpcomponents-client-4.4/lib/jna-platform-4.1.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
