@@ -5,27 +5,31 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseListener;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JViewport;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.ScrollBarUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import njuse.ffff.ui.component.PanelEx;
 
-import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
-
-@SuppressWarnings("restriction")
 public class TableView extends PanelEx {
 
 	private static final long serialVersionUID = 1L;
+
+	private static TableViewUI ui;
 
 	private JTable table;
 	private JScrollPane view;
@@ -45,13 +49,42 @@ public class TableView extends PanelEx {
 		add(createView(createTable(values, columns)));
 
 		columnModel = table.getColumnModel();
+		setTableViewUI(ui);
+	}
+
+	public void setTableViewUI(TableViewUI ui) {
+		if (ui != null) {
+			setHeaderFont(ui.getHeaderFont());
+			setHeaderFgColor(ui.getHeaderFgColor());
+			setHeaderBgColor(ui.getHeaderBgColor());
+
+			setTableFont(ui.getTableFont());
+			setTableFgColor(ui.getTableFgColor());
+			setRowHeight(ui.getTableFont().getSize() + 5);
+
+			setSelectionFgColor(ui.getSelectionFgColor());
+			setSelectionBgColor(ui.getSelectionBgColor());
+
+			setScrollBarUI(ui.getScrollBarUI());
+		}
+	}
+
+	private void setScrollBarUI(ScrollBarUI ui) {
+		if (ui != null) {
+			try {
+				Method m = ui.getClass().getMethod("createUI", JComponent.class);
+				view.getHorizontalScrollBar().setUI((ScrollBarUI) m.invoke(null, this));
+				view.getVerticalScrollBar().setUI((ScrollBarUI) m.invoke(null, this));
+			} catch (Exception e) {}
+		}
 	}
 
 	public void setTable(Object[][] values) {
 		((DefaultTableModel) table.getModel()).setDataVector(values, columnNames);
 		table.clearSelection();
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		TableUtils.FitTableColumns(table);
-		table.repaint();
+		repaint();
 	}
 
 	private JTable createTable(Object[][] values, String[] columns) {
@@ -68,8 +101,6 @@ public class TableView extends PanelEx {
 		view.getColumnHeader().setOpaque(false);
 		view.getViewport().setOpaque(false);
 		view.setBorder(BorderFactory.createEmptyBorder());
-		view.getHorizontalScrollBar().setUI(new WindowsScrollBarUI());
-		view.getVerticalScrollBar().setUI(new WindowsScrollBarUI());
 
 		TableUtils.FitTableColumns(table);
 		return view;
@@ -83,18 +114,20 @@ public class TableView extends PanelEx {
 	}
 
 	public void hide(String columnName) {
-		int index = columnModel.getColumnIndex(columnName);
-		TableColumn column = columnModel.getColumn(index);
-		Integer[] keys = hiddenColumns.keySet().toArray(new Integer[0]);
-		Arrays.sort(keys);	// 防止因顺序出现问题？
-		for (int i : keys) {
-			if (index >= i) {
-				index++;
+		try {
+			int index = columnModel.getColumnIndex(columnName);
+			TableColumn column = columnModel.getColumn(index);
+			Integer[] keys = hiddenColumns.keySet().toArray(new Integer[0]);
+			Arrays.sort(keys);	// 防止因顺序出现问题？
+			for (int i : keys) {
+				if (index >= i) {
+					index++;
+				}
 			}
-		}
-		hiddenColumns.put(index, column);
-		columnModel.removeColumn(column);
-		TableUtils.FitTableColumns(table);
+			hiddenColumns.put(index, column);
+			columnModel.removeColumn(column);
+			TableUtils.FitTableColumns(table);
+		} catch (Exception e) {}
 	}
 
 	public void show(String columnName) {
@@ -162,8 +195,12 @@ public class TableView extends PanelEx {
 	public void setHeaderBgColor(Color c) {
 		table.getTableHeader().setBackground(c);
 		PanelEx corner = new PanelEx();
+		PanelEx corner2 = new PanelEx(new BorderLayout());
 		corner.setBackground(c);
-		view.setCorner(JScrollPane.UPPER_RIGHT_CORNER, corner);
+		corner2.setBorder(BorderFactory.createEmptyBorder(1, 0, 1, 0));
+		corner2.setOpaque(false);
+		corner2.add(corner);
+		view.setCorner(JScrollPane.UPPER_RIGHT_CORNER, corner2);
 	}
 
 	public JTable getTable() {
@@ -197,15 +234,24 @@ public class TableView extends PanelEx {
 
 	@Override
 	public void paint(Graphics g) {
-		if (table != null) {
-			int mode = table.getPreferredSize().getWidth() <= getWidth()
-					? JTable.AUTO_RESIZE_ALL_COLUMNS
-					: JTable.AUTO_RESIZE_OFF;
-			if (table.getAutoResizeMode() != mode) {
-				table.setAutoResizeMode(mode);
-			}
+		int mode = table.getWidth() <= getWidth()
+				? JTable.AUTO_RESIZE_ALL_COLUMNS
+				: JTable.AUTO_RESIZE_OFF;
+		if (table.getAutoResizeMode() != mode) {
+			table.setAutoResizeMode(mode);
+			if (mode == JTable.AUTO_RESIZE_OFF)
+				TableUtils.FitTableColumns(table);
+			repaint();
+		} else {
+			super.paint(g);
 		}
-		super.paint(g);
 	}
-	
+
+	public static void setDefaultTableViewUI(TableViewUI ui) {
+		TableView.ui = ui;
+		if (ui != null) {
+			UIManager.put("Table.background", new ColorUIResource(ui.getRowColor1()));
+			UIManager.put("Table.alternateRowColor", ui.getRowColor2());
+		}
+	}
 }

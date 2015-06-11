@@ -3,7 +3,6 @@ package njuse.ffff.ui.ver2;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.Image;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -82,13 +81,7 @@ public class TeamProfilePane extends PanelEx implements TeamProfileService {
 	@Override
 	public void setProfile(String name, String abbr, String location, String league,
 			String subleague, String homeCourt, String foundYear) {
-		ImageIcon icon = ImageUtils.getTeamIcon(abbr);
-		if (icon == null)
-			icon = new ImageIcon("./img/no_image.png");
-		Image img = icon.getImage();
-		int imgWidth = 200;
-		int imgHeight = (int) (icon.getIconHeight() / ((double) icon.getIconWidth()) * 200);
-		icon = new ImageIcon(img.getScaledInstance(imgWidth, imgHeight, Image.SCALE_SMOOTH));
+		ImageIcon icon = ImageUtilsEx.getTeamIcon(abbr, ImageUtilsEx.XL);
 		teamIcon.setIcon(icon);
 
 		nameLabel.setText(name);

@@ -6,11 +6,6 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
@@ -31,8 +26,7 @@ import njuse.ffff.ui.ver2.component.SwitchListener;
 import njuse.ffff.ui.ver2.component.TableView;
 import njuse.ffff.uiservice.TeamsOverviewService;
 
-public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
-		UIConfigNotifier {
+public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService {
 
 	private static final long serialVersionUID = 1L;
 
@@ -47,15 +41,14 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 	private Map<String, TableView> totalTableMap;
 	private Map<String, PanelEx> iconPanelMap;
 
-	private String[] totalTableHeader = new String[] { "队名", "缩写", "比赛场数", "命中",
-			"出手", "三分命中", "三分出手", "罚球命中", "罚球出手", "进攻篮板",
-			"防守篮板", "篮板", "助攻", "抢断", "盖帽", "失误", "犯规", "得分"
+	private String[] totalTableHeader = new String[] { "队名", "缩写", "场数", "命中",
+			"出手", "三分", "出手", "罚球", "出手", "进攻板",
+			"防守板", "篮板", "助攻", "抢断", "盖帽", "失误", "犯规", "得分"
 	};
-	private String[] avgTableHeader = new String[] { "队名", "缩写", "比赛场数", "投篮命中数",
-			"投篮出手数", "三分命中数", "三分出手数", "罚球命中数", "罚球出手数", "进攻篮板数",
-			"防守篮板数", "篮板数", "助攻数", "抢断数", "盖帽数", "失误数", "犯规数", "比赛得分",
-			"投篮命中率", "三分命中率", "罚球命中率", "进攻回合", "进攻效率", "防守效率",
-			"进攻篮板效率", "防守篮板效率", "抢断效率", "助攻效率"
+	private String[] avgTableHeader = new String[] { "队名", "缩写", "场数",
+			"投篮", "命中", "出手", "三分", "命中", "出手", "罚球", "命中", "出手",
+			"进攻板", "效率", "防守板", "效率", "篮板", "助攻", "效率", "抢断", "效率",
+			"盖帽", "失误", "犯规", "得分", "进攻回合", "进攻效率", "防守效率"
 	};
 	// private final boolean[] totalIsHidden = new boolean[totalTableHeader.length];
 	// private final boolean[] avgIsHidden = new boolean[avgTableHeader.length];
@@ -107,21 +100,15 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 		settingBtn.setOpaque(false);
 		settingBtn.add(settings);
 
-		settings.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (settings.isActive()) {
-					picView.setVisible(true);
-					contentPanel.remove(settingPanel);
-					//					contentPanel.validate();
-					contentPanel.repaint();
-				} else {
-					picView.setVisible(false);
-					contentPanel.add(settingPanel, 0);
-					//					contentPanel.validate();
-					contentPanel.repaint();
-				}
+		settings.addActionListener(e -> {
+			boolean b = settings.isActive();
+			if (settings.isActive()) {
+				contentPanel.remove(settingPanel);
+			} else {
+				contentPanel.add(settingPanel, 0);
 			}
+			picView.setVisible(b);
+			contentPanel.repaint();
 		});
 
 		settingPanel = new PanelEx(new BorderLayout(30, 0));
@@ -134,12 +121,7 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 		ok.setFont(UIConfig.TitleFont);
 		ok.setBackground(new Color(0, 140, 230));
 		ok.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-		ok.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				settings.doClick();
-			}
-		});
+		ok.addActionListener(e -> settings.doClick());
 		settingPanel.add(ok, BorderLayout.SOUTH);
 
 		settingContent = new PanelEx(new CardLayout());
@@ -166,13 +148,10 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 			btn.setClickCancelEnable(true);
 			btn.setActiveIcon(checked);
 			btn.setActive(true);
-			btn.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					avgTableMap.forEach((season, table) -> {
-						table.setDisplay(btn.getName(), !btn.isActive());
-					});
-				}
+			btn.addActionListener(e -> {
+				avgTableMap.forEach((season, table) -> {
+					table.setDisplay(btn.getName(), !btn.isActive());
+				});
 			});
 			avgSetting.add(btn);
 		}
@@ -192,13 +171,10 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 			btn.setClickCancelEnable(true);
 			btn.setActiveIcon(checked);
 			btn.setActive(true);
-			btn.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					totalTableMap.forEach((season, table) -> {
-						table.setDisplay(btn.getName(), !btn.isActive());
-					});
-				}
+			btn.addActionListener(e -> {
+				totalTableMap.forEach((season, table) -> {
+					table.setDisplay(btn.getName(), !btn.isActive());
+				});
 			});
 			totalSetting.add(btn);
 		}
@@ -259,12 +235,8 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 	}
 
 	private void initData() {
-		Timer t = new Timer(0, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				TeamCompareController.getInstance().setTeamCompareInfoForSeason(
-						TeamsOverViewPanel.this);
-			}
+		Timer t = new Timer(0, e -> {
+			TeamCompareController.getInstance().setTeamCompareInfoForSeason(this);
 		});
 		t.setRepeats(false);
 		t.start();
@@ -288,15 +260,12 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 
 	@Override
 	public void setTeamsAvgInfo(Object[][] values, String season) {
-		Timer t = new Timer(0, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		Timer t = new Timer(0, e -> {
 				UIEventManager.notify(UIEventType.BUSY, this);	// 通知状态
 
 				if (!avgTableMap.containsKey(season)) {
 					TableView avgTable = new TableView(values, avgTableHeader);
 					avgTable.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));
-					setTableUIConfig(avgTable);
 					avgTable.addMouseListener(new MouseAdapter() {
 						@Override
 						public void mouseClicked(MouseEvent e) {
@@ -330,7 +299,6 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 				}
 
 				UIEventManager.notify(UIEventType.FINISH, this);	// 完成
-			}
 		});
 		t.setRepeats(false);
 		t.start();
@@ -339,9 +307,7 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 	@Override
 	public void setTeamsTotalInfo(Object[][] values, String season) {
 
-		Timer t = new Timer(0, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		Timer t = new Timer(0, e -> {
 				UIEventManager.notify(UIEventType.BUSY, this);	// 通知状态
 
 				if (!totalTableMap.containsKey(season)) {
@@ -349,7 +315,6 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 
 					TableView totalTable = new TableView(values, totalTableHeader);
 					totalTable.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));
-					setTableUIConfig(totalTable);
 					totalTable.addMouseListener(new MouseAdapter() {
 						@Override
 						public void mouseClicked(MouseEvent e) {
@@ -373,7 +338,6 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 				}
 
 				UIEventManager.notify(UIEventType.FINISH, this);	// 完成
-			}
 		});
 
 		t.setRepeats(false);
@@ -412,9 +376,8 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 			for (int i = 0; i < r * c; i++) {
 				int index = pageCount * r * c + i;
 				if (index < teamAbbr.length) {
-					ImageIcon portrait = ImageUtils.getTeamIcon(teamAbbr[index]);
-					if (portrait == null)
-						portrait = new ImageIcon("./img/no_image.png");
+					ImageIcon portrait = ImageUtilsEx.getTeamIcon(teamAbbr[index],
+							ImageUtilsEx.L);
 					ButtonEx teamBtn = new ButtonEx(teamName[index], portrait);
 					teamBtn.setName(teamName[index]);
 					teamBtn.setOpaque(false);
@@ -426,38 +389,9 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 					teamBtn.setIconTextGap(10);
 					iconPage.add(teamBtn);
 
-					teamBtn.addComponentListener(new ComponentAdapter() {
-						public void componentResized(ComponentEvent e) {
-							ImageIcon icon = (ImageIcon) teamBtn.getIcon();
-							double icoRatio = icon.getIconWidth()
-									/ (double) icon.getIconHeight();
-							double btnRaito = (teamBtn.getWidth() - 20)
-									/ (double) (teamBtn.getHeight() - teamBtn.getFont()
-											.getSize() - teamBtn.getIconTextGap() - 10);
-							int icoWidth;
-							int icoHeight;
-							if (icoRatio > btnRaito) { // 图片“过高”
-								icoWidth = teamBtn.getWidth() - 20;
-								icoHeight = (int) (icoWidth / icoRatio);
-							} else {
-								icoHeight = teamBtn.getHeight() - teamBtn.getFont().getSize()
-										- teamBtn.getIconTextGap() - 10;
-								icoWidth = (int) (icoHeight * icoRatio);
-							}
-							Image temp = icon.getImage().getScaledInstance(icoWidth,
-									icoHeight, Image.SCALE_SMOOTH);
-							icon = new ImageIcon(temp);
-							teamBtn.setIcon(icon);
-						}
-					});
-
-					teamBtn.addActionListener(new ActionListener() {
-
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							UIEventManager.notify(UIEventType.SWITCH,
-									"球队详情:" + teamBtn.getName());
-						}
+					teamBtn.addActionListener(e -> {
+						UIEventManager.notify(UIEventType.SWITCH,
+								"球队详情:" + teamBtn.getName());
 					});
 				} else {
 					PanelEx p = new PanelEx();
@@ -473,13 +407,10 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 			iconPanel.add(switchPanel, BorderLayout.SOUTH);
 
 			SwitchButtonGroup group = new SwitchButtonGroup();
-			group.addSwitchListener(new SwitchListener() {
-				@Override
-				public void actionPerformed(SwitchEvent e) {
+			group.addSwitchListener(e ->
 					((CardLayout) pagePanel.getLayout()).show(pagePanel, e.getSource()
-							.getName());
-				}
-			});
+							.getName())
+					);
 			for (int i = 0; i < pageCount; i++) {
 				SwitchButton pageIndex = new SwitchButton(String.valueOf(i + 1));
 				pageIndex.setName(String.valueOf(i + 1));
@@ -491,33 +422,6 @@ public class TeamsOverViewPanel extends PanelEx implements TeamsOverviewService,
 			}
 			group.switchTo(0);
 		}
-	}
-
-	@Override
-	public void notifyChange() {
-		setUIConfig();
-	}
-
-	private void setUIConfig() {
-		avgTableMap.forEach((season, table) -> {
-			setTableUIConfig(table);
-		});
-
-		totalTableMap.forEach((season, table) -> {
-			setTableUIConfig(table);
-		});
-	}
-
-	private void setTableUIConfig(TableView table) {
-		table.setTableFont(UIConfig.ContentFont);
-		table.setHeaderFont(UIConfig.ContentFont);
-		table.setRowHeight(UIConfig.ContentFont.getSize() + 5);
-		table.setForeground(Color.WHITE);
-		table.setSelectionBgColor(UIConfig.TableSelectionBgColor);
-		table.setSelectionFgColor(UIConfig.TableSelectionFgColor);
-		table.setTableFgColor(UIConfig.TableFgColor);
-		table.setHeaderBgColor(UIConfig.TableHeaderBgColor);
-		table.setHeaderFgColor(UIConfig.TableHeaderFgColor);
 	}
 
 	private void setButtonUI(ButtonEx button) {

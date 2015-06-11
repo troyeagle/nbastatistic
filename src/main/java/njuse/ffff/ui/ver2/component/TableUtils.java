@@ -1,5 +1,6 @@
 package njuse.ffff.ui.ver2.component;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 
@@ -24,7 +25,7 @@ public class TableUtils {
 
 	public static JTable createTable(Object[][] value, Object[] columns) {
 		DefaultTableModel dtm = new DefaultTableModel(value, columns) {
-			private static final long serialVersionUID = 1L;
+			private static final long	serialVersionUID	= 1L;
 
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -52,38 +53,39 @@ public class TableUtils {
 		JTable table = new JTable(dtm);
 		table.setOpaque(false);
 		table.setFocusable(false);
-		table.setIntercellSpacing(new Dimension());
+		table.setIntercellSpacing(new Dimension(2, 2));
+		table.setGridColor(Color.GRAY);
 		table.setShowGrid(false);
 		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(dtm);
 		table.setRowSorter(sorter);
 
-		table.setDefaultRenderer(Object.class,
-				new DefaultTableCellRenderer() {
-					private static final long serialVersionUID = 1L;
+		table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+			private static final long	serialVersionUID	= 1L;
 
-					@Override
-					public Component getTableCellRendererComponent(JTable table,
-							Object value,
-							boolean isSelected, boolean hasFocus, int row, int column) {
-						JLabel c = (JLabel) super.getTableCellRendererComponent(
-								table, value, isSelected, hasFocus, row, column);
-						if (!Number.class.isAssignableFrom(table.getModel().getColumnClass(
-								column))) {
-							c.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
-						}
-						return c;
-					}
-				});
+			@Override
+			public Component getTableCellRendererComponent(JTable table,
+					Object value,
+					boolean isSelected, boolean hasFocus, int row, int column) {
+				JLabel c = (JLabel) super.getTableCellRendererComponent(
+						table, value, isSelected, hasFocus, row, column);
+				if (!Number.class.isAssignableFrom(table.getModel().getColumnClass(
+						column))) {
+					c.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+				}
+				return c;
+			}
+		});
 
 		return table;
 	}
 
 	public static void setTableHeader(JTable table) {
 		JTableHeader header = table.getTableHeader();
+
 		DefaultTableCellRenderer dtr = new DefaultTableCellRenderer() {
-			private static final long serialVersionUID = 1L;
+			private static final long	serialVersionUID	= 1L;
 
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value,
@@ -95,7 +97,7 @@ public class TableUtils {
 				} else {
 					c.setHorizontalAlignment(JLabel.CENTER);
 				}
-				c.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 5));
+				c.setBorder(BorderFactory.createEmptyBorder());
 				return c;
 			}
 		};
@@ -107,14 +109,14 @@ public class TableUtils {
 
 		header.setDefaultRenderer(new DefaultTableCellHeaderRenderer() {
 
-			private static final long serialVersionUID = 1L;
+			private static final long	serialVersionUID	= 1L;
 
 			public Component getTableCellRendererComponent(JTable table,
 					Object value, boolean hasFocus, boolean isSelected, int row, int column)
 			{
 				Component c = super.getTableCellRendererComponent(table, value, isSelected,
 						hasFocus, row, column);
-				((JComponent) c).setBorder(BorderFactory.createEmptyBorder());
+				((JComponent) c).setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 1));
 				return c;
 			}
 		});
@@ -132,12 +134,12 @@ public class TableUtils {
 			int col = header.getColumnModel().getColumnIndex(column.getIdentifier());
 			int width = (int) table.getTableHeader().getDefaultRenderer()
 					.getTableCellRendererComponent(table, column.getIdentifier()
-							, false, false, -1, col).getPreferredSize().getWidth() + 30;
+							, false, false, -1, col).getPreferredSize().getWidth();
 			for (int row = 0; row < rowCount; row++) {
 				int preferedWidth = (int) table.getCellRenderer(row, col)
 						.getTableCellRendererComponent(table,
 								table.getValueAt(row, col), false, false, row, col)
-						.getPreferredSize().getWidth() + 20;
+						.getPreferredSize().getWidth();
 				width = Math.max(width, preferedWidth);
 			}
 			header.setResizingColumn(column); // 此行很重要

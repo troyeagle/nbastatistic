@@ -7,9 +7,8 @@ import java.util.List;
 
 import njuse.ffff.ui.component.PanelEx;
 import njuse.ffff.ui.ver2.UIConfig;
-import njuse.ffff.ui.ver2.UIConfigNotifier;
 
-public class TabBar extends PanelEx implements UIConfigNotifier {
+public class TabBar extends PanelEx {
 
 	private static final long serialVersionUID = 1L;
 
@@ -18,7 +17,7 @@ public class TabBar extends PanelEx implements UIConfigNotifier {
 	private SwitchButton activeBtn;
 
 	private Color activeColor;
-	
+
 	public static final int CENTER = FlowLayout.CENTER;
 	public static final int LEFT = FlowLayout.LEFT;
 	public static final int RIGHT = FlowLayout.RIGHT;
@@ -28,12 +27,7 @@ public class TabBar extends PanelEx implements UIConfigNotifier {
 		setOpaque(false);
 
 		group = new SwitchButtonGroup();
-		group.addSwitchListener(new SwitchListener() {
-			@Override
-			public void actionPerformed(SwitchEvent e) {
-				switchHandle();
-			}
-		});
+		group.addSwitchListener(e -> switchHandle());
 
 		addTabs(titles);
 
@@ -117,11 +111,6 @@ public class TabBar extends PanelEx implements UIConfigNotifier {
 		setLayout(new FlowLayout(FlowLayout.LEFT, width, 0));
 	}
 
-	@Override
-	public void notifyChange() {
-
-	}
-
 	public void addSwitchListener(SwitchListener l) {
 		group.addSwitchListener(l);
 	}
@@ -144,7 +133,7 @@ public class TabBar extends PanelEx implements UIConfigNotifier {
 		}
 
 	}
-	
+
 	public void setAlignment(int align) {
 		((FlowLayout) getLayout()).setAlignment(align);
 	}

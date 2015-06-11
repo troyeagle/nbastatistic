@@ -1,8 +1,6 @@
 package njuse.ffff.ui.ver2.component;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,16 +42,8 @@ public class SwitchButton extends ButtonEx {
 
 		activeColor = new Color(255, 255, 255, 192);
 
-		addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (clickCanelEnabled) {
-					setActive(!isActive);
-				} else {
-					setActive(true);
-				}
-			}
+		addActionListener(e -> {
+			setActive(!isActive || !clickCanelEnabled);
 		});
 	}
 

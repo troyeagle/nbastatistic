@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -17,9 +15,8 @@ import njuse.ffff.ui.component.ButtonEx;
 import njuse.ffff.ui.component.LabelEx;
 import njuse.ffff.ui.component.PanelEx;
 import njuse.ffff.ui.ver2.UIConfig;
-import njuse.ffff.ui.ver2.UIConfigNotifier;
 
-public class TitleBar extends PanelEx implements UIConfigNotifier {
+public class TitleBar extends PanelEx {
 
 	private static final long serialVersionUID = 1L;
 
@@ -79,29 +76,12 @@ public class TitleBar extends PanelEx implements UIConfigNotifier {
 	}
 
 	private void initAction() {
-		minimize.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				window.setExtendedState(JFrame.ICONIFIED);
-			}
-		});
-
-		exit.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				window.dispose();
-			}
-		});
-
+		minimize.addActionListener(e -> window.setExtendedState(JFrame.ICONIFIED));
+		exit.addActionListener(e -> window.dispose());
 	}
 
 	public void setTitle(String text) {
 		titleLabel.setText(text);
-	}
-
-	@Override
-	public void notifyChange() {
-		setUIConfig();
 	}
 
 	private void setUIConfig() {

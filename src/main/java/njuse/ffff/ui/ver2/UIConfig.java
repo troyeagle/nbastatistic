@@ -2,12 +2,8 @@ package njuse.ffff.ui.ver2;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontFormatException;
-import java.io.File;
-import java.io.IOException;
 
-import javax.swing.UIManager;
-import javax.swing.plaf.ColorUIResource;
+import njuse.ffff.ui.ver2.component.TableView;
 
 public class UIConfig {
 
@@ -22,18 +18,18 @@ public class UIConfig {
 	/** 正文字体 */
 	public static Font ContentFont;
 
+	public static Font TableFont;
+
 	public static Color TableSelectionBgColor;
 
 	public static Color TableSelectionFgColor;
-
-	//	public static Color TableBgColor;
 
 	public static Color TableFgColor;
 
 	public static Color TableHeaderBgColor;
 
 	public static Color TableHeaderFgColor;
-	
+
 	public static Font SmallFont;
 
 	/**
@@ -43,19 +39,16 @@ public class UIConfig {
 		System.setProperty("awt.useSystemAAFontSettings", "on");
 		System.setProperty("swing.aatext", "true");
 
-		// 初始化表格属性
-		UIManager.put("Table.background", new ColorUIResource(new Color(255, 255, 255, 64)));
-		UIManager.put("Table.alternateRowColor", new Color(255, 255, 255, 128));
-
-		Font f;
-		try {
-			f = Font.createFont(Font.TRUETYPE_FONT, new File("./font/DengXian.ttf"));
-		} catch (FontFormatException | IOException e) {
-			f = UIManager.getDefaults().getFont("JLabel");
-		}
+		Font f = new Font("Dengxian", Font.PLAIN, 0);
+		//		try {
+		//			f = Font.createFont(Font.TRUETYPE_FONT, new File("./font/DengXian.ttf"));
+		//		} catch (FontFormatException | IOException e) {
+		//			f = UIManager.getDefaults().getFont("JLabel");
+		//		}
 		TitleFont = f.deriveFont(Font.PLAIN, 30);
 		SubTitleFont = f.deriveFont(Font.PLAIN, 18);
 		ContentFont = f.deriveFont(Font.PLAIN, 20);
+		TableFont = f.deriveFont(Font.PLAIN, 16);
 		SmallFont = f.deriveFont(Font.PLAIN, 15);
 
 		TitleBgColor = Color.GRAY;
@@ -66,5 +59,7 @@ public class UIConfig {
 		TableFgColor = Color.WHITE;
 
 		TableHeaderBgColor = new Color(255, 255, 255, 192);
+
+		TableView.setDefaultTableViewUI(new FlatTableviewUI());
 	}
 }

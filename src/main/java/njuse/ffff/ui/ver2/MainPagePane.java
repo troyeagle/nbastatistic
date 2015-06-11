@@ -5,8 +5,6 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -21,8 +19,6 @@ import njuse.ffff.ui.component.LabelEx;
 import njuse.ffff.ui.component.PanelEx;
 import njuse.ffff.ui.ver2.component.SwitchButton;
 import njuse.ffff.ui.ver2.component.SwitchButtonGroup;
-import njuse.ffff.ui.ver2.component.SwitchEvent;
-import njuse.ffff.ui.ver2.component.SwitchListener;
 import njuse.ffff.ui.ver2.component.TableView;
 import njuse.ffff.ui.ver2.component.WrapLayout;
 import njuse.ffff.uiservice.SpecialViewService;
@@ -75,13 +71,10 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 			tableView[i].setOpaque(false);
 
 			int index = i;
-			hotGroup[i].addSwitchListener(new SwitchListener() {
-				@Override
-				public void actionPerformed(SwitchEvent e) {
+			hotGroup[i].addSwitchListener(e ->
 					((CardLayout) tableView[index].getLayout()).show(tableView[index],
-							hotGroup[index].getActiveButton().getName());
-				}
-			});
+							hotGroup[index].getActiveButton().getName())
+					);
 
 			LabelEx labelTitle = new LabelEx(titles[i]);
 			labelTitle.setOpaque(false);
@@ -108,15 +101,12 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 	}
 
 	private void initData() {
-		Timer t = new Timer(0, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				HotEventController hec = HotEventController.getInstance();
-				hec.setBestPlayerForDayPanel(MainPagePane.this);
-				hec.setBestPlayerForSeasonPanel(MainPagePane.this);
-				hec.setBestTeamForSeasonPanel(MainPagePane.this);
-				hec.setProgressedPlayerPanel(MainPagePane.this);
-			}
+		Timer t = new Timer(0, e -> {
+			HotEventController hec = HotEventController.getInstance();
+			hec.setBestPlayerForDayPanel(this);
+			hec.setBestPlayerForSeasonPanel(this);
+			hec.setBestTeamForSeasonPanel(this);
+			hec.setProgressedPlayerPanel(this);
 		});
 		t.setRepeats(false);
 		t.start();
@@ -161,9 +151,9 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 	}
 
 	private TableView setTable(String type, Object[][] data, String[] header, int tableType) {
+		type = type.replaceAll("场均", "").replaceAll("命中率", "");
 		if (!tableMap[tableType].containsKey(type)) {
 			TableView table = new TableView(data, header);
-			setTableUIConfig(table);
 			table.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));
 			MouseListener l = new MouseAdapter() {
 				@Override
@@ -194,17 +184,5 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 		}
 
 		return null;
-	}
-
-	private void setTableUIConfig(TableView table) {
-		table.setTableFont(UIConfig.ContentFont);
-		table.setHeaderFont(UIConfig.ContentFont);
-		table.setRowHeight(UIConfig.ContentFont.getSize() + 5);
-		table.setForeground(Color.WHITE);
-		table.setSelectionBgColor(UIConfig.TableSelectionBgColor);
-		table.setSelectionFgColor(UIConfig.TableSelectionFgColor);
-		table.setTableFgColor(UIConfig.TableFgColor);
-		table.setHeaderBgColor(UIConfig.TableHeaderBgColor);
-		table.setHeaderFgColor(UIConfig.TableHeaderFgColor);
 	}
 }

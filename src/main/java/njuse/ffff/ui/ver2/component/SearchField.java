@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
@@ -19,11 +17,10 @@ import njuse.ffff.ui.component.ButtonEx;
 import njuse.ffff.ui.component.ComponentExUtilities;
 import njuse.ffff.ui.component.PanelEx;
 import njuse.ffff.ui.ver2.UIConfig;
-import njuse.ffff.ui.ver2.UIConfigNotifier;
 import njuse.ffff.ui.ver2.UIEventManager;
 import njuse.ffff.ui.ver2.UIEventType;
 
-public class SearchField extends PanelEx implements UIConfigNotifier {
+public class SearchField extends PanelEx  {
 
 	private static final long serialVersionUID = 1L;
 
@@ -74,14 +71,11 @@ public class SearchField extends PanelEx implements UIConfigNotifier {
 		searchButton.setBorder(BorderFactory.createEmptyBorder());
 		searchButton.setBackground(Color.LIGHT_GRAY);
 		fieldPanel.add(searchButton, BorderLayout.EAST);
-		searchButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String text = textField.getText().trim();
-				if (!text.isEmpty()) {
-					searchButton.requestFocusInWindow();
-					UIEventManager.notify(UIEventType.SEARCH, text);
-				}
+		searchButton.addActionListener(e -> {
+			String text = textField.getText().trim();
+			if (!text.isEmpty()) {
+				searchButton.requestFocusInWindow();
+				UIEventManager.notify(UIEventType.SEARCH, text);
 			}
 		});
 
@@ -90,11 +84,6 @@ public class SearchField extends PanelEx implements UIConfigNotifier {
 
 	public String getText() {
 		return textField.getText();
-	}
-
-	@Override
-	public void notifyChange() {
-		setUIConfig();
 	}
 
 	@Override
