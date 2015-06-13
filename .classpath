@@ -36,6 +36,10 @@
 	<classpathentry kind="lib" path="httpcomponents-client-4.4/lib/httpmime-4.4.jar"/>
 	<classpathentry kind="lib" path="httpcomponents-client-4.4/lib/jna-4.1.0.jar"/>
 	<classpathentry kind="lib" path="httpcomponents-client-4.4/lib/jna-platform-4.1.0.jar"/>
-	<classpathentry kind="lib" path="json.jar"/>
+	<classpathentry kind="lib" path="json.jar" sourcepath="C:/Users/Mebleyev.G.Longinus/Downloads/JSON-java-master/JSON-java-master">
+		<attributes>
+			<attribute name="source_encoding" value="UTF-8"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
