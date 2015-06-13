@@ -9,8 +9,14 @@ import njuse.ffff.data.SeasonStatProcessor;
 import njuse.ffff.dataservice.DataReaderService;
 import njuse.ffff.po.MatchPO;
 import njuse.ffff.po.PlayerInAverage;
+import njuse.ffff.po.PlayerInMatch;
 import njuse.ffff.po.PlayerPO;
+import njuse.ffff.po.TeamInAverage;
+import njuse.ffff.po.TeamInMatch;
+import njuse.ffff.po.TeamPO;
 import njuse.ffff.presenter.TotalUIController;
+import njuse.ffff.presenter.analysisController.playerAnalysis.PlayerDefendController;
+import njuse.ffff.presenter.analysisController.playerAnalysis.PlayerOffendController;
 import njuse.ffff.presenterService.playerService.PlayerInfoService;
 import njuse.ffff.uiservice.PlayerDataService;
 import njuse.ffff.uiservice.PlayerProfileService;
@@ -20,6 +26,8 @@ import njuse.ffff.util.Filter;
 public class PlayerInfoController implements PlayerInfoService{
 	private DataReaderService dataService;
 	private static PlayerInfoController playerInfoController = null;
+	private static PlayerOffendController playerOffendController = null;
+	private static PlayerDefendController playerDefendController = null;
 	private static TotalUIController totalController = null;
 	
 	private String[] seasonList = {"14-15","13-14","12-13"};
@@ -37,6 +45,8 @@ public class PlayerInfoController implements PlayerInfoService{
 	}
 	
 	private PlayerInfoController() {
+		playerOffendController = PlayerOffendController.getInstance();
+		playerDefendController = PlayerDefendController.getInstance();
 		totalController = TotalUIController.getInstance();
 		dataService = totalController.getDataReadController();
 		}
@@ -51,6 +61,13 @@ public class PlayerInfoController implements PlayerInfoService{
 	public String[] getPresentPlayer(){
 		return new String[]{playerProfile,playerTotalData,
 				playerAvgData,playerAdvancedData,playerGameLog};
+	}
+	
+	/**
+	 * 获得球员参与的赛季 TODO
+	 */
+	public String[] getInvolvedSeason(String playerName){
+		return null;
 	}
 
 	/**
@@ -117,6 +134,19 @@ public class PlayerInfoController implements PlayerInfoService{
 				valid_season.add(s);
 			}
 		}
+//		while(seasonNum[0]>1940){
+//			StringBuffer season = new StringBuffer();
+//			season.append(seasonNum[0]);
+//			season.append("-");
+//			season.append(seasonNum[1]);
+//			if(dataService.getSeasonStatProcessor(season.toString())!=null){
+//				valid_season.add(season.toString());
+//			}
+//			seasonNum[0]--;
+//			seasonNum[1]--;
+//		}
+//		seasonNum[0] = 2014;
+//		seasonNum[1] = 2015;
 		Object[][] totalData = new Object[valid_season.size()][];
 		for(int i=0;i<valid_season.size();i++){
 			SeasonStatProcessor seasonProcess = dataService.getSeasonStatProcessor(valid_season.get(i));
@@ -165,6 +195,19 @@ public class PlayerInfoController implements PlayerInfoService{
 				valid_season.add(s);
 			}
 		}
+//		while(seasonNum[0]>1940){
+//			StringBuffer season = new StringBuffer();
+//			season.append(seasonNum[0]);
+//			season.append("-");
+//			season.append(seasonNum[1]);
+//			if(dataService.getSeasonStatProcessor(season.toString())!=null){
+//			valid_season.add(season.toString());
+//			}
+//			seasonNum[0]--;
+//			seasonNum[1]--;
+//		}
+//		seasonNum[0] = 2014;
+//		seasonNum[1] = 2015;
 		Object[][] averageData = new Object[valid_season.size()][];
 		for(int i=0;i<valid_season.size();i++){
 			SeasonStatProcessor seasonProcess = dataService.getSeasonStatProcessor(valid_season.get(i));
@@ -212,6 +255,19 @@ public class PlayerInfoController implements PlayerInfoService{
 				valid_season.add(s);
 			}
 		}
+//		while(seasonNum[0]>1940){
+//			StringBuffer season = new StringBuffer();
+//			season.append(seasonNum[0]);
+//			season.append("-");
+//			season.append(seasonNum[1]);
+//			if(dataService.getSeasonStatProcessor(season.toString())!=null){
+//				valid_season.add(season.toString());
+//			}
+//			seasonNum[0]--;
+//			seasonNum[1]--;
+//		}
+//		seasonNum[0] = 2014;
+//		seasonNum[1] = 2015;
 		Object[][] advancedData = new Object[valid_season.size()][];
 		for(int i=0;i<valid_season.size();i++){
 			SeasonStatProcessor seasonProcess = dataService.getSeasonStatProcessor(valid_season.get(i));
@@ -240,11 +296,33 @@ public class PlayerInfoController implements PlayerInfoService{
 		playerAdvancedData = playerName;
 		totalController.setPlayerDataService(panel);
 	}
+	
+	/**
+	 * 设置季后赛球员数据界面--总基础数据表格
+	 */
+	public void setPlayOffTotalData(PlayerDataService panel,String playerName){
+		
+	}
+	
+	/**
+	 * 设置季后赛球员数据界面--平均基础数据表格
+	 */
+	public void setPlayOffAvgData(PlayerDataService panel,String playerName){
+		
+	}
+	
+	/**
+	 * 设置季后赛球员数据界面--进阶数据表格
+	 */
+	public void setPlayOffAdvancedData(PlayerDataService panel,String playerName){
+		
+	}
+		
 
 	/**
 	 * 设置球员参加的比赛
 	 */
-	public void setPlayerGameLog(PlayerDataService panel,String playerName) {
+	public void setPlayerGameLog(PlayerDataService panel,String season ,String playerName) {
 		List<MatchPO> matchList = dataService.getMatchForPlayer(playerName);
 //		String[] properties = {"比赛日期","比赛对阵"};
 		if(matchList.size()>0){
@@ -279,5 +357,87 @@ public class PlayerInfoController implements PlayerInfoService{
 		playerGameLog = playerName;
 		totalController.setPlayerDataService(panel);
 	}
-
+	
+	/**
+	 * 球员和联盟平均水平对比
+	 */
+	public void playerByLeagueCompare(PlayerDataService panel,String season,String playerName){
+		ArrayList<TeamPO> teamList = new ArrayList<TeamPO>();
+		String league = null;
+		Object[][] list = new Object[8][2];//平均得分，平均篮板，平均抢断，平均助攻，平均盖帽，投篮命中率，三分命中率，罚球命中率
+		ArrayList<TeamInAverage> teamDataList = new ArrayList<TeamInAverage>();//TODO
+		int score_total = 0;
+		int rebound_total = 0;
+		int steal_total = 0;
+		int assist_total = 0;
+		int block_total = 0;
+		int fieldGoalMade_total = 0;
+		int fieldGoalAttempted_total = 0;
+		int threePointerMade_total = 0;
+		int threePointerAttempted_total = 0;
+		int freeThrowMade_total = 0;
+		int freeThrowAttempted_total = 0;
+		int player_number = 0;
+		for(TeamPO team:teamList){
+			if(team.getLeague().equals(league)){
+				TeamInAverage teamData = dataService.getSeasonStatProcessor(season).getTeamAverage(team.getName(), emptyFilter);
+				teamDataList.add(teamData);
+			}
+		}
+		for(TeamInAverage team:teamDataList){
+			double[] total = team.getStatsTotal();
+			score_total += total[14];
+			rebound_total += total[8];
+			steal_total += total[10];
+			assist_total += total[9];
+			block_total += total[11];
+			fieldGoalMade_total += total[0];
+			fieldGoalAttempted_total += total[1];
+			threePointerMade_total += total[2];
+			threePointerAttempted_total += total[3];
+			freeThrowMade_total += total[4];
+			freeThrowAttempted_total += total[5];
+			for(TeamInMatch match:team.getTeamStats()){
+				for(PlayerInMatch playerInMatch:match.getPlayers()){
+					if(playerInMatch.getSecond()>0){
+						player_number++;
+					}
+				}
+			}
+		}
+		SeasonStatProcessor seasonProcess = dataService.getSeasonStatProcessor(season);
+		PlayerInAverage player = seasonProcess.getPlayerAverage(playerName, emptyFilter);
+		double[] player_data = player.getStatsAverage();
+		list[0][0] = DealDecimal.formatChange(player_data[14],1);
+		list[0][1] = DealDecimal.formatChange(player_data[8],1);
+		list[0][2] = DealDecimal.formatChange(player_data[9],1);
+		list[0][3] = DealDecimal.formatChange(player_data[10],1);
+		list[0][4] = DealDecimal.formatChange(player_data[11],1);
+		list[0][5] = DealDecimal.formatChangeToPercentage(player_data[29]);
+		list[0][6] = DealDecimal.formatChangeToPercentage(player_data[28]);
+		list[0][7] = DealDecimal.formatChangeToPercentage(player_data[27]);
+		list[1][0] = DealDecimal.formatChange(((double)score_total)/((double)player_number),1);
+		list[1][1] = DealDecimal.formatChange(((double)rebound_total)/((double)player_number),1);
+		list[1][2] = DealDecimal.formatChange(((double)assist_total)/((double)player_number),1);
+		list[1][3] = DealDecimal.formatChange(((double)steal_total)/((double)player_number),1);
+		list[1][4] = DealDecimal.formatChange(((double)block_total)/((double)player_number),1);
+		list[1][5] = DealDecimal.formatChangeToPercentage(((double)fieldGoalMade_total)/((double)fieldGoalAttempted_total));
+		list[1][6] = DealDecimal.formatChangeToPercentage(((double)threePointerMade_total)/((double)threePointerAttempted_total));
+		list[1][7] = DealDecimal.formatChangeToPercentage(((double)freeThrowMade_total)/((double)freeThrowAttempted_total));
+		//设置界面 TODO
+	}
+	
+	/**
+	 * 设置球员进攻分析界面
+	 */
+	public void setPlayerOffendAnalysis(PlayerDataService panel,String playerID,String season){
+		playerOffendController.analyseOffend(panel, playerID, season);
+	}
+	
+	/**
+	 * 设置球员防守分析界面
+	 */
+	public void setPlayerDefendAnalysis(PlayerDataService panel,String playerID,String season){
+		playerDefendController.analyseDefend(panel, playerID, season);
+	}
 }

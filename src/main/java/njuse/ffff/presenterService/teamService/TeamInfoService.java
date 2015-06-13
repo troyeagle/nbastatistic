@@ -15,6 +15,12 @@ public interface TeamInfoService {
 	//设置球队数据界面--进阶基础数据
 	public void setTeamAdvancedlData(TeamDataService panel,String teamName);
 	//设置球队参加的比赛
-	public void setTeamGameLog(TeamDataService panel,String teamName);
+	public void setTeamGameLog(TeamDataService panel,String season,String teamName);
 	public String[] getPresentTeam();
+	
+	//获得球队参与的赛季
+	public String[] getInvolvedSeason(String teamName);
+	
+	//球队和联盟平均水平对比
+	public void setTeamByLeagueCompare(TeamDataService panel,String season,String teamName);
 }

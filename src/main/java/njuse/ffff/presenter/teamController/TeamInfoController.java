@@ -58,6 +58,13 @@ public class TeamInfoController implements TeamInfoService{
 	}
 	
 	/**
+	 * 获得球队参与的赛季
+	 */
+	public String[] getInvolvedSeason(String teamName){
+		return null;
+	}
+	
+	/**
 	 * 设置球队简介界面
 	 */
 	public void setTeamProfilePanel(TeamProfileService panel, String teamName) {
@@ -84,7 +91,7 @@ public class TeamInfoController implements TeamInfoService{
 			playerForTeam = new Object[players.size()][];
 			for(int i=0;i<players.size();i++){
 				PlayerInMatch player = players.get(i);
-				playerForTeam[i] = new Object[]{i,player.getName()};
+				playerForTeam[i] = new Object[]{i,player.getName(),/**playerID*/};//TODO
 			}
 			panel.setPlayers(playerForTeam);
 		}
@@ -213,7 +220,7 @@ public class TeamInfoController implements TeamInfoService{
 	/**
 	 * 设置球队参与的比赛
 	 */
-	public void setTeamGameLog(TeamDataService panel, String teamName) {
+	public void setTeamGameLog(TeamDataService panel, String season, String teamName) {
 		String teamAbbr = TeamNameAndAbbr.getInstance().getAbbr(teamName);
 		if(teamAbbr==null){
 			teamAbbr = teamName;
@@ -253,4 +260,66 @@ public class TeamInfoController implements TeamInfoService{
 		totalController.setTeamDataService(panel);
 	}
 
+	/**
+	 * 球队和联盟平均水平对比
+	 */
+	public void setTeamByLeagueCompare(TeamDataService panel,String season,String teamName){
+		ArrayList<TeamPO> teamList = dataService.getTeamInfoAll(emptyFilter);
+		String league = null;
+		Object[][] list = new Object[8][2];//平均得分，平均篮板，平均抢断，平均助攻，平均盖帽，投篮命中率，三分命中率，罚球命中率
+		ArrayList<TeamInAverage> teamDataList = new ArrayList<TeamInAverage>();
+		int score_total = 0;
+		int rebound_total = 0;
+		int steal_total = 0;
+		int assist_total = 0;
+		int block_total = 0;
+		int fieldGoalMade_total = 0;
+		int fieldGoalAttempted_total = 0;
+		int threePointerMade_total = 0;
+		int threePointerAttempted_total = 0;
+		int freeThrowMade_total = 0;
+		int freeThrowAttempted_total = 0;
+		int team_number = 0;
+		for(TeamPO team:teamList){
+			if(team.getLeague().equals(league)){
+				TeamInAverage teamData = dataService.getSeasonStatProcessor(season).getTeamAverage(team.getName(), emptyFilter);
+				teamDataList.add(teamData);
+			}
+		}
+		for(TeamInAverage team:teamDataList){
+			double[] total = team.getStatsTotal();
+			score_total += total[14];
+			rebound_total += total[8];
+			steal_total += total[10];
+			assist_total += total[9];
+			block_total += total[11];
+			fieldGoalMade_total += total[0];
+			fieldGoalAttempted_total += total[1];
+			threePointerMade_total += total[2];
+			threePointerAttempted_total += total[3];
+			freeThrowMade_total += total[4];
+			freeThrowAttempted_total += total[5];
+			team_number += team.getTeamStats().size();
+		}
+		SeasonStatProcessor seasonProcess = dataService.getSeasonStatProcessor(season);
+		TeamInAverage team = seasonProcess.getTeamAverage(teamName, emptyFilter);
+		double[] team_data = team.getStatsAverage();
+		list[0][0] = DealDecimal.formatChange(team_data[14],1);
+		list[0][1] = DealDecimal.formatChange(team_data[8],1);
+		list[0][2] = DealDecimal.formatChange(team_data[9],1);
+		list[0][3] = DealDecimal.formatChange(team_data[10],1);
+		list[0][4] = DealDecimal.formatChange(team_data[11],1);
+		list[0][5] = DealDecimal.formatChangeToPercentage(team_data[21]);
+		list[0][6] = DealDecimal.formatChangeToPercentage(team_data[22]);
+		list[0][7] = DealDecimal.formatChangeToPercentage(team_data[23]);
+		list[1][0] = DealDecimal.formatChange(((double)score_total)/((double)team_number),1);
+		list[1][1] = DealDecimal.formatChange(((double)rebound_total)/((double)team_number),1);
+		list[1][2] = DealDecimal.formatChange(((double)assist_total)/((double)team_number),1);
+		list[1][3] = DealDecimal.formatChange(((double)steal_total)/((double)team_number),1);
+		list[1][4] = DealDecimal.formatChange(((double)block_total)/((double)team_number),1);
+		list[1][5] = DealDecimal.formatChangeToPercentage(((double)fieldGoalMade_total)/((double)fieldGoalAttempted_total));
+		list[1][6] = DealDecimal.formatChangeToPercentage(((double)threePointerMade_total)/((double)threePointerAttempted_total));
+		list[1][7] = DealDecimal.formatChangeToPercentage(((double)freeThrowMade_total)/((double)freeThrowAttempted_total));
+		//设置界面 TODO
+	}
 }

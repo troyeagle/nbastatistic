@@ -88,6 +88,7 @@ public class PlayerCompareController implements PlayerCompareService{
 						,DealDecimal.formatChange(total[13])				//犯规
 						,DealDecimal.formatChange(total[14])				//得分
 						,DealDecimal.formatChange(total[15])				//效率
+						//playerID
 				};
 				values_average[i] = new Object[]{
 						playerAvg.getName(),playerAvg.getTeamName()
@@ -115,6 +116,7 @@ public class PlayerCompareController implements PlayerCompareService{
 						,DealDecimal.formatChangeToPercentage(average[24])//盖帽率
 						,DealDecimal.formatChangeToPercentage(average[25])//失误率
 						,DealDecimal.formatChangeToPercentage(average[26])//使用率
+						//playerID
 				};
 			}
 

@@ -40,6 +40,7 @@ import njuse.ffff.uiservice.TeamProfileService;
 import njuse.ffff.uiservice.TeamsOverviewService;
 import njuse.ffff.util.TeamNameAndAbbr;
 
+//球员在一场比赛里的信息和球队在一场比赛里的信息存储在一个表里
 public class TotalUIController implements TotalControlService{
 	private MainFrame frame = null;
 	private ArrayList<JPanel> panelList = new ArrayList<JPanel>();//存储点击界面先后顺序的列表

@@ -118,6 +118,7 @@ public class MatchInfoController implements MatchInfoService{
 					,DealDecimal.formatChange(player.getTurnover())						//失误数
 					,DealDecimal.formatChange(player.getFoul())							//犯规数
 					,DealDecimal.formatChange(player.getPoints())						//该场得分
+					//playerID
 			};
 			
 			ArrayList<Integer> dirty_playerInfo = player.getDirty();
@@ -160,6 +161,7 @@ public class MatchInfoController implements MatchInfoService{
 					,DealDecimal.formatChange(player.getTurnover())						//失误数
 					,DealDecimal.formatChange(player.getFoul())							//犯规数
 					,DealDecimal.formatChange(player.getPoints())						//该场得分
+					//playerID
 			};
 			
 			ArrayList<Integer> dirty_playerInfo = player.getDirty();

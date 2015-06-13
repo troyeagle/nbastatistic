@@ -197,7 +197,22 @@ public class HotEventController implements HotEventService{
 	private Object[][] formPlayerValuesForDay(int condition){
 		List<PlayerInMatchExtended> list = dataService.getLeadPlayerForDay(dataService.getCurrentDate(), condition);
 		Object[][] player_condition = new Object[5][];
-		for(int i=0;i<5;i++){
+		for(int i=0;i<list.size();i++){
+			switch (condition){
+			case 14://得分
+				break;
+			case 8://篮板
+				break;
+			case 9://助攻
+				break;
+			case 11://盖帽
+				break;
+			case 10://抢断
+				break;
+			}
+				
+		}
+		for(int i=0;i<Math.min(5, list.size());i++){
 			PlayerInMatchExtended player = list.get(i);
 			PlayerInAverage playerAvg = dataService.getPlayerAverage(player.getName(), emptyFilter);
 			String team = "N/A";
@@ -223,28 +238,35 @@ public class HotEventController implements HotEventService{
 	private Object[][] formPlayerValuesForSeason(int condition){
 		List<PlayerInAverage> list = dataService.getLeadPlayerForSeason(dataService.getCurrentSeason(), condition);
 		Object[][] player_condition = new Object[5][];
-		for(int i=0;i<5;i++){
-			PlayerInAverage player = list.get(i);
-			PlayerPO playerPO = dataService.getPlayerInfo(player.getName(), emptyFilter);
-			String position = "N/A";
-			if(playerPO!=null){
-				position = judgePlayerPosition(playerPO.getPosition()[0]);
+		int num = 0;
+		for(int i=0;i<Math.min(5, list.size());i++){
+			PlayerInAverage player = list.get(num);
+			if(player.getEffective()>=58){
+				PlayerPO playerPO = dataService.getPlayerInfo(player.getName(), emptyFilter);
+				String position = "N/A";
+				if(playerPO!=null){
+					position = judgePlayerPosition(playerPO.getPosition()[0]);
+				}
+				switch(condition){
+				case 14:	//场均得分
+				case 8:		//场均篮板
+				case 9:		//场均助攻
+				case 11:	//场均盖帽
+				case 10:	//场均抢断
+					double data = DealDecimal.formatChange(player.getStatsAverage()[condition], 1);
+					player_condition[i] = new Object[]{player.getName(),player.getTeamName(),position,data};
+					break;
+				case 29:	//投篮命中率
+				case 28:	//三分命中率
+				case 27:	//罚球命中率
+					String data_percent = DealDecimal.formatChangeToPercentage(player.getStatsAverage()[condition]);
+					player_condition[i] = new Object[]{player.getName(),player.getTeamName(),position,data_percent};
+				}
 			}
-			switch(condition){
-			case 14:
-			case 8:
-			case 9:
-			case 11:
-			case 10:
-				double data = DealDecimal.formatChange(player.getStatsAverage()[condition], 1);
-				player_condition[i] = new Object[]{player.getName(),player.getTeamName(),position,data};
-				break;
-			case 29:
-			case 28:
-			case 27:
-				String data_percent = DealDecimal.formatChangeToPercentage(player.getStatsAverage()[condition]);
-				player_condition[i] = new Object[]{player.getName(),player.getTeamName(),position,data_percent};
+			else{
+				i--;
 			}
+			num++;
 		}
 		return player_condition;
 	}
@@ -257,7 +279,7 @@ public class HotEventController implements HotEventService{
 	private Object[][] formTeamValuesForSeason(int condition){
 		List<TeamInAverage> list = dataService.getLeadTeamForSeason(dataService.getCurrentSeason(), condition);
 		Object[][] team_condition = new Object[5][];
-		for(int i=0;i<5;i++){
+		for(int i=0;i<Math.min(5, list.size());i++){
 			TeamInAverage team = list.get(i);
 			TeamPO teamPO = dataService.getTeamInfo(team.getName(), emptyFilter);
 			String league = "N/A";
@@ -265,17 +287,17 @@ public class HotEventController implements HotEventService{
 				league = judgeTeamLeague(teamPO.getLeague());
 			}
 			switch(condition){
-			case 14:
-			case 8:
-			case 9:
-			case 11:
-			case 10:
+			case 14:	//场均得分
+			case 8:		//场均篮板
+			case 9:		//场均助攻
+			case 11:	//场均盖帽
+			case 10:	//场均抢断
 				double data = DealDecimal.formatChange(team.getStatsAverage()[condition], 1);
 				team_condition[i] = new Object[]{team.getName(),league,data};
 				break;
-			case 21:
-			case 22:
-			case 23:
+			case 21:	//
+			case 22:	//
+			case 23:	//
 				String data_percent = DealDecimal.formatChangeToPercentage(team.getStatsAverage()[condition]);
 				team_condition[i] = new Object[]{team.getName(),league,data_percent};
 			}
@@ -292,7 +314,7 @@ public class HotEventController implements HotEventService{
 	private Object[][] formPlayerValuesForImprove(int condition){
 		List<PlayerInAverage> list = dataService.getImprovePlayer(dataService.getCurrentSeason(), condition);
 		Object[][] player_condition = new Object[5][];
-		for(int i=0;i<5;i++){
+		for(int i=0;i<Math.min(5, list.size());i++){
 			PlayerInAverage player = list.get(i);
 			String improvement = null;
 			int dataLoc = -1;
