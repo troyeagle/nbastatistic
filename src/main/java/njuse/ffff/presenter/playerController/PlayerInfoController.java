@@ -15,8 +15,6 @@ import njuse.ffff.po.TeamInAverage;
 import njuse.ffff.po.TeamInMatch;
 import njuse.ffff.po.TeamPO;
 import njuse.ffff.presenter.TotalUIController;
-import njuse.ffff.presenter.analysisController.playerAnalysis.PlayerDefendController;
-import njuse.ffff.presenter.analysisController.playerAnalysis.PlayerOffendController;
 import njuse.ffff.presenterService.playerService.PlayerInfoService;
 import njuse.ffff.uiservice.PlayerDataService;
 import njuse.ffff.uiservice.PlayerProfileService;
@@ -26,8 +24,6 @@ import njuse.ffff.util.Filter;
 public class PlayerInfoController implements PlayerInfoService{
 	private DataReaderService dataService;
 	private static PlayerInfoController playerInfoController = null;
-	private static PlayerOffendController playerOffendController = null;
-	private static PlayerDefendController playerDefendController = null;
 	private static TotalUIController totalController = null;
 	
 	private String[] seasonList = {"14-15","13-14","12-13"};
@@ -45,8 +41,6 @@ public class PlayerInfoController implements PlayerInfoService{
 	}
 	
 	private PlayerInfoController() {
-		playerOffendController = PlayerOffendController.getInstance();
-		playerDefendController = PlayerDefendController.getInstance();
 		totalController = TotalUIController.getInstance();
 		dataService = totalController.getDataReadController();
 		}
@@ -427,17 +421,4 @@ public class PlayerInfoController implements PlayerInfoService{
 		//设置界面 TODO
 	}
 	
-	/**
-	 * 设置球员进攻分析界面
-	 */
-	public void setPlayerOffendAnalysis(PlayerDataService panel,String playerID,String season){
-		playerOffendController.analyseOffend(panel, playerID, season);
-	}
-	
-	/**
-	 * 设置球员防守分析界面
-	 */
-	public void setPlayerDefendAnalysis(PlayerDataService panel,String playerID,String season){
-		playerDefendController.analyseDefend(panel, playerID, season);
-	}
 }

@@ -27,8 +27,4 @@ public interface PlayerInfoService {
 	public String[] getInvolvedSeason(String playerID);
 	//球员和联盟平均水平对比
 	public void playerByLeagueCompare(PlayerDataService panel,String season,String playerID);
-	//设置球员进攻分析界面
-	public void setPlayerOffendAnalysis(PlayerDataService panel,String playerID,String season);
-	//设置球员防守分析界面
-	public void setPlayerDefendAnalysis(PlayerDataService panel,String playerID,String season);
 }

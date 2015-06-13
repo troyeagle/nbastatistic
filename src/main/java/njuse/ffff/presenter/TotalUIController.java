@@ -259,7 +259,7 @@ public class TotalUIController implements TotalControlService{
 				service.setPlayerAdvancedData(playerDataService, playerList[3]);
 			}
 			if(playerList[4]!=null){
-				service.setPlayerGameLog(playerDataService, playerList[4]);
+				service.setPlayerGameLog(playerDataService, playerList[4] ,null);
 			}
 		}
 		if(teamsOverviewService!=null){
@@ -289,7 +289,7 @@ public class TotalUIController implements TotalControlService{
 				service.setTeamAdvancedlData(teamDataService, teamList[4]);
 			}
 			if(teamList[5]!=null){
-				service.setTeamGameLog(teamDataService, teamList[5]);
+				service.setTeamGameLog(teamDataService, teamList[5], null);
 			}
 		}
 		if(specialViewService!=null){
