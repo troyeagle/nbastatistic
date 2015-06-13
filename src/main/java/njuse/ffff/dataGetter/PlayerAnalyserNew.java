@@ -52,7 +52,9 @@ public class PlayerAnalyserNew {
 	int plSalary;
 
 	public void analyseSingle(BufferedReader br, String head)
-			throws IOException {
+			throws IOException, NullPointerException {
+		DatabaseUtility.init();
+		SqlSession sqlSession = DatabaseUtility.getSqlSession();
 		this.br = br;
 		idPlayerInfo = head;
 		String line = "", get = "";
@@ -94,148 +96,155 @@ public class PlayerAnalyserNew {
 		// hallOfFame = matchPattern(line, "</span> (.*) (<");
 		//
 		// }
-		while (!line.contains("Other Pages")) {
-			line = br.readLine();
-			get += line;
-			if (line.contains("data-birth=")) {
-				plBirth = Date.valueOf(matchPattern(line,
-						"data-birth=\"(.*)\"><a href=").trim());
-			}
-		}
-		String[] split = get.split("<(.+?)>");
-		ArrayList<String> processor = new ArrayList<String>();
-		for (int i = 0; i < split.length; i++) {
-			split[i] = split[i].trim();
-			split[i] = split[i].replaceAll("&(.*);", "");
-			if (split[i].length() > 2) {
-				
-				processor.add(split[i]);
-			}
-		}
-		plFullName = processor.get(0);
-		int t = processor.indexOf("Position:");
-		if (t > 0) {
-			plPosition = positionConverter(processor.get(t + 1));
-		}
-		t = processor.indexOf("Shoots:");
-		if (t > 0) {
-			shoot = processor.get(t + 1).charAt(0);
-		}
-		t = processor.indexOf("Height:");
-		if (t > 0) {
-			plHeight = processor.get(t + 1);
-		}
-		t = processor.indexOf("Weight:");
-		if (t > 0) {
-			plWeight = Integer.parseInt(processor.get(t + 1).substring(0, 3));
-		}
-		t = processor.indexOf("Born:");
-		if (t > 0) {
-			plBirthCity = processor.get(t + 3).substring(2)
-					+ processor.get(t + 4);
-		}
-		t = processor.indexOf("High School:");
-		if (t > 0) {
-			plHighSchool = processor.get(t + 1) + processor.get(t + 2);
-		}
-		t = processor.indexOf("College:");
-		if(t>0){
-			plUniv = processor.get(t+1);
-		}
-		t = processor.indexOf("Draft:");
-		if(t>0){
-			draft = processor.get(t+1)+processor.get(t+2)+processor.get(t+3);
-		}
-		t = processor.indexOf("NBA Debut:");
-		if(t>0){
-			nbadebut = processor.get(t+1);
-		}
-		t = processor.indexOf("Experience:");
-		if(t>0){
-			experience =Integer.parseInt(processor.get(t+1).substring(0, 2).trim());
-		}
-		t = processor.indexOf("Hall of Fame:");
-		if(t>0){
-			hallOfFame = processor.get(t+1);
-		}
-		ArrayList<String> tips = new ArrayList<String>();
-		ArrayList<Short> numbers = new ArrayList<Short>();
-		line = readLineUntil("<div class");
-		while (true) {
-
-			String tip = matchPattern(line, "tip=(.*)>");
-			tips.add(tip);
-			line = readLineUntil("<span style=");
-			plNumber = Short.parseShort(matchPattern(line, ">(.*)</span>")
-					.trim());
-			numbers.add(plNumber);
-			line = readLineUntil("<div class");
-			if (!line.contains("poptip"))
-				break;
-		}
-
-		List<ArrayList<String>> statusList = new ArrayList<ArrayList<String>>();
-		/**
-		 * 核心模块，决定每一块读出来的效果，注意这里的判断条件。
-		 */
-		String lastKey = "";
-		while (true) {
-			ArrayList<String> status = new ArrayList<String>();
-			line = readLineUntil("<tr  class=\"");
-			String key = "";
-			if(line.contains("blank_table")){
-				continue;
-			}
-			if (line.startsWith("<tr  class=\"\">")) {
-				break;
-			} else if (line.startsWith("<tr  class=\"full_table\"")) {
-				key = matchPattern(line, "id=\"(.*)\"");
-				lastKey = key.split("\\.")[0];
-				status.add(key);
-
-			} else if (line.contains("stat_total")) {// 包括total的，关键字不在一开始给出，要自动生成
+		try {
+			while (!line.contains("margin_bottom_half margin_left_half")) {
 				line = br.readLine();
-				get = matchPattern(line, ">(.*)</td>");
-				key = lastKey + " " + get;
-				if(get==null||get.equals("")){
+				get += line;
+
+				if (line.contains("data-birth=")) {
+					plBirth = Date.valueOf(matchPattern(line,
+							"data-birth=\"(.*)\"><a href=").trim());
+				}
+
+			}
+			String[] split = get.split("<(.+?)>");
+			ArrayList<String> processor = new ArrayList<String>();
+			for (int i = 0; i < split.length; i++) {
+				split[i] = split[i].trim();
+				split[i] = split[i].replaceAll("&(.*);", "");
+				if (split[i].length() > 2) {
+
+					processor.add(split[i]);
+				}
+			}
+			plFullName = processor.get(0);
+			int t = processor.indexOf("Position:");
+			if (t > 0) {
+				plPosition = positionConverter(processor.get(t + 1));
+			}
+			t = processor.indexOf("Shoots:");
+			if (t > 0) {
+				shoot = processor.get(t + 1).charAt(0);
+			}
+			t = processor.indexOf("Height:");
+			if (t > 0) {
+				plHeight = processor.get(t + 1);
+			}
+			t = processor.indexOf("Weight:");
+			if (t > 0) {
+				plWeight = Integer.parseInt(processor.get(t + 1)
+						.substring(0, 3));
+			}
+			t = processor.indexOf("Born:");
+			if (t > 0) {
+				plBirthCity = processor.get(t + 3).substring(2)
+						+ processor.get(t + 4);
+			}
+			t = processor.indexOf("High School:");
+			if (t > 0) {
+				plHighSchool = processor.get(t + 1) + processor.get(t + 2);
+			}
+			t = processor.indexOf("College:");
+			if (t > 0) {
+				plUniv = processor.get(t + 1);
+			}
+			t = processor.indexOf("Draft:");
+			if (t > 0) {
+				draft = processor.get(t + 1) + processor.get(t + 2)
+						+ processor.get(t + 3);
+			}
+			t = processor.indexOf("NBA Debut:");
+			if (t > 0) {
+				nbadebut = processor.get(t + 1);
+			}
+			t = processor.indexOf("Experience:");
+			if (t > 0) {
+				experience = Integer.parseInt(processor.get(t + 1)
+						.substring(0, 2).trim());
+			}
+			t = processor.indexOf("Hall of Fame:");
+			if (t > 0) {
+				hallOfFame = processor.get(t + 1);
+			}
+			ArrayList<String> tips = new ArrayList<String>();
+			ArrayList<Short> numbers = new ArrayList<Short>();
+			// line = readLineUntil("<div class");
+			while (true) {
+
+				String tip = matchPattern(line, "tip=(.*)>");
+				tips.add(tip);
+				line = readLineUntil("<span style=");
+				plNumber = Short.parseShort(matchPattern(line, ">(.*)</span>")
+						.trim());
+				numbers.add(plNumber);
+				line = readLineUntil("<div class");
+				if (!line.contains("poptip"))
+					break;
+			}
+
+			List<ArrayList<String>> statusList = new ArrayList<ArrayList<String>>();
+			/**
+			 * 核心模块，决定每一块读出来的效果，注意这里的判断条件。
+			 */
+			String lastKey = "";
+			while (true) {
+				ArrayList<String> status = new ArrayList<String>();
+				line = readLineUntil("<tr  class=\"");
+				String key = "";
+				if (line.contains("blank_table")) {
 					continue;
 				}
-				status.add(key);
-				status.add(null);// 增加一个空项，对齐
-				
-			}
-			if(key.length()<2){
-				continue;
-			}
+				if (line.startsWith("<tr  class=\"\">")) {
+					break;
+				} else if (line.startsWith("<tr  class=\"full_table\"")) {
+					key = matchPattern(line, "id=\"(.*)\"");
+					lastKey = key.split("\\.")[0];
+					status.add(key);
 
-			if (key.contains("shooting")) {
+				} else if (line.contains("stat_total")) {// 包括total的，关键字不在一开始给出，要自动生成
+					line = br.readLine();
+					get = matchPattern(line, ">(.*)</td>");
+					key = lastKey + " " + get;
+					if (get == null || get.equals("")) {
+						continue;
+					}
+					status.add(key);
+					status.add(null);// 增加一个空项，对齐
 
-			} else if (key.contains("play-by-play")) {
+				}
+				if (key.length() < 2) {
+					continue;
+				}
 
-			}
-			do {
-				line = br.readLine();
-				if (line.contains("left")) {
-					get = matchPattern(line, "<a href(.*)</a>");
-					if (get != null) {
-						get = matchPattern(line, "<a href(.*)</a>").split(">")[1];
+				if (key.contains("shooting")) {
+
+				} else if (key.contains("play-by-play")) {
+
+				}
+				do {
+					line = br.readLine();
+					if (line.contains("left")) {
+						get = matchPattern(line, "<a href(.*)</a>");
+						if (get != null) {
+							get = matchPattern(line, "<a href(.*)</a>").split(
+									">")[1];
+						} else {
+							get = matchPattern(line, ">(.*)</td>");
+						}
+
 					} else {
 						get = matchPattern(line, ">(.*)</td>");
 					}
+					status.add(get);
+				} while (line.startsWith("   <td align="));
+				statusList.add(status);
+			}
+			List<ArrayList<String>> salaries = new ArrayList<ArrayList<String>>();
 
-				} else {
-					get = matchPattern(line, ">(.*)</td>");
-				}
-				status.add(get);
-			} while (line.startsWith("   <td align="));
-			statusList.add(status);
-		}
-		List<ArrayList<String>> salaries = new ArrayList<ArrayList<String>>();
-		/**
-		 * 工资问题
-		 */
+			/**
+			 * 工资问题
+			 */
 
-		try {
 			readLineUntil("  <th data-stat=\"salary\"");
 			line = readLineUntil("<tr  class=");
 
@@ -254,21 +263,82 @@ public class PlayerAnalyserNew {
 				salaries.add(items);
 			}
 
-		} catch (NullPointerException e) {
+			Iterator<ArrayList<String>> it = statusList.iterator();
+			ArrayList<String> temp = null;
+			/**
+			 * 比赛数据表
+			 */
+			while (it.hasNext()) {
+				String tableName = null;
+				Map<String, Object> playerstatus = new HashMap<String, Object>();
+				temp = it.next();
+				if (temp.get(0).contains("pbp")) {
+					PlayByPlay pbp = new PlayByPlay(plName, idPlayerInfo);
+					pbp.setAttributes(temp);
+					playerstatus = pbp.generateMap();
+					tableName = "playbyplay";
+				} else if (temp.get(0).contains("advanced")) {
+					PlayerInMatchFull pf = new PlayerInMatchFull(plName,
+							idPlayerInfo);
+					pf.setAdvancedByArray(temp);
+					playerstatus = pf.generateAdvancedMap();
+					tableName = "playermatchinfoadv";
+				} else if (temp.get(0).contains("shooting")) {
+					PlayerShooting ps = new PlayerShooting(plName, idPlayerInfo);
+					ps.setAttributes(temp);
+					playerstatus = ps.generateMap();
+					tableName = "playershooting";
+				} else {
+					PlayerInMatchFull pf = new PlayerInMatchFull(plName,
+							idPlayerInfo);
+					pf.setBasicByArray(temp);
+					playerstatus = pf.generateBasicMap();
+					tableName = "playermatchinfo";
+				}
+				Mapper mapper = sqlSession.getMapper(Mapper.class);
+				try {
+					mapper.insert(tableName, playerstatus);
+				} catch (PersistenceException e) {
+					e.printStackTrace();
+				}
 
+				sqlSession.commit();
+			}
+			/**
+			 * 薪水表
+			 */
+			for (ArrayList<String> i : salaries) {
+				PlayerSalary ps = new PlayerSalary(plName, idPlayerInfo);
+				ps.setAttributes(i);
+				Mapper mapper = sqlSession.getMapper(Mapper.class);
+				mapper.insert("playersalary", ps.generateMap());
+				sqlSession.commit();
+			}
+			/**
+			 * 球号表
+			 */
+			for (int i = 0; i < tips.size(); i++) {
+				PlayerNumber pn = new PlayerNumber(plName, idPlayerInfo,
+						numbers.get(i), tips.get(i));
+				Mapper mapper = sqlSession.getMapper(Mapper.class);
+				mapper.insert("playernumber", pn.generateMap());
+				sqlSession.commit();
+			}
+		} catch (NullPointerException e) {
+			System.out.println(head + "do not fit the table");
 		}
 
+		br.close();
 		/**
 		 * Construct and insert into Database
+		 * 如果不符合表，就只添加球员的基本信息
 		 */
 		PlayerInfo p = new PlayerInfo(idPlayerInfo, plName, plFullName,
 				plPosition, shoot, plHeight, plWeight, plBirth, plBirthCity,
-				plHighSchool, plUniv, nbadebut, hallOfFame,draft,experience, plNumber, plSalary);
+				plHighSchool, plUniv, nbadebut, hallOfFame, draft, experience,
+				plNumber, plSalary);
 		Map<String, Object> inputMap = p.generateHashMap();
 
-		DatabaseUtility.init();
-
-		SqlSession sqlSession = DatabaseUtility.getSqlSession();
 		Mapper m = sqlSession.getMapper(Mapper.class);
 		try {
 			m.insert("playerinfo", inputMap);
@@ -278,67 +348,6 @@ public class PlayerAnalyserNew {
 
 		sqlSession.commit();
 
-		Iterator<ArrayList<String>> it = statusList.iterator();
-		ArrayList<String> temp = null;
-		/**
-		 * 比赛数据表
-		 */
-		while (it.hasNext()) {
-			String tableName = null;
-			Map<String, Object> playerstatus = new HashMap<String, Object>();
-			temp = it.next();
-			if (temp.get(0).contains("pbp")) {
-				PlayByPlay pbp = new PlayByPlay(plName, idPlayerInfo);
-				pbp.setAttributes(temp);
-				playerstatus = pbp.generateMap();
-				tableName = "playbyplay";
-			} else if (temp.get(0).contains("advanced")) {
-				PlayerInMatchFull pf = new PlayerInMatchFull(plName,
-						idPlayerInfo);
-				pf.setAdvancedByArray(temp);
-				playerstatus = pf.generateAdvancedMap();
-				tableName = "playermatchinfoadv";
-			} else if (temp.get(0).contains("shooting")) {
-				PlayerShooting ps = new PlayerShooting(plName, idPlayerInfo);
-				ps.setAttributes(temp);
-				playerstatus = ps.generateMap();
-				tableName = "playershooting";
-			} else {
-				PlayerInMatchFull pf = new PlayerInMatchFull(plName,
-						idPlayerInfo);
-				pf.setBasicByArray(temp);
-				playerstatus = pf.generateBasicMap();
-				tableName = "playermatchinfo";
-			}
-			Mapper mapper = sqlSession.getMapper(Mapper.class);
-			try {
-				mapper.insert(tableName, playerstatus);
-			} catch (PersistenceException e) {
-				e.printStackTrace();
-			}
-
-			sqlSession.commit();
-		}
-		/**
-		 * 薪水表
-		 */
-		for (ArrayList<String> i : salaries) {
-			PlayerSalary ps = new PlayerSalary(plName, idPlayerInfo);
-			ps.setAttributes(i);
-			Mapper mapper = sqlSession.getMapper(Mapper.class);
-			mapper.insert("playersalary", ps.generateMap());
-			sqlSession.commit();
-		}
-		/**
-		 * 球号表
-		 */
-		for (int i = 0; i < tips.size(); i++) {
-			PlayerNumber pn = new PlayerNumber(plName, idPlayerInfo,
-					numbers.get(i), tips.get(i));
-			Mapper mapper = sqlSession.getMapper(Mapper.class);
-			mapper.insert("playernumber", pn.generateMap());
-			sqlSession.commit();
-		}
 		sqlSession.close();
 	}
 
@@ -383,7 +392,7 @@ public class PlayerAnalyserNew {
 	public static void main(String[] args) {
 		HtmlReader hr = new HtmlReader();
 		BufferedReader br = hr
-				.execute("http://www.basketball-reference.com/players/a/abdulka01.html");
+				.execute("http://www.basketball-reference.com/players/a/ackeral01.html");
 		PlayerAnalyserNew pa = new PlayerAnalyserNew();
 		try {
 			pa.analyseSingle(br, "cartevi01");

@@ -41,40 +41,40 @@ public class TeamAverage {
 	public TeamAverage(String attribute, ArrayList<String> str) {
 		this.attribute = attribute;
 		Iterator<String> it = str.iterator();
-		season = it.next();
-		league = it.next();
-		team = it.next();
-		win = (int) parseDouble(it.next());
-		lose = (int) parseDouble(it.next());
-		finish = (int) parseDouble(it.next());
-		it.next();
+		season = it.next().trim();
+		league = it.next().trim();
+		team = it.next().trim();
+		win = (int) parseDouble(it.next().trim());
+		lose = (int) parseDouble(it.next().trim());
+		finish = (int) parseDouble(it.next().trim());
+		it.next().trim();
 		if(!attribute.contains("opp")){
-			aveAge = parseDouble(it.next());
-			aveHeight = it.next();
-			aveWeight = parseDouble(it.next());
-			it.next();
+			aveAge = parseDouble(it.next().trim());
+			aveHeight = it.next().trim();
+			aveWeight = parseDouble(it.next().trim());
+			it.next().trim();
 		}		
-		games = (int) parseDouble(it.next());
-		minutesPlayed = parseDouble(it.next());
-		fieldGoalMade = parseDouble(it.next());
-		fieldGoalAttempted = parseDouble(it.next());
-		fieldGoalPercentage = parseDouble(it.next());
-		threePointerMade = parseDouble(it.next());
-		threePointerAttempted = parseDouble(it.next());
-		threePointerPercentage = parseDouble(it.next());
-		it.next();it.next();it.next();
-		freeThrowMade = parseDouble(it.next());
-		freeThrowAttempted = parseDouble(it.next());
-		freeThrowRate = parseDouble(it.next());
-		offensiveRebound = parseDouble(it.next());
-		defensiveRebound = parseDouble(it.next());
-		rebound = parseDouble(it.next());
-		assist = parseDouble(it.next());
-		steal = parseDouble(it.next());
-		block = parseDouble(it.next());
-		turnover = parseDouble(it.next());
-		foul = parseDouble(it.next());
-		points = parseDouble(it.next());
+		games = (int) parseDouble(it.next().trim());
+		minutesPlayed = parseDouble(it.next().trim());
+		fieldGoalMade = parseDouble(it.next().trim());
+		fieldGoalAttempted = parseDouble(it.next().trim());
+		fieldGoalPercentage = parseDouble(it.next().trim());
+		threePointerMade = parseDouble(it.next().trim());
+		threePointerAttempted = parseDouble(it.next().trim());
+		threePointerPercentage = parseDouble(it.next().trim());
+		it.next().trim();it.next().trim();it.next().trim();
+		freeThrowMade = parseDouble(it.next().trim());
+		freeThrowAttempted = parseDouble(it.next().trim());
+		freeThrowRate = parseDouble(it.next().trim());
+		offensiveRebound = parseDouble(it.next().trim());
+		defensiveRebound = parseDouble(it.next().trim());
+		rebound = parseDouble(it.next().trim());
+		assist = parseDouble(it.next().trim());
+		steal = parseDouble(it.next().trim());
+		block = parseDouble(it.next().trim());
+		turnover = parseDouble(it.next().trim());
+		foul = parseDouble(it.next().trim());
+		points = parseDouble(it.next().trim());
 	}
 
 	public double parseDouble(String str) {

@@ -17,7 +17,7 @@ public class HtmlReader {
 	CloseableHttpResponse httpResponse;
 	CloseableHttpClient httpClient;
 	public BufferedReader execute(String url) {
-		httpClient = HttpClients.createDefault();
+		httpClient = HttpClients.createSystem();
 		HttpPost httpPost = new HttpPost(url);
 		try {
 			httpResponse = httpClient.execute(httpPost);

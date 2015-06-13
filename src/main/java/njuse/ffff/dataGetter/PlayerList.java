@@ -53,15 +53,16 @@ public class PlayerList {
 	public void playerStatProcess() {
 		allPlayers = new ArrayList<String>();
 		getAllPlayer();
-		
+
 		ExecutorService exe = Executors.newCachedThreadPool();
-		PlayerThread[] pthreads = new PlayerThread[64];
-		for(int i=0;i<64;i++){
+		PlayerThread[] pthreads = new PlayerThread[10];
+		for (int i = 0; i <10; i++) {
 			pthreads[i] = new PlayerThread(i);
 			exe.execute(pthreads[i]);
 		}
 	}
-	public static void main(String[] args){
+
+	public static void main(String[] args) {
 		new PlayerList().playerStatProcess();
 	}
 
@@ -71,13 +72,16 @@ public class PlayerList {
 		Matcher m = p.matcher(origin);
 		ArrayList<String> matches = new ArrayList<String>();
 		while (m.find()) {
-			matches.add(m.group(1));
+			if (m.group(1).contains("player")) {
+				matches.add(m.group(1));
+			}
+
 		}// 这里多了一个空格，请注意
 		return matches;
 	}
 
 	public void getAllPlayer() {
-		for (char m = 'a'; m <= 'z'; m++) {
+		for (char m = 'a'; m <= 'b'; m++) {
 			if (m == 'x') {
 				continue;
 			}
@@ -92,35 +96,44 @@ public class PlayerList {
 
 	class PlayerThread extends Thread {
 		int i;
-		PlayerThread(int i){
+
+		PlayerThread(int i) {
 			this.i = i;
 		}
+
 		public void run() {
-			while(true){
-				String s = PlayerList.this.getPlayer();
-				if(s.equals("End")){
-					System.out.println("Thread "+i+ "End");
+			String s;
+
+			
+			s = PlayerList.this.getPlayer();
+			while (true) {
+				
+				PlayerAnalyserNew pn = new PlayerAnalyserNew();
+				if (s.equals("End")) {
+					System.out.println("Thread " + i + "End");
 					break;
 				}
 				HtmlReader subhr = new HtmlReader();
-				BufferedReader subbr = subhr
-						.execute("http://www.basketball-reference.com" + s);
-				System.out.println("Thread"+i+" Reading player " + s);
-				boolean flag = false;
-				while (!flag) {
-					try {
-						new PlayerAnalyserNew().analyseSingle(subbr, s.substring(11));
-						subhr.httpClient.close();
-						flag = true;
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
+				//BufferedReader subbr = subhr
+				//		.execute("http://www.basketball-reference.com" + s);
+				System.out.println("Thread" + i + " Reading player " + s);
+
+				try {
+					pn.analyseSingle(subhr
+							.execute("http://www.basketball-reference.com" + s), s.substring(11));
+					subhr.httpClient.close();
+					subhr.httpResponse.close();
+					s = PlayerList.this.getPlayer();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}// catch (NullPointerException e) {
+//					e.printStackTrace();s = PlayerList.this.getPlayer();
+//
+//				}
+
 			}
 
-			
-			
 		}
 	}
 

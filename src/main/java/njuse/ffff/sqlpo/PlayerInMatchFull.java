@@ -145,6 +145,9 @@ public class PlayerInMatchFull {
 		Iterator<String> it = arr.iterator();
 		attribute = it.next();
 		season = it.next();
+		if(attribute.contains("playoff")){
+			season+="po";
+		}
 		age = it.next();
 		team = it.next();
 		league = it.next();

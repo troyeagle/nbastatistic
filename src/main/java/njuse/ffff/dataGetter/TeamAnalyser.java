@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import njuse.ffff.sqlpo.TeamAverage;
+import njuse.ffff.sqlpo.TeamAverageAdv;
 import njuse.ffff.sqlpo.TeamInfo;
 import njuse.ffff.util.DatabaseUtility;
 import njuse.ffff.util.Mapper;
@@ -18,10 +19,14 @@ import org.apache.ibatis.session.SqlSession;
 
 public class TeamAnalyser {
 	BufferedReader br;
+	ArrayList<TeamAverage> myteam = new ArrayList<TeamAverage>();
+	ArrayList<TeamAverage> opponent = new ArrayList<TeamAverage>();
 	String name;
 	public void urlAnalyser(String name){
 		this.name = name;
+		
 		String basic = "http://www.basketball-reference.com/teams/"+name+"/";
+		
 		String urlTotal = "http://www.basketball-reference.com/teams/"+name+"/stats_totals.html";
 		String urlPerGame = "http://www.basketball-reference.com/teams/"+name+"/stats_per_game.html";
 		String urlOppoTotal = "http://www.basketball-reference.com/teams/"+name+"/opp_stats_totals.html";
@@ -29,11 +34,15 @@ public class TeamAnalyser {
 		
 		HtmlReader hr = new HtmlReader();
 		try {
+			System.out.println("Analysing basic:"+name);
 			teamInfoAnalyse(hr.execute(basic));
+			System.out.println("Analysing stats:"+name);
 			teamStatAnalyse(hr.execute(urlTotal),name+" total");
 			teamStatAnalyse(hr.execute(urlPerGame),name+" perGame");
 			teamStatAnalyse(hr.execute(urlOppoTotal),name+" oppo_total");
 			teamStatAnalyse(hr.execute(urlOppoPerGame),name+" oppo_perGame");
+			teamAdvAnalyse();
+			System.out.println("Analysing over."+name);
 			hr.httpClient.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -56,9 +65,9 @@ public class TeamAnalyser {
 		line=br.readLine();
 		record = getWord(line).split(":")[1];
 		line=br.readLine();
-		playOffs = Integer.parseInt(getWord(line).split(":")[1].trim());
+		playOffs = Integer.parseInt(getWord(line).split(":")[1].substring(0, 2).trim());
 		line=br.readLine();
-		championships = Integer.parseInt(getWord(line).split(":")[1].trim());
+		championships = Integer.parseInt(getWord(line).split(":")[1].substring(0, 2).trim());
 		TeamInfo ti = new TeamInfo(name,location,teamNames,seasons,record,playOffs,championships);
 		DatabaseUtility.init();
 		SqlSession sqlSession = DatabaseUtility.getSqlSession();
@@ -66,7 +75,7 @@ public class TeamAnalyser {
 		try{
 			mapper.insert("teaminfo", ti.generateMap());
 		}catch(PersistenceException e){
-			System.out.println("SQL Error,perhaps duplicate");
+			e.printStackTrace();
 			sqlSession.close();
 			return;
 		}
@@ -99,6 +108,11 @@ public class TeamAnalyser {
 			teamStatus.add(new TeamAverage(attribute,str));
 			
 		}
+		if(attribute.contains("oppo_perGame")){
+			opponent.addAll(teamStatus);
+		}else if(attribute.contains("perGame")){
+			myteam.addAll(teamStatus);
+		}
 		DatabaseUtility.init();
 		SqlSession sqlSession = DatabaseUtility.getSqlSession();
 		Mapper mapper = sqlSession.getMapper(Mapper.class);
@@ -109,6 +123,18 @@ public class TeamAnalyser {
 		sqlSession.commit();
 		sqlSession.close();
 		
+	}
+	public void teamAdvAnalyse(){
+		int size = myteam.size();
+		SqlSession sqlSession = DatabaseUtility.getSqlSession();
+		Mapper mapper = sqlSession.getMapper(Mapper.class);
+		
+		for(int i = 0;i<size;i++){
+			TeamAverageAdv adv = new TeamAverageAdv(myteam.get(i),opponent.get(i));
+			mapper.insert("teamaverageadv", adv.generateMap());
+			sqlSession.commit();
+		}
+		sqlSession.close();
 	}
 	public String getWord(String line){
 		return line.replaceAll("<(.+?)>", "");

@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TeamList {
-	ArrayList<String> teams;
+	static ArrayList<String> teams;
 	public void getAllTeams() throws IOException {
 		BufferedReader br;
 		HtmlReader hr = new HtmlReader();
@@ -65,7 +65,7 @@ public class TeamList {
 			this.i  = i;
 		}
 		public void run(){
-			
+			new TeamAnalyser().urlAnalyser(teams.get(i));
 		}
 		
 	}
