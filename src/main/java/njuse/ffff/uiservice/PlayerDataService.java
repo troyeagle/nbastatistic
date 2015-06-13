@@ -9,10 +9,20 @@ package njuse.ffff.uiservice;
 public interface PlayerDataService {
 
 	void setAvgData(Object[][] data);
-	
+
 	void setTotalData(Object[][] data);
-	
+
 	void setAdvancedData(Object[][] data);
-	
+
+	void setShotData(Object[][] data);
+
 	void setGameLog(Object[][] data, int[][] dirty);
+
+	void setGameSeasons(String[] seasons);
+
+	String getSelectedSeason();
+
+	boolean isPlayOff();
+
+	void setGameLog(Object[][] data);
 }

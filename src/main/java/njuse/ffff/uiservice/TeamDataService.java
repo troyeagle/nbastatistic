@@ -17,4 +17,12 @@ public interface TeamDataService {
 	void setAdvancedDataTable(Object[][] data);
 
 	void setGameLog(Object[][] data, int[][] dirty);
+
+	void setGameSeasons(String[] seasons);
+
+	boolean isPlayOff();
+
+	String getSelectedSeason();
+
+	void setGameLog(Object[][] data);
 }

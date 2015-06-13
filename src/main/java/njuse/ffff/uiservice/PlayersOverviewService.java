@@ -6,7 +6,7 @@ package njuse.ffff.uiservice;
  * @author Li
  *
  */
-public interface PlayersOverviewService {
+public interface PlayersOverviewService extends OverviewService {
 
 	/**
 	 * 设置所有球员的数据
@@ -16,5 +16,4 @@ public interface PlayersOverviewService {
 	void setPlayersAvgInfo(Object[][] values, String season);
 	
 	void setPlayersTotalInfo(Object[][] values, String season);
-
 }
