@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import njuse.ffff.dataservice.DataReaderService;
+import njuse.ffff.dataservice.NewDataReaderService;
 import njuse.ffff.po.PlayerInAverage;
 import njuse.ffff.po.PlayerInMatchExtended;
 import njuse.ffff.po.PlayerPO;
@@ -17,6 +18,7 @@ import njuse.ffff.util.Filter;
 
 public class HotEventController implements HotEventService{
 	private DataReaderService dataService;
+	private NewDataReaderService dataReader;
 	private static HotEventController hotEventController = null;
 	private static TotalUIController totalController = null;
 	
@@ -29,6 +31,7 @@ public class HotEventController implements HotEventService{
 	private HotEventController() {
 		totalController = TotalUIController.getInstance();
 		dataService = totalController.getDataReadController();
+		dataReader = totalController.getDataReader();
 	}
 
 	public static HotEventController getInstance() {
@@ -197,23 +200,8 @@ public class HotEventController implements HotEventService{
 	private Object[][] formPlayerValuesForDay(int condition){
 		List<PlayerInMatchExtended> list = dataService.getLeadPlayerForDay(dataService.getCurrentDate(), condition);
 		Object[][] player_condition = new Object[5][];
-		for(int i=0;i<list.size();i++){
-			switch (condition){
-			case 14://得分
-				break;
-			case 8://篮板
-				break;
-			case 9://助攻
-				break;
-			case 11://盖帽
-				break;
-			case 10://抢断
-				break;
-			}
-				
-		}
 		for(int i=0;i<Math.min(5, list.size());i++){
-			PlayerInMatchExtended player = list.get(i);
+			PlayerInMatchExtended player = list.get(list.size()-i-1);
 			PlayerInAverage playerAvg = dataService.getPlayerAverage(player.getName(), emptyFilter);
 			String team = "N/A";
 			if(playerAvg!=null){
@@ -230,6 +218,18 @@ public class HotEventController implements HotEventService{
 		return player_condition;
 	}
 	
+//	private Object[][] formPlayerValuesForDay2(String condition){
+//		List<PlayerInMatchFull> list = dataReader.getLeadPlayerForDay(new Date(dataService.getCurrentDate().getTime()), condition);
+//		Object[][] player_condition = new Object[5][];
+//		for(int i=0;i<Math.min(5, list.size());i++){
+//			PlayerInMatchFull player = list.get(i);
+//			Map<String,Object> map = player.generateBasicMap();
+//			player_condition[i] = new Object[]{player.getName(),map.get("team"),map.get("position")
+//					,map.get("condition")};
+//		}
+//		return player_condition;
+//	}
+	
 	/**
 	 * 形成赛季热点球员表格数据
 	 * @param condition
@@ -238,7 +238,7 @@ public class HotEventController implements HotEventService{
 	private Object[][] formPlayerValuesForSeason(int condition){
 		List<PlayerInAverage> list = dataService.getLeadPlayerForSeason(dataService.getCurrentSeason(), condition);
 		Object[][] player_condition = new Object[5][];
-		int num = 0;
+		int num = list.size()-1;
 		for(int i=0;i<Math.min(5, list.size());i++){
 			PlayerInAverage player = list.get(num);
 			if(player.getEffective()>=58){
@@ -266,10 +266,41 @@ public class HotEventController implements HotEventService{
 			else{
 				i--;
 			}
-			num++;
+			num--;
 		}
 		return player_condition;
 	}
+	
+//	private Object[][] formPlayerValuesForSeason2(String condition){
+//		List<PlayerInMatchFull> list = dataReader.getLeadPlayerForSeason("2014-15", condition);
+//		Object[][] player_condition = new Object[5][];
+//		int num = 0;
+//		for(int i=0;i<Math.min(5, list.size());i++){
+//			PlayerInMatchFull player = list.get(num);
+//			Map<String,Object> map = player.generateBasicMap();
+//			if(Integer.parseInt(String.valueOf(map.get("gamesPlayed")))>=58){
+//				switch(condition){
+//				case "points":	//场均得分
+//				case "rebound":		//场均篮板
+//				case "assist":		//场均助攻
+//				case "block":	//场均盖帽
+//				case "steal":	//场均抢断
+//					player_condition[i] = new Object[]{player.getName(),map.get("team"),map.get("position"),map.get("condition")};
+//					break;
+//				case "fieldGoalPercentage":	//投篮命中率
+//				case "threePointerPercentage":	//三分命中率
+//				case "freeThrowMade":	//罚球命中率
+//					player_condition[i] = new Object[]{player.getName(),map.get("team"),map.get("position"),
+//							DealDecimal.formatChangeToPercentage(Double.parseDouble(String.valueOf(map.get("condition"))))};
+//				}
+//			}
+//			else{
+//				i--;
+//			}
+//			num++;
+//		}
+//		return player_condition;
+//	}
 	
 	/**
 	 * 形成赛季热点球队数据表格
@@ -280,7 +311,7 @@ public class HotEventController implements HotEventService{
 		List<TeamInAverage> list = dataService.getLeadTeamForSeason(dataService.getCurrentSeason(), condition);
 		Object[][] team_condition = new Object[5][];
 		for(int i=0;i<Math.min(5, list.size());i++){
-			TeamInAverage team = list.get(i);
+			TeamInAverage team = list.get(list.size()-i-1);
 			TeamPO teamPO = dataService.getTeamInfo(team.getName(), emptyFilter);
 			String league = "N/A";
 			if(teamPO!=null){
@@ -295,9 +326,9 @@ public class HotEventController implements HotEventService{
 				double data = DealDecimal.formatChange(team.getStatsAverage()[condition], 1);
 				team_condition[i] = new Object[]{team.getName(),league,data};
 				break;
-			case 21:	//
-			case 22:	//
-			case 23:	//
+			case 21:	//投篮命中率
+			case 22:	//三分命中率
+			case 23:	//罚球命中率
 				String data_percent = DealDecimal.formatChangeToPercentage(team.getStatsAverage()[condition]);
 				team_condition[i] = new Object[]{team.getName(),league,data_percent};
 			}
@@ -305,6 +336,31 @@ public class HotEventController implements HotEventService{
 		}
 		return team_condition;
 	}
+	
+//	private Object[][] formTeamValuesForSeason2(String condition){
+//		List<TeamAverage> list = dataReader.getLeadTeamForSeason("2014-15", condition);
+//		Object[][] team_condition = new Object[5][];
+//		for(int i=0;i<Math.min(5, list.size());i++){
+//			TeamAverage team = list.get(i);
+//			Map<String,Object> map = team.generateMap();
+//			switch(condition){
+//			case "points":	//场均得分
+//			case "rebound":		//场均篮板
+//			case "assist":		//场均助攻
+//			case "block":	//场均盖帽
+//			case "steal":	//场均抢断
+//				team_condition[i] = new Object[]{map.get("team"),map.get("league"),map.get(condition)};
+//				break;
+//			case "fieldGoalPercentage":	//
+//			case "threePointerPercentage":	//
+//			case "freeThrowMade":	//
+//				team_condition[i] = new Object[]{map.get("team"),map.get("league"),
+//						DealDecimal.formatChangeToPercentage(Double.parseDouble(String.valueOf(map.get(condition))))};
+//			}
+//			
+//		}
+//		return team_condition;
+//	}
 	
 	/**
 	 * 形成进步最快球员数据表格
@@ -315,7 +371,7 @@ public class HotEventController implements HotEventService{
 		List<PlayerInAverage> list = dataService.getImprovePlayer(dataService.getCurrentSeason(), condition);
 		Object[][] player_condition = new Object[5][];
 		for(int i=0;i<Math.min(5, list.size());i++){
-			PlayerInAverage player = list.get(i);
+			PlayerInAverage player = list.get(list.size()-i-1);
 			String improvement = null;
 			int dataLoc = -1;
 			switch(condition){
@@ -337,4 +393,29 @@ public class HotEventController implements HotEventService{
 		return player_condition;
 	}
 
+//	private Object[][] formPlayerValuesForImprove2(String condition){
+//		List<PlayerInMatchFull> list = dataReader.getImprovePlayer("2014-15", condition);
+//		Object[][] player_condition = new Object[5][];
+//		for(int i=0;i<Math.min(5, list.size());i++){
+//			PlayerInMatchFull player = list.get(i);
+//			Map<String,Object> map = player.generateBasicMap();
+////			switch(condition){
+////			case "points": 	//场均得分
+////				improvement = DealDecimal.formatChangeToPercentage(player.getRecent5ScoreAdv());
+////				dataLoc = 14;
+////				break;
+////			case "rebound":	//场均篮板
+////				improvement = DealDecimal.formatChangeToPercentage(player.getRecent5BlockAdv());
+////				dataLoc = 8;
+////				break;
+////			case "assist":	//场均助攻
+////				improvement = DealDecimal.formatChangeToPercentage(player.getRecent5AssistAdv());
+////				dataLoc = 9;
+////			}
+//			player_condition[i] = new Object[]{player.getName(),map.get("team")
+//					/**,DealDecimal.formatChange(player.getStatsAverage()[dataLoc], 1)*/,map.get("condition")};
+//		}
+//		return player_condition;
+//	}
+	
 }

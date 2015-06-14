@@ -46,33 +46,6 @@ public class MatchInfoController implements MatchInfoService{
 		TeamPO teamA = dataService.getTeamInfo(match.getTeamA(), emptyFilter);
 		TeamPO teamB = dataService.getTeamInfo(match.getTeamB(), emptyFilter);
 		
-//		球队A的队徽
-//		File flie_svg = new File(teamA.getPathOfLogo());
-//		String f = teamA.getPathOfLogo();
-//		String pathOfLogo = f.substring(0, f.length()-4).concat(".png");
-//		File flie_png = new File(pathOfLogo);
-//		try {
-//			SvgConverter.convertToPng(flie_svg, flie_png);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} catch (TranscoderException e) {
-//			e.printStackTrace();
-//		}
-//		ImageIcon icon_teamA = new ImageIcon(pathOfLogo);
-//		球队B的队徽		
-//		flie_svg = new File(teamB.getPathOfLogo());
-//		f = teamB.getPathOfLogo();
-//		pathOfLogo = f.substring(0, f.length()-4).concat(".png");
-//		flie_png = new File(pathOfLogo);
-//		try {
-//			SvgConverter.convertToPng(flie_svg, flie_png);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} catch (TranscoderException e) {
-//			e.printStackTrace();
-//		}
-//		ImageIcon icon_teamB = new ImageIcon(pathOfLogo);
-		
 		//球队A、B的分数
 		ArrayList<Integer> score_A = match.getScoreA();
 		ArrayList<Integer> score_B = match.getScoreB();
@@ -118,7 +91,7 @@ public class MatchInfoController implements MatchInfoService{
 					,DealDecimal.formatChange(player.getTurnover())						//失误数
 					,DealDecimal.formatChange(player.getFoul())							//犯规数
 					,DealDecimal.formatChange(player.getPoints())						//该场得分
-					//playerID
+					//playerID TODO
 			};
 			
 			ArrayList<Integer> dirty_playerInfo = player.getDirty();
@@ -131,7 +104,7 @@ public class MatchInfoController implements MatchInfoService{
 		}
 		
 		//球队B的球员的数据
-		ArrayList<PlayerInMatchExtended> playerListForTeamB = match.getPlayerInAEx();
+		ArrayList<PlayerInMatchExtended> playerListForTeamB = match.getPlayerInBEx();
 		ArrayList<int[]> dirty_teamB = new ArrayList<int[]>();  //脏数据位置
 		Object[][] values_teamB = new Object[playerListForTeamB.size()][];
 		for(int i=0;i<playerListForTeamB.size();i++){
@@ -161,7 +134,7 @@ public class MatchInfoController implements MatchInfoService{
 					,DealDecimal.formatChange(player.getTurnover())						//失误数
 					,DealDecimal.formatChange(player.getFoul())							//犯规数
 					,DealDecimal.formatChange(player.getPoints())						//该场得分
-					//playerID
+					//playerID TODO
 			};
 			
 			ArrayList<Integer> dirty_playerInfo = player.getDirty();
@@ -176,7 +149,7 @@ public class MatchInfoController implements MatchInfoService{
 		int[][] dirty_A = new int[dirty_teamA.size()][];
 		dirty_A = dirty_teamA.toArray(dirty_A);
 		int[][] dirty_B = new int[dirty_teamB.size()][];
-		dirty_A = dirty_teamB.toArray(dirty_B);
+		dirty_B = dirty_teamB.toArray(dirty_B);
 		
 		panel.setHostTeamInfo(teamA.getName(), score_teamA, values_teamA, dirty_A);
 		panel.setGuestTeamInfo(teamB.getName(), score_teamB, values_teamB, dirty_B);
