@@ -22,7 +22,5 @@ public interface PlayerDataService {
 
 	String getSelectedSeason();
 
-	boolean isPlayOff();
-
 	void setGameLog(Object[][] data);
 }

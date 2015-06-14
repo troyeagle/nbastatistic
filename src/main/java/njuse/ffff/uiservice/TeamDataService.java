@@ -20,8 +20,6 @@ public interface TeamDataService {
 
 	void setGameSeasons(String[] seasons);
 
-	boolean isPlayOff();
-
 	String getSelectedSeason();
 
 	void setGameLog(Object[][] data);
