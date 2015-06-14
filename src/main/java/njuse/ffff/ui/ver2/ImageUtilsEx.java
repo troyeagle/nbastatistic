@@ -21,6 +21,7 @@ public class ImageUtilsEx extends ImageUtils {
     public static final char L = 'L';
     public static final char M = 'M';
     public static final char S = 'S';
+    public static final char MS = 'T';
 
     private static final String NULL = "null:";
 
@@ -57,6 +58,9 @@ public class ImageUtilsEx extends ImageUtils {
             case S:
                 h = 20;
                 break;
+            case MS:
+            	h = 30;
+            	break;
         }
         int w = h * icon.getIconWidth() / icon.getIconHeight();
 

@@ -33,7 +33,14 @@ public class TableUtils {
 				Class<?> returnValue;
 				if (columnIndex >= 0 && columnIndex < getColumnCount()) {
 					try {
-						returnValue = getValueAt(0, columnIndex).getClass();
+						Object value = null;
+
+						int index = 0;
+						do {
+							value = getValueAt(index++, columnIndex);
+						} while (value == null);
+
+						returnValue = value.getClass();
 						if (returnValue.equals(Boolean.class))
 							returnValue = Object.class;
 					} catch (Exception e) {

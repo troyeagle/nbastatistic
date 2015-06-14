@@ -50,8 +50,7 @@ public class MainFrame extends JFrame {
 		setIconImage(icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
 
 		getContentPane().setBackground(new Color(210, 210, 210));
-		((JComponent) getContentPane()).setBorder(BorderFactory.createLineBorder(
-				UIConfig.TitleBgColor, 1));
+		((JComponent) getContentPane()).setBorder(BorderFactory.createEmptyBorder());
 
 		setLoadingPanel();
 
@@ -76,7 +75,10 @@ public class MainFrame extends JFrame {
 		matchPane = new MatchViewPane();
 		searchResPane = new SearchResultPane();
 
+		viewPanel.setBorder(BorderFactory.createLineBorder(UIConfig.TitleBgColor, 1));
+
 		viewPanel.add("主页", new MainPagePane());
+		viewPanel.add("比赛直播", new GameLivePanel());
 		viewPanel.add("球队一览", new TeamsOverViewPanel());
 		viewPanel.add("球员一览", new PlayersOverViewPane());
 		viewPanel.add("球员筛选", new PlayerFilterPane());
@@ -97,7 +99,7 @@ public class MainFrame extends JFrame {
 		titleBar.setOpaque(false);
 		titleBar.setTitle("NBA数据查询系统");
 
-		tabBar = new TabBar("主页", "球队一览", "球员一览", "球员筛选");
+		tabBar = new TabBar("主页", "比赛直播", "球队一览", "球员一览", "球员筛选");
 		tabBar.setOpaque(false);
 		tabBar.addSwitchListener(e -> {
 			String name = e.getSource().getName();
@@ -129,8 +131,8 @@ public class MainFrame extends JFrame {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				moved = false;
-				if (getY() < 0)
-					setLocation(getX(), 0);
+				if (getY() < -1)
+					setLocation(getX(), -1);
 			}
 
 			@Override
@@ -231,25 +233,25 @@ public class MainFrame extends JFrame {
 
 	private void handleSearch(String message) {
 		SearchController.getInstance().search(searchResPane, message);
-		tabBar.addTab("搜索结果", 4);
+		tabBar.addTab("搜索结果");
 		tabBar.switchTo("搜索结果");
 	}
 
 	public void setPlayerPane(String playerName) {
 		playerPane.setPlayer(playerName);
-		tabBar.addTab("球员详情", 5);
+		tabBar.addTab("球员详情");
 		tabBar.switchTo("球员详情");
 	}
 
 	public void setTeamPane(String teamName) {
 		teamPane.setTeam(teamName);
-		tabBar.addTab("球队详情", 6);
+		tabBar.addTab("球队详情");
 		tabBar.switchTo("球队详情");
 	}
 
 	public void setMatchPane(String date, String team) {
 		matchPane.setMatch(date, team);
-		tabBar.addTab("比赛详情", 7);
+		tabBar.addTab("比赛详情");
 		tabBar.switchTo("比赛详情");
 	}
 
