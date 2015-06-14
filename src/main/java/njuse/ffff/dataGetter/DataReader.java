@@ -196,5 +196,11 @@ public class DataReader implements NewDataReaderService{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public List<PlayerInMatchFull> getPlayerInMatch(String idmatchinfo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	 
 }

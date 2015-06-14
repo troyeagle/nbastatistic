@@ -51,4 +51,6 @@ public interface NewDataReaderService {
 	public List<TeamInfo> getTeamInfoAll();
 	
 	public TeamInfo getTeamInfo(String name);
+	
+	public List<PlayerInMatchFull> getPlayerInMatch(String idmatchinfo);
 }
