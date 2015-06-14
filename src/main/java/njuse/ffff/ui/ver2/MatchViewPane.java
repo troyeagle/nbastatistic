@@ -13,12 +13,14 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.Timer;
+import javax.swing.JViewport;
 
 import njuse.ffff.presenter.matchController.MatchInfoController;
 import njuse.ffff.ui.component.LabelEx;
 import njuse.ffff.ui.component.PanelEx;
+import njuse.ffff.ui.ver2.component.TableUtils;
 import njuse.ffff.ui.ver2.component.TableView;
 import njuse.ffff.uiservice.MatchViewService;
 import njuse.ffff.util.TeamNameAndAbbr;
@@ -45,8 +47,8 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 		setOpaque(false);
 
 		PanelEx matchInfoPanel = new PanelEx(null);
-		matchInfoPanel.setPreferredSize(new Dimension(960, 210));
-		matchInfoPanel.setBackground(Color.LIGHT_GRAY);
+		matchInfoPanel.setPreferredSize(new Dimension(0, 210));
+		matchInfoPanel.setBackground(UIConfig.HeadPanelBgColor);
 		add(matchInfoPanel, BorderLayout.NORTH);
 
 		PanelEx scorePanel = createScorePanel();
@@ -59,18 +61,37 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 		tableName = new LabelEx[2];
 
 		PanelEx panelData = new PanelEx(new GridLayout(2, 1, 0, 5));
-		panelData.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
+		panelData.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 		panelData.setOpaque(false);
-		add(panelData);
+
+		// 滚~(
+		JViewport dataView = new JViewport();
+		dataView.setOpaque(false);
+		dataView.add(panelData);
+		JScrollPane dataPane = new JScrollPane();
+		dataPane.setOpaque(false);
+		dataPane.setBorder(BorderFactory.createEmptyBorder());
+		dataPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		dataPane.setViewport(dataView);
+		add(dataPane);
+
+		// ：）
+		LabelEx maohao = new LabelEx("：");
+		maohao.setHorizontalAlignment(LabelEx.CENTER);
+		maohao.setBounds(600, 40, 80, 40);
+		maohao.setFont(UIConfig.TitleFont);
+		maohao.setForeground(Color.BLACK);
+		matchInfoPanel.add(maohao);
+
 		for (int i = 0; i < 2; i++) {
 			int align = i == 0 ? LabelEx.RIGHT : LabelEx.LEFT;
 
 			labelIcon[i] = new LabelEx();
-			labelIcon[i].setBounds(50 + 700 * i, 40, 160, 160);
+			labelIcon[i].setBounds(50 + 1020 * i, 40, 160, 160);
 
 			LabelEx name = new LabelEx();
 			labelName[i] = name;
-			name.setBounds(250 + i * 350, 40, 110, 40);
+			name.setBounds(250 + i * 620, 40, 160, 40);
 			name.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			name.setFont(UIConfig.TitleFont);
 			name.setForeground(Color.BLACK);
@@ -81,14 +102,21 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 				}
 			});
 
+			LabelEx labelType = new LabelEx(i == 0 ? "客队" : "主队");
+			labelType.setBounds(260 + i * 650, 80, 110, 20);
+			labelType.setHorizontalAlignment(i == 0 ? LabelEx.LEFT : LabelEx.RIGHT);
+			labelType.setFont(UIConfig.SmallFont);
+			labelType.setForeground(Color.BLACK);
+
 			labelFinal[i] = new LabelEx();
-			labelFinal[i].setBounds(400 + 100 * i, 40, 50, 40);
+			labelFinal[i].setBounds(500 + 220 * i, 40, 50, 40);
 			labelFinal[i].setHorizontalAlignment(align);
 			labelFinal[i].setFont(UIConfig.TitleFont);
 			labelFinal[i].setForeground(Color.BLACK);
 
 			matchInfoPanel.add(labelIcon[i]);
 			matchInfoPanel.add(name);
+			matchInfoPanel.add(labelType);
 			matchInfoPanel.add(labelFinal[i]);
 
 			Object[][] emptyValue = new Object[0][0];
@@ -105,17 +133,22 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 					}
 				}
 			});
+
 			tableName[i] = new LabelEx("Team" + (2 - i));
 			tableName[i].setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 0));
 			tableName[i].setOpaque(true);
 			tableName[i].setBackground(Color.DARK_GRAY.brighter().brighter());
 			tableName[i].setForeground(Color.WHITE);
 			tableName[i].setFont(UIConfig.SubTitleFont);
-			
+
+			PanelEx tableArea = new PanelEx(new BorderLayout());
+			tableArea.setOpaque(false);
+			tableArea.add(tableData[i].getTable().getTableHeader(), BorderLayout.NORTH);
+			tableArea.add(tableData[i].getTable());
 			PanelEx tablePanel = new PanelEx(new BorderLayout());
 			tablePanel.setOpaque(false);
 			tablePanel.add(tableName[i], BorderLayout.NORTH);
-			tablePanel.add(tableData[i]);
+			tablePanel.add(tableArea);
 			panelData.add(tablePanel);
 		}
 	}
@@ -126,11 +159,11 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 
 		String[] header = new String[16];
 		header[0] = "";
-		header[15] = "F";
+		header[15] = "总分";
 		for (int i = 1; i <= 4; i++)
-			header[i] = String.valueOf(i);
+			header[i] = "第" + i + "节";
 		for (int i = 1; i <= 10; i++)
-			header[i + 4] = "OT" + i;
+			header[i + 4] = "加时" + i;
 
 		String[][] teams = new String[2][16];
 		for (int i = 0; i < 2; i++) {
@@ -152,25 +185,20 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 
 		int height = (int) (table.getRowHeight() * 2 + table.getTableHeader()
 				.getPreferredSize().getHeight() + 2);
-		scorePanel.setBounds(230, 110, 500, height);
+		scorePanel.setBounds(230, 120, 820, height);
 
 		return scorePanel;
 	}
 
 	public void setMatch(String date, String team) {
-		Timer t = new Timer(0, e -> {
-			DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
-			Date time;
-			try {
-				time = df.parse(date);
-			} catch (Exception e1) {
-				time = new Date();
-			}
-			MatchInfoController.getInstance().setMatchInfoPanel(MatchViewPane.this, time,
-					team);
-		});
-		t.setRepeats(false);
-		t.start();
+		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+		Date time;
+		try {
+			time = df.parse(date);
+		} catch (Exception e1) {
+			time = new Date();
+		}
+		MatchInfoController.getInstance().setMatchInfoPanel(MatchViewPane.this, time, team);
 	}
 
 	@Override
@@ -202,18 +230,24 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 		// 处理加时
 		if (c - 1 > score.length) {
 			for (int i = score.length - 4; i <= c - 6; i++)
-				tableScore.hide("OT" + i);
+				tableScore.hide("加时" + i);
 		} else {
 			for (int i = score.length - 5; i > c - 6; i--)
-				tableScore.show("OT" + i);
+				tableScore.show("加时" + i);
 		}
 
 		for (int i = 1; i <= score.length - 1; i++)
 			scoreTable.setValueAt(String.valueOf(score[i]), index, i);
-		
+
 		tableName[index].setText(name);
 		icon = ImageUtilsEx.getTeamIcon(abbr, ImageUtilsEx.S);
 		tableName[index].setIcon(icon);
 		tableData[index].setTable(data);
+
+		// autoResize
+		JTable table = tableData[index].getTable();
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		TableUtils.FitTableColumns(table);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 	}
 }

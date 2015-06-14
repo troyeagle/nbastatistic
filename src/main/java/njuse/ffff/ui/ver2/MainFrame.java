@@ -10,9 +10,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import njuse.ffff.presenter.SearchController;
 import njuse.ffff.presenter.TotalUIController;
@@ -39,13 +43,15 @@ public class MainFrame extends JFrame {
 	private MainFrame() {
 		setUndecorated(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(960, 720);
+		setSize(1280, 720);
 		setLocationRelativeTo(null);
 		setTitle("NBA数据查询系统");
 		ImageIcon icon = new ImageIcon("./img/nba.png");
 		setIconImage(icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH));
 
-		getContentPane().setBackground(Color.DARK_GRAY);
+		getContentPane().setBackground(new Color(210, 210, 210));
+		((JComponent) getContentPane()).setBorder(BorderFactory.createLineBorder(
+				UIConfig.TitleBgColor, 1));
 
 		setLoadingPanel();
 
@@ -104,6 +110,14 @@ public class MainFrame extends JFrame {
 		titleArea.add(titleBar, BorderLayout.NORTH);
 		titleArea.add(tabBar, BorderLayout.SOUTH);
 
+		MouseAdapter l = initListener();
+		titleArea.addMouseListener(l);
+		titleArea.addMouseMotionListener(l);
+
+		add(titleArea, BorderLayout.NORTH);
+	}
+
+	private MouseAdapter initListener() {
 		MouseAdapter l = new MouseAdapter() {
 			Point p;
 			boolean moved = false;
@@ -131,10 +145,7 @@ public class MainFrame extends JFrame {
 				}
 			}
 		};
-		titleArea.addMouseListener(l);
-		titleArea.addMouseMotionListener(l);
-
-		add(titleArea, BorderLayout.NORTH);
+		return l;
 	}
 
 	public static MainFrame getInstance() {
@@ -226,19 +237,19 @@ public class MainFrame extends JFrame {
 
 	public void setPlayerPane(String playerName) {
 		playerPane.setPlayer(playerName);
-		tabBar.addTab("球员详情");
+		tabBar.addTab("球员详情", 5);
 		tabBar.switchTo("球员详情");
 	}
 
 	public void setTeamPane(String teamName) {
 		teamPane.setTeam(teamName);
-		tabBar.addTab("球队详情");
+		tabBar.addTab("球队详情", 6);
 		tabBar.switchTo("球队详情");
 	}
 
 	public void setMatchPane(String date, String team) {
 		matchPane.setMatch(date, team);
-		tabBar.addTab("比赛详情");
+		tabBar.addTab("比赛详情", 7);
 		tabBar.switchTo("比赛详情");
 	}
 
@@ -249,8 +260,16 @@ public class MainFrame extends JFrame {
 	}
 
 	public static void main(String[] args) {
+		System.setProperty("awt.useSystemAAFontSettings", "on");
+		System.setProperty("swing.aatext", "true");
+
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
 		TotalUIController.getInstance().initSystem();
-		UIConfig.initialize();
 		MainFrame.getInstance();
 	}
 

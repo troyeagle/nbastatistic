@@ -31,15 +31,23 @@ public class UIConfig {
 	public static Color TableHeaderFgColor;
 
 	public static Font SmallFont;
+	
+	public static Color TextColor;
+	
+	public static Color HeadPanelBgColor;
+	
+	public static Color ThemeColor;
 
+	static {
+		initialize();
+	}
 	/**
 	 * 初始化设定
 	 */
-	public static void initialize() {
-		System.setProperty("awt.useSystemAAFontSettings", "on");
-		System.setProperty("swing.aatext", "true");
+	private static void initialize() {
+		ThemeColor = new Color(210, 71, 38);
 
-		Font f = new Font("Dengxian", Font.PLAIN, 0);
+		Font f = new Font("DengXian", Font.PLAIN, 0);
 		//		try {
 		//			f = Font.createFont(Font.TRUETYPE_FONT, new File("./font/DengXian.ttf"));
 		//		} catch (FontFormatException | IOException e) {
@@ -49,17 +57,23 @@ public class UIConfig {
 		SubTitleFont = f.deriveFont(Font.PLAIN, 18);
 		ContentFont = f.deriveFont(Font.PLAIN, 20);
 		TableFont = f.deriveFont(Font.PLAIN, 16);
-		SmallFont = f.deriveFont(Font.PLAIN, 15);
+		SmallFont = f.deriveFont(Font.PLAIN, 14);
 
-		TitleBgColor = Color.GRAY;
+		TitleBgColor = new Color(0, 122, 204);
 		TitleForeColor = Color.WHITE;
+		
+		TextColor = Color.BLACK;
 
-		TableSelectionBgColor = new Color(255, 255, 255, 150);
-		TableSelectionFgColor = Color.BLACK;
-		TableFgColor = Color.WHITE;
+		TableHeaderFgColor = Color.WHITE;
+		TableHeaderBgColor = Color.DARK_GRAY.brighter();
 
-		TableHeaderBgColor = new Color(255, 255, 255, 192);
+		TableSelectionBgColor = TitleBgColor;
+		TableSelectionFgColor = Color.WHITE;
+		TableFgColor = Color.BLACK;
+
 
 		TableView.setDefaultTableViewUI(new FlatTableviewUI());
+		
+		HeadPanelBgColor = Color.LIGHT_GRAY;
 	}
 }

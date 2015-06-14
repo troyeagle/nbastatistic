@@ -1,7 +1,6 @@
 package njuse.ffff.ui.ver2.component;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GridLayout;
@@ -10,7 +9,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-import njuse.ffff.ui.component.BasicButtonExListener;
 import njuse.ffff.ui.component.ButtonEx;
 import njuse.ffff.ui.component.LabelEx;
 import njuse.ffff.ui.component.PanelEx;
@@ -43,11 +41,9 @@ public class TitleBar extends PanelEx {
 		exit = new ButtonEx();
 		exit.setOpaque(false);
 		exit.setFocusable(false);
-		BasicButtonExListener listener = new BasicButtonExListener(exit);
-		listener.setInColor(Color.RED);
-		listener.setInPressColor(new Color(200, 0, 0));
-		listener.setOutPressColor(null);
-		exit.setButtonExListener(listener);
+//		BasicButtonExListener listener = new BasicButtonExListener(exit);
+//		listener.setOutPressColor(null);
+//		exit.setButtonExListener(listener);
 		minimize.setIcon(new ImageIcon("./img/btn/min.png"));
 		exit.setIcon(new ImageIcon("./img/btn/exit.png"));
 

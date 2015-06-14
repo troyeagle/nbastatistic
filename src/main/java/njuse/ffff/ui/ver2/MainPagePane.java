@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -53,15 +54,24 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 
 	@SuppressWarnings("unchecked")
 	public MainPagePane() {
-		super(new GridLayout(2, 2, 20, 20));
+		super(new BorderLayout());
 		setOpaque(false);
-		setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
-
+		
+		PanelEx searchPanel = new PanelEx();
+		searchPanel.setPreferredSize(new Dimension(960, 210));
+		searchPanel.setBackground(UIConfig.HeadPanelBgColor);
+		add(searchPanel, BorderLayout.NORTH);
+		
 		tableMap = new Map[4];
 		hotGroup = new SwitchButtonGroup[4];
 		tableView = new PanelEx[4];
 		tabPanel = new PanelEx[4];
 
+		PanelEx topInfoPanel = new PanelEx(new GridLayout(2, 2, 20, 10));
+		topInfoPanel.setBorder(BorderFactory.createEmptyBorder(10, 40, 20, 40));
+		topInfoPanel.setOpaque(false);
+		add(topInfoPanel);
+		
 		String[] titles = { "今日热点球员 Top 5", "赛季热点球员 Top 5",
 				"进步最快球员 Top 5", "赛季热点球队 Top 5" };
 		for (int i = 0; i < 4; i++) {
@@ -79,7 +89,7 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 			LabelEx labelTitle = new LabelEx(titles[i]);
 			labelTitle.setOpaque(false);
 			labelTitle.setFont(UIConfig.TitleFont);
-			labelTitle.setForeground(Color.WHITE);
+			labelTitle.setForeground(Color.BLACK);
 
 			tabPanel[i] = new PanelEx(new WrapLayout(WrapLayout.LEFT));
 			tabPanel[i].setOpaque(false);
@@ -93,7 +103,7 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 			dataPanel.setOpaque(false);
 			dataPanel.add(labelTitle, BorderLayout.NORTH);
 			dataPanel.add(tablePanel);
-			add(dataPanel);
+			topInfoPanel.add(dataPanel);
 		}
 
 		initListener();
@@ -150,10 +160,11 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 		setTable(type, data, header, Progress);
 	}
 
-	private TableView setTable(String type, Object[][] data, String[] header, int tableType) {
+	private void setTable(String type, Object[][] data, String[] header, int tableType) {
 		type = type.replaceAll("场均", "").replaceAll("命中率", "");
 		if (!tableMap[tableType].containsKey(type)) {
 			TableView table = new TableView(data, header);
+			table.getTable().setRowSorter(null);
 			table.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));
 			MouseListener l = new MouseAdapter() {
 				@Override
@@ -172,7 +183,7 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 			SwitchButton btn = new SwitchButton(type);
 			btn.setName(type);
 			btn.setFont(UIConfig.SubTitleFont);
-			btn.setBackground(new Color(255, 255, 255, 64));
+			btn.setBackground(UIConfig.ThemeColor);
 			btn.setForeground(Color.WHITE);
 
 			tabPanel[tableType].add(btn);
@@ -182,7 +193,5 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 		} else {
 			tableMap[tableType].get(type).setTable(data);
 		}
-
-		return null;
 	}
 }

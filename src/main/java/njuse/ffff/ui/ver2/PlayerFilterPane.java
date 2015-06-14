@@ -39,12 +39,12 @@ public class PlayerFilterPane extends PanelEx implements PlayerFilterViewService
 	private SwitchButtonGroup[] groups;
 
 	public PlayerFilterPane() {
-		super(new BorderLayout(0, 20));
+		super(new BorderLayout());
 		setOpaque(false);
-		setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
 
 		groups = new SwitchButtonGroup[3];
 		resTable = new TableView(new Object[0][], tableHeader);
+		resTable.getTable().setRowSorter(null);
 		resTable.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));
 		resTable.getTable().addMouseListener(new MouseAdapter() {
 			@Override
@@ -58,7 +58,9 @@ public class PlayerFilterPane extends PanelEx implements PlayerFilterViewService
 		});
 
 		PanelEx filterPanel = new PanelEx(new BorderLayout());
-		filterPanel.setOpaque(false);
+		filterPanel.setBackground(UIConfig.HeadPanelBgColor);
+//		filterPanel.setPreferredSize(new Dimension(960, 210));
+		filterPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
 		ImageIcon checked = new ImageIcon("./img/btn/checked.png");
 		ImageIcon unchecked = new ImageIcon("./img/btn/unchecked.png");
@@ -85,7 +87,7 @@ public class PlayerFilterPane extends PanelEx implements PlayerFilterViewService
 			LabelEx typeLabel = new LabelEx(typeStr[i]);
 			typeLabel.setOpaque(false);
 			typeLabel.setFont(UIConfig.SubTitleFont);
-			typeLabel.setForeground(Color.WHITE);
+			typeLabel.setForeground(Color.BLACK);
 			conditions[i].add(typeLabel);
 
 			String[] optionStr = titleStr[i];
@@ -95,7 +97,7 @@ public class PlayerFilterPane extends PanelEx implements PlayerFilterViewService
 				btn.setActiveIcon(checked);
 				btn.setFont(UIConfig.SubTitleFont);
 				btn.setForeground(Color.WHITE);
-				btn.setBackground(new Color(255, 255, 255, 64));
+				btn.setBackground(UIConfig.ThemeColor);
 				groups[i].addButton(btn);
 				conditions[i].add(btn);
 			}
@@ -111,7 +113,11 @@ public class PlayerFilterPane extends PanelEx implements PlayerFilterViewService
 		filterPanel.add(conditions[2], BorderLayout.SOUTH);
 
 		add(filterPanel, BorderLayout.NORTH);
-		add(resTable);
+		PanelEx tablePanel = new PanelEx(new BorderLayout());
+		tablePanel.setOpaque(false);
+		tablePanel.setBorder(BorderFactory.createEmptyBorder(10, 40, 20, 40));
+		tablePanel.add(resTable);
+		add(tablePanel);
 	}
 
 	private void getResult() {

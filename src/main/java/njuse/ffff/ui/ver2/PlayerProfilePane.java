@@ -31,7 +31,7 @@ public class PlayerProfilePane extends PanelEx implements PlayerProfileService {
 
 	public PlayerProfilePane() {
 		super(new BorderLayout(10, 10));
-		setBackground(Color.LIGHT_GRAY);
+		setBackground(UIConfig.HeadPanelBgColor);
 		setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
 
 		portrait = new LabelEx();

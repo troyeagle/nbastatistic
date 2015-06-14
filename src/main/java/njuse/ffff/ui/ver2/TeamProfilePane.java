@@ -27,7 +27,7 @@ public class TeamProfilePane extends PanelEx implements TeamProfileService {
 
 	public TeamProfilePane() {
 		super(new BorderLayout(10, 10));
-		setBackground(Color.LIGHT_GRAY);
+		setBackground(UIConfig.HeadPanelBgColor);
 		setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
 
 		teamIcon = new LabelEx();

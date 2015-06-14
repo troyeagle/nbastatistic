@@ -3,17 +3,13 @@ package njuse.ffff.ui.ver2;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Cursor;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.Timer;
-import javax.swing.table.DefaultTableCellRenderer;
 
 import njuse.ffff.presenter.teamController.TeamInfoController;
 import njuse.ffff.ui.component.ButtonEx;
@@ -39,7 +35,6 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 	private static final String[] advHeader = { "赛季", "进攻回合", "进攻效率", "防守效率",
 			"进攻篮板效率", "防守篮板效率", "抢断效率", "助攻效率"
 	};
-	private static final String[] gameHeader = { "比赛日期", "比赛对阵" };
 
 	private String name;
 
@@ -49,11 +44,14 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 	private TeamProfilePane profilePane;
 
 	private PanelEx iconPanel;
-	//	private TableView playerTable;
 	private TableView avgTable;
 	private TableView totalTable;
 	private TableView advTable;
-	private TableView gamesTable;
+	private GameLogPanel gamesTable;
+
+	private SwitchButton regularBtn;
+	private SwitchButton playoffBtn;
+	private SwitchButtonGroup group;
 
 	public TeamDetailPane() {
 		super(new BorderLayout());
@@ -66,58 +64,99 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 		tabBar.setAlignment(TabBar.CENTER);
 		tabBar.setOpaque(true);
 		tabBar.setBackground(UIConfig.TitleBgColor);
-		tabBar.addSwitchListener(e ->
-				((CardLayout) viewPanel.getLayout()).show(viewPanel,
-						tabBar.getActiveTabTitle())
-				);
+		tabBar.addSwitchListener(e -> {
+			((CardLayout) viewPanel.getLayout()).show(viewPanel,
+					tabBar.getActiveTabTitle());
+			boolean isVisible = tabBar.getActiveTabIndex() == 3;
+			regularBtn.setVisible(isVisible);
+			playoffBtn.setVisible(isVisible);
+		});
+
+		regularBtn = new SwitchButton("常规赛");
+		regularBtn.setBackground(UIConfig.ThemeColor);
+		regularBtn.setForeground(Color.WHITE);
+		regularBtn.setFont(UIConfig.SubTitleFont);
+		playoffBtn = new SwitchButton("季后赛");
+		playoffBtn.setBackground(UIConfig.ThemeColor);
+		playoffBtn.setForeground(Color.WHITE);
+		playoffBtn.setFont(UIConfig.SubTitleFont);
+
+		group = new SwitchButtonGroup();
+		group.addButton(regularBtn);
+		group.addButton(playoffBtn);
+		group.switchTo(0);
+		group.addSwitchListener(e -> {
+			// TODO
+		});
+
+		PanelEx buttonPanel = new PanelEx(new FlowLayout(FlowLayout.LEFT, 10, 5));
+		buttonPanel.setOpaque(false);
+		buttonPanel.add(regularBtn);
+		buttonPanel.add(playoffBtn);
 
 		viewPanel = new PanelEx(new CardLayout());
 		viewPanel.setOpaque(false);
-		viewPanel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
+
+		PanelEx showPanel = new PanelEx(new BorderLayout());
+		showPanel.setOpaque(false);
+		showPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 40, 40));
+		showPanel.add(buttonPanel, BorderLayout.NORTH);
+		showPanel.add(viewPanel);
 
 		PanelEx tabPanel = new PanelEx(new BorderLayout());
 		tabPanel.setOpaque(false);
 		tabPanel.add(tabBar, BorderLayout.NORTH);
-		tabPanel.add(viewPanel);
+		tabPanel.add(showPanel);
 		add(tabPanel);
+
+		iconPanel = new PanelEx(new BorderLayout());
+		iconPanel.setBackground(new Color(0, 0, 0, 32));
+		tabBar.addTab("球员一览");
+		viewPanel.add("球员一览", iconPanel);
+
+		avgTable = new TableView(null, avgHeader);
+		tabBar.addTab("平均数据");
+		viewPanel.add("平均数据", avgTable);
+
+		totalTable = new TableView(null, totalHeader);
+		tabBar.addTab("总数据");
+		viewPanel.add("总数据", totalTable);
+
+		advTable = new TableView(null, advHeader);
+		tabBar.addTab("进阶数据");
+		viewPanel.add("进阶数据", advTable);
+
+		gamesTable = new GameLogPanel();
+		tabBar.addTab("比赛数据");
+		viewPanel.add("比赛数据", gamesTable);
+
+		gamesTable.getSeasonList().addItemListener(e -> {
+			TeamInfoController.getInstance().setTeamGameLog(this,
+					gamesTable.getSelectedSeason(), name);
+		});
 	}
 
 	public void setTeam(String teamName) {
-		Timer t = new Timer(0, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				boolean isChanged = name == null || !teamName.equals(name);
-				name = teamName;
+		boolean isChanged = name == null || !teamName.equals(name);
+		name = teamName;
 
-				TeamDetailPane pane = TeamDetailPane.this;
-				profilePane.setTeam(teamName);
-				TeamInfoController tic = TeamInfoController.getInstance();
-				tic.setPlayerForTeam(pane, teamName);
-				tic.setTeamAvgData(pane, teamName);
-				tic.setTeamTotalData(pane, teamName);
-				tic.setTeamAdvancedlData(pane, teamName);
-				tic.setTeamGameLog(pane, teamName);
+		profilePane.setTeam(teamName);
+		TeamInfoController tic = TeamInfoController.getInstance();
+		tic.setPlayerForTeam(this, teamName);
+		tic.setTeamAvgData(this, teamName);
+		tic.setTeamTotalData(this, teamName);
+		tic.setTeamAdvancedlData(this, teamName); // TODO delete
 
-				if (isChanged) {
-					tabBar.switchTo(0);
-				}
-			}
-		});
-		t.setRepeats(false);
-		t.start();
+		tic.setTeamGameLog(this, null, name);
+
+		if (isChanged) {
+			tabBar.switchTo(0);
+		}
 	}
 
 	@Override
 	public void setPlayers(Object[][] data) {
-
-		if (iconPanel != null) {
-			iconPanel.removeAll();
-		} else {
-			iconPanel = new PanelEx(new BorderLayout());
-			iconPanel.setBackground(new Color(255, 255, 255, 32));
-			tabBar.addTab("球员一览");
-			viewPanel.add("球员一览", iconPanel);
-		}
+		iconPanel.removeAll();
 
 		PanelEx pagePanel = new PanelEx(new CardLayout());
 		pagePanel.setOpaque(false);
@@ -146,8 +185,7 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 					ButtonEx player = new ButtonEx(playersName[index], portrait);
 					player.setName(playersName[index]);
 					player.setOpaque(false);
-					player.setBackground(new Color(255, 255, 255, 64));
-					player.setForeground(Color.WHITE);
+					player.setForeground(Color.BLACK);
 					player.setFont(UIConfig.SmallFont);
 					player.setVerticalTextPosition(ButtonEx.BOTTOM);
 					player.setHorizontalTextPosition(ButtonEx.CENTER);
@@ -164,28 +202,6 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 					iconPage.add(p);
 				}
 			}
-
-			if (pageCount > 1) {
-				PanelEx switchPanel = new PanelEx();
-				switchPanel.setOpaque(false);
-				iconPanel.add(switchPanel, BorderLayout.SOUTH);
-
-				SwitchButtonGroup group = new SwitchButtonGroup();
-				group.addSwitchListener(e ->
-						((CardLayout) pagePanel.getLayout()).show(pagePanel, e.getSource()
-								.getName())
-						);
-				for (int i = 0; i < pageCount; i++) {
-					SwitchButton pageIndex = new SwitchButton(String.valueOf(i + 1));
-					pageIndex.setName(String.valueOf(i + 1));
-					pageIndex.setBackground(new Color(255, 255, 255, 64));
-					pageIndex.setForeground(Color.WHITE);
-					pageIndex.setFont(UIConfig.SmallFont);
-					switchPanel.add(pageIndex);
-					group.addButton(pageIndex);
-				}
-				group.switchTo(0);
-			}
 		}
 
 		if (pageCount > 1) {
@@ -201,7 +217,7 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 			for (int i = 0; i < pageCount; i++) {
 				SwitchButton pageIndex = new SwitchButton(String.valueOf(i + 1));
 				pageIndex.setName(String.valueOf(i + 1));
-				pageIndex.setBackground(new Color(255, 255, 255, 64));
+				pageIndex.setBackground(UIConfig.ThemeColor);
 				pageIndex.setForeground(Color.WHITE);
 				pageIndex.setFont(UIConfig.SmallFont);
 				switchPanel.add(pageIndex);
@@ -213,66 +229,68 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 
 	@Override
 	public void setAvgDataTable(Object[][] data) {
-		if (avgTable == null) {
-			avgTable = new TableView(data, avgHeader);
-			tabBar.addTab("平均数据");
-			viewPanel.add("平均数据", avgTable);
-			if (tabBar.getActiveTabIndex() == -1) {
-				tabBar.switchTo(0);
-			}
-		} else {
-			avgTable.setTable(data);
-		}
+		data = removeEmptyData(data);
+		avgTable.setTable(data);
 	}
 
 	@Override
 	public void setTotalDataTable(Object[][] data) {
-		if (totalTable == null) {
-			totalTable = new TableView(data, totalHeader);
-			tabBar.addTab("总数据");
-			viewPanel.add("总数据", totalTable);
-		} else {
-			totalTable.setTable(data);
-		}
+		data = removeEmptyData(data);
+		totalTable.setTable(data);
 	}
 
 	@Override
 	public void setAdvancedDataTable(Object[][] data) {
-		if (advTable == null) {
-			advTable = new TableView(data, advHeader);
-			tabBar.addTab("进阶数据");
-			viewPanel.add("进阶数据", advTable);
-		} else {
-			advTable.setTable(data);
-		}
+		data = removeEmptyData(data);
+		advTable.setTable(data);
 	}
 
 	@Override
 	public void setGameLog(Object[][] data, int[][] dirty) {
-		if (gamesTable == null) {
-			gamesTable = new TableView(data, gameHeader);
-			gamesTable.getTable().setCursor(new Cursor(Cursor.HAND_CURSOR));
-			gamesTable.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					int[] point = gamesTable.getSelectedCellLocation();
-					if (point[0] >= 0) {
-						Object date = gamesTable.getValueAt(point[0], 0);
-						String name = gamesTable.getValueAt(point[0], 1).toString()
-								.split("VS")[0].trim();
-						UIEventManager
-								.notify(UIEventType.SWITCH, "比赛详情:" + date + ":" + name);
+		setGameLog(data);
+		System.out.println("setted");
+	}
+
+	private Object[][] removeEmptyData(Object[][] data) {
+		List<Object[]> resList = new ArrayList<Object[]>();
+		int rowLen = data.length;
+		for (int i = 0; i < rowLen; i++) {
+			boolean isEmpty = false;
+			if (data[i] != null) {
+				int columnLen = data[i].length;
+				boolean allZero = true;
+				for (int j = 0; j < columnLen; j++) {
+					Object cell = data[i][j];
+					if (cell == null || cell.equals("")) {
+						isEmpty = true;
+						break;
+					}
+					if (j >= 1 && !cell.equals(0) && !cell.equals(0.0)
+							&& !cell.equals("0:00") && !cell.equals("0%")) {
+						allZero = false;
+						break;
 					}
 				}
-			});
-
-			tabBar.addTab("比赛数据");
-			viewPanel.add("比赛数据", gamesTable);
-			((DefaultTableCellRenderer) gamesTable.getTable()
-					.getDefaultRenderer(Object.class))
-					.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
-		} else {
-			gamesTable.setTable(data);
+				if (!isEmpty && !allZero) {
+					resList.add(data[i]);
+				}
+			}
 		}
+		return resList.toArray(new Object[0][0]);
+	}
+
+	@Override
+	public void setGameSeasons(String[] seasons) {
+		gamesTable.setSeasons(seasons);
+	}
+
+	@Override
+	public String getSelectedSeason() {
+		return gamesTable.getSelectedSeason();
+	}
+
+	@Override
+	public void setGameLog(Object[][] data) {
+		gamesTable.setData(data);
 	}
 }

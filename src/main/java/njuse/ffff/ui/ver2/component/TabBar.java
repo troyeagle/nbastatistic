@@ -40,9 +40,7 @@ public class TabBar extends PanelEx {
 	}
 
 	public synchronized String getActiveTabTitle() {
-		if (activeBtn == null)
-			return null;
-		return activeBtn.getName();
+		return activeBtn == null ? null : activeBtn.getName();
 	}
 
 	public synchronized void switchTo(int index) {
@@ -77,6 +75,10 @@ public class TabBar extends PanelEx {
 		if (containsTab(title))
 			return;
 
+		int count = group.getButtonsCount();
+		if (index > count)
+			index = count;
+		
 		TabLabelButton tab = new TabLabelButton(title);
 		tab.setName(title);
 		tab.setBackground(activeColor);

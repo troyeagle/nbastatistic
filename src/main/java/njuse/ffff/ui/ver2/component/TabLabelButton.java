@@ -63,8 +63,17 @@ public class TabLabelButton extends SwitchButton {
 				lineW = lineWidth;
 				break;
 			}
-			g2.setColor(getForeground());
+			g2.setColor(lineColor != null ? lineColor : getForeground());
 			g2.fillRect(lineX, lineY, lineW, lineH);
+		}
+	}
+
+	private Color lineColor;
+
+	public void setLineColor(Color c) {
+		if (lineColor != c) {
+			lineColor = c;
+			repaint();
 		}
 	}
 }

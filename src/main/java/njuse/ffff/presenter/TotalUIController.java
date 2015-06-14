@@ -25,7 +25,6 @@ import njuse.ffff.presenterService.playerService.PlayerFilterService;
 import njuse.ffff.presenterService.playerService.PlayerInfoService;
 import njuse.ffff.presenterService.teamService.TeamCompareService;
 import njuse.ffff.presenterService.teamService.TeamInfoService;
-import njuse.ffff.ui.ver1.MainFrame;
 import njuse.ffff.uiservice.MatchViewService;
 import njuse.ffff.uiservice.MatchesLogOverviewService;
 import njuse.ffff.uiservice.PlayerDataService;
@@ -42,7 +41,6 @@ import njuse.ffff.util.TeamNameAndAbbr;
 
 //球员在一场比赛里的信息和球队在一场比赛里的信息存储在一个表里
 public class TotalUIController implements TotalControlService{
-	private MainFrame frame = null;
 	private ArrayList<JPanel> panelList = new ArrayList<JPanel>();//存储点击界面先后顺序的列表
 
 	private DataReaderService dataService;
@@ -128,10 +126,10 @@ public class TotalUIController implements TotalControlService{
 	 * 新建主界面框架
 	 */
 	public void createFrame() {
-		if (frame == null) {
-			frame = new MainFrame();
-		}
-		frame.setVisible(true);
+//		if (frame == null) {
+//			frame = new MainFrame();
+//		}
+//		frame.setVisible(true);
 	}
 
 	/**
@@ -153,7 +151,7 @@ public class TotalUIController implements TotalControlService{
 	 * @param panel
 	 */
 	public void switchToPanel(JPanel panel) {
-		frame.switchToPanel(panel);
+//		frame.switchToPanel(panel);
 	}
 	
 	/**

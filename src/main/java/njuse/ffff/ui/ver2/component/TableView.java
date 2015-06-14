@@ -195,12 +195,8 @@ public class TableView extends PanelEx {
 	public void setHeaderBgColor(Color c) {
 		table.getTableHeader().setBackground(c);
 		PanelEx corner = new PanelEx();
-		PanelEx corner2 = new PanelEx(new BorderLayout());
 		corner.setBackground(c);
-		corner2.setBorder(BorderFactory.createEmptyBorder(1, 0, 1, 0));
-		corner2.setOpaque(false);
-		corner2.add(corner);
-		view.setCorner(JScrollPane.UPPER_RIGHT_CORNER, corner2);
+		view.setCorner(JScrollPane.UPPER_RIGHT_CORNER, corner);
 	}
 
 	public JTable getTable() {

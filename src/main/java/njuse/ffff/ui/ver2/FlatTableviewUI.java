@@ -10,8 +10,8 @@ import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 public class FlatTableviewUI extends TableViewUI {
 
 	public FlatTableviewUI() {
-		rowColor1 = new Color(255, 255, 255, 64);
-		rowColor2 = new Color(255, 255, 255, 128);
+		rowColor1 = Color.LIGHT_GRAY;
+		rowColor2 = Color.GRAY.brighter();
 		
 		headerFont = UIConfig.SmallFont;
 		headerFgColor = UIConfig.TableHeaderFgColor;
