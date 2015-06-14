@@ -71,42 +71,77 @@ public class DataReader implements NewDataReaderService{
 		attribute+="%";
 		
 		filter.put("attribute", attribute);
-		return null;
+		Map<String,Object> result = mapper.selectOne("playermatchinfo", null, filter);
+		PlayerInMatchFull p = new PlayerInMatchFull(result);
+		return p;
 	}
 
 	@Override
 	public List<PlayerInMatchFull> getPlayerStats(String idPlayer, String season) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String,Object> filter = new HashMap<String,Object>();
+		filter.put("season", season);
+		filter.put("idplayerinfo", idPlayer);
+
+		List<Map<String,Object>> result = mapper.selectList("playermatchinfo", null, filter,null);
+		List<PlayerInMatchFull> players = new ArrayList<PlayerInMatchFull>();
+		for(Map<String,Object> m:result){
+			PlayerInMatchFull p = new PlayerInMatchFull(m);
+			players.add(p);
+		}
+		return players;
 	}
 
 	@Override
 	public PlayerInfo getPlayerInfo(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String,Object> filter = new HashMap<String,Object>();
+		filter.put("plName", name);
+
+		Map<String,Object> result = mapper.selectOne("playerinfo", null, filter);
+		PlayerInfo p = new PlayerInfo(result);
+		return p;
 	}
 
 	@Override
 	public List<PlayerInfo> getPlayerInfoAll(String attribute) {
-		// TODO Auto-generated method stub
-		return null;
+		//Map<String,Object> filter = new HashMap<String,Object>();
+		List<Map<String,Object>> result = mapper.selectListFree("playerinfo", null, "experience >0");
+		List<PlayerInfo> players = new ArrayList<PlayerInfo>();
+		for(Map<String,Object> m:result){
+			PlayerInfo p = new PlayerInfo(m);
+			players.add(p);
+		}
+		return players;
 	}
 
 	@Override
-	public PlayerShooting getPlayerShooting(String name, String season) {
-		// TODO Auto-generated method stub
-		return null;
+	public PlayerShooting getPlayerShooting(String playerId, String season) {
+		Map<String,Object> filter = new HashMap<String,Object>();
+		filter.put("idPlayerInfo", playerId);
+		filter.put("season", season);
+		Map<String,Object> result = mapper.selectOne("playershooting", null, filter);
+		PlayerShooting ps = new PlayerShooting(result);
+		
+		return ps;
 	}
 
 	@Override
 	public List<TeamAverage> getTeamAverages(String season) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String,Object> filter = new HashMap<String,Object>();
+		filter.put("season", season);
+		List<Map<String,Object>> result = mapper.selectList("teamaverage", null, filter, null);
+		List<TeamAverage> teams = new ArrayList<TeamAverage>();
+		for(Map<String,Object> m:result){
+			teams.add(new TeamAverage(m));
+		}
+		return teams;
 	}
 
 	@Override
 	public TeamAverage getTeamAverageSingle(String name, String season) {
-		// TODO Auto-generated method stub
+		Map<String,Object> filter = new HashMap<String,Object>();
+		filter.put("team", name);
+		filter.put("season", season);
+		Map<String,Object> result = mapper.selectOne("teamaverage", null, filter);
 		return null;
 	}
 

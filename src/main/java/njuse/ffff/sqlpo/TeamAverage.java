@@ -38,6 +38,40 @@ public class TeamAverage {
 
 	String attribute;
 
+	public TeamAverage(Map<String, Object> map) {
+		season = (String) map.get("season");
+		league = (String) map.get("league");
+		team = (String) map.get("team");
+		win = (int) map.get("win");
+		lose = (int) map.get("lose");
+		finish = (int) map.get("finish");
+		aveAge = (double) map.get("aveAge");
+		aveHeight = (String) map.get("aveHeight");
+		aveWeight = (double) map.get("aveWeight");
+		games = (int) map.get("games");
+		minutesPlayed = (double) map.get("minutesPlayed");
+		fieldGoalMade = (double) map.get("fieldGoalMade");
+		fieldGoalAttempted = (double) map.get("fieldGoalAttempted");
+		fieldGoalPercentage = (double) map.get("fieldGoalPercentage");
+		threePointerMade = (double) map.get("threePointerMade");
+		threePointerAttempted = (double) map.get("threePointerAttempted");
+		threePointerPercentage = (double) map.get("threePointerPercentage");
+		freeThrowMade = (double) map.get("freeThrowMade");
+		freeThrowAttempted = (double) map.get("freeThrowAttempted");
+		freeThrowRate = (double) map.get("freeThrowRate");
+		offensiveRebound = (double) map.get("offensiveRebound");
+		defensiveRebound = (double) map.get("defensiveRebound");
+		rebound = (double) map.get("rebound");
+		assist = (double) map.get("assist");
+		steal = (double) map.get("steal");
+		block = (double) map.get("block");
+		turnover = (double) map.get("turnover");
+		foul = (double) map.get("foul");
+		points = (double) map.get("points");
+
+		attribute = (String) map.get("attribute");
+	}
+
 	public TeamAverage(String attribute, ArrayList<String> str) {
 		this.attribute = attribute;
 		Iterator<String> it = str.iterator();
@@ -48,12 +82,12 @@ public class TeamAverage {
 		lose = (int) parseDouble(it.next().trim());
 		finish = (int) parseDouble(it.next().trim());
 		it.next().trim();
-		if(!attribute.contains("opp")){
+		if (!attribute.contains("opp")) {
 			aveAge = parseDouble(it.next().trim());
 			aveHeight = it.next().trim();
 			aveWeight = parseDouble(it.next().trim());
 			it.next().trim();
-		}		
+		}
 		games = (int) parseDouble(it.next().trim());
 		minutesPlayed = parseDouble(it.next().trim());
 		fieldGoalMade = parseDouble(it.next().trim());
@@ -62,7 +96,9 @@ public class TeamAverage {
 		threePointerMade = parseDouble(it.next().trim());
 		threePointerAttempted = parseDouble(it.next().trim());
 		threePointerPercentage = parseDouble(it.next().trim());
-		it.next().trim();it.next().trim();it.next().trim();
+		it.next().trim();
+		it.next().trim();
+		it.next().trim();
 		freeThrowMade = parseDouble(it.next().trim());
 		freeThrowAttempted = parseDouble(it.next().trim());
 		freeThrowRate = parseDouble(it.next().trim());

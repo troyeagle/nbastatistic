@@ -44,6 +44,46 @@ public class PlayerShooting {
 	double heaveAttempts;
 	double heaveMade;
 
+	public PlayerShooting(Map<String, Object> map) {
+		name = (String) map.get("name");
+		idPlayerInfo = (String) map.get("idPlayerInfo");
+
+		attribute = (String) map.get("attribute");
+		season = (String) map.get("season");
+		age = (int) map.get("age");
+		team = (String) map.get("team");
+		league = (String) map.get("league");
+		position = (String) map.get("position");
+		games = (int) map.get("games");
+		minutes = (String) map.get("minutes");
+		fieldGoalPercentage = (double) map.get("fieldGoalPercentage");
+		averageDistance = (double) map.get("averageDistance");
+
+		twoPOfFGA = (double) map.get("twoPOfFGA");
+		twoPOfFGA0_3 = (double) map.get("twoPOfFGA0_3");
+		twoPOfFGA3_10 = (double) map.get("twoPOfFGA3_10");
+		twoPOfFGA10_16 = (double) map.get("twoPOfFGA10_16");
+		twoPOfFGA16plus = (double) map.get("twoPOfFGA16plus");
+		threePOfFGA = (double) map.get("threePOfFGA");
+
+		FGtwoPOfFGA = (double) map.get("FGtwoPOfFGA");
+		FGtwoPOfFGA0_3 = (double) map.get("FGtwoPOfFGA0_3");
+		FGtwoPOfFGA3_10 = (double) map.get("FGtwoPOfFGA3_10");
+		FGtwoPOfFGA10_16 = (double) map.get("FGtwoPOfFGA10_16");
+		FGtwoPOfFGA16plus = (double) map.get("FGtwoPOfFGA16plus");
+		FGthreePOfFGA = (double) map.get("FGthreePOfFGA");
+
+		twoPAssisted = (double) map.get("twoPAssisted");
+		dunks = (double) map.get("dunks");
+		dunkThrowdowns = (double) map.get("dunkThrowdowns");
+
+		threePAssisted = (double) map.get("threePAssisted");
+		FGAthreePFromCorner = (double) map.get("FGAthreePFromCorner");
+		FGthreePFromCorner = (double) map.get("FGthreePFromCorner");
+		heaveAttempts = (double) map.get("heaveAttempts");
+		heaveMade = (double) map.get("heaveMade");
+	}
+
 	public PlayerShooting(String name, String idPlayerInfo) {
 		this.name = name;
 		this.idPlayerInfo = idPlayerInfo;

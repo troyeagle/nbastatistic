@@ -375,4 +375,208 @@ public class PlayerInMatchFull {
 		this.idMatchInfo = idMatchInfo;
 	}
 
+	public String getPosition() {
+		return position;
+	}
+
+	public String getMinute() {
+		return minute;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public String getAttribute() {
+		return attribute;
+	}
+
+	public String getSeason() {
+		return season;
+	}
+
+	public String getAge() {
+		return age;
+	}
+
+	public String getTeam() {
+		return team;
+	}
+
+	public String getLeague() {
+		return league;
+	}
+
+	public int getGamesPlayed() {
+		return gamesPlayed;
+	}
+
+	public double getFieldGoalMade() {
+		return fieldGoalMade;
+	}
+
+	public double getFieldGoalAttempted() {
+		return fieldGoalAttempted;
+	}
+
+	public double getThreePointerMade() {
+		return threePointerMade;
+	}
+
+	public double getThreePointerAttempted() {
+		return threePointerAttempted;
+	}
+
+	public double getFreeThrowMade() {
+		return freeThrowMade;
+	}
+
+	public double getFreeThrowAttempted() {
+		return freeThrowAttempted;
+	}
+
+	public double getOffensiveRebound() {
+		return offensiveRebound;
+	}
+
+	public double getDefensiveRebound() {
+		return defensiveRebound;
+	}
+
+	public double getRebound() {
+		return rebound;
+	}
+
+	public double getAssist() {
+		return assist;
+	}
+
+	public double getSteal() {
+		return steal;
+	}
+
+	public double getBlock() {
+		return block;
+	}
+
+	public double getTurnover() {
+		return turnover;
+	}
+
+	public double getFoul() {
+		return foul;
+	}
+
+	public double getPoints() {
+		return points;
+	}
+
+	public int getFirstOnMatch() {
+		return firstOnMatch;
+	}
+
+	public double getPlayerEfficiencyRate() {
+		return playerEfficiencyRate;
+	}
+
+	public double getFieldGoalPercentage() {
+		return fieldGoalPercentage;
+	}
+
+	public double getThreePointerPercentage() {
+		return threePointerPercentage;
+	}
+
+	public double getFreeThrowRate() {
+		return freeThrowRate;
+	}
+
+	public double getEffFGPercentage() {
+		return effFGPercentage;
+	}
+
+	public double getTrueShootingPercentage() {
+		return trueShootingPercentage;
+	}
+
+	public double getThreePAr() {
+		return threePAr;
+	}
+
+	public double getReboundRatio() {
+		return reboundRatio;
+	}
+
+	public double getOffensiveReboundRatio() {
+		return offensiveReboundRatio;
+	}
+
+	public double getDefensiveReboundRatio() {
+		return defensiveReboundRatio;
+	}
+
+	public double getAssistRatio() {
+		return assistRatio;
+	}
+
+	public double getStealRatio() {
+		return stealRatio;
+	}
+
+	public double getBlockRatio() {
+		return blockRatio;
+	}
+
+	public double getTurnoverRatio() {
+		return turnoverRatio;
+	}
+
+	public double getUsingRatio() {
+		return usingRatio;
+	}
+
+	public double getGmSc() {
+		return GmSc;
+	}
+
+	public double getOffensiveRating() {
+		return offensiveRating;
+	}
+
+	public double getDefensiveRating() {
+		return defensiveRating;
+	}
+
+	public double getOws() {
+		return ows;
+	}
+
+	public double getDws() {
+		return dws;
+	}
+
+	public double getWs() {
+		return ws;
+	}
+
+	public double getWsper48() {
+		return wsper48;
+	}
+
+	public double getObpm() {
+		return obpm;
+	}
+
+	public double getDbpm() {
+		return dbpm;
+	}
+
+	public double getBpm() {
+		return bpm;
+	}
+
+	public double getVorp() {
+		return vorp;
+	}
+
 }

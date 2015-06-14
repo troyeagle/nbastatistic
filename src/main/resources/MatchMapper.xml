@@ -72,12 +72,30 @@
         <where>
             <if test="filter != null and !filter.isEmpty()">
                 <foreach item="value" index="key" collection="filter" open="" separator="AND" close="">
-                    ${key} like #{value}
+                    ${key} like #{value}<!-- like is used -->>
                 </foreach>
             </if>
             <if test="vague != null">
                 AND ${vague}
             </if>
+        </where>
+    </select>
+    
+        <select id="selectListFree" resultType="map">
+        select
+        <choose>
+            <when test="target != null">
+                <foreach item="item" index="index" collection="target" open="" separator="," close="">
+                    ${item}
+                </foreach>
+            </when>
+            <otherwise>
+                *
+            </otherwise>
+        </choose>
+        from ${tableName}
+        <where>
+            ${filter}
         </where>
     </select>
 </mapper>

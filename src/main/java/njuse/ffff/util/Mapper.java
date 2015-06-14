@@ -33,7 +33,8 @@ public interface Mapper {
     public List<Map<String, Object>> selectList(@Param("tableName") String tableName, @Param
             ("target") List<String>
             target, @Param("filter") Map<String, ?> filter, @Param("vague") String vague);
-
+    public List<Map<String, Object>> selectListFree(@Param("tableName") String tableName,@Param("target") List<String> target,
+    		@Param("filter") String filter);
     /**
      * @param tableName
      * @param target
@@ -42,6 +43,7 @@ public interface Mapper {
      * @param filter
      * @return
      */
+    
     public List<Map<String, Object>> selectRangeList(@Param("tableName") String tableName, @Param
             ("target")
     List<String> target, @Param("rangeKey") String rangeKey, @Param("range") Collection<?> range,
