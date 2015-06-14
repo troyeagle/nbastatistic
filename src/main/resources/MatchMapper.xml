@@ -55,4 +55,29 @@
         </foreach>
         limit 1
     </select>
+    
+    <select id="selectList" resultType="map">
+        select
+        <choose>
+            <when test="target != null">
+                <foreach item="item" index="index" collection="target" open="" separator="," close="">
+                    ${item}
+                </foreach>
+            </when>
+            <otherwise>
+                *
+            </otherwise>
+        </choose>
+        from ${tableName}
+        <where>
+            <if test="filter != null and !filter.isEmpty()">
+                <foreach item="value" index="key" collection="filter" open="" separator="AND" close="">
+                    ${key} like #{value}
+                </foreach>
+            </if>
+            <if test="vague != null">
+                AND ${vague}
+            </if>
+        </where>
+    </select>
 </mapper>

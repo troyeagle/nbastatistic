@@ -7,11 +7,13 @@ import njuse.ffff.sqlpo.PlayerInMatchFull;
 import njuse.ffff.sqlpo.PlayerInfo;
 import njuse.ffff.sqlpo.PlayerShooting;
 import njuse.ffff.sqlpo.TeamAverage;
+import njuse.ffff.sqlpo.TeamInfo;
 
 public interface NewDataReaderService {
 	//根据球员获得他参加的所有赛季
 	List<String> selectSeasonsByPlayer(String playerId);
-	//获得某赛季所有球员数据,其中season可包含po，attribute可包含total,average,per36,advance
+	//获得某赛季所有球员数据,其中season可包含po，attribute可包含totals,per_game,per_minute,per_poss,
+	//advanced直接附赠。
 	List<PlayerInMatchFull> getPlayersStatsAll(String season,String attribute);
 	//获得某赛季某个球员的数据。
 	PlayerInMatchFull getPlayerStatsSingle(String idPlayer,String season,String attribute);
@@ -30,7 +32,7 @@ public interface NewDataReaderService {
 	//获得某球队某赛季比赛信息,对于PlayerInMatchFull不要感到奇怪。我的锅。
 	PlayerInMatchFull getTeamStatSingle(String idTeam,Date date);
 	//获得指定时间段内的比赛,都含
-	PlayerInMatchFull getMatchInPeriod(Date start,Date end);
+	List<PlayerInMatchFull> getMatchInPeriod(Date start,Date end);
 	
 	//condition 改成String.一定要精准，直接会把它作为条件去数据库搜索
 	//不要搜索高阶项。
@@ -46,4 +48,7 @@ public interface NewDataReaderService {
 	//获得按某一条件的提升率筛选出来的最近5场进步最快的5名球员
 	public List<PlayerInMatchFull> getImprovePlayer(String season,String condition);
 	
+	public List<TeamInfo> getTeamInfoAll();
+	
+	public TeamInfo getTeamInfo(String name);
 }
