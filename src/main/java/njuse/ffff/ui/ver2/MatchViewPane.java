@@ -69,6 +69,7 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 		dataView.setOpaque(false);
 		dataView.add(panelData);
 		JScrollPane dataPane = new JScrollPane();
+		dataPane.getVerticalScrollBar().setUnitIncrement(20);
 		dataPane.setOpaque(false);
 		dataPane.setBorder(BorderFactory.createEmptyBorder());
 		dataPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -91,7 +92,7 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 
 			LabelEx name = new LabelEx();
 			labelName[i] = name;
-			name.setBounds(250 + i * 620, 40, 160, 40);
+			name.setBounds(250 + i * 580, 40, 200, 40);
 			name.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			name.setFont(UIConfig.TitleFont);
 			name.setForeground(Color.BLACK);
@@ -109,7 +110,7 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 			labelType.setForeground(Color.BLACK);
 
 			labelFinal[i] = new LabelEx();
-			labelFinal[i].setBounds(500 + 220 * i, 40, 50, 40);
+			labelFinal[i].setBounds(480 + 260 * i, 40, 50, 40);
 			labelFinal[i].setHorizontalAlignment(align);
 			labelFinal[i].setFont(UIConfig.TitleFont);
 			labelFinal[i].setForeground(Color.BLACK);

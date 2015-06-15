@@ -16,15 +16,18 @@ import org.apache.http.impl.client.HttpClients;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 /**
  * LiveTest说明
  * 1.新建一个对象
  * 2.设置里面的mid为测试的比赛日期，eid可以不用管
  * 3.调用AnalyseResauto和AnalyseSmatchData
  * 4.一直不断地调用。已通过间隔0.3秒静态测试。未通过动态测试
- * 5.关于返回的类是什么意思。。请用Chrome打开http://sports.sina.com.cn/nba/live.html?id=2015060905
- * 	然后审查元素，过滤找到名字中带有match和autocast的包，用下面的Preview自己看。
- * 	需要注意的是这边是手动解封装，有一些层次结构可能与原来的JSON略有不同
+ * 5.关于返回的类是什么意思。。请用Chrome打开http://sports.sina.com.cn/nba/live.html?id=
+ * 2015060905
+ * 然后审查元素，过滤找到名字中带有match和autocast的包，用下面的Preview自己看。
+ * 需要注意的是这边是手动解封装，有一些层次结构可能与原来的JSON略有不同
+ * 
  * @author Mebleyev.G.Longinus
  *
  */
@@ -81,7 +84,9 @@ public class LiveTest {
 			String line;
 			line = br.readLine();
 			System.out.println(line);
-			line = line.substring(line.indexOf("{"), line.length() - 1);
+			try {
+				line = line.substring(line.indexOf("{"), line.length() - 1);
+			} catch (Exception e) {}
 			JSONObject jo = new JSONObject(line);
 			return jo;
 
@@ -100,30 +105,32 @@ public class LiveTest {
 		return null;
 
 	}
+
 	/**
 	 * 这个方法提供所有实时信息
 	 * 估计是一直刷新，而不是增量更新
+	 * 
 	 * @return
 	 */
 	public ArrayList<PlayByPlayMessages> AnalyseReSauto() {
 		JSONObject jo = getRequest(getReSautoCast);
-		
+
 		try {
 			JSONObject msgs = jo.getJSONObject("result").getJSONObject("data")
 					.getJSONObject("pbp_msgs");
-			int maxnum= jo.getJSONObject("result").getJSONObject("data")
+			int maxnum = jo.getJSONObject("result").getJSONObject("data")
 					.getInt("last_eid");
 			ArrayList<PlayByPlayMessages> allmessage = new ArrayList<PlayByPlayMessages>();
-			for(int i= 0;i<=maxnum;i++){
+			for (int i = 0; i <= maxnum; i++) {
 				JSONObject msg;
-				try{
+				try {
 					msg = msgs.getJSONObject(String.valueOf(i));
-				}catch(JSONException j){
+				} catch (JSONException j) {
 					continue;
 				}
-				PlayByPlayMessages p = new PlayByPlayMessages(msg) ;
+				PlayByPlayMessages p = new PlayByPlayMessages(msg);
 				allmessage.add(p);
-				
+
 			}
 			return allmessage;
 		} catch (JSONException e) {
@@ -132,11 +139,13 @@ public class LiveTest {
 		}
 		return null;
 	}
+
 	/**
 	 * 这个方法提供两支队伍的数据，其中包括了球员数据
+	 * 
 	 * @return
 	 */
-	public ArrayList<TeamLiveInfo> AnalyseSmatchData(){
+	public ArrayList<TeamLiveInfo> AnalyseSmatchData() {
 		JSONObject jo = getRequest(getReSmatchData);
 		try {
 			JSONObject data = jo.getJSONObject("result").getJSONObject("data");
@@ -155,23 +164,33 @@ public class LiveTest {
 		return null;
 	}
 
-	public void AnalyseSmatchInfo(){
+	public ArrayList<String[]> AnalyseSmatchInfo() {
 		JSONObject jo = getRequest(getSmatchInfo);
 		JSONObject score;
 		try {
 			score = jo.getJSONObject("result").getJSONObject("data").getJSONObject("score");
 			String scorehost = score.getJSONObject("host").getString("scores");
-			String[] a = scorehost.substring(2, scorehost.length()-2).split("\",\"");
-			
+			String[] a = scorehost.substring(2, scorehost.length() - 2).split("\",\"");
+			String scoreguest = score.getJSONObject("guest").getString("scores");
+			String[] b = scoreguest.substring(2, scoreguest.length() - 2).split("\",\"");
+			String[] remain = { score.getJSONObject("remain").getString("status"),
+					String.valueOf(score.getJSONObject("remain").getInt("period")) };
+			ArrayList<String[]> ret = new ArrayList<String[]>();
+			ret.add(a);
+			ret.add(b);
+			ret.add(remain);
 			System.out.println();
+			return ret;
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
 	}
+
 	public static void main(String[] args) {
-		
-		while(true){
+
+		while (true) {
 			LiveTest l = new LiveTest();
 			//l.AnalyseReSauto();
 			//l.AnalyseSmatchData();
@@ -183,7 +202,7 @@ public class LiveTest {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
 
 }
