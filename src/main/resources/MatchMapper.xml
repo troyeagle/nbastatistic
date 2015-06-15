@@ -76,7 +76,7 @@
                 </foreach>
             </if>
             <if test="vague != null">
-                AND ${vague}
+                ${vague}
             </if>
         </where>
     </select>

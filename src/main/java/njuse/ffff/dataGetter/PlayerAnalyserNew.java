@@ -342,11 +342,12 @@ public class PlayerAnalyserNew {
 		Mapper m = sqlSession.getMapper(Mapper.class);
 		try {
 			m.insert("playerinfo", inputMap);
+			sqlSession.commit();
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 		}
 
-		sqlSession.commit();
+		
 
 		sqlSession.close();
 	}

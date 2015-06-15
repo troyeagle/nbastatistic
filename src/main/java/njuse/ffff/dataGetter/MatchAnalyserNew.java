@@ -160,7 +160,7 @@ public class MatchAnalyserNew {
 		line = br.readLine();
 		while (line.startsWith("<tr  class=")) {
 			line = br.readLine();
-			get = matchPattern(line, ">(.*)</a></td>");
+			get = line.replaceAll("<(.+?)>", "").trim();
 			PlayerInMatchFull player = new PlayerInMatchFull(get.trim(), null);
 			String basic = "";
 			for (int i = 0; i < 19; i++) {
@@ -190,7 +190,7 @@ public class MatchAnalyserNew {
 
 			while (line.startsWith("<tr  class=")) {
 				line = br.readLine();
-				get = matchPattern(line, ">(.*)</a></td>");
+				get = line.replaceAll("<(.+?)>", "").trim();
 				PlayerInMatchFull player = null;
 				try {
 					player = new PlayerInMatchFull(get.trim(), null);
@@ -259,7 +259,7 @@ public class MatchAnalyserNew {
 
 		while (line.startsWith("<tr  class=")) {
 			line = br.readLine();
-			get = matchPattern(line, ">(.*)</a></td>");
+			get = line.replaceAll("<(.+?)>", "").trim();
 			PlayerInMatchFull player = null;
 			for (PlayerInMatchFull p : playerInTeamA) {
 				if (p.getName().equals(get.trim())) {
@@ -414,7 +414,7 @@ public class MatchAnalyserNew {
 	}
 
 	public void insertMatch() throws Exception {
-
+		DatabaseUtility.init();
 		HashMap<String, Object> inputMap = new HashMap<String, Object>();
 		inputMap.put("idmatchinfo", name);
 		inputMap.put("season", season);
@@ -427,9 +427,13 @@ public class MatchAnalyserNew {
 		inputMap.put("fourFactorsA", fourFactorsA.toString());
 		inputMap.put("fourFactorsB", fourFactorsB.toString());
 		SqlSession sqlSession = DatabaseUtility.getSqlSession();
-
-		sqlSession.insert("insertAMatch", inputMap);
-		sqlSession.commit();
+		try{
+			sqlSession.insert("insertAMatch", inputMap);
+			sqlSession.commit();
+		}catch(Exception e){
+			
+		}
+		
 		// sqlSession.close();
 		playerInTeamA.addAll(playerInTeamB);
 		for (PlayerInMatchFull pf : playerInTeamA) {
@@ -440,8 +444,6 @@ public class MatchAnalyserNew {
 			
 			Map<String, Object> selector = new HashMap<String, Object>();
 			selector.put("plName", pf.getName());
-			selector.put("target", null);
-			selector.put("tableName", "playerinfo");
 			if(!pf.getName().contains("total")){
 				Map<String, Object> receive = mapper.selectOne("playerinfo", null,
 						selector);
@@ -457,7 +459,7 @@ public class MatchAnalyserNew {
 
 	}
 
-	public static void main() {
+	public static void main(String[] args) {
 		new MatchAnalyserNew()
 				.execute(
 						new HtmlReader()

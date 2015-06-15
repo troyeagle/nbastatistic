@@ -55,8 +55,8 @@ public class PlayerList {
 		getAllPlayer();
 
 		ExecutorService exe = Executors.newCachedThreadPool();
-		PlayerThread[] pthreads = new PlayerThread[10];
-		for (int i = 0; i <10; i++) {
+		PlayerThread[] pthreads = new PlayerThread[50];
+		for (int i = 0; i <50; i++) {
 			pthreads[i] = new PlayerThread(i);
 			exe.execute(pthreads[i]);
 		}
@@ -81,7 +81,7 @@ public class PlayerList {
 	}
 
 	public void getAllPlayer() {
-		for (char m = 'a'; m <= 'b'; m++) {
+		for (char m = 'c'; m <= 'z'; m++) {
 			if (m == 'x') {
 				continue;
 			}
