@@ -42,10 +42,10 @@ public class MatchReaderByYear {
 
 		ArrayList<String> playoffs = matchPattern(sbPlayoff.toString(),
 				"<td align=\"center\" ><a href=\"/boxscores/(.+?).html\">Box Score</a></td>");
-		String str1 = String.valueOf(year % 100);
+		String str1 = String.valueOf((year -1)% 100);
 		if (str1.length() == 1)
 			str1 = "0" + str1;
-		String str2 = String.valueOf((year + 1) % 100);
+		String str2 = String.valueOf((year) % 100);
 		if (str2.length() == 1)
 			str2 = "0" + str2;
 		str1 = str1 + "-" + str2;
@@ -99,7 +99,7 @@ public class MatchReaderByYear {
 		YearThread th[] = new YearThread[70];
 		DatabaseUtility.init();
 		for (int i = 0; i < 30; i++) {
-			th[i] = new YearThread(i + 1984);
+			th[i] = new YearThread(i + 1985);
 			exe.execute(th[i]);
 		}
 

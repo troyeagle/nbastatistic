@@ -388,7 +388,7 @@ public class MatchAnalyserNew {
 			} catch (EOFException e1) {
 				System.out.println("EOFException:" + head);
 				try {
-					Thread.sleep(30000);
+					Thread.sleep(3000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -444,10 +444,15 @@ public class MatchAnalyserNew {
 			
 			Map<String, Object> selector = new HashMap<String, Object>();
 			selector.put("plName", pf.getName());
-			if(!pf.getName().contains("total")){
+			if(!pf.getName().contains("Total")){
 				Map<String, Object> receive = mapper.selectOne("playerinfo", null,
 						selector);
-				pf.setPlayerId((String) receive.get("idPlayerInfo"));
+				try{
+					pf.setPlayerId((String) receive.get("idPlayerInfo"));
+				}catch(Exception e){
+					System.out.println("Player " +pf.getName()+" Not Found");
+				}
+				
 			}
 			
 			playerInMatch = pf.generateBasicMap();
@@ -456,6 +461,7 @@ public class MatchAnalyserNew {
 			mapper.insert("playermatchinfoadv", playerInMatch);
 			sqlSession.commit();
 		}
+		sqlSession.close();
 
 	}
 

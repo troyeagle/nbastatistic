@@ -8,94 +8,109 @@
 		FROM matchinfo
 	</select>
 	<insert id="insertAMatch" parameterType="java.util.HashMap">
-		INSERT INTO 
-		matchinfo(idmatchinfo,season,date,teamA,teamB,host,scoreInSectionA,scoreInSectionB) 
+		INSERT INTO
+		matchinfo(idmatchinfo,season,date,teamA,teamB,host,scoreInSectionA,scoreInSectionB)
 		VALUES(#{idmatchinfo},#{season},#{date},#{teamA},#{teamB},#{host},#{scoreInSectionA},#{scoreInSectionB})
 	</insert>
 	<select id="selectByName" resultType="njuse.ffff.sqlpo.PlayerInfo">
-		Select 
+		Select
+	</select>
+
+	<insert id="insert">
+		insert into ${tableName}
+		<foreach item="value" index="key" collection="data" open="("
+			separator="," close=")">
+			${key}
+		</foreach>
+		values
+		<foreach item="value" index="key" collection="data" open="("
+			separator="," close=")">
+			#{value}
+		</foreach>
+	</insert>
+
+	<insert id="insertWithKey" useGeneratedKeys="true" keyProperty="data.pkey">
+		insert into ${tableName}
+		<foreach item="value" index="key" collection="data" open="("
+			separator="," close=")">
+			${key}
+		</foreach>
+		values
+		<foreach item="value" index="key" collection="data" open="("
+			separator="," close=")">
+			#{value}
+		</foreach>
+	</insert>
+	<select id="selectOne" resultType="map">
+		select
+		<choose>
+			<when test="target != null">
+				<foreach item="item" index="index" collection="target" open=""
+					separator="," close="">
+					${item}
+				</foreach>
+			</when>
+			<otherwise>
+				*
+			</otherwise>
+		</choose>
+		from ${tableName} where
+		<foreach item="value" index="key" collection="filter" open=""
+			separator="and" close="">
+			${key}=#{value}
+		</foreach>
+		limit 1
+	</select>
+
+	<select id="selectList" resultType="map">
+		select
+		<choose>
+			<when test="target != null">
+				<foreach item="item" index="index" collection="target" open=""
+					separator="," close="">
+					${item}
+				</foreach>
+			</when>
+			<otherwise>
+				*
+			</otherwise>
+		</choose>
+		from ${tableName}
+		<where>
+			<if test="filter != null and !filter.isEmpty()">
+				<foreach item="value" index="key" collection="filter" open=""
+					separator="AND" close="">
+					${key} like #{value}<!-- like is used -->
+					>
+				</foreach>
+			</if>
+			<if test="vague != null">
+				${vague}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectListFree" resultType="map">
+		select
+		<choose>
+			<when test="target != null">
+				<foreach item="item" index="index" collection="target" open=""
+					separator="," close="">
+					${item}
+				</foreach>
+			</when>
+			<otherwise>
+				*
+			</otherwise>
+		</choose>
+		from ${tableName}
+		<where>
+			${filter}
+		</where>
 	</select>
 	
-	 <insert id="insert" >
-        insert into ${tableName}
-        <foreach item="value" index="key" collection="data" open="(" separator="," close=")">
-            ${key}
-        </foreach>
-        values
-        <foreach item="value" index="key" collection="data" open="(" separator="," close=")">
-            #{value}
-        </foreach>
-    </insert>
-    
-    <insert id="insertWithKey" useGeneratedKeys="true" keyProperty="data.pkey">
-        insert into ${tableName}
-        <foreach item="value" index="key" collection="data" open="(" separator="," close=")">
-            ${key}
-        </foreach>
-        values
-        <foreach item="value" index="key" collection="data" open="(" separator="," close=")">
-            #{value}
-        </foreach>
-    </insert>
-	<select id="selectOne" resultType="map">
-        select
-        <choose>
-            <when test="target != null">
-                <foreach item="item" index="index" collection="target" open="" separator="," close="">
-                    ${item}
-                </foreach>
-            </when>
-            <otherwise>
-                *
-            </otherwise>
-        </choose>
-        from ${tableName} where
-        <foreach item="value" index="key" collection="filter" open="" separator="and" close="">
-            ${key}=#{value}
-        </foreach>
-        limit 1
-    </select>
-    
-    <select id="selectList" resultType="map">
-        select
-        <choose>
-            <when test="target != null">
-                <foreach item="item" index="index" collection="target" open="" separator="," close="">
-                    ${item}
-                </foreach>
-            </when>
-            <otherwise>
-                *
-            </otherwise>
-        </choose>
-        from ${tableName}
-        <where>
-            <if test="filter != null and !filter.isEmpty()">
-                <foreach item="value" index="key" collection="filter" open="" separator="AND" close="">
-                    ${key} like #{value}<!-- like is used -->>
-                </foreach>
-            </if>
-            <if test="vague != null">
-                ${vague}
-            </if>
-        </where>
-    </select>
-    
-        <select id="selectListFree" resultType="map">
-        select
-        <choose>
-            <when test="target != null">
-                <foreach item="item" index="index" collection="target" open="" separator="," close="">
-                    ${item}
-                </foreach>
-            </when>
-            <otherwise>
-                *
-            </otherwise>
-        </choose>
-        from ${tableName}
-        <where>
-            ${filter}
-        </where>
-    </select>
+	<select id="selectFree" resultType="map">
+		select
+		${statement}
+	</select>
 </mapper>

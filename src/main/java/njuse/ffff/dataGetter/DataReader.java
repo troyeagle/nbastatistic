@@ -186,7 +186,7 @@ public class DataReader implements NewDataReaderService {
 				filter);
 		filter.clear();
 		filter.put("teamB", idTeam);
-		
+		filter.put("date", date);
 		Map<String, Object> resultB = mapper.selectOne("matchinfo", list,
 				filter);
 		Map<String, Object> playerfilter = new HashMap<String, Object>();
@@ -205,6 +205,29 @@ public class DataReader implements NewDataReaderService {
 		}
 	}
 
+	public List<PlayerInMatchFull> getTeamStatBySeason(String idTeam,String season){
+//		Map<String, Object> filter = new HashMap<String, Object>();
+//		filter.put("teamA", idTeam);
+//		filter.put("season", season);
+//		List<String> list = new ArrayList<String>();
+//		list.add("idmatchinfo");
+//		List<Map<String, Object>> resultA = mapper.selectList("matchinfo", list,
+//				filter,null);
+//		filter.clear();
+//		filter.put("teamB", idTeam);
+//		filter.put("season", season);
+//		List<Map<String, Object>> resultB = mapper.selectList("matchinfo", list,
+//				filter,null);
+//		Map<String, Object> playerfilter = new HashMap<String, Object>();
+//		for(resultA.)
+		List<Map<String,Object>> result = mapper.selectFree("* from playermatchinfo where idmatchinfo IN("
+				+ "select idmatchinfo where idTeam ="+idTeam+" AND season="+season+")");
+		List<PlayerInMatchFull> players = new ArrayList<PlayerInMatchFull>();
+		for(Map<String,Object> m:result){
+			players.add(new PlayerInMatchFull(m));
+		}
+		return players;
+	}
 	@Override
 	public List<MatchInfo> getMatchInPeriod(Date start, Date end) {
 		List<Map<String, Object>> result = mapper.selectListFree("matchinfo",
