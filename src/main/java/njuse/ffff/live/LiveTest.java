@@ -13,6 +13,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 /**
@@ -29,7 +30,7 @@ import org.json.JSONObject;
  */
 public class LiveTest {
 	static int eid = 0;
-	static String mid = "2015060905";
+	static String mid = "2015061409";
 	CloseableHttpClient httpClient = HttpClients.createDefault();
 	HttpGet getReSautoCast = new HttpGet(
 			"http://api.sports.sina.com.cn/pbp/?format=json&source=web&withhref=1&callback=mGetterGetReSautocast"
@@ -143,7 +144,6 @@ public class LiveTest {
 			TeamLiveInfo g = new TeamLiveInfo(guest);
 			JSONObject host = data.getJSONObject("host");
 			TeamLiveInfo h = new TeamLiveInfo(host);
-			System.out.println();
 			ArrayList<TeamLiveInfo> ret = new ArrayList<TeamLiveInfo>();
 			ret.add(h);
 			ret.add(g);
@@ -154,13 +154,30 @@ public class LiveTest {
 		}
 		return null;
 	}
+
+	public void AnalyseSmatchInfo(){
+		JSONObject jo = getRequest(getSmatchInfo);
+		JSONObject score;
+		try {
+			score = jo.getJSONObject("result").getJSONObject("data").getJSONObject("score");
+			String scorehost = score.getJSONObject("host").getString("scores");
+			String[] a = scorehost.substring(2, scorehost.length()-2).split("\",\"");
+			
+			System.out.println();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public static void main(String[] args) {
-		LiveTest l = new LiveTest();
+		
 		while(true){
-			l.AnalyseReSauto();
-			l.AnalyseSmatchData();
+			LiveTest l = new LiveTest();
+			//l.AnalyseReSauto();
+			//l.AnalyseSmatchData();
+			l.AnalyseSmatchInfo();
 			try {
-				Thread.sleep(300);
+				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
