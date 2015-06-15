@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import njuse.ffff.dataservice.NewDataReaderService;
+import njuse.ffff.sqlpo.MatchInfo;
 import njuse.ffff.sqlpo.PlayerInMatchFull;
 import njuse.ffff.sqlpo.PlayerInfo;
 import njuse.ffff.sqlpo.PlayerShooting;
@@ -142,18 +143,38 @@ public class DataReader implements NewDataReaderService{
 		filter.put("team", name);
 		filter.put("season", season);
 		Map<String,Object> result = mapper.selectOne("teamaverage", null, filter);
-		return null;
+		TeamAverage m = new TeamAverage(result);
+		return m;
 	}
 
 	@Override
 	public PlayerInMatchFull getTeamStatSingle(String idTeam, Date date) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String,Object> filter = new HashMap<String,Object>();
+		filter.put("teamA", idTeam);
+		filter.put("date", date);
+		Map<String,Object> resultA =mapper.selectOne("matchinfo", null, filter);
+		filter.clear();
+		filter.put("teamB", idTeam);
+		Map<String,Object> resultB = mapper.selectOne("matchinfo", null, filter);
+		Map<String,Object> playerfilter = new HashMap<String,Object>();
+		if(!resultA.isEmpty()){
+			playerfilter.put("idmatchinfo", resultA.get("idmatchinfo"));
+			Map<String,Object> resultAtA = mapper.selectOne("playermatchinfo", null, playerfilter);
+			return new PlayerInMatchFull(resultAtA);
+		}else if(!resultB.isEmpty()){
+			playerfilter.put("idmatchinfo", resultB.get("idmatchinfo"));
+			Map<String,Object> resultAtB = mapper.selectOne("playermatchinfo", null, playerfilter);
+			return new PlayerInMatchFull(resultAtB);
+		}else{
+			return null;
+		}
 	}
 
 	@Override
-	public List<PlayerInMatchFull> getMatchInPeriod(Date start, Date end) {
-		// TODO Auto-generated method stub
+	public List<MatchInfo> getMatchInPeriod(Date start, Date end) {
+		List<Map<String,Object>>
+		result = mapper.selectListFree("matchinfo", null, "date >"+start+"AND date<"+end);
+		
 		return null;
 	}
 

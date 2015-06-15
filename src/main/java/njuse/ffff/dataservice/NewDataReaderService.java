@@ -3,6 +3,7 @@ package njuse.ffff.dataservice;
 import java.sql.Date;
 import java.util.List;
 
+import njuse.ffff.sqlpo.MatchInfo;
 import njuse.ffff.sqlpo.PlayerInMatchFull;
 import njuse.ffff.sqlpo.PlayerInfo;
 import njuse.ffff.sqlpo.PlayerShooting;
@@ -32,7 +33,7 @@ public interface NewDataReaderService {
 	//获得某球队某赛季比赛信息,对于PlayerInMatchFull不要感到奇怪。我的锅。
 	PlayerInMatchFull getTeamStatSingle(String idTeam,Date date);
 	//获得指定时间段内的比赛,都含
-	List<PlayerInMatchFull> getMatchInPeriod(Date start,Date end);
+	List<MatchInfo> getMatchInPeriod(Date start,Date end);
 	
 	//condition 改成String.一定要精准，直接会把它作为条件去数据库搜索
 	//不要搜索高阶项。
