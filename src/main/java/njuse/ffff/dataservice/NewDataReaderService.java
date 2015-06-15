@@ -8,6 +8,7 @@ import njuse.ffff.sqlpo.PlayerInMatchFull;
 import njuse.ffff.sqlpo.PlayerInfo;
 import njuse.ffff.sqlpo.PlayerShooting;
 import njuse.ffff.sqlpo.TeamAverage;
+import njuse.ffff.sqlpo.TeamAverageAdv;
 import njuse.ffff.sqlpo.TeamInfo;
 
 public interface NewDataReaderService {
@@ -28,8 +29,7 @@ public interface NewDataReaderService {
 	PlayerShooting getPlayerShooting(String name,String season);
 	//获得某个赛季全球队数据信息
 	List<TeamAverage> getTeamAverages(String season);
-	//获得某赛季某球队数据信息
-	TeamAverage getTeamAverageSingle(String name,String season);
+
 	//获得某球队某赛季比赛信息,对于PlayerInMatchFull不要感到奇怪。我的锅。
 	PlayerInMatchFull getTeamStatSingle(String idTeam,Date date);
 	//获得指定时间段内的比赛,都含
@@ -54,4 +54,11 @@ public interface NewDataReaderService {
 	public TeamInfo getTeamInfo(String name);
 	
 	public List<PlayerInMatchFull> getPlayerInMatch(String idmatchinfo);
+	
+	public List<PlayerInfo> getPlayersInTeam(String teamName,String season);
+	//获得某赛季某球队数据信息
+	TeamAverage getTeamAverageSingle(String name, String season,
+			String attribute);
+	TeamAverageAdv getTeamAverageAdv(String name, String season,
+			String attribute);
 }

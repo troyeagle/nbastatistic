@@ -43,7 +43,7 @@ public class TeamList {
 		}
 		ExecutorService exe = Executors.newCachedThreadPool();
 		TeamThread tt[] = new TeamThread[30];
-		for(int i = 1;i<30;i++){
+		for(int i = 0;i<30;i++){
 			tt[i]=new TeamThread(i);
 			exe.execute(tt[i]);
 		}

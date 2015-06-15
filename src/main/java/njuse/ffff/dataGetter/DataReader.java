@@ -12,6 +12,7 @@ import njuse.ffff.sqlpo.PlayerInMatchFull;
 import njuse.ffff.sqlpo.PlayerInfo;
 import njuse.ffff.sqlpo.PlayerShooting;
 import njuse.ffff.sqlpo.TeamAverage;
+import njuse.ffff.sqlpo.TeamAverageAdv;
 import njuse.ffff.sqlpo.TeamInfo;
 import njuse.ffff.util.DatabaseUtility;
 import njuse.ffff.util.Mapper;
@@ -148,14 +149,30 @@ public class DataReader implements NewDataReaderService {
 	}
 
 	@Override
-	public TeamAverage getTeamAverageSingle(String name, String season) {
+	public TeamAverage getTeamAverageSingle(String name, String season,String attribute) {
 		Map<String, Object> filter = new HashMap<String, Object>();
 		filter.put("team", name);
 		filter.put("season", season);
+		if(attribute!=null){
+			filter.put("attribute", "%"+attribute);
+		}
 		Map<String, Object> result = mapper.selectOne("teamaverage", null,
 				filter);
 		TeamAverage m = new TeamAverage(result);
 		return m;
+	}
+	@Override
+	public TeamAverageAdv getTeamAverageAdv(String name,String season,String attribute){
+		Map<String,Object> filter = new HashMap<String,Object>();
+		filter.put("team", name);
+		filter.put("season", season);
+		if(attribute!=null){
+			filter.put("attribute", "%"+attribute);
+		}
+		Map<String, Object> result = mapper.selectOne("teamaverageadv", null,
+				filter);
+		TeamAverageAdv t = new TeamAverageAdv(result);
+		return t;
 	}
 
 	@Override
@@ -219,14 +236,28 @@ public class DataReader implements NewDataReaderService {
 		Map<String,Object> filter = new HashMap<String,Object>();
 		filter.put("season", season);
 		filter.put("attribute", "per_game%");
-		return null;
+		List<Map<String,Object>> result = mapper.selectList("playermatchinfo", null, filter,  "ordered by "+condition+" desc" );
+		List<PlayerInMatchFull> play = new ArrayList<PlayerInMatchFull>();
+		for(Map<String,Object> m:result){
+			play.add(new PlayerInMatchFull(m));
+		}
+		return play;
 	}
 
 	@Override
 	public List<TeamAverage> getLeadTeamForSeason(String season,
 			String condition) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String,Object> filter = new HashMap<String,Object>();
+		filter.put("season", season);
+		filter.put("attribute","%perGame");
+		List<Map<String,Object>> result = mapper.selectList("teamaverage", null, filter, "ordered by "+condition+" desc");
+		List<TeamAverage> teams = new ArrayList<TeamAverage>();
+		for(Map<String,Object> m:result){
+			teams.add(new TeamAverage(m));
+			
+		}
+		return teams;
+		
 	}
 
 	@Override
@@ -238,20 +269,48 @@ public class DataReader implements NewDataReaderService {
 
 	@Override
 	public List<TeamInfo> getTeamInfoAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Map<String,Object>> result = mapper.selectList("teaminfo", null, null, null);
+		List<TeamInfo> teams = new ArrayList<TeamInfo>();
+		for(Map<String,Object> m:result){
+			teams.add(new TeamInfo(m));
+		}
+		return teams;
 	}
 
 	@Override
 	public TeamInfo getTeamInfo(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String,Object> filter = new HashMap<String,Object>();
+		filter.put("team", name);
+		Map<String,Object> result = mapper.selectOne("teaminfo", null, filter);
+		return new TeamInfo(result);
 	}
 
 	@Override
 	public List<PlayerInMatchFull> getPlayerInMatch(String idmatchinfo) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String,Object> filter = new HashMap<String,Object>();
+		filter.put("idmatchinfo", idmatchinfo);
+		List<Map<String,Object>> result = mapper.selectList("playermatchinfo", null, filter,null);
+		List<PlayerInMatchFull> players = new ArrayList<PlayerInMatchFull>();
+		for(Map<String,Object> m:result){
+			players.add(new PlayerInMatchFull(m));
+		}
+		return players;
 	}
+
+	@Override
+	public List<PlayerInfo> getPlayersInTeam(String teamName, String season) {
+		Map<String,Object> filter = new HashMap<String,Object>();
+		filter.put("team", teamName);
+		filter.put("season", season);
+		filter.put("attribute", "totals.%");
+		List<Map<String,Object>> result = mapper.selectList("playermatchinfo", null, filter, null); 
+		List<PlayerInfo> players = new ArrayList<PlayerInfo>();
+		for(Map<String,Object> m:result){
+			players.add(new PlayerInfo(m));
+		}
+		return players;
+	}
+
+
 
 }

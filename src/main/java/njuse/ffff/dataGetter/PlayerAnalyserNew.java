@@ -97,7 +97,7 @@ public class PlayerAnalyserNew {
 		//
 		// }
 		try {
-			while (!line.contains("margin_bottom_half margin_left_half")) {
+			while (!line.contains("margin_bottom_half margin_left_half")&&!line.contains("margin-bottom:32px")) {
 				line = br.readLine();
 				get += line;
 
@@ -137,8 +137,14 @@ public class PlayerAnalyserNew {
 			}
 			t = processor.indexOf("Born:");
 			if (t > 0) {
-				plBirthCity = processor.get(t + 3).substring(2)
-						+ processor.get(t + 4);
+				try{
+					plBirthCity = processor.get(t + 3).substring(2);
+					plBirthCity+=processor.get(t + 4);
+				}catch(Exception e){
+					
+				}
+				
+						
 			}
 			t = processor.indexOf("High School:");
 			if (t > 0) {
@@ -150,8 +156,13 @@ public class PlayerAnalyserNew {
 			}
 			t = processor.indexOf("Draft:");
 			if (t > 0) {
-				draft = processor.get(t + 1) + processor.get(t + 2)
-						+ processor.get(t + 3);
+				try{
+					draft = processor.get(t + 1) + processor.get(t + 2)
+							+ processor.get(t + 3);
+				}catch(Exception e){
+					
+				}
+				
 			}
 			t = processor.indexOf("NBA Debut:");
 			if (t > 0) {
@@ -166,6 +177,12 @@ public class PlayerAnalyserNew {
 			if (t > 0) {
 				hallOfFame = processor.get(t + 1);
 			}
+			
+		}catch(NullPointerException e){
+			System.out.println(head +" infomation error");
+		}
+		try{
+			
 			ArrayList<String> tips = new ArrayList<String>();
 			ArrayList<Short> numbers = new ArrayList<Short>();
 			// line = readLineUntil("<div class");
@@ -174,14 +191,13 @@ public class PlayerAnalyserNew {
 				String tip = matchPattern(line, "tip=(.*)>");
 				tips.add(tip);
 				line = readLineUntil("<span style=");
-				plNumber = Short.parseShort(matchPattern(line, ">(.*)</span>")
+				plNumber = Short.parseShort(line.replaceAll("<(.+?)>", "")
 						.trim());
 				numbers.add(plNumber);
 				line = readLineUntil("<div class");
 				if (!line.contains("poptip"))
 					break;
 			}
-
 			List<ArrayList<String>> statusList = new ArrayList<ArrayList<String>>();
 			/**
 			 * 核心模块，决定每一块读出来的效果，注意这里的判断条件。
@@ -193,6 +209,15 @@ public class PlayerAnalyserNew {
 				String key = "";
 				if (line.contains("blank_table")) {
 					continue;
+				}
+				if(line.contains("news")){
+					continue;
+				}
+				if(line.contains("college")){
+					continue;
+				}
+				if(line.contains("all_star")){
+					break;
 				}
 				if (line.startsWith("<tr  class=\"\">")) {
 					break;
@@ -223,18 +248,20 @@ public class PlayerAnalyserNew {
 				}
 				do {
 					line = br.readLine();
-					if (line.contains("left")) {
-						get = matchPattern(line, "<a href(.*)</a>");
-						if (get != null) {
-							get = matchPattern(line, "<a href(.*)</a>").split(
-									">")[1];
-						} else {
-							get = matchPattern(line, ">(.*)</td>");
-						}
-
-					} else {
-						get = matchPattern(line, ">(.*)</td>");
-					}
+					get = line.replaceAll("<(.+?)>", "").trim();
+					get = get.replaceAll("(&(.+?);)","").trim();
+//					if (line.contains("left")) {
+//						get = matchPattern(line, "<a href(.*)</a>");
+//						if (get != null) {
+//							get = matchPattern(line, "<a href(.*)</a>").split(
+//									">")[1];
+//						} else {
+//							get = matchPattern(line, ">(.*)</td>");
+//						}
+//
+//					} else {
+//						get = matchPattern(line, ">(.*)</td>");
+//					}
 					status.add(get);
 				} while (line.startsWith("   <td align="));
 				statusList.add(status);
@@ -244,24 +271,29 @@ public class PlayerAnalyserNew {
 			/**
 			 * 工资问题
 			 */
+			boolean salary = true;
+			try{
+				readLineUntil("  <th data-stat=\"salary\"");
+				line = readLineUntil("<tr  class=");
 
-			readLineUntil("  <th data-stat=\"salary\"");
-			line = readLineUntil("<tr  class=");
-
-			while (line.startsWith("<tr  class=")) {
-				ArrayList<String> items = new ArrayList<String>();
-				line = br.readLine();
-				items.add(matchPattern(line, ">(.*)</td>"));
-				line = br.readLine();
-				items.add(matchPattern(line, "html\">(.*)</a>"));
-				line = br.readLine();
-				items.add(matchPattern(line, "html\">(.*)</a>"));
-				line = br.readLine();
-				items.add(matchPattern(line, ">(.*)</td>"));
-				line = br.readLine();
-				line = br.readLine();
-				salaries.add(items);
+				while (line.startsWith("<tr  class=")) {
+					ArrayList<String> items = new ArrayList<String>();
+					line = br.readLine();
+					items.add(matchPattern(line, ">(.*)</td>"));
+					line = br.readLine();
+					items.add(matchPattern(line, "html\">(.*)</a>"));
+					line = br.readLine();
+					items.add(matchPattern(line, "html\">(.*)</a>"));
+					line = br.readLine();
+					items.add(matchPattern(line, ">(.*)</td>"));
+					line = br.readLine();
+					line = br.readLine();
+					salaries.add(items);
+				}
+			}catch(NullPointerException e){
+				salary = false;
 			}
+			
 
 			Iterator<ArrayList<String>> it = statusList.iterator();
 			ArrayList<String> temp = null;
@@ -299,6 +331,7 @@ public class PlayerAnalyserNew {
 				try {
 					mapper.insert(tableName, playerstatus);
 				} catch (PersistenceException e) {
+					System.out.println(head);
 					e.printStackTrace();
 				}
 
@@ -307,13 +340,16 @@ public class PlayerAnalyserNew {
 			/**
 			 * 薪水表
 			 */
-			for (ArrayList<String> i : salaries) {
-				PlayerSalary ps = new PlayerSalary(plName, idPlayerInfo);
-				ps.setAttributes(i);
-				Mapper mapper = sqlSession.getMapper(Mapper.class);
-				mapper.insert("playersalary", ps.generateMap());
-				sqlSession.commit();
+			if(salary){
+				for (ArrayList<String> i : salaries) {
+					PlayerSalary ps = new PlayerSalary(plName, idPlayerInfo);
+					ps.setAttributes(i);
+					Mapper mapper = sqlSession.getMapper(Mapper.class);
+					mapper.insert("playersalary", ps.generateMap());
+					sqlSession.commit();
+				}
 			}
+		
 			/**
 			 * 球号表
 			 */
@@ -325,7 +361,7 @@ public class PlayerAnalyserNew {
 				sqlSession.commit();
 			}
 		} catch (NullPointerException e) {
-			System.out.println(head + "do not fit the table");
+			//System.out.println(head + "do not fit the table");
 		}
 
 		br.close();
@@ -344,6 +380,7 @@ public class PlayerAnalyserNew {
 			m.insert("playerinfo", inputMap);
 			sqlSession.commit();
 		} catch (PersistenceException e) {
+			System.out.println(head);
 			e.printStackTrace();
 		}
 
@@ -393,10 +430,10 @@ public class PlayerAnalyserNew {
 	public static void main(String[] args) {
 		HtmlReader hr = new HtmlReader();
 		BufferedReader br = hr
-				.execute("http://www.basketball-reference.com/players/a/ackeral01.html");
+				.execute("http://www.basketball-reference.com/players/a/acyqu01.html");
 		PlayerAnalyserNew pa = new PlayerAnalyserNew();
 		try {
-			pa.analyseSingle(br, "cartevi01");
+			pa.analyseSingle(br, "ackeral01");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

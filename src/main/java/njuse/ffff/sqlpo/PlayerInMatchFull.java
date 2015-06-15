@@ -36,6 +36,7 @@ public class PlayerInMatchFull {
 	protected double turnover;
 	protected double foul;
 	protected double points;
+	double plusminus;
 
 	int firstOnMatch;
 
@@ -103,6 +104,7 @@ public class PlayerInMatchFull {
 		turnover = (double) basicMap.get("turnover");
 		foul = (double) basicMap.get("foul");
 		points = (double) basicMap.get("points");
+		plusminus = (double) basicMap.get("plusminus");
 
 		firstOnMatch = (int) basicMap.get("firstOnMatch");
 
@@ -157,7 +159,7 @@ public class PlayerInMatchFull {
 		turnover = parseInt(split[16]);
 		foul = parseInt(split[17]);
 		points = parseInt(split[18]);
-
+		
 	}
 
 	public void setAdvanced(String[] split) {
@@ -255,37 +257,42 @@ public class PlayerInMatchFull {
 	}
 
 	public void setAdvancedByArray(ArrayList<String> arr) {
-		Iterator<String> it = arr.iterator();
-		attribute = it.next();
-		season = it.next();
-		age = it.next();
-		team = it.next();
-		league = it.next();
-		position = it.next();
-		gamesPlayed = parseInt(it.next());
-		minute = it.next();
-		playerEfficiencyRate = parseDouble(it.next());
-		trueShootingPercentage = parseDouble(it.next());
-		threePointerPercentage = parseDouble(it.next());
-		freeThrowRate = parseDouble(it.next());
-		offensiveReboundRatio = parseDouble(it.next());
-		defensiveReboundRatio = parseDouble(it.next());
-		reboundRatio = parseDouble(it.next());
-		assistRatio = parseDouble(it.next());
-		stealRatio = parseDouble(it.next());
-		blockRatio = parseDouble(it.next());
-		turnoverRatio = parseDouble(it.next());
-		usingRatio = parseDouble(it.next());
-		it.next();
-		ows = parseDouble(it.next());
-		dws = parseDouble(it.next());
-		ws = parseDouble(it.next());
-		wsper48 = parseDouble(it.next());
-		it.next();
-		obpm = parseDouble(it.next());
-		dbpm = parseDouble(it.next());
-		bpm = parseDouble(it.next());
-		vorp = parseDouble(it.next());
+		try{
+			Iterator<String> it = arr.iterator();
+			attribute = it.next();
+			season = it.next();
+			age = it.next();
+			team = it.next();
+			league = it.next();
+			position = it.next();
+			gamesPlayed = parseInt(it.next());
+			minute = it.next();
+			playerEfficiencyRate = parseDouble(it.next());
+			trueShootingPercentage = parseDouble(it.next());
+			threePointerPercentage = parseDouble(it.next());
+			freeThrowRate = parseDouble(it.next());
+			offensiveReboundRatio = parseDouble(it.next());
+			defensiveReboundRatio = parseDouble(it.next());
+			reboundRatio = parseDouble(it.next());
+			assistRatio = parseDouble(it.next());
+			stealRatio = parseDouble(it.next());
+			blockRatio = parseDouble(it.next());
+			turnoverRatio = parseDouble(it.next());
+			usingRatio = parseDouble(it.next());
+			it.next();
+			ows = parseDouble(it.next());
+			dws = parseDouble(it.next());
+			ws = parseDouble(it.next());
+			wsper48 = parseDouble(it.next());
+			it.next();
+			obpm = parseDouble(it.next());
+			dbpm = parseDouble(it.next());
+			bpm = parseDouble(it.next());
+			vorp = parseDouble(it.next());
+		}catch(Exception e){
+			System.out.println(arr.toString());
+		}
+		
 
 	}
 
@@ -321,6 +328,7 @@ public class PlayerInMatchFull {
 		inputMap.put("turnover", turnover);
 		inputMap.put("foul", foul);
 		inputMap.put("points", points);
+		inputMap.put("plusminus", plusminus);
 		return inputMap;
 	}
 

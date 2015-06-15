@@ -15,6 +15,19 @@ public class TeamAverageAdv {
 	double stealEf;
 	double assistEf;
 
+	public TeamAverageAdv(Map<String, Object> map) {
+		team = (String) map.get("team");
+		season = (String) map.get("season");
+		winRate = (double) map.get("winRate");
+		myRounds = (double) map.get("myRounds");
+		offensiveEf = (double) map.get("offensiveEf");
+		defensiveEf = (double) map.get("defensiveEf");
+		offensiveReboundEf = (double) map.get("offensiveReboundEf");
+		defensiveReboundEf = (double) map.get("defensiveReboundEf");
+		stealEf = (double) map.get("stealEf");
+		assistEf = (double) map.get("assistEf");
+	}
+
 	public TeamAverageAdv(TeamAverage myteam, TeamAverage rival) {
 		team = myteam.team;
 		season = myteam.season;
@@ -26,7 +39,7 @@ public class TeamAverageAdv {
 				* ((double) myteam.offensiveRebound
 						/ (myteam.offensiveRebound + rival.defensiveRebound) * (myteam.freeThrowAttempted - myteam.freeThrowMade))
 				+ 1.07 * myteam.turnover;
-		
+
 		double rivalRounds = 0.4
 				* rival.freeThrowAttempted
 				+ rival.fieldGoalAttempted
