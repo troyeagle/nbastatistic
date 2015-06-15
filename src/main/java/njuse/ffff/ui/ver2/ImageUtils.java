@@ -32,11 +32,13 @@ public class ImageUtils {
 	 * @return
 	 */
 	public static ImageIcon getTeamIcon(String teamName) {
-		String abbr = TeamNameAndAbbr.getInstance().getAbbr(teamName);
-		if(abbr==null){
-			abbr = teamName;
+		if (teamName.length() > 3) {
+			String abbr = TeamNameAndAbbr.getInstance().getAbbr(teamName);
+			if (abbr == null) {
+				teamName = abbr;
+			}
 		}
-		return getImgFromPngOrSvg(abbr, getTeamImgPath());
+		return getImgFromPngOrSvg(teamName, getTeamImgPath());
 	}
 
 	/**

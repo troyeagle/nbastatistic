@@ -12,7 +12,6 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JViewport;
@@ -26,7 +25,6 @@ import njuse.ffff.live.TeamLiveInfo;
 import njuse.ffff.ui.component.LabelEx;
 import njuse.ffff.ui.component.PanelEx;
 import njuse.ffff.ui.ver2.component.TableView;
-import njuse.ffff.util.TeamNameAndAbbr;
 
 public class GameLivePanel extends PanelEx {
 
@@ -45,7 +43,7 @@ public class GameLivePanel extends PanelEx {
 	private LabelEx[] labelName;
 	private TableView tableScore;
 	private LabelEx[] labelScore;
-	private LabelEx finished;
+	private LabelEx timeLabel;
 
 	private TableView[][] tableData;
 	private LabelEx[] tableName;
@@ -80,12 +78,14 @@ public class GameLivePanel extends PanelEx {
 		teamsData = new LabelEx[2][19];
 		teamsName = new LabelEx[2];
 
-		liveTable = new TableView(null, new String[] { "", "消息", "比分" });
+		liveTable = new TableView(null, new String[] { "", "本节剩余时间", "消息", "比分" });
 		//		liveTable.getTable().setBackground(new Color(232, 242, 254));
 		liveTable.getTable().getColumnModel().getColumn(0).setMaxWidth(70);
 		liveTable.getTable().getColumnModel().getColumn(0).setMinWidth(70);
-		liveTable.getTable().getColumnModel().getColumn(2).setMaxWidth(100);
-		liveTable.getTable().getColumnModel().getColumn(2).setMinWidth(100);
+		liveTable.getTable().getColumnModel().getColumn(1).setMaxWidth(100);
+		liveTable.getTable().getColumnModel().getColumn(1).setMinWidth(100);
+		liveTable.getTable().getColumnModel().getColumn(3).setMaxWidth(100);
+		liveTable.getTable().getColumnModel().getColumn(3).setMinWidth(100);
 		liveTable.getTable().setRowSorter(null);
 		liveTable.getTable().setRowHeight(30);
 		liveTable.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
@@ -140,6 +140,7 @@ public class GameLivePanel extends PanelEx {
 			teamDataArea.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
 			teamDataArea.add(teamsName[i], BorderLayout.NORTH);
 			teamDataArea.add(labelsPanel);
+			teamDataArea.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 			liveAreaPanel.add(teamDataArea, i == 0 ? BorderLayout.WEST : BorderLayout.EAST);
 
 			// 表格区
@@ -162,7 +163,7 @@ public class GameLivePanel extends PanelEx {
 			labelType.setForeground(Color.BLACK);
 
 			labelScore[i] = new LabelEx("0");
-			labelScore[i].setBounds(450 + 320 * i, 40, 50, 40);
+			labelScore[i].setBounds(480 + 260 * i, 40, 50, 40);
 			labelScore[i].setHorizontalAlignment(align);
 			labelScore[i].setFont(UIConfig.TitleFont);
 			labelScore[i].setForeground(Color.BLACK);
@@ -188,11 +189,11 @@ public class GameLivePanel extends PanelEx {
 				tableArea.add(tableView.getTable());
 				tablePanel.add(tableArea, j == 0 ? BorderLayout.NORTH : BorderLayout.CENTER);
 			}
-			finished = new LabelEx("已结束");
-			finished.setBounds(600, 80, 80, 20);
-			finished.setHorizontalAlignment(LabelEx.CENTER);
-			finished.setFont(UIConfig.SmallFont);
-			//			matchInfoPanel.add(finished);
+			timeLabel = new LabelEx("");
+			timeLabel.setBounds(540, 84, 200, 30);
+			timeLabel.setHorizontalAlignment(LabelEx.CENTER);
+			timeLabel.setFont(UIConfig.SubTitleFont);
+			matchInfoPanel.add(timeLabel);
 
 			tableName[i] = new LabelEx("Team" + (2 - i));
 			tableName[i].setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 0));
@@ -210,20 +211,20 @@ public class GameLivePanel extends PanelEx {
 		}
 
 		// 刷新
-		Timer timer = initTimer();
-		addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentShown(ComponentEvent e) {
-				if (!timer.isRunning())
-					timer.start();
-			}
-
-			@Override
-			public void componentHidden(ComponentEvent e) {
-				timer.stop();
-			}
-		});
-		timer.start();
+//		Timer timer = initTimer();
+//		addComponentListener(new ComponentAdapter() {
+//			@Override
+//			public void componentShown(ComponentEvent e) {
+//				if (!timer.isRunning())
+//					timer.start();
+//			}
+//
+//			@Override
+//			public void componentHidden(ComponentEvent e) {
+//				timer.stop();
+//			}
+//		});
+//		timer.start();
 	}
 
 	private PanelEx createScorePanel() {
@@ -262,41 +263,6 @@ public class GameLivePanel extends PanelEx {
 		return scorePanel;
 	}
 
-	//	private void setTeamInfo(String name, int[] score, Object[][] data, boolean isGuest) {
-	//
-	//		int index = isGuest ? 0 : 1;
-	//		String abbr = TeamNameAndAbbr.getInstance().getAbbr(name);
-	//
-	//		ImageIcon icon = ImageUtilsEx.getTeamIcon(name, ImageUtilsEx.L);
-	//		labelIcon[index].setIcon(icon);
-	//
-	//		labelName[index].setText(name);
-	//		labelFinal[index].setText(String.valueOf(score[0]));
-	//
-	//		JTable scoreTable = tableScore.getTable();
-	//		int c = scoreTable.getColumnCount();
-	//		scoreTable.setValueAt(abbr, index, 0);
-	//		scoreTable.setValueAt(String.valueOf(score[0]), index, c - 1);
-	//
-	//		// 处理加时
-	//		if (c - 1 > score.length) {
-	//			for (int i = score.length - 4; i <= c - 6; i++)
-	//				tableScore.hide("加时" + i);
-	//		} else {
-	//			for (int i = score.length - 5; i > c - 6; i--)
-	//				tableScore.show("加时" + i);
-	//		}
-	//
-	//		for (int i = 1; i <= score.length - 1; i++)
-	//			scoreTable.setValueAt(String.valueOf(score[i]), index, i);
-	//
-	//		tableName[index].setText(name);
-	//		icon = ImageUtilsEx.getTeamIcon(abbr, ImageUtilsEx.S);
-	//		tableName[index].setIcon(icon);
-	//
-	//		setTable(index, 0, data);
-	//	}
-
 	private void setTable(int index1, int index2, Object[][] data) {
 		JTable table = tableData[index1][index2].getTable();
 		int rowCount = data.length;
@@ -317,10 +283,10 @@ public class GameLivePanel extends PanelEx {
 		String enName = "";
 		switch (name) {
 		case "勇士":
-			enName = "Warriors";
+			enName = "GSW";
 			break;
 		case "骑士":
-			enName = "Cavaliers";
+			enName = "CLE";
 			break;
 		}
 		if (!enName.isEmpty()) {
@@ -331,7 +297,7 @@ public class GameLivePanel extends PanelEx {
 	}
 
 	private void setTeamInfo(int index, String name, int totalScore, Object[] data,
-			int[] scores) {
+			Object[] scores) {
 		labelName[index].setText(name);
 		tableName[index].setText(name);
 		teamsName[index].setText(name);
@@ -349,6 +315,22 @@ public class GameLivePanel extends PanelEx {
 		}
 
 		// TODO scores
+		JTable scoreTable = tableScore.getTable();
+		int c = scoreTable.getColumnCount();
+		int scoreLen = scores.length;
+
+		for (int i = 0; i < scoreLen; i++) {
+			scoreTable.getModel().setValueAt(scores[i], index, i);
+		}
+
+		// 处理加时
+		if (c - 1 > scores.length) {
+			for (int i = scores.length - 4; i <= c - 5; i++)
+				tableScore.hide("加时" + i);
+		} else {
+			for (int i = scores.length - 5; i > c - 5; i--)
+				tableScore.show("加时" + i);
+		}
 	}
 
 	private boolean firstRun = true;
@@ -384,28 +366,52 @@ public class GameLivePanel extends PanelEx {
 		LiveTest liveData = new LiveTest();
 		List<TeamLiveInfo> gameInfo = liveData.AnalyseSmatchData();
 		List<PlayByPlayMessages> liveInfo = liveData.AnalyseReSauto();
+		List<String[]> scoresData = new LiveTest().AnalyseSmatchInfo();
 
-		boolean updated = updateMessage(liveInfo);
+		if (liveInfo != null)
+			updateMessage(liveInfo);
 
-		if (updated && gameInfo != null) {
-			int teamIndex = 1;	// 0:主队	1:客队
-			for (TeamLiveInfo teamInfo : gameInfo) {
-				String teamName = teamInfo.getTeam_name();
-				// TODO
-				int score = teamInfo.getPoints();
+		if (scoresData != null) {
+			String[] timeInfo = scoresData.get(2);
+			timeLabel.setText(timeInfo[0]);
+			int num;
+			try {
+				num = Integer.valueOf(timeInfo[1]);
+			} catch (Exception e) {
+				num = 4;
+			}
 
-				Object[] data = getTeamData(teamInfo);
+			if (gameInfo != null) {
+				int teamIndex = 1;	// 0:主队	1:客队
+				for (TeamLiveInfo teamInfo : gameInfo) {
+					String teamName = teamInfo.getTeam_name();
+					int score = teamInfo.getPoints();
+					// TODO 每节分数
+					String[] scoreData = scoresData.get(1 - teamIndex);
+					Object[] teamScores = new Object[scoreData.length + 1];
+					teamScores[0] = teamName;
+					for (int i = 0; i < scoreData.length; i++) {
+						if (i < num)
+							teamScores[i + 1] = scoreData[i];
+						else
+							teamScores[i + 1] = "-";
+					}
 
-				setTeamInfo(teamIndex, teamName, score, data, null);
+					Object[] data = getTeamData(teamInfo);
 
-				setPlayersInfos(teamIndex, teamInfo);
+					setTeamInfo(teamIndex, teamName, score, data, teamScores);
 
-				teamIndex--;
+					setPlayersInfos(teamIndex, teamInfo);
+
+					teamIndex--;
+				}
 			}
 		}
 	}
 
 	private boolean updateMessage(List<PlayByPlayMessages> liveInfo) {
+		if (liveInfo == null) { return true; }
+
 		JTable table = liveTable.getTable();
 
 		int originalMsgCount = table.getRowCount();
@@ -414,16 +420,18 @@ public class GameLivePanel extends PanelEx {
 			for (int i = originalMsgCount; i < liveInfo.size(); i++) {
 				PlayByPlayMessages msg = liveInfo.get(i);
 
-				Object[] rowData = new Object[3];
+				Object[] rowData = new Object[4];
 				rowData[0] = getTeamIcon(msg.getTeam_name(), ImageUtilsEx.MS);
-				rowData[1] = msg.getDescription().replaceAll("<[^>]*>", " ");
-				rowData[2] = msg.getVisitor_score() + "-" + msg.getHome_score();
+				rowData[1] = msg.getGame_clock();
+				rowData[2] = msg.getDescription().replaceAll("<[^>]*>", " ");
+				rowData[3] = msg.getVisitor_score() + "-" + msg.getHome_score();
 
 				DefaultTableModel model = (DefaultTableModel) table.getModel();
 				model.addRow(rowData);
 				model.moveRow(i, i, 0);
 			}
 		}
+		updated |= table.getRowCount() == 0;
 
 		return updated;
 	}

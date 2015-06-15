@@ -75,11 +75,16 @@ public class TeamLiveInfo {
 			JSONObject player = ons.getJSONObject(i);
 			onPlayers.add(new PlayerLiveInfo(player,true));
 		}
-		JSONArray offs = jo.getJSONArray("off");
+		
 		offPlayers = new ArrayList<PlayerLiveInfo>();
+		try {
+		JSONArray offs = jo.getJSONArray("off");
 		for(int i = 0;i<offs.length();i++){
 			JSONObject player = offs.getJSONObject(i);
 			offPlayers.add(new PlayerLiveInfo(player,false));
+		}
+		} catch (Exception e) {
+			
 		}
 	}
 
