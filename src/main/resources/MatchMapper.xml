@@ -75,18 +75,14 @@
 				*
 			</otherwise>
 		</choose>
-		from ${tableName}
-		<where>
-			<if test="filter != null and !filter.isEmpty()">
-				<foreach item="value" index="key" collection="filter" open=""
-					separator="and" close="">
-					${key} like #{value}
-				</foreach>
-			</if>
-			<if test="vague != null">
-				${vague}
-			</if>
-		</where>
+		from ${tableName} where
+		<if test="filter != null and !filter.isEmpty()">
+			<foreach item="value" index="key" collection="filter" open=""
+				separator="and" close="">
+				${key}=#{value}
+			</foreach>
+		</if>
+		
 	</select>
 
 	<select id="selectListFree" resultType="map">
@@ -107,7 +103,7 @@
 			${filter}
 		</where>
 	</select>
-	
+
 	<select id="selectFree" resultType="map">
 		select
 		${statement}

@@ -23,10 +23,11 @@ public class DataReader implements NewDataReaderService {
 	String currentDate;
 	SqlSession sqlSession;
 	Mapper mapper;
-	
-	public DataReader(){
-			initialize();
+
+	public DataReader() {
+		initialize();
 	}
+
 	public void initialize() {
 		DatabaseUtility.init();
 		sqlSession = DatabaseUtility.getSqlSession();
@@ -152,24 +153,26 @@ public class DataReader implements NewDataReaderService {
 	}
 
 	@Override
-	public TeamAverage getTeamAverageSingle(String name, String season,String attribute) {
+	public TeamAverage getTeamAverageSingle(String name, String season,
+			String attribute) {
 		Map<String, Object> filter = new HashMap<String, Object>();
 		filter.put("team", name);
 		filter.put("season", season);
-		if(attribute!=null){
-			filter.put("attribute", "%"+attribute);
+		if (attribute != null) {
+			filter.put("attribute", "%" + attribute);
 		}
 		Map<String, Object> result = mapper.selectOne("teamaverage", null,
 				filter);
 		TeamAverage m = new TeamAverage(result);
 		return m;
 	}
+
 	@Override
-	public TeamAverageAdv getTeamAverageAdv(String name,String season){
-		Map<String,Object> filter = new HashMap<String,Object>();
+	public TeamAverageAdv getTeamAverageAdv(String name, String season) {
+		Map<String, Object> filter = new HashMap<String, Object>();
 		filter.put("team", name);
 		filter.put("season", season);
-		
+
 		Map<String, Object> result = mapper.selectOne("teamaverageadv", null,
 				filter);
 		TeamAverageAdv t = new TeamAverageAdv(result);
@@ -206,29 +209,35 @@ public class DataReader implements NewDataReaderService {
 		}
 	}
 
-	public List<PlayerInMatchFull> getTeamStatBySeason(String idTeam,String season){
-//		Map<String, Object> filter = new HashMap<String, Object>();
-//		filter.put("teamA", idTeam);
-//		filter.put("season", season);
-//		List<String> list = new ArrayList<String>();
-//		list.add("idmatchinfo");
-//		List<Map<String, Object>> resultA = mapper.selectList("matchinfo", list,
-//				filter,null);
-//		filter.clear();
-//		filter.put("teamB", idTeam);
-//		filter.put("season", season);
-//		List<Map<String, Object>> resultB = mapper.selectList("matchinfo", list,
-//				filter,null);
-//		Map<String, Object> playerfilter = new HashMap<String, Object>();
-//		for(resultA.)
-		List<Map<String,Object>> result = mapper.selectFree("* from playermatchinfo where idmatchinfo IN("
-				+ "select idmatchinfo from matchinfo where idTeam ="+idTeam+" AND season="+season+")");
+	public List<PlayerInMatchFull> getTeamStatBySeason(String idTeam,
+			String season) {
+		// Map<String, Object> filter = new HashMap<String, Object>();
+		// filter.put("teamA", idTeam);
+		// filter.put("season", season);
+		// List<String> list = new ArrayList<String>();
+		// list.add("idmatchinfo");
+		// List<Map<String, Object>> resultA = mapper.selectList("matchinfo",
+		// list,
+		// filter,null);
+		// filter.clear();
+		// filter.put("teamB", idTeam);
+		// filter.put("season", season);
+		// List<Map<String, Object>> resultB = mapper.selectList("matchinfo",
+		// list,
+		// filter,null);
+		// Map<String, Object> playerfilter = new HashMap<String, Object>();
+		// for(resultA.)
+		List<Map<String, Object>> result = mapper
+				.selectFree("* from playermatchinfo where idmatchinfo IN("
+						+ "select idmatchinfo from matchinfo where idTeam ="
+						+ idTeam + " AND season=" + season + ")");
 		List<PlayerInMatchFull> players = new ArrayList<PlayerInMatchFull>();
-		for(Map<String,Object> m:result){
+		for (Map<String, Object> m : result) {
 			players.add(new PlayerInMatchFull(m));
 		}
 		return players;
 	}
+
 	@Override
 	public List<MatchInfo> getMatchInPeriod(Date start, Date end) {
 		List<Map<String, Object>> result = mapper.selectListFree("matchinfo",
@@ -243,28 +252,35 @@ public class DataReader implements NewDataReaderService {
 	@Override
 	public List<PlayerInMatchFull> getLeadPlayerForDay(Date date,
 			String condition) {
-		Map<String,Object> filter = new HashMap<String,Object>();
-		String dt =date.toString().replaceAll("-", "");
-		dt = ""+dt+"";
+		Map<String, Object> filter = new HashMap<String, Object>();
+		String dt = date.toString().replaceAll("-", "");
+		dt = "" + dt + "";
 		filter.put("idmatchinfo", dt);
-		List<Map<String,Object>> result = mapper.selectList("playermatchinfo", null, filter, "and idplayerinfo is not null ordered by "+condition+" desc");
+		List<Map<String, Object>> result = mapper
+				.selectFree("* from playermatchinfo where idmatchinfo = " + dt
+						+ " and idplayerinfo is not null order by "
+						+ condition + " desc");
 		List<PlayerInMatchFull> play = new ArrayList<PlayerInMatchFull>();
-		for(Map<String, Object> m : result){
+		for (Map<String, Object> m : result) {
 			play.add(new PlayerInMatchFull(m));
 		}
-		
+
 		return play;
 	}
 
 	@Override
 	public List<PlayerInMatchFull> getLeadPlayerForSeason(String season,
 			String condition) {
-		Map<String,Object> filter = new HashMap<String,Object>();
+		Map<String, Object> filter = new HashMap<String, Object>();
 		filter.put("season", season);
 		filter.put("attribute", "per_game%");
-		List<Map<String,Object>> result = mapper.selectList("playerstatinfo", null, filter,  "ordered by "+condition+" desc" );
+		List<Map<String, Object>> result = mapper
+				.selectFree("* from playermatchinfo where season = " + season
+						+ " and attribute like " + "'per_game%' "
+						+ "and idplayerinfo is not null order by "
+						+ condition + " desc");
 		List<PlayerInMatchFull> play = new ArrayList<PlayerInMatchFull>();
-		for(Map<String,Object> m:result){
+		for (Map<String, Object> m : result) {
 			play.add(new PlayerInMatchFull(m));
 		}
 		return play;
@@ -273,17 +289,18 @@ public class DataReader implements NewDataReaderService {
 	@Override
 	public List<TeamAverage> getLeadTeamForSeason(String season,
 			String condition) {
-		Map<String,Object> filter = new HashMap<String,Object>();
+		Map<String, Object> filter = new HashMap<String, Object>();
 		filter.put("season", season);
-		filter.put("attribute","%perGame");
-		List<Map<String,Object>> result = mapper.selectList("teamaverage", null, filter, "ordered by "+condition+" desc");
+		filter.put("attribute", "%perGame");
+		List<Map<String, Object>> result = mapper.selectList("teamaverage",
+				null, filter, "ordered by " + condition + " desc");
 		List<TeamAverage> teams = new ArrayList<TeamAverage>();
-		for(Map<String,Object> m:result){
+		for (Map<String, Object> m : result) {
 			teams.add(new TeamAverage(m));
-			
+
 		}
 		return teams;
-		
+
 	}
 
 	@Override
@@ -295,9 +312,10 @@ public class DataReader implements NewDataReaderService {
 
 	@Override
 	public List<TeamInfo> getTeamInfoAll() {
-		List<Map<String,Object>> result = mapper.selectList("teaminfo", null, null, null);
+		List<Map<String, Object>> result = mapper.selectList("teaminfo", null,
+				null, null);
 		List<TeamInfo> teams = new ArrayList<TeamInfo>();
-		for(Map<String,Object> m:result){
+		for (Map<String, Object> m : result) {
 			teams.add(new TeamInfo(m));
 		}
 		return teams;
@@ -305,19 +323,20 @@ public class DataReader implements NewDataReaderService {
 
 	@Override
 	public TeamInfo getTeamInfo(String name) {
-		Map<String,Object> filter = new HashMap<String,Object>();
+		Map<String, Object> filter = new HashMap<String, Object>();
 		filter.put("team", name);
-		Map<String,Object> result = mapper.selectOne("teaminfo", null, filter);
+		Map<String, Object> result = mapper.selectOne("teaminfo", null, filter);
 		return new TeamInfo(result);
 	}
 
 	@Override
 	public List<PlayerInMatchFull> getPlayerInMatch(String idmatchinfo) {
-		Map<String,Object> filter = new HashMap<String,Object>();
+		Map<String, Object> filter = new HashMap<String, Object>();
 		filter.put("idmatchinfo", idmatchinfo);
-		List<Map<String,Object>> result = mapper.selectList("playermatchinfo", null, filter,null);
+		List<Map<String, Object>> result = mapper.selectList("playermatchinfo",
+				null, filter, null);
 		List<PlayerInMatchFull> players = new ArrayList<PlayerInMatchFull>();
-		for(Map<String,Object> m:result){
+		for (Map<String, Object> m : result) {
 			players.add(new PlayerInMatchFull(m));
 		}
 		return players;
@@ -325,18 +344,17 @@ public class DataReader implements NewDataReaderService {
 
 	@Override
 	public List<PlayerInfo> getPlayersInTeam(String teamName, String season) {
-		Map<String,Object> filter = new HashMap<String,Object>();
+		Map<String, Object> filter = new HashMap<String, Object>();
 		filter.put("team", teamName);
 		filter.put("season", season);
 		filter.put("attribute", "totals.%");
-		List<Map<String,Object>> result = mapper.selectList("playermatchinfo", null, filter, null); 
+		List<Map<String, Object>> result = mapper.selectList("playermatchinfo",
+				null, filter, null);
 		List<PlayerInfo> players = new ArrayList<PlayerInfo>();
-		for(Map<String,Object> m:result){
+		for (Map<String, Object> m : result) {
 			players.add(new PlayerInfo(m));
 		}
 		return players;
 	}
-
-
 
 }

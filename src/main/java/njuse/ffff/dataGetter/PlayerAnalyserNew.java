@@ -48,7 +48,7 @@ public class PlayerAnalyserNew {
 	String draft;
 	String hallOfFame;
 	int experience;
-	short plNumber;
+	int plNumber;
 	int plSalary;
 
 	public void analyseSingle(BufferedReader br, String head)
@@ -187,14 +187,14 @@ public class PlayerAnalyserNew {
 		try{
 			
 			ArrayList<String> tips = new ArrayList<String>();
-			ArrayList<Short> numbers = new ArrayList<Short>();
+			ArrayList<Integer> numbers = new ArrayList<Integer>();
 			// line = readLineUntil("<div class");
 			while (true) {
 
 				String tip = matchPattern(line, "tip=(.*)>");
 				tips.add(tip);
 				line = readLineUntil("<span style=");
-				plNumber = Short.parseShort(line.replaceAll("<(.+?)>", "")
+				plNumber = Integer.parseInt(line.replaceAll("<(.+?)>", "")
 						.trim());
 				numbers.add(plNumber);
 				line = readLineUntil("<div class");
@@ -375,7 +375,7 @@ public class PlayerAnalyserNew {
 		 * 如果不符合表，就只添加球员的基本信息
 		 */
 		PlayerInfo p = new PlayerInfo(idPlayerInfo, plName, plFullName,
-				plPosition, shoot, plHeight, plWeight, plBirth, plBirthCity,
+				plPosition, String.valueOf(shoot), plHeight, plWeight, plBirth, plBirthCity,
 				plHighSchool, plUniv, nbadebut, hallOfFame, draft, experience,
 				plNumber, plSalary);
 		Map<String, Object> inputMap = p.generateHashMap();

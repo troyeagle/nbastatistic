@@ -27,7 +27,7 @@ public class PlayerInfo {
 			String plPosition,String shoot, String plHeight, int plWeight,
 			Date plBirth, String plBirthCity, String plHighSchool,
 			String plUniv, String nbadebut, String hallOfFame, String draft,
-			int experience, short plNumber, int plSalary) {
+			int experience, int plNumber, int plSalary) {
 		super();
 		this.idPlayerInfo = idPlayerInfo;
 		this.plName = plName;
