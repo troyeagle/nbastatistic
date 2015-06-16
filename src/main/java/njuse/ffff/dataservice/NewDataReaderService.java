@@ -12,17 +12,17 @@ import njuse.ffff.sqlpo.TeamAverageAdv;
 import njuse.ffff.sqlpo.TeamInfo;
 
 public interface NewDataReaderService {
-	/** 根据球员获得他参加的所有赛季 */
+	/** 根据球员获得他参加的所有赛季，season格式为“xx-xx” */
 	List<String> selectSeasonsByPlayer(String playerId);
 
 	/**
-	 * 获得某赛季所有球员数据,其中season可包含po，attribute可包含totals,per_game,per_minute,per_poss
+	 * 获得某赛季所有球员数据,其中season可包含po，attribute可为totals,per_game,per_minute,per_poss
 	 * ,
 	 *
 	* advanced直接附赠。 */
 	List<PlayerInMatchFull> getPlayersStatsAll(String season, String attribute);
 
-	/** 获得某赛季某个球员的数据。 */
+	/** 获得某赛季某个球员的数据。attribute同上 */
 	PlayerInMatchFull getPlayerStatsSingle(String idPlayer, String season,
 			String attribute);
 
@@ -66,19 +66,35 @@ public interface NewDataReaderService {
 	/** 获得按某一条件的提升率筛选出来的最近5场进步最快的5名球员 */
 	public List<PlayerInMatchFull> getImprovePlayer(String season,
 			String condition);
-
+	/**
+	 * 获得所有球队信息
+	 * @return
+	 */
 	public List<TeamInfo> getTeamInfoAll();
-
+	/**
+	 * 获得某一支球队的基本信息
+	 * @param name
+	 * @return
+	 */
 	public TeamInfo getTeamInfo(String name);
-
+	/**
+	 * 获得一场比赛当中的所有球员表现
+	 * @param idmatchinfo
+	 * @return
+	 */
 	public List<PlayerInMatchFull> getPlayerInMatch(String idmatchinfo);
-
+	/**
+	 * 获得某个赛季中一支队伍的所有球员
+	 * @param teamName
+	 * @param season
+	 * @return
+	 */
 	public List<PlayerInfo> getPlayersInTeam(String teamName, String season);
 
 	/** 获得某赛季某球队数据信息 */
 	TeamAverage getTeamAverageSingle(String name, String season,
 			String attribute);
 
-	TeamAverageAdv getTeamAverageAdv(String name, String season,
-			String attribute);
+	TeamAverageAdv getTeamAverageAdv(String name, String season
+			);
 }

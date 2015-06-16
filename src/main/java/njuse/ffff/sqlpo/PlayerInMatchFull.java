@@ -159,6 +159,9 @@ public class PlayerInMatchFull {
 		turnover = parseInt(split[16]);
 		foul = parseInt(split[17]);
 		points = parseInt(split[18]);
+		if(split.length>19){
+			plusminus = parseInt(split[19]);
+		}
 		
 	}
 

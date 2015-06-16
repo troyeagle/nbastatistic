@@ -23,7 +23,10 @@ public class DataReader implements NewDataReaderService {
 	String currentDate;
 	SqlSession sqlSession;
 	Mapper mapper;
-
+	
+	public DataReader(){
+			initialize();
+	}
 	public void initialize() {
 		DatabaseUtility.init();
 		sqlSession = DatabaseUtility.getSqlSession();
@@ -53,14 +56,14 @@ public class DataReader implements NewDataReaderService {
 		attribute += "%";
 
 		filter.put("attribute", attribute);
-		List<Map<String, Object>> result = mapper.selectList("playermatchinfo",
+		List<Map<String, Object>> result = mapper.selectList("playerstatinfo",
 				null, filter, null);
 		List<PlayerInMatchFull> players = new ArrayList<PlayerInMatchFull>();
 		for (Map<String, Object> m : result) {
 			Map<String, Object> advfilter = new HashMap<String, Object>();
 			advfilter.put("season", season);
 			advfilter.put("idplayerinfo", m.get("idplayerinfo"));
-			Map<String, Object> adv = mapper.selectOne("playermatchinfoadv",
+			Map<String, Object> adv = mapper.selectOne("playerstatinfoadv",
 					null, filter);
 			adv.putAll(m);
 			players.add(new PlayerInMatchFull(adv));
@@ -77,7 +80,7 @@ public class DataReader implements NewDataReaderService {
 		attribute += "%";
 
 		filter.put("attribute", attribute);
-		Map<String, Object> result = mapper.selectOne("playermatchinfo", null,
+		Map<String, Object> result = mapper.selectOne("playerstatinfo", null,
 				filter);
 		PlayerInMatchFull p = new PlayerInMatchFull(result);
 		return p;
@@ -89,7 +92,7 @@ public class DataReader implements NewDataReaderService {
 		filter.put("season", season);
 		filter.put("idplayerinfo", idPlayer);
 
-		List<Map<String, Object>> result = mapper.selectList("playermatchinfo",
+		List<Map<String, Object>> result = mapper.selectList("playerstatinfo",
 				null, filter, null);
 		List<PlayerInMatchFull> players = new ArrayList<PlayerInMatchFull>();
 		for (Map<String, Object> m : result) {
@@ -162,13 +165,11 @@ public class DataReader implements NewDataReaderService {
 		return m;
 	}
 	@Override
-	public TeamAverageAdv getTeamAverageAdv(String name,String season,String attribute){
+	public TeamAverageAdv getTeamAverageAdv(String name,String season){
 		Map<String,Object> filter = new HashMap<String,Object>();
 		filter.put("team", name);
 		filter.put("season", season);
-		if(attribute!=null){
-			filter.put("attribute", "%"+attribute);
-		}
+		
 		Map<String, Object> result = mapper.selectOne("teamaverageadv", null,
 				filter);
 		TeamAverageAdv t = new TeamAverageAdv(result);

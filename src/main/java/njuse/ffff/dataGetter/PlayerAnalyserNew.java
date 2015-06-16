@@ -317,7 +317,7 @@ public class PlayerAnalyserNew {
 							idPlayerInfo);
 					pf.setAdvancedByArray(temp);
 					playerstatus = pf.generateAdvancedMap();
-					tableName = "playermatchinfoadv";
+					tableName = "playerstatadv";
 				} else if (temp.get(0).contains("shooting")) {
 					PlayerShooting ps = new PlayerShooting(plName, idPlayerInfo);
 					ps.setAttributes(temp);
@@ -328,7 +328,7 @@ public class PlayerAnalyserNew {
 							idPlayerInfo);
 					pf.setBasicByArray(temp);
 					playerstatus = pf.generateBasicMap();
-					tableName = "playermatchinfo";
+					tableName = "playerstatinfo";
 				}
 				Mapper mapper = sqlSession.getMapper(Mapper.class);
 				try {

@@ -15,7 +15,7 @@ public class MatchReaderByYear {
 		BufferedReader br;
 		HtmlReader hr = new HtmlReader();
 		do {
-			
+
 			br = hr.execute("http://www.basketball-reference.com/leagues/NBA_"
 					+ year + "_games.html");
 		} while (br == null);
@@ -42,7 +42,7 @@ public class MatchReaderByYear {
 
 		ArrayList<String> playoffs = matchPattern(sbPlayoff.toString(),
 				"<td align=\"center\" ><a href=\"/boxscores/(.+?).html\">Box Score</a></td>");
-		String str1 = String.valueOf((year -1)% 100);
+		String str1 = String.valueOf((year - 1) % 100);
 		if (str1.length() == 1)
 			str1 = "0" + str1;
 		String str2 = String.valueOf((year) % 100);
@@ -50,7 +50,9 @@ public class MatchReaderByYear {
 			str2 = "0" + str2;
 		str1 = str1 + "-" + str2;
 		for (String i : matches) {
+
 			System.out.println("ProcessingMatch " + i + " " + str1 + "常规赛");
+
 			boolean flag = false;
 			while (!flag) {
 				HtmlReader ht = new HtmlReader();
@@ -65,7 +67,9 @@ public class MatchReaderByYear {
 		}
 
 		for (String i : playoffs) {
+
 			System.out.println("ProcessingMatch " + i + " " + str1 + "季后赛");
+
 			boolean flag = false;
 			while (!flag) {
 				HtmlReader ht = new HtmlReader();
@@ -77,7 +81,6 @@ public class MatchReaderByYear {
 				ht.httpClient.close();
 			}
 
-			
 		}
 		// System.out.println(playoffs.get(1));
 		hr.httpClient.close();
@@ -98,7 +101,7 @@ public class MatchReaderByYear {
 		ExecutorService exe = Executors.newCachedThreadPool();
 		YearThread th[] = new YearThread[70];
 		DatabaseUtility.init();
-		for (int i = 0; i < 35; i++) {
+		for (int i = 0; i < 36; i++) {
 			th[i] = new YearThread(i + 1980);
 			exe.execute(th[i]);
 		}

@@ -431,13 +431,13 @@ public class MatchAnalyserNew {
 			sqlSession.insert("insertAMatch", inputMap);
 			sqlSession.commit();
 		}catch(Exception e){
-			System.out.println(head+" already exist");
+			//System.out.println(head+" already exist");
 			sqlSession.close();
 			return;
 		}
 		
 		// sqlSession.close();
-		playerInTeamA.addAll(playerInTeamB);
+		//playerInTeamA.addAll(playerInTeamB);
 		for (PlayerInMatchFull pf : playerInTeamA) {
 			Map<String, Object> playerInMatch = new HashMap<String, Object>();
 			pf.setIdMatchInfo(head);
@@ -452,22 +452,88 @@ public class MatchAnalyserNew {
 				try{
 					pf.setPlayerId((String) receive.get("idplayerinfo"));
 				}catch(Exception e){
-					System.out.println("Player " +pf.getName()+" Not Found");
+					specialProcess(pf);
+					if(pf.getPlayerId()==null){
+						System.out.println("Player " +pf.getName()+" Not Found");
+					}
+					
+					
 				}
 				
 			}
 			
 			playerInMatch = pf.generateBasicMap();
 			playerInMatch.put("idmatchinfo", head);
+			playerInMatch.put("season", season);
+			playerInMatch.put("team", teamA);
 			mapper.insert("playermatchinfo", playerInMatch);
 			playerInMatch = pf.generateAdvancedMap();
 			playerInMatch.put("idmatchinfo", head);
+			playerInMatch.put("season", season);
+			playerInMatch.put("team", teamA);
+			mapper.insert("playermatchinfoadv", playerInMatch);
+			
+		}
+		for (PlayerInMatchFull pf : playerInTeamB) {
+			Map<String, Object> playerInMatch = new HashMap<String, Object>();
+			pf.setIdMatchInfo(head);
+			
+			Mapper mapper = sqlSession.getMapper(Mapper.class);
+			
+			Map<String, Object> selector = new HashMap<String, Object>();
+			selector.put("plName", pf.getName());
+			if(!pf.getName().contains("Total")){
+				Map<String, Object> receive = mapper.selectOne("playerinfo", null,
+						selector);
+				try{
+					pf.setPlayerId((String) receive.get("idplayerinfo"));
+				}catch(Exception e){
+					specialProcess(pf);
+					if(pf.getPlayerId()==null){
+						System.out.println("Player " +pf.getName()+" Not Found");
+					}
+				}
+				
+			}
+			
+			playerInMatch = pf.generateBasicMap();
+			playerInMatch.put("idmatchinfo", head);
+			playerInMatch.put("season", season);
+			playerInMatch.put("team", teamB);
+			mapper.insert("playermatchinfo", playerInMatch);
+			playerInMatch = pf.generateAdvancedMap();
+			playerInMatch.put("idmatchinfo", head);
+			playerInMatch.put("season", season);
+			playerInMatch.put("team", teamB);
 			mapper.insert("playermatchinfoadv", playerInMatch);
 			
 		}
 		sqlSession.commit();
 		sqlSession.close();
 
+	}
+
+	private synchronized void specialProcess(PlayerInMatchFull pf) {
+		switch(pf.getName().trim()){
+		case "Nene Hilario":
+			pf.setPlayerId("hilarne01");
+			break;
+		case "Luigi Datome":
+			pf.setPlayerId("datomlu01");
+			break;
+		case "Patrick Mills":
+			pf.setPlayerId("millspa02");
+			break;
+		case "Jeffery Taylor":
+			pf.setPlayerId("tayloje03");
+			break;
+		case "Bill Walker":
+			pf.setPlayerId("walkebi01");
+			break;
+		case "Louis Williams":
+			pf.setPlayerId("willilo02");
+		}
+		
 	}
 
 	public static void main(String[] args) {
