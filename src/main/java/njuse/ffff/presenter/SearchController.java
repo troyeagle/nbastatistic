@@ -63,9 +63,9 @@ public class SearchController implements SearchService {
 		//查找
 		for (TeamInfo team : data_team) {
 			Map<String,Object> map = team.generateMap();
-			if (String.valueOf(map.get("team")).toUpperCase().contains(input)
-					|| String.valueOf(map.get("teamNames")).toUpperCase().contains(input)) {
-				search_team.add(String.valueOf(map.get("team")));
+			if (String.valueOf(map.get("name")).toUpperCase().contains(input)
+					) {//|| String.valueOf(map.get("teamNames")).toUpperCase().contains(input)
+				search_team.add(String.valueOf(map.get("name")));
 			}
 		}
 		return search_team.toArray(new String[0]);
