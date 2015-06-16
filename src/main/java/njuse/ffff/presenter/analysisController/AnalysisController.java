@@ -57,7 +57,7 @@ public class AnalysisController implements AnalysisSerivce{
 	public String[] getSelfLeagueAnalysis(String startSeason) {
 		String[] temp = startSeason.split("-");
 		int end = Math.min(Integer.parseInt(temp[0])+4, 2014);
-		StringBuffer seasons = new StringBuffer(startSeason+"-"+end);
+		StringBuffer seasons = new StringBuffer(temp[0]+"-"+end);
 		String[] value = leagueStyleAnalysis.calculateCharactoristic2(seasons.toString());
 		return value;
 	}

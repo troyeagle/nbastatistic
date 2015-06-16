@@ -229,58 +229,43 @@ public class HotEventController implements HotEventService{
 		List<MatchInfo> matchList = dataReader.getMatchInPeriod(start, end);
 		List<PlayerInMatchFull> plist = new ArrayList<PlayerInMatchFull>();
 		for(MatchInfo match:matchList){
-			plist.addAll(dataReader.getPlayerInMatch(match.getIdmatchinfo()));
+			List<PlayerInMatchFull> lt = dataReader.getPlayerInMatch(match.getIdmatchinfo());
+			for(PlayerInMatchFull m:lt){
+				if(!m.getName().contains("Team")){
+					boolean has = false;
+					for(PlayerInMatchFull mt:plist){
+						if(m.getName().equals(mt.getName())){
+							has = true;
+							break;
+						}
+					}
+					if(!has){
+						plist.add(m);
+					}
+				}
+			}
 		}
+		PlayerInMatchFull[] p_l = plist.toArray(new PlayerInMatchFull[0]);
 		//排序
-		for(int i=0;i<plist.size()-1;i++){
-			for(int j=0;j<plist.size()-1;j++){
-				switch(condition){
-				case "points":
-					if(plist.get(j).getPoints()<plist.get(j+1).getPoints()){
-						PlayerInMatchFull temp = plist.get(j);
-						plist.set(j, plist.get(j+1));
-						plist.set(j+1, temp);
-					}
-					break;
-				case "rebound":
-					if(plist.get(j).getRebound()<plist.get(j+1).getRebound()){
-						PlayerInMatchFull temp = plist.get(j);
-						plist.set(j, plist.get(j+1));
-						plist.set(j+1, temp);
-					}
-					break;
-				case "assist":
-					if(plist.get(j).getAssist()<plist.get(j+1).getAssist()){
-						PlayerInMatchFull temp = plist.get(j);
-						plist.set(j, plist.get(j+1));
-						plist.set(j+1, temp);
-					}
-					break;
-				case "steal":
-					if(plist.get(j).getSteal()<plist.get(j+1).getSteal()){
-						PlayerInMatchFull temp = plist.get(j);
-						plist.set(j, plist.get(j+1));
-						plist.set(j+1, temp);
-					}
-					break;
-				case "block":
-					if(plist.get(j).getBlock()<plist.get(j+1).getBlock()){
-						PlayerInMatchFull temp = plist.get(j);
-						plist.set(j, plist.get(j+1));
-						plist.set(j+1, temp);
-					}
-					break;
+		for(int i=0;i<p_l.length-1;i++){
+			for(int j=0;j<p_l.length-i-1;j++){
+				Map<String,Object> map1 = p_l[j].generateBasicMap();
+				Map<String,Object> map2 = p_l[j+1].generateBasicMap();
+				if(Double.parseDouble(String.valueOf(map1.get(condition)))<Double.parseDouble(String.valueOf(map2.get(condition)))){
+					PlayerInMatchFull temp = p_l[j];
+					p_l[j] = p_l[j+1];
+					p_l[j+1] = temp;
 				}
 			}
 		}
 		
 //		List<PlayerInMatchFull> list = dataReader.getLeadPlayerForDay(totalController.getCurrentDay(), condition);//dataService.getCurrentDate().getTime()
 		Object[][] player_condition = new Object[5][];
-		for(int i=0;i<Math.min(5, plist.size());i++){
-			PlayerInMatchFull player = plist.get(i);
+		for(int i=0;i<Math.min(5, p_l.length);i++){
+			PlayerInMatchFull player = p_l[i];
 			Map<String,Object> map = player.generateBasicMap();
 			player_condition[i] = new Object[]{player.getName(),map.get("team"),map.get("position")
-					,map.get("condition")};
+					,map.get(condition)};
 		}
 		return player_condition;
 	}
@@ -329,7 +314,7 @@ public class HotEventController implements HotEventService{
 	private Object[][] formPlayerValuesForSeason(String condition){
 		List<PlayerInMatchFull> plist  = dataReader.getPlayersStatsAll(totalController.getCurrentSeason(), "per_game");
 		for(int i=0;i<plist.size()-1;i++){
-			for(int j=0;j<plist.size()-1;j++){
+			for(int j=0;j<plist.size()-i-1;j++){
 				Map<String,Object> map1 = plist.get(j).generateBasicMap();
 				Map<String,Object> map2 = plist.get(j+1).generateBasicMap();
 				if(Double.parseDouble(String.valueOf(map1.get(condition)))<Double.parseDouble(String.valueOf(map2.get(condition)))){
@@ -353,13 +338,13 @@ public class HotEventController implements HotEventService{
 				case "assist":		//场均助攻
 				case "block":	//场均盖帽
 				case "steal":	//场均抢断
-					player_condition[i] = new Object[]{player.getName(),map.get("team"),map.get("position"),map.get("condition")};
+					player_condition[i] = new Object[]{player.getName(),map.get("team"),map.get("position"),map.get(condition)};
 					break;
 				case "fieldGoalPercentage":	//投篮命中率
 				case "threePointerPercentage":	//三分命中率
 				case "freeThrowMade":	//罚球命中率
 					player_condition[i] = new Object[]{player.getName(),map.get("team"),map.get("position"),
-							DealDecimal.formatChangeToPercentage(Double.parseDouble(String.valueOf(map.get("condition"))))};
+							DealDecimal.formatChangeToPercentage(Double.parseDouble(String.valueOf(map.get(condition))))};
 				}
 			}
 			else{
@@ -408,7 +393,7 @@ public class HotEventController implements HotEventService{
 	private Object[][] formTeamValuesForSeason(String condition){
 		List<TeamAverage> tlist = dataReader.getTeamAverages(totalController.getCurrentSeason());
 		for(int i=0;i<tlist.size()-1;i++){
-			for(int j=0;j<tlist.size()-1;j++){
+			for(int j=0;j<tlist.size()-i-1;j++){
 				Map<String,Object> map1 = tlist.get(j).generateMap();
 				Map<String,Object> map2 = tlist.get(j+1).generateMap();
 				if(Double.parseDouble(String.valueOf(map1.get(condition)))<Double.parseDouble(String.valueOf(map2.get(condition)))){
