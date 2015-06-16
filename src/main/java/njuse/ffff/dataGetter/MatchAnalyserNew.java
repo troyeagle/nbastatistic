@@ -431,7 +431,9 @@ public class MatchAnalyserNew {
 			sqlSession.insert("insertAMatch", inputMap);
 			sqlSession.commit();
 		}catch(Exception e){
-			
+			System.out.println(head+" already exist");
+			sqlSession.close();
+			return;
 		}
 		
 		// sqlSession.close();
@@ -448,7 +450,7 @@ public class MatchAnalyserNew {
 				Map<String, Object> receive = mapper.selectOne("playerinfo", null,
 						selector);
 				try{
-					pf.setPlayerId((String) receive.get("idPlayerInfo"));
+					pf.setPlayerId((String) receive.get("idplayerinfo"));
 				}catch(Exception e){
 					System.out.println("Player " +pf.getName()+" Not Found");
 				}
@@ -456,11 +458,14 @@ public class MatchAnalyserNew {
 			}
 			
 			playerInMatch = pf.generateBasicMap();
+			playerInMatch.put("idmatchinfo", head);
 			mapper.insert("playermatchinfo", playerInMatch);
 			playerInMatch = pf.generateAdvancedMap();
+			playerInMatch.put("idmatchinfo", head);
 			mapper.insert("playermatchinfoadv", playerInMatch);
-			sqlSession.commit();
+			
 		}
+		sqlSession.commit();
 		sqlSession.close();
 
 	}

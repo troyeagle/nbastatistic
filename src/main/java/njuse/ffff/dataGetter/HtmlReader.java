@@ -37,7 +37,12 @@ public class HtmlReader {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
 			System.out.println(url + " TimeOut!!!!!!!");
-
+			try {
+				throw new IOException();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}return null;
 
 	}

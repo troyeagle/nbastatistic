@@ -98,8 +98,8 @@ public class MatchReaderByYear {
 		ExecutorService exe = Executors.newCachedThreadPool();
 		YearThread th[] = new YearThread[70];
 		DatabaseUtility.init();
-		for (int i = 0; i < 30; i++) {
-			th[i] = new YearThread(i + 1985);
+		for (int i = 0; i < 35; i++) {
+			th[i] = new YearThread(i + 1980);
 			exe.execute(th[i]);
 		}
 

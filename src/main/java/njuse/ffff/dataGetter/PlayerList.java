@@ -98,7 +98,7 @@ public class PlayerList {
 	}
 
 	public void getAllPlayer() {
-		for (char m = 'b'; m <= 'z'; m++) {
+		for (char m = 'a'; m <= 'z'; m++) {
 			if (m == 'x') {
 				continue;
 			}
@@ -133,7 +133,7 @@ public class PlayerList {
 				HtmlReader subhr = new HtmlReader();
 				//BufferedReader subbr = subhr
 				//		.execute("http://www.basketball-reference.com" + s);
-				//System.out.println("Thread" + i + " Reading player " + s);
+				System.out.println("Thread" + i + " Reading player " + s);
 
 				try {
 					pn.analyseSingle(subhr

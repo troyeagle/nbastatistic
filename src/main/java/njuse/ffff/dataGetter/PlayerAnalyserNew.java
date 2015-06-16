@@ -56,6 +56,7 @@ public class PlayerAnalyserNew {
 		DatabaseUtility.init();
 		SqlSession sqlSession = DatabaseUtility.getSqlSession();
 		this.br = br;
+		head = head.replaceAll(".html", "");
 		idPlayerInfo = head;
 		String line = "", get = "";
 		line = readLineUntil("<h1>");
@@ -136,7 +137,7 @@ public class PlayerAnalyserNew {
 						.substring(0, 3));
 			}
 			t = processor.indexOf("Born:");
-			if (t > 0) {
+			if (t > 0&&processor.get(t+3).contains("in")) {
 				try{
 					plBirthCity = processor.get(t + 3).substring(2);
 					plBirthCity+=processor.get(t + 4);
@@ -167,6 +168,7 @@ public class PlayerAnalyserNew {
 			t = processor.indexOf("NBA Debut:");
 			if (t > 0) {
 				nbadebut = processor.get(t + 1);
+				nbadebut = nbadebut.substring(0, nbadebut.length()-1);
 			}
 			t = processor.indexOf("Experience:");
 			if (t > 0) {
@@ -176,6 +178,7 @@ public class PlayerAnalyserNew {
 			t = processor.indexOf("Hall of Fame:");
 			if (t > 0) {
 				hallOfFame = processor.get(t + 1);
+				hallOfFame = hallOfFame.substring(0, hallOfFame.length()-1);
 			}
 			
 		}catch(NullPointerException e){
@@ -335,7 +338,7 @@ public class PlayerAnalyserNew {
 					e.printStackTrace();
 				}
 
-				sqlSession.commit();
+				//sqlSession.commit();
 			}
 			/**
 			 * 薪水表
@@ -344,9 +347,10 @@ public class PlayerAnalyserNew {
 				for (ArrayList<String> i : salaries) {
 					PlayerSalary ps = new PlayerSalary(plName, idPlayerInfo);
 					ps.setAttributes(i);
+					plSalary =Integer.parseInt(i.get(3).replaceAll(",", "").substring(1).trim());
 					Mapper mapper = sqlSession.getMapper(Mapper.class);
 					mapper.insert("playersalary", ps.generateMap());
-					sqlSession.commit();
+					//sqlSession.commit();
 				}
 			}
 		
@@ -358,8 +362,9 @@ public class PlayerAnalyserNew {
 						numbers.get(i), tips.get(i));
 				Mapper mapper = sqlSession.getMapper(Mapper.class);
 				mapper.insert("playernumber", pn.generateMap());
-				sqlSession.commit();
+				//sqlSession.commit();
 			}
+			sqlSession.commit();
 		} catch (NullPointerException e) {
 			//System.out.println(head + "do not fit the table");
 		}
@@ -395,6 +400,8 @@ public class PlayerAnalyserNew {
 		str = str.replaceAll("Center", "C");
 		str = str.replaceAll("Shooting Guard", "SG");
 		str = str.replaceAll("Point Guard", "PG");
+		str = str.replaceAll("Guard", "G");
+		str = str.replaceAll("Forward", "F");
 		str = str.replaceAll("and", "-");
 		str = str.replaceAll(" ", "");
 		return str;
@@ -430,10 +437,10 @@ public class PlayerAnalyserNew {
 	public static void main(String[] args) {
 		HtmlReader hr = new HtmlReader();
 		BufferedReader br = hr
-				.execute("http://www.basketball-reference.com/players/a/acyqu01.html");
+				.execute("http://www.basketball-reference.com/players/w/walkebi01.html");
 		PlayerAnalyserNew pa = new PlayerAnalyserNew();
 		try {
-			pa.analyseSingle(br, "ackeral01");
+			pa.analyseSingle(br, "walkebi01");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
