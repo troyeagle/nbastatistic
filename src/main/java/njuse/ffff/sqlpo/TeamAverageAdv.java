@@ -1,5 +1,6 @@
 package njuse.ffff.sqlpo;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,14 +19,26 @@ public class TeamAverageAdv {
 	public TeamAverageAdv(Map<String, Object> map) {
 		team = (String) map.get("team");
 		season = (String) map.get("season");
-		winRate = ((Float)map.get("winRate")).doubleValue();
-		myRounds = ((Float)map.get("myRounds")).doubleValue();
-		offensiveEf = ((Float)map.get("offensiveEf")).doubleValue();
-		defensiveEf = ((Float)map.get("defensiveEf")).doubleValue();
-		offensiveReboundEf = ((Float)map.get("offensiveReboundEf")).doubleValue();
-		defensiveReboundEf = ((Float)map.get("defensiveReboundEf")).doubleValue();
-		stealEf = ((Float)map.get("stealEf")).doubleValue();
-		assistEf = ((Float)map.get("assistEf")).doubleValue();
+		winRate = myParse(map.get("winRate"));
+		myRounds = myParse(map.get("myRounds"));
+		offensiveEf = myParse(map.get("offensiveEf"));
+		defensiveEf = myParse(map.get("defensiveEf"));
+		offensiveReboundEf = myParse(map.get("offensiveReboundEf"));
+		defensiveReboundEf = myParse(map.get("defensiveReboundEf"));
+		stealEf = myParse(map.get("stealEf"));
+		assistEf = myParse(map.get("assistEf"));
+	}
+
+	private double myParse(Object object) {
+		try{
+			DecimalFormat df = new DecimalFormat("#.###");
+			double a = ((Float)object).doubleValue();
+			a = (double)((int)(1000*a))/1000;
+			return a;
+		}catch(Exception e){
+			return -1;
+		}
+		
 	}
 
 	public TeamAverageAdv(TeamAverage myteam, TeamAverage rival) {
