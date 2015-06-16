@@ -1,6 +1,7 @@
 package njuse.ffff.ui.ver2;
 
 import java.awt.Cursor;
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
@@ -30,11 +31,13 @@ public class PlayersOverViewPane extends OverviewPanel implements PlayersOvervie
 		super(avgTableHeader, totalTableHeader);
 
 		seasonList.addItemListener(e -> {
-//			new Thread(() -> {
+			if (e.getStateChange() == ItemEvent.SELECTED) {
+				//			new Thread(() -> {
 				UIEventManager.notify(UIEventType.BUSY);
 				controller.setPlayerCompareInfoForSeason(this, getSelectedSeason());
 				UIEventManager.notify(UIEventType.FINISH);
-//			}).start();
+				//			}).start();
+			}
 		});
 
 		avgTable.addMouseListener(new MouseAdapter() {

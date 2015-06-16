@@ -1,5 +1,7 @@
 package njuse.ffff.ui.ver2.dataanalize;
 
+import java.awt.event.ItemEvent;
+
 import njuse.ffff.presenter.analysisController.AnalysisController;
 import njuse.ffff.ui.ver2.dataanalize.defensive.BlockPanel;
 import njuse.ffff.ui.ver2.dataanalize.defensive.DefPanel;
@@ -33,7 +35,9 @@ public class DefensiveDataPanel extends DataPanel {
 		ans = AnalysisController.getInstance();
 
 		seasonList.addItemListener(e -> {
-			switchSeason();
+			if (e.getStateChange() == ItemEvent.SELECTED) {
+				switchSeason();
+			}
 		});
 	}
 

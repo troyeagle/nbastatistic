@@ -5,6 +5,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.GridLayout;
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
@@ -45,11 +46,13 @@ public class TeamsOverViewPanel extends OverviewPanel implements TeamsOverviewSe
 		super(avgTableHeader, totalTableHeader);
 
 		seasonList.addItemListener(e -> {
-//			new Thread(() -> {
+			if (e.getStateChange() == ItemEvent.SELECTED) {
+				//			new Thread(() -> {
 				UIEventManager.notify(UIEventType.BUSY);
 				controller.setTeamCompareInfoForSeason(this, getSelectedSeason());
 				UIEventManager.notify(UIEventType.FINISH);
-//			}).start();
+				//			}).start();
+			}
 		});
 
 		picView = new SwitchButton("球队一览", new ImageIcon("./img/btn/picview.png"));

@@ -69,7 +69,7 @@ public class StabilityPage extends PanelEx {
 		grid.add(panel);
 
 		panel = createPanel();
-		label = createLabel("样本方差：");
+		label = createLabel(type + "方差：");
 		varSample = createLabel2();
 		panel.add(label);
 		panel.add(varSample);

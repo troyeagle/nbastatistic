@@ -39,10 +39,12 @@ public class PlayerDataStabilityPanel extends DataPanel {
 		for (int i = 0; i < tabs.length; i++) {
 			StabilityPage page = map.get(tabs[i]);
 			PlayerSteady ps = list.get(i);
-			//			page.average.setText(ps.get);
+			page.average.setText(String.valueOf(ps.getAvg_last()));
+			page.finished.setText(String.valueOf(ps.getList_current().length));
+			page.avgSample.setText(String.valueOf(ps.getAvg_current()));
 			page.var.setText(String.valueOf(ps.getVar()));
 			page.varSample.setText(String.valueOf(ps.getS2()));
-//			page.varSample2.setText(String.valueOf(ps.get));
+			page.varSample2.setText(String.valueOf(ps.getVar()));
 			page.conclusion.setText(ps.getResult());
 		}
 
