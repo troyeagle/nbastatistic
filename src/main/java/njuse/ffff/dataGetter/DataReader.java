@@ -338,7 +338,7 @@ public class DataReader implements NewDataReaderService {
 	@Override
 	public TeamInfo getTeamInfo(String name) {
 		Map<String, Object> filter = new HashMap<String, Object>();
-		filter.put("team", name);
+		filter.put("name", name);
 		Map<String, Object> result = mapper.selectOne("teaminfo", null, filter);
 		return new TeamInfo(result);
 	}
