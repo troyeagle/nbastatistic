@@ -23,4 +23,6 @@ public interface TeamDataService {
 	String getSelectedSeason();
 
 	void setGameLog(Object[][] data);
+
+	void updateData();
 }

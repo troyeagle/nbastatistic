@@ -8,13 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.JTable;
 
 import njuse.ffff.presenter.playerController.PlayerInfoController;
 import njuse.ffff.ui.component.PanelEx;
 import njuse.ffff.ui.ver2.component.SwitchButton;
 import njuse.ffff.ui.ver2.component.SwitchButtonGroup;
 import njuse.ffff.ui.ver2.component.TabBar;
+import njuse.ffff.ui.ver2.component.TableUtils;
 import njuse.ffff.ui.ver2.component.TableView;
+import njuse.ffff.ui.ver2.component.table.DefaultGroup;
+import njuse.ffff.ui.ver2.component.table.GroupableTableHeader;
 import njuse.ffff.uiservice.PlayerDataService;
 
 public class PlayerDetailPane extends PanelEx implements PlayerDataService {
@@ -22,11 +26,11 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 	private static final long serialVersionUID = 1L;
 
 	private static final String[] avgHeader = { "赛季", "球队", "首发", "时间", "总命中数",
-			"出手", "命中%", "三分", "出手", "命中%", "罚球", "出手", "命中%", "篮板", "前场",
+			"出手", "命中率", "三分", "出手", "命中率", "罚球", "出手", "命中率", "篮板", "前场",
 			"后场", "助攻", "抢断", "盖帽", "失误", "犯规", "得分"
 	};
 	private static final String[] totalHeader = { "赛季", "球队", "首发", "上场数", "总命中数",
-			"出手", "命中%", "三分", "出手", "命中%", "罚球", "出手", "命中%", "篮板", "前场",
+			"出手", "命中率", "三分", "出手", "命中率", "罚球", "出手", "命中率", "篮板", "前场",
 			"后场", "助攻", "抢断", "盖帽", "失误", "犯规", "得分"
 	};
 
@@ -39,7 +43,7 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 			"命中率", "平均出手距离", "两分", "0-3尺", "3-10尺", "10-16尺", "16尺–篮下", "三分",
 			"两分", "0-3尺", "3-10尺", "10-16尺", "16尺-篮下", "三分" };
 
-	private String name;
+	private String id;
 
 	private TabBar tabBar;
 	private PanelEx viewPanel;
@@ -70,7 +74,7 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 		tabBar.addSwitchListener(e -> {
 			((CardLayout) viewPanel.getLayout()).show(viewPanel,
 					tabBar.getActiveTabTitle());
-			boolean isVisible = tabBar.getActiveTabIndex() < 3;
+			boolean isVisible = tabBar.getActiveTabIndex() < 4;
 			regularBtn.setVisible(isVisible);
 			playoffBtn.setVisible(isVisible);
 		});
@@ -125,37 +129,59 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 		viewPanel.add("进阶数据", advTable);
 
 		shotTable = new TableView(null, shotHeader);
+
+		setTableHeader(shotTable.getTable());
+		shotTable.setTableViewUI(new FlatTableviewUI());
 		tabBar.addTab("投篮分布");
 		viewPanel.add("投篮分布", shotTable);
 
 		gamesTable = new GameLogPanel();
 		tabBar.addTab("比赛数据");
 		viewPanel.add("比赛数据", gamesTable);
-		// TODO 特殊表头
-		//			((DefaultTableCellRenderer) gamesTable.getTable()
-		//					.getDefaultRenderer(Object.class))
-		//					.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
 
 		gamesTable.getSeasonList().addItemListener(e -> {
-			// TODO
-				PlayerInfoController.getInstance().setPlayerGameLog(this,
-						gamesTable.getSelectedSeason(), name);
-			});
+			PlayerInfoController.getInstance().setPlayerGameLog(this,
+					gamesTable.getSelectedSeason(), id);
+		});
 	}
 
-	public void setPlayer(String playerName) {
-		boolean isChanged = name == null || !playerName.equals(name);
-		name = playerName;
+	public void updateData() {
+		setPlayer(id);
+	}
 
-		profilePane.setPlayer(playerName);
-		PlayerInfoController pic = PlayerInfoController.getInstance();
-		pic.setPlayerAvgData(this, playerName);
-		pic.setPlayerTotalData(this, playerName);
-		pic.setPlayerAdvancedData(this, playerName);
-		pic.setPlayerGameLog(this, null, playerName);	// TODO delete
+	public void setPlayer(String playerID) {
+		boolean isChanged = id == null || !playerID.equals(id);
+		id = playerID;
 
-		if (isChanged)
+		if (isChanged) {
 			tabBar.switchTo(0);
+			if (group.getActiveIndex() != 0) {
+				group.switchTo(0);
+				return;	// 会导致更新
+			}
+		}
+
+		setPlayerWithoutCheck(playerID);
+	}
+
+	private void setPlayerWithoutCheck(String playerID) {
+		boolean isPlayoff = group.getActiveIndex() == 1;
+
+		profilePane.setPlayer(playerID);
+		PlayerInfoController pic = PlayerInfoController.getInstance();
+		if (!isPlayoff) {
+			pic.setPlayShooting(this, playerID);
+			pic.setPlayerAvgData(this, playerID);
+			pic.setPlayerTotalData(this, playerID);
+			pic.setPlayerAdvancedData(this, playerID);
+		} else {
+			pic.setPlayOffShooting(this, playerID);
+			pic.setPlayOffAvgData(this, playerID);
+			pic.setPlayOffTotalData(this, playerID);
+			pic.setPlayOffAdvancedData(this, playerID);
+		}
+		String[] seasons = pic.getInvolvedSeason("");
+		setGameSeasons(seasons);
 	}
 
 	@Override
@@ -228,5 +254,48 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 	@Override
 	public void setGameLog(Object[][] data) {
 		gamesTable.setData(data);
+	}
+
+	private void setTableHeader(JTable table) {
+		GroupableTableHeader tableHeader = new GroupableTableHeader();
+		table.setTableHeader(tableHeader);
+
+		DefaultGroup group;
+		String[] headerGroup0 = { "赛季", "球队", "主打位置", "出场数", "时间",
+				"命中率", "平均出手距离" };
+		int columnCount = 0;
+		while (columnCount < headerGroup0.length) {
+			group = new DefaultGroup();
+			group.setRow(0);
+			group.setRowSpan(2);
+			group.setColumn(columnCount);
+			group.setHeaderValue(headerGroup0[columnCount]);
+			tableHeader.addGroup(group);
+			columnCount++;
+		}
+
+		String[] headerGroup1 = { "各距离段组成得分比例", "各距离段命中率" };
+		String[] chartLabel = { "两分", "0-3尺", "3-10尺", "10-16尺", "16尺–篮下", "三分" };
+		for (int i = 0; i < headerGroup1.length; i++) {
+			int index = 0;
+			while (index < chartLabel.length) {
+				group = new DefaultGroup();
+				group.setRow(1);
+				group.setColumn(columnCount + index);
+				group.setHeaderValue(chartLabel[index]);
+				tableHeader.addGroup(group);
+				index++;
+			}
+			group = new DefaultGroup();
+			group.setRow(0);
+			group.setColumn(columnCount);
+			group.setColumnSpan(index);
+			group.setHeaderValue(headerGroup1[i]);
+			tableHeader.addGroup(group);
+
+			columnCount += index;
+		}
+		TableUtils.setTableHeader(table);
+
 	}
 }
