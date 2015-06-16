@@ -1,22 +1,35 @@
 package njuse.ffff.presenter.analysisController;
 
-import njuse.ffff.dataservice.DataReaderService;
+import java.util.ArrayList;
+import java.util.List;
+
+import njuse.ffff.dataservice.NewDataReaderService;
 import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.presenter.analysisController.playerAnalysis.PlayerDefendController;
 import njuse.ffff.presenter.analysisController.playerAnalysis.PlayerOffendController;
+import njuse.ffff.presenter.analysisController.playerAnalysis.PlayerSteadyAnalysis;
+import njuse.ffff.presenter.analysisController.styleAnalysis.LeagueStyleAnalysis;
 import njuse.ffff.presenterService.analysisService.AnalysisSerivce;
-import njuse.ffff.uiservice.PlayerDataService;
+import njuse.ffff.vo.DefendFactor;
+import njuse.ffff.vo.OffendFactor;
+import njuse.ffff.vo.PlayerSteady;
 
 public class AnalysisController implements AnalysisSerivce{
-	private DataReaderService dataService;
+	private NewDataReaderService dataReader;
 	private static AnalysisController analysisController = null;
+	private static PlayerOffendController playerOffendController = null;
+	private static PlayerDefendController playerDefendController = null;
+	private static LeagueStyleAnalysis leagueStyleAnalysis = null;
+	private static PlayerSteadyAnalysis playerSteadyAnalysis = null;
 	private static TotalUIController totalController = null;
 	
 	private AnalysisController() {
 		playerOffendController = PlayerOffendController.getInstance();
 		playerDefendController = PlayerDefendController.getInstance();
+		leagueStyleAnalysis = LeagueStyleAnalysis.getInstance();
+		playerSteadyAnalysis = PlayerSteadyAnalysis.getInstance();
 		totalController = TotalUIController.getInstance();
-		dataService = totalController.getDataReadController();
+		dataReader = totalController.getDataReader();
 		}
 
 	public static AnalysisController getInstance() {
@@ -26,20 +39,29 @@ public class AnalysisController implements AnalysisSerivce{
 		return analysisController;
 	}
 
-	private static PlayerOffendController playerOffendController = null;
-	private static PlayerDefendController playerDefendController = null;
-
-	public void setDefaultLeagueAnalysis() {
-		// TODO 自动生成的方法存根
-		
+	/**
+	 * 设置默认联盟分析界面
+	 */
+	@Override
+	public String[][] getDefaultLeagueAnalysis() {
+		String[][] value = leagueStyleAnalysis.analyseLeagueStyle();
+		return value;
 	}
 
-	public void setSelfLeagueAnalysis(String startSeason) {
-		// TODO 自动生成的方法存根
-		
+	/**
+	 * 设置自定义联盟分析界面
+	 */
+	@Override
+	public String[] getSelfLeagueAnalysis(String startSeason) {
+		String[] temp = startSeason.split("-");
+		int end = Math.min(Integer.parseInt(temp[0])+4, 2014);
+		StringBuffer seasons = new StringBuffer(startSeason+"-"+end);
+		String[] value = leagueStyleAnalysis.calculateCharactoristic2(seasons.toString());
+		return value;
 	}
 
-	public void setCorrelationAnalysis(String attribute1, String attribute2) {
+	@Override
+	public void getCorrelationAnalysis(String attribute1, String attribute2) {
 		// TODO 自动生成的方法存根
 		
 	}
@@ -47,17 +69,56 @@ public class AnalysisController implements AnalysisSerivce{
 	/**
 	 * 设置球员进攻分析界面
 	 */
-	public void setPlayerOffendAnalysis(String playerID,String season){
-		PlayerDataService panel = null;
-		playerOffendController.analyseOffend(panel, playerID, season);
+	@Override
+	public OffendFactor getPlayerOffendAnalysis(String playerID,String season){
+		return playerOffendController.analyseOffend(playerID, season);
 	}
 	
 	/**
 	 * 设置球员防守分析界面
 	 */
-	public void setPlayerDefendAnalysis(String playerID,String season){
-		PlayerDataService panel = null;
-		playerDefendController.analyseDefend(panel, playerID, season);
+	@Override
+	public DefendFactor getPlayerDefendAnalysis(String playerID,String season){
+		return playerDefendController.analyseDefend(playerID, season);
+	}
+
+	@Override
+	public String[] getOffendInvolvedSeason(String playerID) {
+		List<String> seasons = dataReader.selectSeasonsByPlayer(playerID);
+		List<String> seasonList = new ArrayList<String>();
+		for(String s:seasons){
+			String[] season = s.split("[-]");
+			if(Integer.parseInt(season[0])>=1980){
+				seasonList.add(s);
+			}
+		}
+		String[] seasonss = new String[seasonList.size()];
+		for(int i=0;i<seasonList.size();i++){
+			seasonss[i] = seasonList.get(i);
+		}
+		return seasonss;
+	}
+	
+	@Override
+	public String[] getDefendInvolvedSeason(String playerID) {
+		List<String> seasons = dataReader.selectSeasonsByPlayer(playerID);
+		List<String> seasonList = new ArrayList<String>();
+		for(String s:seasons){
+			String[] season = s.split("[-]");
+			if(Integer.parseInt(season[0])>=1980){
+				seasonList.add(s);
+			}
+		}
+		String[] seasonss = new String[seasonList.size()];
+		for(int i=0;i<seasonList.size();i++){
+			seasonss[i] = seasonList.get(i);
+		}
+		return seasonss;
+	}
+
+	@Override
+	public ArrayList<PlayerSteady> getPlayerSteadyAnalysis(String playerID) {
+		return playerSteadyAnalysis.playerSteady(playerID);
 	}
 
 }

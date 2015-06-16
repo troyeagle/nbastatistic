@@ -4,6 +4,14 @@ public class OffendFactor {
 	private String playerID;
 	private String season;
 	
+	public String getPlayerID() {
+		return playerID;
+	}
+
+	public String getSeason() {
+		return season;
+	}
+
 	/**
 	 * 一、命中率
 	 */
@@ -44,7 +52,7 @@ public class OffendFactor {
 	//每36分钟助攻联盟前三十：传球意识较佳
 	
 	/**
-	 * 五、投篮选择
+	 * 五、投篮效率
 	 */
 	private double trueShootingPercentage = 0;//真实投篮命中率:TS%
 	private int TSPercentage_rank = 0;//联盟排名(真实投篮命中率)

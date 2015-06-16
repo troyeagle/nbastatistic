@@ -27,4 +27,44 @@ public class MatchInfo {
 		fourFactorsA = (String) map.get("fourFactorsA");
 		fourFactorsB = (String) map.get("fourFactorsB");
 	}
+
+	public String getIdmatchinfo() {
+		return idmatchinfo;
+	}
+
+	public String getSeason() {
+		return season;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public String getTeamA() {
+		return teamA;
+	}
+
+	public String getTeamB() {
+		return teamB;
+	}
+
+	public String getHost() {
+		return host;
+	}
+
+	public String getScoreInSectionA() {
+		return scoreInSectionA;
+	}
+
+	public String getScoreInSectionB() {
+		return scoreInSectionB;
+	}
+
+	public String getFourFactorsA() {
+		return fourFactorsA;
+	}
+
+	public String getFourFactorsB() {
+		return fourFactorsB;
+	}
 }

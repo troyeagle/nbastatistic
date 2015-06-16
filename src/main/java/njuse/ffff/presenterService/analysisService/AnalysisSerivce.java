@@ -1,17 +1,30 @@
 package njuse.ffff.presenterService.analysisService;
 
+import java.util.ArrayList;
+
+import njuse.ffff.vo.DefendFactor;
+import njuse.ffff.vo.OffendFactor;
+import njuse.ffff.vo.PlayerSteady;
+
 
 public interface AnalysisSerivce {
+	//设置球员进攻分析参与的赛季
+	public String[] getOffendInvolvedSeason(String playerID);
 	//设置球员进攻分析界面
-	public void setPlayerOffendAnalysis(/**panel3*/String playerID,String season);
+	public OffendFactor getPlayerOffendAnalysis(String playerID,String season);
+	//设置球员防守分析参与的赛季
+	public String[] getDefendInvolvedSeason(String playerID);
 	//设置球员防守分析界面
-	public void setPlayerDefendAnalysis(/**panel3*/String playerID,String season);
+	public DefendFactor getPlayerDefendAnalysis(String playerID,String season);
 	
 	//设置联盟风格分析
-	public void setDefaultLeagueAnalysis(/**panel1*/);
+	public String[][] getDefaultLeagueAnalysis();
 	//设置自定义联盟风格分析(连续5年内)
-	public void setSelfLeagueAnalysis(/**panel1,*/String startSeason);
+	public String[] getSelfLeagueAnalysis(String startSeason);
 	
-	//设置球员属性关联性分析
-	public void setCorrelationAnalysis(/**panel2,*/String attribute1,String attribute2);
+	//获取球员稳定性分析
+	public ArrayList<PlayerSteady> getPlayerSteadyAnalysis(String playerID);
+	
+	//设置球员属性关联性分析  暂时木有用
+	public void getCorrelationAnalysis(String attribute1,String attribute2);
 }

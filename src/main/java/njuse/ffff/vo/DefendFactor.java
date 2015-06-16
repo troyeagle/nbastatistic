@@ -13,7 +13,7 @@ public class DefendFactor {
 	//防守篮板率联盟前三十位：擅长保护后场篮板
 	
 	/**
-	 * 2.抢断
+	 * 2.抢断能力
 	 */
 	private double stealRatio = 0;//抢断率：STL%
 	private int stealRatio_rank = 0;//抢断率联盟排名
@@ -25,7 +25,7 @@ public class DefendFactor {
 	//每36分钟抢断联盟前三十：抢断能力强
 	
 	/**
-	 * 3.盖帽
+	 * 3.封堵能力
 	 */
 	private double blockRatio = 0;//盖帽率：BLK%
 	private int blockRatio_rank = 0;//盖帽率联盟排名
@@ -37,7 +37,7 @@ public class DefendFactor {
 	//每36分钟封盖联盟前三十：善于篮下封盖
 	
 	/**
-	 * 4.防守贡献值
+	 * 4.防守贡献
 	 */
 	private double DWS = 0;//防守贡献值
 	private int DWS_rank = 0;//防守贡献值联盟排名

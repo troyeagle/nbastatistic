@@ -1,22 +1,25 @@
 package njuse.ffff.presenter.analysisController.playerAnalysis;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-import njuse.ffff.dataservice.DataReaderService;
+import njuse.ffff.dataservice.NewDataReaderService;
 import njuse.ffff.po.PlayerInAverage;
 import njuse.ffff.po.PlayerInMatchExtended;
 import njuse.ffff.presenter.TotalUIController;
-import njuse.ffff.uiservice.PlayerDataService;
+import njuse.ffff.sqlpo.PlayerInMatchFull;
+import njuse.ffff.sqlpo.PlayerShooting;
 import njuse.ffff.vo.OffendFactor;
 
 public class PlayerOffendController{
 	private static PlayerOffendController playerOffendController = null;
 	private static TotalUIController totalController = null;
-	private DataReaderService dataService;
+	private NewDataReaderService dataReader;
 	
 	private PlayerOffendController(){
 		totalController = TotalUIController.getInstance();
-		dataService = totalController.getDataReadController();
+		dataReader = totalController.getDataReader();
 	}
 	
 	public static PlayerOffendController getInstance(){
@@ -27,12 +30,29 @@ public class PlayerOffendController{
 	}
 	
 	/**
-	 * 进攻分析
+	 * 进攻分析   只分析1980年以后的
 	 */
-	public void analyseOffend(PlayerDataService panel,String playerID,String season){
-		PlayerInAverage player = dataService.getPlayerAverage(playerID, null);
+	public OffendFactor analyseOffend(String playerID,String season){
+		List<PlayerInMatchFull> playerList_pergame = dataReader.getPlayersStatsAll(season, "per_game");
+		List<PlayerInMatchFull> playerList_36Minutes = dataReader.getPlayersStatsAll(season, "per_minute");
+		
+		PlayerInMatchFull player_pergame = dataReader.getPlayerStatsSingle(playerID, season, "per_game");
+		PlayerInMatchFull player_36Minutes = dataReader.getPlayerStatsSingle(playerID, season, "per_minute");
+		Map<String,Object> map_adv = player_pergame.generateAdvancedMap();
+		Map<String,Object> map_avg = player_pergame.generateBasicMap();
+		Map<String,Object> map_avg_36 = player_36Minutes.generateBasicMap();
+		
+		PlayerShooting playerShoot = dataReader.getPlayerShooting(playerID, season);
+		Map<String,Object> map_shoot = playerShoot.generateMap();
 		//
-		double[] FG_RatioByDistance = new double[6];
+		double[] FG_RatioByDistance = new double[]{//6
+			Double.parseDouble(String.valueOf(map_shoot.get("twoPOfFGA"))),
+			Double.parseDouble(String.valueOf(map_shoot.get("twoPOfFGA0_3"))),
+			Double.parseDouble(String.valueOf(map_shoot.get("twoPOfFGA3_10"))),
+			Double.parseDouble(String.valueOf(map_shoot.get("twoPOfFGA10_16"))),
+			Double.parseDouble(String.valueOf(map_shoot.get("twoPOfFGA16plus"))),
+			Double.parseDouble(String.valueOf(map_shoot.get("threePOfFGA")))
+		};
 		
 		StringBuffer analysisOfFG_Ratio = new StringBuffer();
 		if(FG_RatioByDistance[1]>=0.6){
@@ -44,51 +64,93 @@ public class PlayerOffendController{
 		}
 		
 		//
-		double[] FGA_PercentByDistance = new double[5];
+		double[] FGA_PercentByDistance = new double[]{//5
+				Double.parseDouble(String.valueOf(map_shoot.get("FGtwoPOfFGA0_3"))),
+				Double.parseDouble(String.valueOf(map_shoot.get("FGtwoPOfFGA3_10"))),
+				Double.parseDouble(String.valueOf(map_shoot.get("FGtwoPOfFGA10_16"))),
+				Double.parseDouble(String.valueOf(map_shoot.get("FGtwoPOfFGA16plus"))),
+				Double.parseDouble(String.valueOf(map_shoot.get("FGthreePOfFGA")))
+		};
 		
 		StringBuffer analysisOfFGA_Percent = new StringBuffer();
 		if(FGA_PercentByDistance[4]>=0.4){
 			analysisOfFGA_Percent.append("三分比例高于40%，射手型球员。");
 		}
 		if((FGA_PercentByDistance[0]+FGA_PercentByDistance[1])>=0.5
-				&&player.getPosition().toString().contains("PG、SG、SF")){
+				&&(player_pergame.getPosition().toString().contains("PG")
+						||player_pergame.getPosition().toString().contains("SG")
+						||player_pergame.getPosition().toString().contains("SF"))){
 			analysisOfFGA_Percent.append("\n");
 			analysisOfFGA_Percent.append("内线出手比例高于50%的外线球员，偏爱突破。");
 		}
 		if((FGA_PercentByDistance[0]+FGA_PercentByDistance[1])<=0.3
-				&&player.getPosition().toString().contains("PF、C")){
+				&&(player_pergame.getPosition().toString().contains("PF"))
+				||player_pergame.getPosition().toString().contains("C")){
 			analysisOfFGA_Percent.append("\n");
 			analysisOfFGA_Percent.append("内线出手比例低于30%的内线球员，大个子投手");
 		}
 		
 		//
-		double ORB_Ratio = player.getStatsAverage()[20];
-		double ORBperGame_Percentage = player.getStatsAverage()[6]/player.getStatsAverage()[8];
-		int ORB_rank = 0;
-		ArrayList<PlayerInAverage> playerList = dataService.getPlayerInAverage();
+		double ORB_Ratio = Double.parseDouble(String.valueOf(map_adv.get("offensiveReboundRatio")));
+		double ORBperGame_Percentage = Double.parseDouble(String.valueOf(map_avg.get("offensiveRebound")))
+				/Double.parseDouble(String.valueOf(map_avg.get("rebound")));
+		int ORB_rank = 1;
+		for(PlayerInMatchFull p:playerList_pergame){
+			if(ORB_Ratio<p.getOffensiveReboundRatio()){
+				ORB_rank++;
+			}
+		}
 		StringBuffer analysisOfORB = new StringBuffer();
 		if(ORB_rank<=30){
 			analysisOfORB.append("擅长拼抢前场篮板。");
 		}
 		
 		//
-		double assistRatio = player.getStatsAverage()[22];
-		int assistRatio_rank = 0;
-		double assistperGame = player.getStatsAverage()[9];
+		double assistRatio = Double.parseDouble(String.valueOf(map_adv.get("assistRatio")));
+		int assistRatio_rank = 1;
+		double assistperGame = Double.parseDouble(String.valueOf(map_avg.get("assist")));
 		double assistperGame_league = 0;
-		double assistper36Minutes = 0;
+		int gamePlayed_league = 0;
+		for(PlayerInMatchFull p:playerList_pergame){
+			if(assistRatio<p.getAssistRatio()){
+				assistRatio_rank++;
+			}
+			gamePlayed_league += p.getGamesPlayed();
+			assistperGame_league+=p.getAssist()*p.getGamesPlayed();
+		}
+		assistperGame_league/=gamePlayed_league;
+		
+		double assistper36Minutes = Double.parseDouble(String.valueOf(map_avg_36.get("assist")));
 		double assistper36Minutes_league = 0;
-		int assistper36Minutes_rank = 0;
+		int assistper36Minutes_rank = 1;
+		gamePlayed_league = 0;
+		for(PlayerInMatchFull p:playerList_36Minutes){
+			if(assistper36Minutes<p.getAssist()){
+				assistper36Minutes_rank++;
+			}
+			gamePlayed_league += p.getGamesPlayed();
+			assistper36Minutes_league+=p.getAssist()*p.getGamesPlayed();
+		}
+		assistper36Minutes_league/=gamePlayed_league;
+		
 		StringBuffer analysisOfAssist = new StringBuffer();
 		if(assistper36Minutes_rank<=30){
 			analysisOfAssist.append("传球意识较佳。");
 		}
 		
 		//
-		double trueShootingPercentage = 0;
-		int TSPercentage_rank = 0;
-		double OWS = 0;
-		int OWS_rank = 0;
+		double trueShootingPercentage = Double.parseDouble(String.valueOf(map_adv.get("trueShootingPercentage")));
+		int TSPercentage_rank = 1;
+		double OWS = Double.parseDouble(String.valueOf(map_adv.get("ows")));
+		int OWS_rank = 1;
+		for(PlayerInMatchFull p:playerList_pergame){
+			if(trueShootingPercentage<p.getTrueShootingPercentage()){
+				TSPercentage_rank++;
+			}
+			if(OWS<p.getOws()){
+				OWS_rank++;
+			}
+		}
 		StringBuffer analysisOfFG_Choice= new StringBuffer();
 		if(TSPercentage_rank<=30&&OWS_rank<=30){
 			analysisOfFG_Choice.append("进攻高效。");
@@ -100,7 +162,7 @@ public class PlayerOffendController{
 				, ORB_rank, analysisOfORB.toString(), assistRatio, assistRatio_rank, assistperGame
 				, assistperGame_league, assistper36Minutes, assistper36Minutes_league, analysisOfAssist.toString()
 				, trueShootingPercentage, TSPercentage_rank, OWS, OWS_rank, analysisOfFG_Choice.toString());
-		//TODO
+		return playerOffend;
 	}
 	
 	

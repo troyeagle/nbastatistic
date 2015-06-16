@@ -1,13 +1,21 @@
 package njuse.ffff.presenter;
 
-import java.io.IOException;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JPanel;
 
 import njuse.ffff.data.DataReadController;
+import njuse.ffff.dataGetter.DataReader;
 import njuse.ffff.dataservice.DataReaderService;
+import njuse.ffff.dataservice.NewDataReaderService;
 import njuse.ffff.presenter.hotEventController.HotEventController;
 import njuse.ffff.presenter.matchController.MatchInfoController;
 import njuse.ffff.presenter.matchController.MatchsViewController;
@@ -25,6 +33,9 @@ import njuse.ffff.presenterService.playerService.PlayerFilterService;
 import njuse.ffff.presenterService.playerService.PlayerInfoService;
 import njuse.ffff.presenterService.teamService.TeamCompareService;
 import njuse.ffff.presenterService.teamService.TeamInfoService;
+import njuse.ffff.sqlpo.MatchInfo;
+import njuse.ffff.sqlpo.TeamAverage;
+import njuse.ffff.sqlpo.TeamInfo;
 import njuse.ffff.uiservice.MatchViewService;
 import njuse.ffff.uiservice.MatchesLogOverviewService;
 import njuse.ffff.uiservice.PlayerDataService;
@@ -44,8 +55,15 @@ public class TotalUIController implements TotalControlService{
 	private ArrayList<JPanel> panelList = new ArrayList<JPanel>();//存储点击界面先后顺序的列表
 
 	private DataReaderService dataService;
+	private NewDataReaderService dataReader;
+	private DataReader dataR;
 	private static TotalUIController totalController = null;
 	private static UpdateController updateController = null;
+	
+	private String[] seasonList;
+	private String currentSeason;
+	private Date currentDay;
+	private Map<String,ArrayList<TeamAverage>> teamsInSeasons;
 	
 	//所有的界面接口
 	private MatchViewService matchViewService = null;
@@ -137,6 +155,8 @@ public class TotalUIController implements TotalControlService{
 	 */
 	private void bindDataService() {
 		dataService = new DataReadController();
+		dataR = new DataReader();
+		dataReader = dataR;
 	}
 	
 	/**
@@ -144,6 +164,43 @@ public class TotalUIController implements TotalControlService{
 	 */
 	public DataReadController getDataReadController(){
 		return (DataReadController) dataService;
+	}
+	
+	/**
+	 * 返回数据库服务
+	 */
+	public DataReader getDataReader(){
+		return dataR;
+	}
+	
+	/**
+	 * 返回所有赛季
+	 */
+	public String[] getAllSeasons(){
+		if(seasonList==null){
+			initSeason();
+		}
+		return seasonList;
+	}
+	
+	/**
+	 * 返回当前赛季
+	 */
+	public String getCurrentSeason(){
+		if(currentSeason==null){
+			initSeason();
+		}
+		return currentSeason;
+	}
+	
+	/**
+	 * 返回当天
+	 */
+	public Date getCurrentDay(){
+		if(currentDay==null){
+			initCurrentDay();
+		}
+		return currentDay;
 	}
 
 	/**
@@ -158,26 +215,93 @@ public class TotalUIController implements TotalControlService{
 	 * 初始化系统
 	 */
 	public void initSystem() {
-		try {
-			dataService.initialize();
-//			createFrame();
-			updateController = UpdateController.getInstance();
-			updateController.checkForUpdate();
-//			initTeamAndAbbr();
-		} catch (IOException e) {
-			e.printStackTrace();
+		dataR.initialize();
+		//计算所有赛季
+		initSeason();
+//		try {
+//			dataService.initialize();
+////			createFrame();
+////			updateController = UpdateController.getInstance();
+////			updateController.checkForUpdate();
+////			initTeamAndAbbr();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+	}
+	
+	public void initSeason(){
+		List<TeamInfo> teamList = dataReader.getTeamInfoAll();
+		int startSeason = 0;
+		int endSeason = 3000;
+		if(teamList!=null&&teamList.size()!=0){
+			for(int i=0;i<teamList.size();i++){
+				String seasons = String.valueOf(teamList.get(i).generateMap().get("seasons")).replace(" ", "");
+				String[] temp = seasons.split("[;；]")[1].split("to");
+				int start = Integer.parseInt(temp[0].split("-")[0]);
+				int end = Integer.parseInt(temp[1].split("-")[0]);
+				if(start<startSeason)
+					startSeason = start;
+				if(end>endSeason)
+					endSeason = end;
+			}
+			seasonList = new String[endSeason-startSeason];
+			for(int i=startSeason;i<=endSeason-1;i++){
+				String temp2 = String.valueOf(startSeason+1);
+				StringBuffer bf = new StringBuffer(startSeason+"-"+temp2.substring(2,temp2.length()));
+				seasonList[i-startSeason] = bf.toString();
+				if(i==endSeason-1){
+					currentSeason = bf.toString();
+				}
+			}
+			initCurrentDay();
 		}
 	}
 	
-	public void initSys(){
-		try {
-			dataService.initialize();
-			createFrame();
-			updateController = UpdateController.getInstance();
-			updateController.checkForUpdate();
-		} catch (IOException e) {
-			e.printStackTrace();
+	public void initCurrentDay(){
+		if(currentSeason==null){
+			initSeason();
 		}
+		String[] s = currentSeason.split("-");
+		int year = Integer.parseInt(s[0])+1;
+		boolean getCurrent = false;
+		for(int i=6;i>0;i--){
+			Date date_start = formDate(year, i, 1);
+			Date date_end = formDate(year, i, getDayOfMonth(year, i));
+			List<MatchInfo> matches = dataReader.getMatchInPeriod(date_start, date_end);
+			if(matches==null||matches.size()==0)
+				continue;
+			int latest = 1;
+			for(MatchInfo match:matches){
+				Calendar date = new GregorianCalendar();
+				date.setTime(match.getDate());
+				int day = date.get(Calendar.DAY_OF_MONTH);
+				if(day>latest)
+					latest = day;
+			}
+			currentDay = formDate(year, i, latest);
+			getCurrent = true;
+			break;
+		}
+		if(!getCurrent){
+			year = year-1;
+			//TODO
+		}
+	}
+	
+	public void addTeamsInSeasons(String season,ArrayList<TeamAverage> t){
+		if(teamsInSeasons==null){
+			teamsInSeasons = new HashMap<String,ArrayList<TeamAverage>>();
+		}
+		if(teamsInSeasons.get(season)==null){
+			teamsInSeasons.put(season, t);
+		}
+	}
+	
+	public ArrayList<TeamAverage> getTeamsInSeason(String season){
+		if(teamsInSeasons!=null){
+			return teamsInSeasons.get(season);
+		}
+		return null;
 	}
 
 	/**
@@ -213,7 +337,7 @@ public class TotalUIController implements TotalControlService{
 		TeamNameAndAbbr.getInstance().updateTeams();
 		if(matchViewService!=null){
 			MatchInfoService service = MatchInfoController.getInstance();
-			Date date = service.getPresentDate();
+			java.util.Date date = service.getPresentDate();
 			String team = service.getPresentTeam();
 			if(date!=null&&team!=null){
 				service.setMatchInfoPanel(matchViewService, date, team);
@@ -221,7 +345,7 @@ public class TotalUIController implements TotalControlService{
 		}
 		if(matchsLogService!=null){
 			MatchsViewService service = MatchsViewController.getInstance();
-			Date currentDate = dataService.getCurrentDate();
+			java.util.Date currentDate = dataService.getCurrentDate();
 			String year = service.getPresentYear();
 			String month = service.getPresentMonth();
 			if(currentDate.getYear()==Integer.parseInt(year)
@@ -230,8 +354,9 @@ public class TotalUIController implements TotalControlService{
 			}
 		}
 		if(playersOverviewService!=null){
+			@SuppressWarnings("unused")
 			PlayerCompareService service = PlayerCompareController.getInstance();
-			service.setPlayerCompareInfoForSeason(playersOverviewService);
+//			service.setPlayerCompareInfoForSeason(playersOverviewService);
 		}
 		if(playerFilterViewService!=null){
 			PlayerFilterService service = PlayerFilterController.getInstance();
@@ -241,7 +366,7 @@ public class TotalUIController implements TotalControlService{
 			PlayerInfoService service = PlayerInfoController.getInstance();
 			String[] playerList = service.getPresentPlayer();
 			if(playerList[0]!=null){
-				service.setPlayerProfilePanel(playerProfileService, playerList[0]);
+//				service.setPlayerProfilePanel(playerProfileService, playerList[0]);
 			}
 		}
 		if(playerDataService!=null){
@@ -261,8 +386,9 @@ public class TotalUIController implements TotalControlService{
 			}
 		}
 		if(teamsOverviewService!=null){
+			@SuppressWarnings("unused")
 			TeamCompareService service = TeamCompareController.getInstance();
-			service.setTeamCompareInfoForSeason(teamsOverviewService);
+//			service.setTeamCompareInfoForSeason(teamsOverviewService);
 		}
 		if(teamProfileService!=null){
 			TeamInfoService service = TeamInfoController.getInstance();
@@ -302,5 +428,45 @@ public class TotalUIController implements TotalControlService{
 		}
 		updateController.checkForUpdate();
 	}
-
+	
+	/**
+	 * 获得某年某月有几天
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	private int getDayOfMonth(int year,int month){
+		int day = 0;
+		if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+			day = 31;
+		}
+		else if(month==4||month==6||month==9||month==11){
+			day = 30;
+		}
+		else if(month==2){
+			//闰年
+			if(year%4==0||year%400==0){
+				day = 29;
+			}
+			//平年
+			else{
+				day = 28;
+			}
+		}
+		return day;
+	}
+	
+	public Date formDate(int year,int month,int day){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		StringBuffer date = new StringBuffer();
+		date.append(year+"-"+month+"-"+day);
+		Date sample = null;
+        try {
+			sample = new Date(format.parse(date.toString()).getTime());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return sample;
+	}
+	
 }
