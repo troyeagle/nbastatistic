@@ -252,8 +252,10 @@ public class DataReader implements NewDataReaderService {
 
 	@Override
 	public List<MatchInfo> getMatchInPeriod(Date start, Date end) {
+		String st="'"+start+"'";
+		String ed = "'"+end+"'";
 		List<Map<String, Object>> result = mapper.selectListFree("matchinfo",
-				null, "date >" + start + "AND date<" + end);
+				null, "date >" + st + "AND date<" + ed);
 		List<MatchInfo> list = new ArrayList<MatchInfo>();
 		for (Map<String, Object> m : result) {
 			list.add(new MatchInfo(m));
