@@ -3,6 +3,7 @@ package njuse.ffff.vo;
 public class OffendFactor {
 	private String playerID;
 	private String season;
+	private String position;
 	
 	public String getPlayerID() {
 		return playerID;
@@ -10,6 +11,10 @@ public class OffendFactor {
 
 	public String getSeason() {
 		return season;
+	}
+	
+	public String getPosition() {
+		return position;
 	}
 
 	/**
@@ -63,7 +68,7 @@ public class OffendFactor {
 	private String analysisOfFG_Choice= new String();
 	//三项都在联盟前三十——进攻高效
 
-	public OffendFactor(String playerID,String season,
+	public OffendFactor(String playerID,String season,String position,
 			double[] fG_RatioByDistance, String analysisOfFG_Ratio,
 			double[] fGA_PercentageByDistance, String analysisOfFGA_Percentage,
 			double oRB_Ratio, double oRBperGame_Percentage, int oRB_rank,
@@ -76,6 +81,7 @@ public class OffendFactor {
 		super();
 		this.playerID = playerID;
 		this.season = season;
+		this.position = position;
 		FG_RatioByDistance = fG_RatioByDistance;
 		this.analysisOfFG_Ratio = analysisOfFG_Ratio;
 		FGA_PercentageByDistance = fGA_PercentageByDistance;

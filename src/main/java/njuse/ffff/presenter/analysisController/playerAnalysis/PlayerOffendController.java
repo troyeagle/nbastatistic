@@ -33,6 +33,7 @@ public class PlayerOffendController{
 	 * 进攻分析   只分析1980年以后的
 	 */
 	public OffendFactor analyseOffend(String playerID,String season){
+		String position;
 		List<PlayerInMatchFull> playerList_pergame = dataReader.getPlayersStatsAll(season, "per_game");
 		List<PlayerInMatchFull> playerList_36Minutes = dataReader.getPlayersStatsAll(season, "per_minute");
 		
@@ -41,6 +42,8 @@ public class PlayerOffendController{
 		Map<String,Object> map_adv = player_pergame.generateAdvancedMap();
 		Map<String,Object> map_avg = player_pergame.generateBasicMap();
 		Map<String,Object> map_avg_36 = player_36Minutes.generateBasicMap();
+		
+		position = String.valueOf(map_avg.get("position"));
 		
 		PlayerShooting playerShoot = dataReader.getPlayerShooting(playerID, season);
 		Map<String,Object> map_shoot = playerShoot.generateMap();
@@ -156,7 +159,7 @@ public class PlayerOffendController{
 			analysisOfFG_Choice.append("进攻高效。");
 		}
 		
-		OffendFactor playerOffend = new OffendFactor(playerID, season,
+		OffendFactor playerOffend = new OffendFactor(playerID, season,position,
 				FG_RatioByDistance, analysisOfFG_Ratio.toString()
 				, FGA_PercentByDistance, analysisOfFGA_Percent.toString(), ORB_Ratio, ORBperGame_Percentage
 				, ORB_rank, analysisOfORB.toString(), assistRatio, assistRatio_rank, assistperGame

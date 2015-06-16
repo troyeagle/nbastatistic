@@ -26,6 +26,7 @@ public class PlayerDefendController {
 	}
 	
 	public DefendFactor analyseDefend(String playerID,String season){
+		String position;
 		List<PlayerInMatchFull> playerList_pergame = dataReader.getPlayersStatsAll(season, "per_game");
 		List<PlayerInMatchFull> playerList_36Minutes = dataReader.getPlayersStatsAll(season, "per_minute");
 		
@@ -34,6 +35,8 @@ public class PlayerDefendController {
 		Map<String,Object> map_adv = player_pergame.generateAdvancedMap();
 		Map<String,Object> map_avg = player_pergame.generateBasicMap();
 		Map<String,Object> map_avg_36 = player_36Minutes.generateBasicMap();
+		
+		position = String.valueOf(map_avg.get("position"));
 		
 		//
 		double DRB_ratio = Double.parseDouble(String.valueOf(map_adv.get("defensiveReboundRatio")));
@@ -124,7 +127,7 @@ public class PlayerDefendController {
 		}
 		
 		DefendFactor playerDefend = new DefendFactor(
-				playerID,season,DRB_ratio, DRBperGame_percentage
+				playerID,season,position,DRB_ratio, DRBperGame_percentage
 				, DRB_rank, analysisOfDRB.toString(), stealRatio, stealRatio_rank
 				, stealperGame, stealperGame_league, stealper36Minutes, stealper36Minutes_league
 				, analysisOfSteal.toString(), blockRatio, blockRatio_rank, blockperGame

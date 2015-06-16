@@ -247,8 +247,8 @@ public class TotalUIController implements TotalControlService{
 			}
 			seasonList = new String[endSeason-startSeason];
 			for(int i=startSeason;i<=endSeason-1;i++){
-				String temp2 = String.valueOf(startSeason+1);
-				StringBuffer bf = new StringBuffer(startSeason+"-"+temp2.substring(2,temp2.length()));
+				String temp2 = String.valueOf(i+1);
+				StringBuffer bf = new StringBuffer(i+"-"+temp2.substring(2,temp2.length()));
 				seasonList[i-startSeason] = bf.toString();
 				if(i==endSeason-1){
 					currentSeason = bf.toString();

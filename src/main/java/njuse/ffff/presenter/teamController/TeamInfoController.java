@@ -6,7 +6,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
-import njuse.ffff.dataservice.DataReaderService;
 import njuse.ffff.dataservice.NewDataReaderService;
 import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.presenterService.teamService.TeamInfoService;
@@ -20,7 +19,7 @@ import njuse.ffff.uiservice.TeamProfileService;
 import njuse.ffff.util.DealDecimal;
 
 public class TeamInfoController implements TeamInfoService{
-	private DataReaderService dataService;
+//	private DataReaderService dataService;
 	private NewDataReaderService dataReader;
 	private static TeamInfoController teamInfoController = null;
 	private static TotalUIController totalController = null;
@@ -42,7 +41,7 @@ public class TeamInfoController implements TeamInfoService{
 	
 	private TeamInfoController() {
 		totalController = TotalUIController.getInstance();
-		dataService = totalController.getDataReadController();
+//		dataService = totalController.getDataReadController();
 		dataReader = totalController.getDataReader();
 	}
 
@@ -99,7 +98,7 @@ public class TeamInfoController implements TeamInfoService{
 		if(players.size()>0){
 			Object[][] playerForTeam = new Object[players.size()][];
 			for(int i=0;i<players.size();i++){
-				playerForTeam[i] = new Object[]{i,players.get(i).getPlName()};//TODO
+				playerForTeam[i] = new Object[]{i,players.get(i).getPlName(),players.get(i).getIdPlayerInfo()};//TODO
 			}
 			panel.setPlayers(playerForTeam);
 		}
@@ -112,10 +111,8 @@ public class TeamInfoController implements TeamInfoService{
 	 */
 	public void setTeamTotalData(TeamDataService panel, String teamName) {
 		ArrayList<String> valid_season = new ArrayList<String>();
-		for(String s:seasonList){
-			if(dataService.getSeasonStatProcessor(s) != null){
-				valid_season.add(s);
-			}
+		for(String season:seasonList){
+			valid_season.add(season);
 		}
 		Object[][] totalData = new Object[valid_season.size()][];
 		for(int i=0;i<valid_season.size();i++){
@@ -155,10 +152,8 @@ public class TeamInfoController implements TeamInfoService{
 	 */
 	public void setTeamAvgData(TeamDataService panel, String teamName) {
 		ArrayList<String> valid_season = new ArrayList<String>();
-		for(String s:seasonList){
-			if(dataService.getSeasonStatProcessor(s) != null){
-				valid_season.add(s);
-			}
+		for(String season:seasonList){
+			valid_season.add(season);
 		}
 		Object[][] averageData = new Object[valid_season.size()][];
 		for(int i=0;i<valid_season.size();i++){
@@ -197,10 +192,8 @@ public class TeamInfoController implements TeamInfoService{
 	 */
 	public void setTeamAdvancedlData(TeamDataService panel, String teamName) {
 		ArrayList<String> valid_season = new ArrayList<String>();
-		for(String s:seasonList){
-			if(dataService.getSeasonStatProcessor(s) != null){
-				valid_season.add(s);
-			}
+		for(String season:seasonList){
+			valid_season.add(season);
 		}
 		Object[][] advancedData = new Object[valid_season.size()][];
 		for(int i=0;i<valid_season.size();i++){
@@ -226,7 +219,7 @@ public class TeamInfoController implements TeamInfoService{
 	 * 设置球队参与的比赛
 	 */
 	public void setTeamGameLog(TeamDataService panel, String season, String teamName) {
-		List<PlayerInMatchFull> matchList = dataReader.getTeamStatBySeason(teamName, season);
+		List<PlayerInMatchFull> matchList = dataReader.getTeamStatBySeason(teamName, season.substring(2,season.length()));
 //		String[] properties = {"比赛日期","比赛对阵"};
 		if(matchList!=null&&matchList.size()>0){
 			//比赛排序

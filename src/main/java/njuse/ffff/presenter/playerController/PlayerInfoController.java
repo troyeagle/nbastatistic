@@ -131,7 +131,7 @@ public class PlayerInfoController implements PlayerInfoService{
 //		totalController.setPlayerProfileService(panel);
 //	}
 	
-	public void setPlayerProfilePanel(PlayerProfileService panel, String playerName/**, String playerID*/) {
+	public void setPlayerProfilePanel(PlayerProfileService panel, String playerName) {
 		//获取指定的球员信息
 		PlayerInfo playerInfo = dataReader.getPlayerInfo(playerName);
 		if(playerInfo!=null){
@@ -304,7 +304,7 @@ public class PlayerInfoController implements PlayerInfoService{
 	public void setPlayerAvgData(PlayerDataService panel, String playerID) {
 		ArrayList<String> valid_season = new ArrayList<String>();
 		for(String s:seasonList){
-			if(dataReader.getPlayerStatsSingle(playerID, s, "per_game")!=null){
+			if(dataReader.getPlayerStatsSingle(playerID, s.substring(2,s.length()), "per_game")!=null){
 				valid_season.add(s);
 			}
 		}
@@ -637,8 +637,8 @@ public class PlayerInfoController implements PlayerInfoService{
 	 * 设置球员参加的比赛
 	 */
 	public void setPlayerGameLog(PlayerDataService panel,String season ,String playerID) {
-		List<PlayerInMatchFull> matchList = dataReader.getPlayerStats(playerID, season);
-		matchList.addAll(dataReader.getPlayerStats(playerID, season.concat("po")));
+		List<PlayerInMatchFull> matchList = dataReader.getPlayerStats(playerID, season.substring(2,season.length()));
+		matchList.addAll(dataReader.getPlayerStats(playerID, season.substring(2,season.length()).concat("po")));
 //		String[] properties = {"比赛日期","比赛对阵"};
 		if(matchList.size()>0){
 			//比赛排序

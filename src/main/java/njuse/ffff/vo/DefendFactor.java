@@ -3,6 +3,7 @@ package njuse.ffff.vo;
 public class DefendFactor {
 	private String playerID;
 	private String season;
+	private String position;
 	/**
 	 * 1.防守篮板
 	 */
@@ -44,7 +45,7 @@ public class DefendFactor {
 	private String analysisOfDWS = new String();
 	//防守贡献值联盟前三十：防守水准联盟一流
 	
-	public DefendFactor(String playerID,String season,
+	public DefendFactor(String playerID,String season,String position,
 			double dRB_ratio, double dRBperGame_percentage,
 			int dRB_rank, String analysisOfDRB, double stealRatio,
 			int stealRatio_rank, double stealperGame,
@@ -57,6 +58,7 @@ public class DefendFactor {
 		super();
 		this.playerID = playerID;
 		this.season = season;
+		this.position = position;
 		DRB_ratio = dRB_ratio;
 		DRBperGame_percentage = dRBperGame_percentage;
 		DRB_rank = dRB_rank;
@@ -85,6 +87,9 @@ public class DefendFactor {
 	}
 	public String getSeason() {
 		return season;
+	}
+	public String getPosition() {
+		return position;
 	}
 	public double getDRB_ratio() {
 		return DRB_ratio;

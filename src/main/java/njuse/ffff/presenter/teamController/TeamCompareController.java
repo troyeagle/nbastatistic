@@ -65,7 +65,7 @@ public class TeamCompareController implements TeamCompareService{
 			if(judge.equals("total")){
 				teams_total.add(t);
 			}
-			if(judge.equals("pergame")){
+			if(judge.equals("perGame")){
 				teams_avg.add(t);
 			}
 		}
