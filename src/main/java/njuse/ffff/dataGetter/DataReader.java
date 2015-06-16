@@ -244,8 +244,10 @@ public class DataReader implements NewDataReaderService {
 	public List<PlayerInMatchFull> getLeadPlayerForDay(Date date,
 			String condition) {
 		Map<String,Object> filter = new HashMap<String,Object>();
-		filter.put("date", date);
-		List<Map<String,Object>> result = mapper.selectList("playermatchinfo", null, filter, "ordered by "+condition+" desc");
+		String dt =date.toString().replaceAll("-", "");
+		dt = ""+dt+"";
+		filter.put("idmatchinfo", dt);
+		List<Map<String,Object>> result = mapper.selectList("playermatchinfo", null, filter, "and idplayerinfo is not null ordered by "+condition+" desc");
 		List<PlayerInMatchFull> play = new ArrayList<PlayerInMatchFull>();
 		for(Map<String, Object> m : result){
 			play.add(new PlayerInMatchFull(m));
@@ -260,7 +262,7 @@ public class DataReader implements NewDataReaderService {
 		Map<String,Object> filter = new HashMap<String,Object>();
 		filter.put("season", season);
 		filter.put("attribute", "per_game%");
-		List<Map<String,Object>> result = mapper.selectList("playermatchinfo", null, filter,  "ordered by "+condition+" desc" );
+		List<Map<String,Object>> result = mapper.selectList("playerstatinfo", null, filter,  "ordered by "+condition+" desc" );
 		List<PlayerInMatchFull> play = new ArrayList<PlayerInMatchFull>();
 		for(Map<String,Object> m:result){
 			play.add(new PlayerInMatchFull(m));

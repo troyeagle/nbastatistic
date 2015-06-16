@@ -9,7 +9,7 @@ public class PlayerInfo {
 	String plName;
 	String plFullName;
 	String plPosition;
-	char shoot;
+	String shoot;
 	String plHeight;
 	int plWeight;
 	Date plBirth;
@@ -20,11 +20,11 @@ public class PlayerInfo {
 	String hallOfFame;
 	String draft;
 	int experience;
-	short plNumber;
+	int plNumber;
 	int plSalary;
 
 	public PlayerInfo(String idPlayerInfo, String plName, String plFullName,
-			String plPosition, char shoot, String plHeight, int plWeight,
+			String plPosition,String shoot, String plHeight, int plWeight,
 			Date plBirth, String plBirthCity, String plHighSchool,
 			String plUniv, String nbadebut, String hallOfFame, String draft,
 			int experience, short plNumber, int plSalary) {
@@ -53,7 +53,7 @@ public class PlayerInfo {
 		plName = (String) map.get("plName");
 		plFullName = (String) map.get("plFullName");
 		plPosition = (String) map.get("plPosition");
-		shoot = (char) map.get("shoot");
+		shoot = (String) map.get("shoot");
 		plHeight = (String) map.get("plHeight");
 		plWeight = (int) map.get("plWeight");
 		plBirth = (Date) map.get("plBirth");
@@ -64,7 +64,7 @@ public class PlayerInfo {
 		hallOfFame = (String) map.get("hallOfFame");
 		draft = (String) map.get("draft");
 		experience = (int) map.get("experience");
-		plNumber = (short) map.get("plNumber");
+		plNumber = (int) map.get("plNumber");
 		plSalary = (int) map.get("plSalary");
 	}
 
@@ -106,7 +106,7 @@ public class PlayerInfo {
 		return plPosition;
 	}
 
-	public char getShoot() {
+	public String getShoot() {
 		return shoot;
 	}
 
@@ -150,7 +150,7 @@ public class PlayerInfo {
 		return experience;
 	}
 
-	public short getPlNumber() {
+	public int getPlNumber() {
 		return plNumber;
 	}
 

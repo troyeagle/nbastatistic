@@ -15,10 +15,10 @@ import njuse.ffff.sqlpo.TeamInfo;
 public class DataReaderTest {
 	public void test(){
 		NewDataReaderService serv = new DataReader();
-		List<PlayerInMatchFull> leadPlayerForDay = serv.getLeadPlayerForDay(Date.valueOf("2014-11-11"),"points");
-		List<PlayerInMatchFull> leadPlayerForSeason = serv.getLeadPlayerForSeason("14-15", "points");
-		List<TeamAverage> leadTeamForSeason = serv.getLeadTeamForSeason("14-15", "points");
-		List<MatchInfo> matchInPeriod = serv.getMatchInPeriod(Date.valueOf("2014-11-11"), Date.valueOf("2014-11-30"));
+//		List<PlayerInMatchFull> leadPlayerForDay = serv.getLeadPlayerForDay(Date.valueOf("2014-11-11"),"points");
+//		List<PlayerInMatchFull> leadPlayerForSeason = serv.getLeadPlayerForSeason("14-15", "points");
+//		List<TeamAverage> leadTeamForSeason = serv.getLeadTeamForSeason("14-15", "points");
+//		List<MatchInfo> matchInPeriod = serv.getMatchInPeriod(Date.valueOf("2014-11-11"), Date.valueOf("2014-11-30"));
 		PlayerInfo playerInfo = serv.getPlayerInfo("Kobe Bryant");
 		List<PlayerInfo> playerInfoAll = serv.getPlayerInfoAll("playing");
 		List<PlayerInMatchFull> playerInMatch = serv.getPlayerInMatch("198806070LAL");

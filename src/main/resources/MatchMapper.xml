@@ -79,9 +79,8 @@
 		<where>
 			<if test="filter != null and !filter.isEmpty()">
 				<foreach item="value" index="key" collection="filter" open=""
-					separator="AND" close="">
-					${key} like #{value}<!-- like is used -->
-					>
+					separator="and" close="">
+					${key} like #{value}
 				</foreach>
 			</if>
 			<if test="vague != null">
