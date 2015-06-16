@@ -49,7 +49,7 @@ public class PlayerInfo {
 	}
 
 	public PlayerInfo(Map<String, Object> map) {
-		idPlayerInfo = (String) map.get("idPlayerInfo");
+		idPlayerInfo = (String) map.get("idplayerinfo");
 		plName = (String) map.get("plName");
 		plFullName = (String) map.get("plFullName");
 		plPosition = (String) map.get("plPosition");

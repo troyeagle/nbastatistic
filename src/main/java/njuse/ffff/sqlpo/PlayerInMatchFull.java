@@ -78,7 +78,7 @@ public class PlayerInMatchFull {
 		name = (String) basicMap.get("name");
 		position = (String) basicMap.get("position");
 		minute = (String) basicMap.get("minute");
-		playerId = (String) basicMap.get("playerId");
+		playerId = (String) basicMap.get("idplayerinfo");
 		date = (Date) basicMap.get("date");
 
 		attribute = (String) basicMap.get("attribute");
