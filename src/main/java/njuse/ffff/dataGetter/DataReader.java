@@ -222,7 +222,7 @@ public class DataReader implements NewDataReaderService {
 //		Map<String, Object> playerfilter = new HashMap<String, Object>();
 //		for(resultA.)
 		List<Map<String,Object>> result = mapper.selectFree("* from playermatchinfo where idmatchinfo IN("
-				+ "select idmatchinfo where idTeam ="+idTeam+" AND season="+season+")");
+				+ "select idmatchinfo from matchinfo where idTeam ="+idTeam+" AND season="+season+")");
 		List<PlayerInMatchFull> players = new ArrayList<PlayerInMatchFull>();
 		for(Map<String,Object> m:result){
 			players.add(new PlayerInMatchFull(m));
