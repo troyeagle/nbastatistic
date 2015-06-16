@@ -9,6 +9,7 @@ import njuse.ffff.presenterService.SearchService;
 import njuse.ffff.sqlpo.PlayerInfo;
 import njuse.ffff.sqlpo.TeamInfo;
 import njuse.ffff.uiservice.SearchResultService;
+import njuse.ffff.util.BasicPlayerInfo;
 
 public class SearchController implements SearchService {
 	private NewDataReaderService dataReader;
@@ -38,21 +39,21 @@ public class SearchController implements SearchService {
 	 */
 	public void search(SearchResultService searchResultPanel, String input) {
 		String[] teamNames = searchTeams(input);
-		String[] playerNames = searchPlayers(input);
+		BasicPlayerInfo[] playerNames = searchPlayers(input);
 
 		searchResultPanel.setSearchResult(teamNames, playerNames);
 	}
 
-	public String[] searchPlayers(String input) {
+	public BasicPlayerInfo[] searchPlayers(String input) {
 		input = input.toUpperCase();
-		ArrayList<String> playersName = new ArrayList<>();
+		ArrayList<BasicPlayerInfo> playersName = new ArrayList<>();
 		List<PlayerInfo> data_player = dataReader.getPlayerInfoAll("");
 		for (PlayerInfo player : data_player) {
 			if (player.getPlName().toUpperCase().contains(input)) {
-				playersName.add(player.getPlName());
+				playersName.add(new BasicPlayerInfo(player.getPlName(),player.getIdPlayerInfo()));
 			}
 		}
-		return playersName.toArray(new String[0]);
+		return playersName.toArray(new BasicPlayerInfo[0]);
 	}
 
 	public String[] searchTeams(String input) {

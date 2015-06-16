@@ -16,6 +16,7 @@ import njuse.ffff.sqlpo.TeamAverageAdv;
 import njuse.ffff.sqlpo.TeamInfo;
 import njuse.ffff.uiservice.TeamDataService;
 import njuse.ffff.uiservice.TeamProfileService;
+import njuse.ffff.util.BasicPlayerInfo;
 import njuse.ffff.util.DealDecimal;
 
 public class TeamInfoController implements TeamInfoService{
@@ -98,7 +99,8 @@ public class TeamInfoController implements TeamInfoService{
 		if(players.size()>0){
 			Object[][] playerForTeam = new Object[players.size()][];
 			for(int i=0;i<players.size();i++){
-				playerForTeam[i] = new Object[]{i,players.get(i).getPlName(),players.get(i).getIdPlayerInfo()};//TODO
+				BasicPlayerInfo p = new BasicPlayerInfo(players.get(i).getPlName(),players.get(i).getIdPlayerInfo());
+				playerForTeam[i] = new Object[]{i,p};//TODO
 			}
 			panel.setPlayers(playerForTeam);
 		}

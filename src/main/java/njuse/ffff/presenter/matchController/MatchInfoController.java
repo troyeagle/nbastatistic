@@ -10,6 +10,7 @@ import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.presenterService.matchService.MatchInfoService;
 import njuse.ffff.sqlpo.PlayerInMatchFull;
 import njuse.ffff.uiservice.MatchViewService;
+import njuse.ffff.util.BasicPlayerInfo;
 import njuse.ffff.util.DealDecimal;
 
 public class MatchInfoController implements MatchInfoService{
@@ -200,8 +201,9 @@ public class MatchInfoController implements MatchInfoService{
 		ArrayList<int[]> dirty_teamA = new ArrayList<int[]>(); //脏数据位置
 		for(int i=0;i<playerListForTeamA.size();i++){
 			PlayerInMatchFull player = playerListForTeamA.get(i);
+			BasicPlayerInfo p = new BasicPlayerInfo(player.getName(),player.getPlayerId());
 			values_teamA[i] = new Object[]{
-					player.getName(),player.getFirstOnMatch(),player.getMinute()					//球员，首发，上场时间
+					p,player.getFirstOnMatch(),player.getMinute()					//球员，首发，上场时间
 					,DealDecimal.formatChangeToPercentage(player.getFieldGoalPercentage())	//投篮命中率
 					,DealDecimal.formatChange(player.getFieldGoalMade())				//投篮命中数
 					,DealDecimal.formatChange(player.getFieldGoalAttempted())			//投篮出手数
@@ -221,7 +223,7 @@ public class MatchInfoController implements MatchInfoService{
 					,DealDecimal.formatChange(player.getTurnover())						//失误数
 					,DealDecimal.formatChange(player.getFoul())							//犯规数
 					,DealDecimal.formatChange(player.getPoints())						//该场得分
-					,player.getPlayerId()
+					
 			};
 			
 			ArrayList<Integer> dirty_playerInfo = new ArrayList<Integer>();
@@ -238,8 +240,9 @@ public class MatchInfoController implements MatchInfoService{
 		Object[][] values_teamB = new Object[playerListForTeamB.size()][];
 		for(int i=0;i<playerListForTeamB.size();i++){
 			PlayerInMatchFull player = playerListForTeamB.get(i);
+			BasicPlayerInfo p = new BasicPlayerInfo(player.getName(),player.getPlayerId());
 			values_teamB[i] = new Object[]{
-					player.getName(),player.getFirstOnMatch(),player.getMinute()					//球员，首发，上场时间
+					p,player.getFirstOnMatch(),player.getMinute()					//球员，首发，上场时间
 					,DealDecimal.formatChangeToPercentage(player.getFieldGoalPercentage())	//投篮命中率
 					,DealDecimal.formatChange(player.getFieldGoalMade())				//投篮命中数
 					,DealDecimal.formatChange(player.getFieldGoalAttempted())			//投篮出手数
@@ -259,7 +262,7 @@ public class MatchInfoController implements MatchInfoService{
 					,DealDecimal.formatChange(player.getTurnover())						//失误数
 					,DealDecimal.formatChange(player.getFoul())							//犯规数
 					,DealDecimal.formatChange(player.getPoints())						//该场得分
-					,player.getPlayerId()
+					
 			};
 			
 			ArrayList<Integer> dirty_playerInfo = new ArrayList<Integer>();

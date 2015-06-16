@@ -9,6 +9,7 @@ import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.presenterService.playerService.PlayerCompareService;
 import njuse.ffff.sqlpo.PlayerInMatchFull;
 import njuse.ffff.uiservice.PlayersOverviewService;
+import njuse.ffff.util.BasicPlayerInfo;
 import njuse.ffff.util.DealDecimal;
 import njuse.ffff.util.Filter;
 
@@ -160,8 +161,9 @@ public class PlayerCompareController implements PlayerCompareService{
 			Map<String,Object> map_total = player_total.generateBasicMap();
 			Map<String,Object> map_adv = player_total.generateAdvancedMap();
 			// TODO
+			BasicPlayerInfo p = new BasicPlayerInfo(player_total.getName(), player_total.getPlayerId());
 			values_total[i] = new Object[] {
-					player_total.getName(),map_total.get("team")		//球员姓名，球员所属球队名
+					p,map_total.get("team")		//球员姓名，球员所属球队名
 					,map_total.get("gamesPlayed"),map_total.get("firstOnMatch")//球员比赛场数，球员首发场数
 					,map_total.get("fieldGoalMade")					//投篮命中数
 					,map_total.get("fieldGoalAttempted")					//投篮出手数
@@ -180,7 +182,8 @@ public class PlayerCompareController implements PlayerCompareService{
 					,map_total.get("foul")				//犯规
 					,map_total.get("points")				//得分
 					,map_adv.get("playerEfficiencyRate")				//效率
-					,map_total.get("idPlayerInfo")
+//					,map_total.get("idPlayerInfo")
+					
 			};
 			
 		}
@@ -192,8 +195,9 @@ public class PlayerCompareController implements PlayerCompareService{
 			}
 			Map<String,Object> map_avg = player_avg.generateBasicMap();
 			Map<String,Object> map_adv = player_avg.generateAdvancedMap();
+			BasicPlayerInfo p = new BasicPlayerInfo(player_avg.getName(), player_avg.getPlayerId());
 			values_average[i] = new Object[]{
-					player_avg.getName(),map_avg.get("team")
+					p,map_avg.get("team")
 					,map_avg.get("rebound")//篮板
 					,map_avg.get("assist")//助攻
 					,map_avg.get("minute")//平均在场时间
@@ -207,7 +211,7 @@ public class PlayerCompareController implements PlayerCompareService{
 					,map_avg.get("foul")//犯规
 					,map_avg.get("points")//得分
 					,map_adv.get("playerEfficiencyRate")//效率
-					,map_avg.get("trueShootingPercentage")//					,DealDecimal.formatChangeToPercentage(Double.parseDouble(String.valueOf(map_avg.get("trueShootingPercentage"))))//真实命中率
+										,DealDecimal.formatChangeToPercentage(Double.parseDouble(String.valueOf(map_adv.get("trueShootingPercentage"))))//真实命中率
 					,String.valueOf(map_adv.get("reboundRatio")).concat("%")//篮板率
 					,String.valueOf(map_adv.get("offensiveReboundRatio")).concat("%")//进攻篮板率
 					,String.valueOf(map_adv.get("defensiveReboundRatio")).concat("%")//防守篮板率
@@ -219,7 +223,7 @@ public class PlayerCompareController implements PlayerCompareService{
 					,map_adv.get("ows")//进攻贡献值
 					,map_adv.get("dws")//防守贡献值
 					,map_adv.get("ws")//球员贡献值
-					,map_avg.get("idPlayerInfo")
+//					,map_avg.get("idPlayerInfo")
 			};
 		}
 
