@@ -61,6 +61,15 @@ public class AnalysisController implements AnalysisSerivce{
 		String[] value = leagueStyleAnalysis.calculateCharactoristic2(seasons.toString());
 		return value;
 	}
+	
+	public String[] getStartSeason(){
+		ArrayList<String> seasons = new ArrayList<>();
+		for(int i=1980;i<=2014;i++){
+			StringBuffer bf = new StringBuffer(i+"-"+String.valueOf(i+1).substring(2,4));
+			seasons.add(bf.toString());
+		}
+		return seasons.toArray(new String[0]);
+	}
 
 	@Override
 	public void getCorrelationAnalysis(String attribute1, String attribute2) {

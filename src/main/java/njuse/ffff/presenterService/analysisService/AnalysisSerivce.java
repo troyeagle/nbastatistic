@@ -22,6 +22,8 @@ public interface AnalysisSerivce {
 	public String[][] getDefaultLeagueAnalysis();
 	//设置自定义联盟风格分析(连续5年内)
 	public String[] getSelfLeagueAnalysis(String startSeason);
+	//获得起始赛季
+	public String[] getStartSeason();
 	
 	//获取球员稳定性分析
 	public ArrayList<PlayerSteady> getPlayerSteadyAnalysis(String playerID);
