@@ -37,11 +37,11 @@ public class DataReader implements NewDataReaderService {
 	@Override
 	public List<String> selectSeasonsByPlayer(String playerid) {
 		List<String> target = new ArrayList<String>();
+		playerid="'"+playerid+"'";
 		target.add("season");
 		Map<String, Object> filter = new HashMap<String, Object>();
-		filter.put("playerid", playerid);
-		List<Map<String, Object>> result = mapper.selectList("playermatchinfo",
-				target, filter, null);
+		filter.put("idplayerinfo", playerid);
+		List<Map<String, Object>> result = mapper.selectFree("distinct season from playermatchinfo where idplayerinfo = "+playerid);
 		List<String> ret = new ArrayList<String>();
 		for (Map<String, Object> m : result) {
 			ret.add((String) m.get("season"));

@@ -19,12 +19,13 @@ public class DataReaderTest {
 //		List<PlayerInMatchFull> leadPlayerForSeason = serv.getLeadPlayerForSeason("14-15", "points");
 //		List<TeamAverage> leadTeamForSeason = serv.getLeadTeamForSeason("14-15", "points");
 //		List<MatchInfo> matchInPeriod = serv.getMatchInPeriod(Date.valueOf("2014-11-11"), Date.valueOf("2014-11-30"));
-//		PlayerInfo playerInfo = serv.getPlayerInfo("Kobe Bryant");
+		PlayerInfo playerInfo = serv.getPlayerInfo("Kobe Bryant");
 //		List<PlayerInfo> playerInfoAll = serv.getPlayerInfoAll("playing");
 //		List<PlayerInMatchFull> playerInMatch = serv.getPlayerInMatch("198806070LAL");
 //		PlayerShooting playershooting = serv.getPlayerShooting("jamesle01", "2014-15");
 //		List<PlayerInfo> playersInTeam = serv.getPlayersInTeam("LAL", "14-15");
-		List<PlayerInMatchFull> playerStatsAll = serv.getPlayersStatsAll("2014-15", "total");
+//		List<PlayerInMatchFull> playerStatsAll = serv.getPlayersStatsAll("2014-15", "total");
+//		List<String> seasons = serv.selectSeasonsByPlayer("jamesle01");
 		
 //		List<PlayerInMatchFull> playerStats = serv.getPlayerStats("jamesle01", "14-15");
 //		PlayerInMatchFull playerStatsSingle = serv.getPlayerStatsSingle("jamesle01", "2014-15", "per_game");
