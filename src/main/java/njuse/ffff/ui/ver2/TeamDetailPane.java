@@ -3,7 +3,6 @@ package njuse.ffff.ui.ver2;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +48,6 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 	private TableView advTable;
 	private GameLogPanel gamesTable;
 
-	private SwitchButton regularBtn;
-	private SwitchButton playoffBtn;
-	private SwitchButtonGroup group;
-
 	public TeamDetailPane() {
 		super(new BorderLayout());
 		setOpaque(false);
@@ -67,32 +62,7 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 		tabBar.addSwitchListener(e -> {
 			((CardLayout) viewPanel.getLayout()).show(viewPanel,
 					tabBar.getActiveTabTitle());
-			boolean isVisible = tabBar.getActiveTabIndex() == 3;
-			regularBtn.setVisible(isVisible);
-			playoffBtn.setVisible(isVisible);
 		});
-
-		regularBtn = new SwitchButton("常规赛");
-		regularBtn.setBackground(UIConfig.ThemeColor);
-		regularBtn.setForeground(Color.WHITE);
-		regularBtn.setFont(UIConfig.SubTitleFont);
-		playoffBtn = new SwitchButton("季后赛");
-		playoffBtn.setBackground(UIConfig.ThemeColor);
-		playoffBtn.setForeground(Color.WHITE);
-		playoffBtn.setFont(UIConfig.SubTitleFont);
-
-		group = new SwitchButtonGroup();
-		group.addButton(regularBtn);
-		group.addButton(playoffBtn);
-		group.switchTo(0);
-		group.addSwitchListener(e -> {
-			// TODO
-		});
-
-		PanelEx buttonPanel = new PanelEx(new FlowLayout(FlowLayout.LEFT, 10, 5));
-		buttonPanel.setOpaque(false);
-		buttonPanel.add(regularBtn);
-		buttonPanel.add(playoffBtn);
 
 		viewPanel = new PanelEx(new CardLayout());
 		viewPanel.setOpaque(false);
@@ -100,7 +70,6 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 		PanelEx showPanel = new PanelEx(new BorderLayout());
 		showPanel.setOpaque(false);
 		showPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 40, 40));
-		showPanel.add(buttonPanel, BorderLayout.NORTH);
 		showPanel.add(viewPanel);
 
 		PanelEx tabPanel = new PanelEx(new BorderLayout());
@@ -135,6 +104,10 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 					gamesTable.getSelectedSeason(), name);
 		});
 	}
+	
+	public void updateData() {
+		setTeam(name);
+	}
 
 	public void setTeam(String teamName) {
 		boolean isChanged = name == null || !teamName.equals(name);
@@ -145,7 +118,9 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 		tic.setPlayerForTeam(this, teamName);
 		tic.setTeamAvgData(this, teamName);
 		tic.setTeamTotalData(this, teamName);
-		tic.setTeamAdvancedlData(this, teamName); // TODO delete
+		tic.setTeamAdvancedlData(this, teamName);
+		String[] seasons = tic.getInvolvedSeason(teamName);
+		setGameSeasons(seasons);
 
 		tic.setTeamGameLog(this, null, name);
 
