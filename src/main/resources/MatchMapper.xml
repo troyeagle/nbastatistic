@@ -57,7 +57,7 @@
 		from ${tableName} where
 		<foreach item="value" index="key" collection="filter" open=""
 			separator="and" close="">
-			${key}=#{value}
+			${key} like #{value}
 		</foreach>
 		limit 1
 	</select>
@@ -75,14 +75,17 @@
 				*
 			</otherwise>
 		</choose>
-		from ${tableName} where
-		<if test="filter != null and !filter.isEmpty()">
-			<foreach item="value" index="key" collection="filter" open=""
-				separator="and" close="">
-				${key}=#{value}
-			</foreach>
-		</if>
-		
+		from ${tableName}
+		<where>
+			<if test="filter != null and !filter.isEmpty()">
+				<foreach item="value" index="key" collection="filter" open=""
+					separator="and" close="">
+					${key} like #{value}
+				</foreach>
+			</if>
+		</where>
+
+
 	</select>
 
 	<select id="selectListFree" resultType="map">

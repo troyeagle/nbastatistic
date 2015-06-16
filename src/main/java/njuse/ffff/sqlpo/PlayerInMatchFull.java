@@ -89,54 +89,68 @@ public class PlayerInMatchFull {
 		gamesPlayed = (int) basicMap.get("gamesPlayed");
 		idMatchInfo = (String) basicMap.get("idMatchInfo");
 
-		fieldGoalMade = (double) basicMap.get("fieldGoalMade");
-		fieldGoalAttempted = (double) basicMap.get("fieldGoalAttempted");
-		threePointerMade = (double) basicMap.get("threePointerMade");
-		threePointerAttempted = (double) basicMap.get("threePointerAttempted");
-		freeThrowMade = (double) basicMap.get("freeThrowMade");
-		freeThrowAttempted = (double) basicMap.get("freeThrowAttempted");
-		offensiveRebound = (double) basicMap.get("offensiveRebound");
-		defensiveRebound = (double) basicMap.get("defensiveRebound");
-		rebound = (double) basicMap.get("rebound");
-		assist = (double) basicMap.get("assist");
-		steal = (double) basicMap.get("steal");
-		block = (double) basicMap.get("block");
-		turnover = (double) basicMap.get("turnover");
-		foul = (double) basicMap.get("foul");
-		points = (double) basicMap.get("points");
-		plusminus = (double) basicMap.get("plusminus");
+		fieldGoalMade = myParse(basicMap.get("fieldGoalMade"));
+		fieldGoalAttempted = myParse(basicMap.get("fieldGoalAttempted"));
+		threePointerMade = myParse(basicMap.get("threePointerMade"));
+		threePointerAttempted = myParse(basicMap.get("threePointerAttempted"));
+		freeThrowMade = myParse(basicMap.get("freeThrowMade"));
+		freeThrowAttempted = myParse(basicMap.get("freeThrowAttempted"));
+		offensiveRebound = myParse(basicMap.get("offensiveRebound"));
+		defensiveRebound = myParse(basicMap.get("defensiveRebound"));
+		rebound = myParse(basicMap.get("rebound"));
+		assist = myParse(basicMap.get("assist"));
+		steal = myParse(basicMap.get("steal"));
+		block = myParse(basicMap.get("block"));
+		turnover = myParse(basicMap.get("turnover"));
+		foul = myParse(basicMap.get("foul"));
+		points = myParse(basicMap.get("points"));
+		plusminus = myParse(basicMap.get("plusminus"));
 
 		firstOnMatch = (int) basicMap.get("firstOnMatch");
 
-		playerEfficiencyRate = (double) basicMap.get("playerEfficiencyRate");
-		fieldGoalPercentage = (double) basicMap.get("fieldGoalPercentage");
-		threePointerPercentage = (double) basicMap
-				.get("threePointerPercentage");
-		freeThrowRate = (double) basicMap.get("freeThrowRate");
-		effFGPercentage = (double) basicMap.get("effFGPercentage");
-		trueShootingPercentage = (double) basicMap
-				.get("trueShootingPercentage");
-		threePAr = (double) basicMap.get("threePAr");
-		reboundRatio = (double) basicMap.get("reboundRatio");
-		offensiveReboundRatio = (double) basicMap.get("offensiveReboundRatio");
-		defensiveReboundRatio = (double) basicMap.get("defensiveReboundRatio");
-		assistRatio = (double) basicMap.get("assistRatio");
-		stealRatio = (double) basicMap.get("stealRatio");
-		blockRatio = (double) basicMap.get("blockRatio");
-		turnoverRatio = (double) basicMap.get("turnoverRatio");
-		usingRatio = (double) basicMap.get("usingRatio");
-		GmSc = (double) basicMap.get("GmSc");
-		offensiveRating = (double) basicMap.get("offensiveRating");
-		defensiveRating = (double) basicMap.get("defensiveRating");
+			playerEfficiencyRate = myParse(basicMap.get("playerEfficiencyRate"));
 
-		ows = (double) basicMap.get("ows");
-		dws = (double) basicMap.get("dws");
-		ws = (double) basicMap.get("ws");
-		wsper48 = (double) basicMap.get("wsper48");
-		obpm = (double) basicMap.get("obpm");
-		dbpm = (double) basicMap.get("dbpm");
-		bpm = (double) basicMap.get("bpm");
-		vorp = (double) basicMap.get("vorp");
+		
+		fieldGoalPercentage = myParse(basicMap.get("fieldGoalPercentage"));
+		threePointerPercentage = myParse( basicMap
+				.get("threePointerPercentage"));
+		freeThrowRate = myParse(basicMap.get("freeThrowRate"));
+		effFGPercentage = myParse(basicMap.get("effFGPercentage"));
+		trueShootingPercentage = myParse( basicMap
+				.get("trueShootingPercentage"));
+		threePAr = myParse(basicMap.get("threePAr"));
+		reboundRatio = myParse(basicMap.get("reboundRatio"));
+		offensiveReboundRatio = myParse(basicMap.get("offensiveReboundRatio"));
+		defensiveReboundRatio = myParse(basicMap.get("defensiveReboundRatio"));
+		assistRatio = myParse(basicMap.get("assistRatio"));
+		stealRatio = myParse(basicMap.get("stealRatio"));
+		blockRatio = myParse(basicMap.get("blockRatio"));
+		turnoverRatio = myParse(basicMap.get("turnoverRatio"));
+		usingRatio = myParse(basicMap.get("usingRatio"));
+		GmSc = myParse(basicMap.get("GmSc"));
+	
+
+			offensiveRating = myParse(basicMap.get("offensiveRating"));
+			defensiveRating = myParse(basicMap.get("defensiveRating"));
+			ows = myParse(basicMap.get("ows"));
+			dws = myParse(basicMap.get("dws"));
+			ws = myParse(basicMap.get("ws"));
+			wsper48 = myParse(basicMap.get("wsper48"));
+			obpm = myParse(basicMap.get("obpm"));
+			dbpm = myParse(basicMap.get("dbpm"));
+			bpm = myParse(basicMap.get("bpm"));
+			vorp = myParse(basicMap.get("vorp"));
+		
+		
+	}
+
+	private double myParse(Object object) {
+		try{
+			return ((Float)object).doubleValue();
+		}catch(Exception e){
+			return -1;
+		}
+		
 	}
 
 	public void setBasic(String[] split) {

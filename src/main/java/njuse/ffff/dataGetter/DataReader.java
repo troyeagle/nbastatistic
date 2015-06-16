@@ -64,6 +64,7 @@ public class DataReader implements NewDataReaderService {
 			Map<String, Object> advfilter = new HashMap<String, Object>();
 			advfilter.put("season", season);
 			advfilter.put("idplayerinfo", m.get("idplayerinfo"));
+			filter.remove("attribute");
 			Map<String, Object> adv = mapper.selectOne("playerstatinfoadv",
 					null, filter);
 			adv.putAll(m);
@@ -83,6 +84,9 @@ public class DataReader implements NewDataReaderService {
 		filter.put("attribute", attribute);
 		Map<String, Object> result = mapper.selectOne("playerstatinfo", null,
 				filter);
+		if(result==null){
+			return null;
+		}
 		PlayerInMatchFull p = new PlayerInMatchFull(result);
 		return p;
 	}
@@ -159,7 +163,7 @@ public class DataReader implements NewDataReaderService {
 		filter.put("team", name);
 		filter.put("season", season);
 		if (attribute != null) {
-			filter.put("attribute", "%" + attribute);
+			filter.put("attribute", "% " + attribute+"");
 		}
 		Map<String, Object> result = mapper.selectOne("teamaverage", null,
 				filter);
@@ -181,32 +185,40 @@ public class DataReader implements NewDataReaderService {
 
 	@Override
 	public PlayerInMatchFull getTeamStatSingle(String idTeam, Date date) {
-		Map<String, Object> filter = new HashMap<String, Object>();
-		filter.put("teamA", idTeam);
-		filter.put("date", date);
-		List<String> list = new ArrayList<String>();
-		list.add("idmatchinfo");
-		Map<String, Object> resultA = mapper.selectOne("matchinfo", list,
-				filter);
-		filter.clear();
-		filter.put("teamB", idTeam);
-		filter.put("date", date);
-		Map<String, Object> resultB = mapper.selectOne("matchinfo", list,
-				filter);
-		Map<String, Object> playerfilter = new HashMap<String, Object>();
-		if (!resultA.isEmpty()) {
-			playerfilter.put("idmatchinfo", resultA.get("idmatchinfo"));
-			Map<String, Object> resultAtA = mapper.selectOne("playermatchinfo",
-					null, playerfilter);
-			return new PlayerInMatchFull(resultAtA);
-		} else if (!resultB.isEmpty()) {
-			playerfilter.put("idmatchinfo", resultB.get("idmatchinfo"));
-			Map<String, Object> resultAtB = mapper.selectOne("playermatchinfo",
-					null, playerfilter);
-			return new PlayerInMatchFull(resultAtB);
-		} else {
+//		Map<String, Object> filter = new HashMap<String, Object>();
+//		filter.put("teamA", idTeam);
+//		filter.put("date", date);
+//		List<String> list = new ArrayList<String>();
+//		list.add("idmatchinfo");
+//		Map<String, Object> resultA = mapper.selectOne("matchinfo", list,
+//				filter);
+//		filter.clear();
+//		filter.put("teamB", idTeam);
+//		filter.put("date", date);
+//		Map<String, Object> resultB = mapper.selectOne("matchinfo", list,
+//				filter);
+//		Map<String, Object> playerfilter = new HashMap<String, Object>();
+//		if (!resultA.isEmpty()) {
+//			playerfilter.put("idmatchinfo", resultA.get("idmatchinfo"));
+//			Map<String, Object> resultAtA = mapper.selectOne("playermatchinfo",
+//					null, playerfilter);
+//			return new PlayerInMatchFull(resultAtA);
+//		} else if (!resultB.isEmpty()) {
+//			playerfilter.put("idmatchinfo", resultB.get("idmatchinfo"));
+//			Map<String, Object> resultAtB = mapper.selectOne("playermatchinfo",
+//					null, playerfilter);
+//			return new PlayerInMatchFull(resultAtB);
+//		} else {
+//			return null;
+//		}
+		String dt = date.toString().replaceAll("-", "");
+		dt = "'"+dt+"%'";
+		idTeam = "'"+idTeam+"'";
+		List<Map<String, Object>> result=mapper.selectFree("* from playermatchinfo where idmatchinfo like "+dt +" and team ="+idTeam);
+		if(result.isEmpty()){
 			return null;
 		}
+		return new PlayerInMatchFull(result.get(0));
 	}
 
 	public List<PlayerInMatchFull> getTeamStatBySeason(String idTeam,
@@ -228,9 +240,9 @@ public class DataReader implements NewDataReaderService {
 		// Map<String, Object> playerfilter = new HashMap<String, Object>();
 		// for(resultA.)
 		List<Map<String, Object>> result = mapper
-				.selectFree("* from playermatchinfo where idmatchinfo IN("
-						+ "select idmatchinfo from matchinfo where idTeam ="
-						+ idTeam + " AND season=" + season + ")");
+				.selectFree(
+						 "* from playermatchinfo where team ="
+						+ "'"+idTeam+"'" + " AND season=" + "'"+season+"'" +" and team like 'Team%'");
 		List<PlayerInMatchFull> players = new ArrayList<PlayerInMatchFull>();
 		for (Map<String, Object> m : result) {
 			players.add(new PlayerInMatchFull(m));

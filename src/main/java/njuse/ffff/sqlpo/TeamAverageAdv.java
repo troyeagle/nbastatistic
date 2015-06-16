@@ -18,14 +18,14 @@ public class TeamAverageAdv {
 	public TeamAverageAdv(Map<String, Object> map) {
 		team = (String) map.get("team");
 		season = (String) map.get("season");
-		winRate = (double) map.get("winRate");
-		myRounds = (double) map.get("myRounds");
-		offensiveEf = (double) map.get("offensiveEf");
-		defensiveEf = (double) map.get("defensiveEf");
-		offensiveReboundEf = (double) map.get("offensiveReboundEf");
-		defensiveReboundEf = (double) map.get("defensiveReboundEf");
-		stealEf = (double) map.get("stealEf");
-		assistEf = (double) map.get("assistEf");
+		winRate = ((Float)map.get("winRate")).doubleValue();
+		myRounds = ((Float)map.get("myRounds")).doubleValue();
+		offensiveEf = ((Float)map.get("offensiveEf")).doubleValue();
+		defensiveEf = ((Float)map.get("defensiveEf")).doubleValue();
+		offensiveReboundEf = ((Float)map.get("offensiveReboundEf")).doubleValue();
+		defensiveReboundEf = ((Float)map.get("defensiveReboundEf")).doubleValue();
+		stealEf = ((Float)map.get("stealEf")).doubleValue();
+		assistEf = ((Float)map.get("assistEf")).doubleValue();
 	}
 
 	public TeamAverageAdv(TeamAverage myteam, TeamAverage rival) {

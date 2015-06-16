@@ -56,32 +56,42 @@ public class PlayerShooting {
 		position = (String) map.get("position");
 		games = (int) map.get("games");
 		minutes = (String) map.get("minutes");
-		fieldGoalPercentage = (double) map.get("fieldGoalPercentage");
-		averageDistance = (double) map.get("averageDistance");
+		
+		fieldGoalPercentage = myParse(map.get("fieldGoalPercentage"));
+		averageDistance = myParse(map.get("averageDistance"));
 
-		twoPOfFGA = (double) map.get("twoPOfFGA");
-		twoPOfFGA0_3 = (double) map.get("twoPOfFGA0_3");
-		twoPOfFGA3_10 = (double) map.get("twoPOfFGA3_10");
-		twoPOfFGA10_16 = (double) map.get("twoPOfFGA10_16");
-		twoPOfFGA16plus = (double) map.get("twoPOfFGA16plus");
-		threePOfFGA = (double) map.get("threePOfFGA");
+		twoPOfFGA = myParse(map.get("twoPOfFGA"));
+		twoPOfFGA0_3 = myParse(map.get("twoPOfFGA0_3"));
+		twoPOfFGA3_10 = myParse(map.get("twoPOfFGA3_10"));
+		twoPOfFGA10_16 = myParse(map.get("twoPOfFGA10_16"));
+		twoPOfFGA16plus = myParse(map.get("twoPOfFGA16plus"));
+		threePOfFGA = myParse(map.get("threePOfFGA"));
 
-		FGtwoPOfFGA = (double) map.get("FGtwoPOfFGA");
-		FGtwoPOfFGA0_3 = (double) map.get("FGtwoPOfFGA0_3");
-		FGtwoPOfFGA3_10 = (double) map.get("FGtwoPOfFGA3_10");
-		FGtwoPOfFGA10_16 = (double) map.get("FGtwoPOfFGA10_16");
-		FGtwoPOfFGA16plus = (double) map.get("FGtwoPOfFGA16plus");
-		FGthreePOfFGA = (double) map.get("FGthreePOfFGA");
+		FGtwoPOfFGA = myParse(map.get("FGtwoPOfFGA"));
+		FGtwoPOfFGA0_3 = myParse(map.get("FGtwoPOfFGA0_3"));
+		FGtwoPOfFGA3_10 = myParse(map.get("FGtwoPOfFGA3_10"));
+		FGtwoPOfFGA10_16 = myParse(map.get("FGtwoPOfFGA10_16"));
+		FGtwoPOfFGA16plus = myParse(map.get("FGtwoPOfFGA16plus"));
+		FGthreePOfFGA = myParse(map.get("FGthreePOfFGA"));
 
-		twoPAssisted = (double) map.get("twoPAssisted");
-		dunks = (double) map.get("dunks");
-		dunkThrowdowns = (double) map.get("dunkThrowdowns");
+		twoPAssisted = myParse(map.get("twoPAssisted"));
+		dunks = myParse(map.get("dunks"));
+		dunkThrowdowns = myParse(map.get("dunkThrowdowns"));
+		
+		threePAssisted = myParse(map.get("threePAssisted"));
+		FGAthreePFromCorner = myParse(map.get("FGAthreePFromCorner"));
+		FGthreePFromCorner = myParse(map.get("FGthreePFromCorner"));
+		heaveAttempts = myParse(map.get("heaveAttempts"));
+		heaveMade = myParse(map.get("heaveMade"));
+	}
 
-		threePAssisted = (double) map.get("threePAssisted");
-		FGAthreePFromCorner = (double) map.get("FGAthreePFromCorner");
-		FGthreePFromCorner = (double) map.get("FGthreePFromCorner");
-		heaveAttempts = (double) map.get("heaveAttempts");
-		heaveMade = (double) map.get("heaveMade");
+	private double myParse(Object object) {
+		try{
+			return ((Float)object).doubleValue();
+		}catch(Exception e){
+			return -1;
+		}
+		
 	}
 
 	public PlayerShooting(String name, String idPlayerInfo) {
