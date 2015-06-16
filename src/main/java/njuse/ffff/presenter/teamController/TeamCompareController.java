@@ -61,7 +61,7 @@ public class TeamCompareController implements TeamCompareService{
 		ArrayList<TeamAverage> teams_total = new ArrayList<TeamAverage>();
 		ArrayList<TeamAverage> teams_avg = new ArrayList<TeamAverage>();
 		for(TeamAverage t:teamList){
-			String judge = String.valueOf(t.generateMap().get("attribute"));
+			String judge = String.valueOf(t.generateMap().get("attribute")).split(" ")[1];
 			if(judge.equals("total")){
 				teams_total.add(t);
 			}
@@ -103,7 +103,7 @@ public class TeamCompareController implements TeamCompareService{
 				continue;
 			}
 			Map<String,Object> map_avg = teamAvg.generateMap();
-			String name = String.valueOf(map_avg.get("name"));
+			String name = String.valueOf(map_avg.get("team"));
 			TeamAverageAdv teamAdv = dataReader.getTeamAverageAdv(name, season);
 			if(teamAdv==null){
 				continue;
