@@ -20,6 +20,7 @@ import njuse.ffff.ui.ver2.component.TableView;
 import njuse.ffff.ui.ver2.component.table.DefaultGroup;
 import njuse.ffff.ui.ver2.component.table.GroupableTableHeader;
 import njuse.ffff.uiservice.PlayerDataService;
+import njuse.ffff.util.BasicPlayerInfo;
 
 public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 
@@ -40,10 +41,10 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 	};
 
 	private static final String[] shotHeader = { "赛季", "球队", "主打位置", "出场数", "时间",
-			"命中率", "平均出手距离", "两分", "0-3尺", "3-10尺", "10-16尺", "16尺–篮下", "三分",
-			"两分", "0-3尺", "3-10尺", "10-16尺", "16尺-篮下", "三分" };
+			"命中率", "平均出手距离", "两分", "0-3尺", "3-10尺", "10-16尺", "16尺–三分线",
+			"三分", "两分", "0-3尺", "3-10尺", "10-16尺", "16尺-篮下", "三分" };
 
-	private String id;
+	private BasicPlayerInfo info;
 
 	private TabBar tabBar;
 	private PanelEx viewPanel;
@@ -93,7 +94,8 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 		group.addButton(playoffBtn);
 		group.switchTo(0);
 		group.addSwitchListener(e -> {
-			// TODO
+			PlayerInfoController.getInstance().setPlayerGameLog(this, getSelectedSeason(),
+					info.getID());
 		});
 
 		PanelEx buttonPanel = new PanelEx(new FlowLayout(FlowLayout.LEFT, 10, 5));
@@ -141,17 +143,17 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 
 		gamesTable.getSeasonList().addItemListener(e -> {
 			PlayerInfoController.getInstance().setPlayerGameLog(this,
-					gamesTable.getSelectedSeason(), id);
+					gamesTable.getSelectedSeason(), info.getID());
 		});
 	}
 
 	public void updateData() {
-		setPlayer(id);
+		setPlayer(info);
 	}
 
-	public void setPlayer(String playerID) {
-		boolean isChanged = id == null || !playerID.equals(id);
-		id = playerID;
+	public void setPlayer(BasicPlayerInfo info) {
+		boolean isChanged = info == null || !info.getID().equals(info.getID());
+		this.info = info;
 
 		if (isChanged) {
 			tabBar.switchTo(0);
@@ -161,14 +163,15 @@ public class PlayerDetailPane extends PanelEx implements PlayerDataService {
 			}
 		}
 
-		setPlayerWithoutCheck(playerID);
+		setPlayerWithoutCheck(info);
 	}
 
-	private void setPlayerWithoutCheck(String playerID) {
+	private void setPlayerWithoutCheck(BasicPlayerInfo info) {
 		boolean isPlayoff = group.getActiveIndex() == 1;
 
-		profilePane.setPlayer(playerID);
+		profilePane.setPlayer(info.getName());
 		PlayerInfoController pic = PlayerInfoController.getInstance();
+		String playerID = info.getID();
 		if (!isPlayoff) {
 			pic.setPlayShooting(this, playerID);
 			pic.setPlayerAvgData(this, playerID);

@@ -19,6 +19,9 @@ public class SwitchButton extends ButtonEx {
 
 	protected Icon[] icons;
 
+	protected Color[] bgColors;
+	protected Color[] fgColors;
+
 	protected List<ConditionChangeListener> listeners;
 
 	public SwitchButton() {
@@ -59,10 +62,17 @@ public class SwitchButton extends ButtonEx {
 
 	void setStatus(boolean b) {
 		if (isActive = b) {
+			if (bgColors[1] != null)
+				super.setBackground(bgColors[1]);
+			if (fgColors[1] != null)
+				super.setForeground(fgColors[1]);
+
 			setMaskColor(activeColor);
 			if (icons[1] != null)
 				setIcon(icons[1]);
 		} else {
+			super.setBackground(bgColors[0]);
+			super.setForeground(fgColors[0]);
 			setMaskColor(null);
 			setIcon(icons[0]);
 		}
@@ -91,5 +101,33 @@ public class SwitchButton extends ButtonEx {
 
 	public void addConditionChangeListener(ConditionChangeListener l) {
 		listeners.add(l);
+	}
+
+	public void setActiveBgColor(Color c) {
+		bgColors[1] = c;
+		if (isActive && c != null)
+			super.setBackground(c);
+	}
+
+	public void setActiveFgColor(Color c) {
+		fgColors[1] = c;
+		if (isActive && c != null)
+			super.setForeground(c);
+	}
+
+	@Override
+	public void setBackground(Color bg) {
+		if (bgColors == null)
+			bgColors = new Color[2];
+		bgColors[0] = bg;
+		super.setBackground(bg);
+	}
+
+	@Override
+	public void setForeground(Color fg) {
+		if (fgColors == null)
+			fgColors = new Color[2];
+		fgColors[0] = fg;
+		super.setForeground(fg);
 	}
 }

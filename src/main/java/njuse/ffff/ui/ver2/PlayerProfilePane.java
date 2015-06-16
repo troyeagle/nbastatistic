@@ -89,8 +89,8 @@ public class PlayerProfilePane extends PanelEx implements PlayerProfileService {
 		add(detailPane);
 	}
 
-	public void setPlayer(String name) {
-		PlayerInfoController.getInstance().setPlayerProfilePanel(this, name);
+	public void setPlayer(String id) {
+		PlayerInfoController.getInstance().setPlayerProfilePanel(this, id);
 	}
 
 	@Override

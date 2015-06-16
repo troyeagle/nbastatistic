@@ -52,7 +52,7 @@ public class PlayerFilterPane extends PanelEx implements PlayerFilterViewService
 				int[] p = resTable.getSelectedCellLocation();
 				if (p[0] >= 0) {
 					Object v = resTable.getValueAt(p[0], 1);
-					UIEventManager.notify(UIEventType.SWITCH, "球员详情:" + v);
+					UIEventManager.notify(UIEventType.SWITCH, "球员详情:", v);
 				}
 			}
 		});

@@ -12,6 +12,7 @@ import njuse.ffff.ui.component.LabelEx;
 import njuse.ffff.ui.component.PanelEx;
 import njuse.ffff.ui.ver2.component.TableView;
 import njuse.ffff.uiservice.SearchResultService;
+import njuse.ffff.util.BasicPlayerInfo;
 
 public class SearchResultPane extends PanelEx implements SearchResultService {
 
@@ -47,7 +48,7 @@ public class SearchResultPane extends PanelEx implements SearchResultService {
 				if (p[0] >= 0) {
 					Object v = players.getValueAt(p[0], 0);
 					System.out.println(v);
-					UIEventManager.notify(UIEventType.SWITCH, "球员详情:" + v);
+					UIEventManager.notify(UIEventType.SWITCH, "球员详情:", v);
 				}
 			}
 		});
@@ -63,7 +64,7 @@ public class SearchResultPane extends PanelEx implements SearchResultService {
 	}
 
 	@Override
-	public void setSearchResult(String[] teamNames, String[] playerNames) {
+	public void setSearchResult(String[] teamNames, BasicPlayerInfo[] playerNames) {
 		int teamCount = teamNames.length;
 		int playerCount = playerNames.length;
 		if (teamCount == 0) {

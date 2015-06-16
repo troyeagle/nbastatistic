@@ -32,23 +32,29 @@
 			<version>0.9.5-pre9</version>
 		</dependency>
 
-        <dependency>
-            <groupId>org.swinglabs.swingx</groupId>
-            <artifactId>swingx-core</artifactId>
-            <version>1.6.5-1</version>
-        </dependency>
+		<dependency>
+			<groupId>org.swinglabs.swingx</groupId>
+			<artifactId>swingx-core</artifactId>
+			<version>1.6.5-1</version>
+		</dependency>
 
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>6.9.4</version>
-        </dependency>
+		<dependency>
+			<groupId>org.jfree</groupId>
+			<artifactId>jfreechart</artifactId>
+			<version>1.0.19</version>
+		</dependency>
 
-        <dependency>
-            <groupId>org.codeartisans.thirdparties.swing</groupId>
-            <artifactId>batik-all</artifactId>
-            <version>1.8pre-r1084380</version>
-        </dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>6.9.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codeartisans.thirdparties.swing</groupId>
+			<artifactId>batik-all</artifactId>
+			<version>1.8pre-r1084380</version>
+		</dependency>
 	</dependencies>
 
 	<build>

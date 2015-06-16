@@ -16,14 +16,13 @@ public class LoadingPane extends PanelEx {
 		super(new BorderLayout());
 		setBackground(new Color(128, 128, 128, 128));
 		setCursor(new Cursor(Cursor.WAIT_CURSOR));
-		
+
 		// TODO
 		LabelEx loading = new LabelEx("Loading...", LabelEx.CENTER);
 		loading.setFont(UIConfig.TitleFont);
 		loading.setForeground(Color.WHITE);
 
 		add(loading);
-		addMouseListener(new MouseAdapter() {
-		});
+		addMouseListener(new MouseAdapter() {});
 	}
 }

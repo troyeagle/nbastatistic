@@ -130,7 +130,7 @@ public class MatchViewPane extends PanelEx implements MatchViewService {
 					int[] p = t.getSelectedCellLocation();
 					if (p[0] >= 0) {
 						Object v = t.getValueAt(p[0], 0);
-						UIEventManager.notify(UIEventType.SWITCH, "球员详情:" + v);
+						UIEventManager.notify(UIEventType.SWITCH, "球员详情:", v);
 					}
 				}
 			});

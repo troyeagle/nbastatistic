@@ -20,10 +20,10 @@ import org.apache.batik.transcoder.TranscoderException;
 public class ImageUtils {
 
 	private static String dataPath = "CSEIII data/迭代一数据";
-	private static final String teamPath = "teams";
-	private static final String playerPath = "players";
-	private static final String portraitPath = "portrait";
-	private static final String actionPath = "action";
+	private static final String teamPath = "CSEIII data/迭代一数据/teams";
+	private static final String playerPath = "CSEIII data/迭代一数据/players";
+	private static final String portraitPath = "CSEIII data/迭代一数据/players/portrait";
+	private static final String actionPath = "CSEIII data/迭代一数据/players/action";
 
 	/**
 	 * 获取球队的队徽
@@ -85,26 +85,22 @@ public class ImageUtils {
 	}
 
 	public static String getTeamImgPath() {
-		return Paths.get(dataPath, teamPath).toString();
+		return teamPath;
 	}
 
 	public static String getPlayerPath() {
-		return Paths.get(dataPath, playerPath).toString();
+		return playerPath;
 	}
 
 	public static String getPlayerImgPath() {
-		return Paths.get(getPlayerPath(), portraitPath).toString();
+		return portraitPath;
 	}
 
 	public static String getPlayerActionPath() {
-		return Paths.get(getPlayerPath(), actionPath).toString();
+		return actionPath;
 	}
 
 	public static String getDataPath() {
 		return dataPath;
-	}
-
-	public static void setDataPath(String path) {
-		dataPath = path;
 	}
 }

@@ -5,8 +5,6 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -23,6 +21,8 @@ import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.ui.component.PanelEx;
 import njuse.ffff.ui.ver2.component.TabBar;
 import njuse.ffff.ui.ver2.component.TitleBar;
+import njuse.ffff.ui.ver2.dataanalize.DataAnalizePanel;
+import njuse.ffff.util.BasicPlayerInfo;
 
 public class MainFrame extends JFrame {
 
@@ -86,6 +86,7 @@ public class MainFrame extends JFrame {
 		viewPanel.add("球员详情", playerPane);
 		viewPanel.add("球队详情", teamPane);
 		viewPanel.add("比赛详情", matchPane);
+		viewPanel.add("数据分析", new DataAnalizePanel());
 
 		add(viewPanel);
 
@@ -99,12 +100,11 @@ public class MainFrame extends JFrame {
 		titleBar.setOpaque(false);
 		titleBar.setTitle("NBA数据查询系统");
 
-		tabBar = new TabBar("主页", "比赛直播", "球队一览", "球员一览", "球员筛选");
+		tabBar = new TabBar("主页", "比赛直播", "球队一览", "球员一览", "球员筛选", "数据分析");
 		tabBar.setOpaque(false);
 		tabBar.addSwitchListener(e -> {
 			String name = e.getSource().getName();
 			((CardLayout) viewPanel.getLayout()).show(viewPanel, name);
-			// TODO
 		});
 
 		PanelEx titleArea = new PanelEx(new BorderLayout(0, 0));
@@ -170,7 +170,7 @@ public class MainFrame extends JFrame {
 				handleFinish();
 				break;
 			case SWITCH:
-				handleSwitch(e.getMessage());
+				handleSwitch(e);
 				break;
 			case SEARCH:
 				handleSearch(e.getMessage());
@@ -180,11 +180,12 @@ public class MainFrame extends JFrame {
 			}
 		}
 
-		private void handleSwitch(String message) {
+		private void handleSwitch(UIEvent e) {
+			String message = e.getMessage();
 			String[] mes = message.split(":");
 			switch (mes[0]) {
 			case "球员详情":
-				setPlayerPane(mes[1]);
+				setPlayerPane((BasicPlayerInfo) e.getSource());
 				break;
 			case "球队详情":
 				if (!mes[1].equals("N/A") && !mes[1].isEmpty())
@@ -207,12 +208,8 @@ public class MainFrame extends JFrame {
 		}
 
 		private void handleStatus() {
-			Timer t = new Timer(0, new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO
-					loadingPanel.setVisible(busyCount > 0);
-				}
+			Timer t = new Timer(0, e -> {
+				loadingPanel.setVisible(busyCount > 0);
 			});
 			if (busyCount <= 0)
 				t.setInitialDelay(100);
@@ -237,8 +234,8 @@ public class MainFrame extends JFrame {
 		tabBar.switchTo("搜索结果");
 	}
 
-	public void setPlayerPane(String playerName) {
-		playerPane.setPlayer(playerName);
+	public void setPlayerPane(BasicPlayerInfo info) {
+		playerPane.setPlayer(info);
 		tabBar.addTab("球员详情");
 		tabBar.switchTo("球员详情");
 	}

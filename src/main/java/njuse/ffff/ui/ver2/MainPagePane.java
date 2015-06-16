@@ -6,6 +6,10 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -13,9 +17,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
-import javax.swing.Timer;
+import javax.swing.JTextField;
 
 import njuse.ffff.presenter.hotEventController.HotEventController;
+import njuse.ffff.ui.component.ButtonEx;
 import njuse.ffff.ui.component.LabelEx;
 import njuse.ffff.ui.component.PanelEx;
 import njuse.ffff.ui.ver2.component.SwitchButton;
@@ -56,12 +61,14 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 	public MainPagePane() {
 		super(new BorderLayout());
 		setOpaque(false);
-		
-		PanelEx searchPanel = new PanelEx();
+
+		PanelEx searchPanel = new PanelEx(new BorderLayout());
 		searchPanel.setPreferredSize(new Dimension(960, 210));
+		searchPanel.setBorder(BorderFactory.createEmptyBorder(70, 0, 70, 0));
+		searchPanel.add(createSearchField());
 		searchPanel.setBackground(UIConfig.HeadPanelBgColor);
 		add(searchPanel, BorderLayout.NORTH);
-		
+
 		tableMap = new Map[4];
 		hotGroup = new SwitchButtonGroup[4];
 		tableView = new PanelEx[4];
@@ -71,7 +78,7 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 		topInfoPanel.setBorder(BorderFactory.createEmptyBorder(10, 40, 20, 40));
 		topInfoPanel.setOpaque(false);
 		add(topInfoPanel);
-		
+
 		String[] titles = { "今日热点球员 Top 5", "赛季热点球员 Top 5",
 				"进步最快球员 Top 5", "赛季热点球队 Top 5" };
 		for (int i = 0; i < 4; i++) {
@@ -111,15 +118,13 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 	}
 
 	private void initData() {
-		Timer t = new Timer(0, e -> {
+		new Thread(() -> {
 			HotEventController hec = HotEventController.getInstance();
 			hec.setBestPlayerForDayPanel(this);
 			hec.setBestPlayerForSeasonPanel(this);
 			hec.setBestTeamForSeasonPanel(this);
 			hec.setProgressedPlayerPanel(this);
-		});
-		t.setRepeats(false);
-		t.start();
+		}).start();
 	}
 
 	private void initListener() {
@@ -172,7 +177,8 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 					int[] p = table.getSelectedCellLocation();
 					if (p[0] >= 0) {
 						Object v = table.getValueAt(p[0], 0);
-						UIEventManager.notify(UIEventType.SWITCH, switchStr[tableType] + v);
+						UIEventManager
+								.notify(UIEventType.SWITCH, switchStr[tableType] + v, v);
 					}
 				}
 			};
@@ -192,6 +198,79 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 				hotGroup[tableType].switchTo(0);
 		} else {
 			tableMap[tableType].get(type).setTable(data);
+		}
+	}
+
+	private boolean textFieldNotEdited = true;
+	private JTextField textField;
+
+	private PanelEx createSearchField() {
+		PanelEx searchArea = new PanelEx();
+		searchArea.setOpaque(false);
+		searchArea.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
+
+		PanelEx fieldPanel = new PanelEx(new BorderLayout(0, 0));
+		fieldPanel.setBackground(Color.WHITE);
+		fieldPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 5));
+
+		ButtonEx searchButton = new ButtonEx("搜索");
+		searchButton.setFont(UIConfig.TitleFont);
+		searchButton.setForeground(Color.WHITE);
+		searchButton.setBackground(Color.GRAY);
+		searchButton.setBorder(BorderFactory.createEmptyBorder(5, 40, 5, 40));
+		fieldPanel.add(searchButton, BorderLayout.EAST);
+		searchButton.addActionListener(e -> {
+			String text = textField.getText().trim();
+			if (!text.isEmpty() && !(text.equals("请输入球员名") && textFieldNotEdited)) {
+				searchButton.requestFocusInWindow();
+				searchAction();
+			}
+		});
+
+		textField = new JTextField("请输入球员名");
+		textField.setColumns(20);
+		textField.setForeground(Color.LIGHT_GRAY);
+		textField.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
+		textField.setFont(UIConfig.TitleFont);
+		fieldPanel.add(textField);
+
+		textField.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				textFieldNotEdited = textField.getText().isEmpty();
+				if (textFieldNotEdited) {
+					textField.setText("请输入球员名");
+					textField.setForeground(Color.LIGHT_GRAY);
+				}
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (textField.getText().equals("请输入球员名") && textFieldNotEdited) {
+					textField.setText("");
+					textField.setForeground(Color.BLACK);
+				}
+			}
+		});
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					searchButton.doClick();
+				}
+			}
+		});
+
+		searchArea.add(fieldPanel);
+
+		return searchArea;
+	}
+
+	private void searchAction() {
+		String text = textField.getText().trim();
+		if (!text.isEmpty()) {
+			UIEventManager.notify(UIEventType.SEARCH, text);
 		}
 	}
 }
