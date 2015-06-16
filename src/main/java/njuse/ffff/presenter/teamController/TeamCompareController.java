@@ -79,7 +79,7 @@ public class TeamCompareController implements TeamCompareService{
 			
 			Map<String,Object> map_total = teamTotal.generateMap();
 			values_total[i] = new Object[] {
-					map_total.get("name"),map_total.get("win"),map_total.get("lose")	//球队名，球队比赛场数
+					map_total.get("team"),map_total.get("win"),map_total.get("lose")	//球队名，球队比赛场数
 					,map_total.get("fieldGoalMade")				//投篮命中数
 					,map_total.get("fieldGoalAttempted")				//投篮出手数
 					,map_total.get("threePointerMade")				//三分命中数

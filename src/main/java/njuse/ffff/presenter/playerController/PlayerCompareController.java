@@ -207,7 +207,7 @@ public class PlayerCompareController implements PlayerCompareService{
 					,map_avg.get("foul")//犯规
 					,map_avg.get("points")//得分
 					,map_adv.get("playerEfficiencyRate")//效率
-					,DealDecimal.formatChangeToPercentage(Double.parseDouble(String.valueOf(map_avg.get("trueShootingPercentage"))))//真实命中率
+					,map_avg.get("trueShootingPercentage")//					,DealDecimal.formatChangeToPercentage(Double.parseDouble(String.valueOf(map_avg.get("trueShootingPercentage"))))//真实命中率
 					,String.valueOf(map_adv.get("reboundRatio")).concat("%")//篮板率
 					,String.valueOf(map_adv.get("offensiveReboundRatio")).concat("%")//进攻篮板率
 					,String.valueOf(map_adv.get("defensiveReboundRatio")).concat("%")//防守篮板率
