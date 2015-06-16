@@ -13,7 +13,6 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
-import javax.swing.Timer;
 
 import njuse.ffff.presenter.teamController.TeamCompareController;
 import njuse.ffff.ui.component.ButtonEx;
@@ -31,7 +30,7 @@ public class TeamsOverViewPanel extends OverviewPanel implements TeamsOverviewSe
 			"防守板", "篮板", "助攻", "抢断", "盖帽", "失误", "犯规", "得分"
 	};
 	private static String[] avgTableHeader = new String[] { "队名", "胜场", "负场",
-			"总命中数", "总出手", "命中%", "三分", "出手", "命中%", "罚球", "出手", "命中%",
+			"总命中数", "总出手", "命中率", "三分", "出手", "命中率", "罚球", "出手", "命中率",
 			"进攻篮板", "进攻篮板率", "防守篮板", "防守篮板率", "篮板", "助攻", "助攻率",
 			"抢断", "抢断率", "盖帽", "失误", "犯规", "得分", "进攻回合", "进攻效率", "防守效率"
 	};
@@ -40,12 +39,18 @@ public class TeamsOverViewPanel extends OverviewPanel implements TeamsOverviewSe
 
 	private SwitchButton picView;
 
+	private TeamCompareController controller;
+
 	public TeamsOverViewPanel() {
 		super(avgTableHeader, totalTableHeader);
 
 		seasonList.addItemListener(e -> {
-			// TODO 更新数据
-			});
+			new Thread(() -> {
+				UIEventManager.notify(UIEventType.BUSY);
+				controller.setTeamCompareInfoForSeason(this, getSelectedSeason());
+				UIEventManager.notify(UIEventType.FINISH);
+			}).start();
+		});
 
 		picView = new SwitchButton("球队一览", new ImageIcon("./img/btn/picview.png"));
 		picView.setName("picView");
@@ -88,13 +93,13 @@ public class TeamsOverViewPanel extends OverviewPanel implements TeamsOverviewSe
 	}
 
 	private void initData() {
-		Timer t = new Timer(0, e -> {
-			UIEventManager.notify(UIEventType.BUSY, this);	// 通知状态
-				TeamCompareController.getInstance().setTeamCompareInfoForSeason(this);
-				UIEventManager.notify(UIEventType.FINISH, this);	// 完成
-			});
-		t.setRepeats(false);
-		t.start();
+		new Thread(() -> {
+			UIEventManager.notify(UIEventType.BUSY, this);
+			controller = TeamCompareController.getInstance();
+			String[] seasons = controller.getAllSeasons();
+			this.setSeasons(seasons);
+			UIEventManager.notify(UIEventType.FINISH, this);
+		}).start();
 	}
 
 	@Override
@@ -106,12 +111,18 @@ public class TeamsOverViewPanel extends OverviewPanel implements TeamsOverviewSe
 			String[] teamAbbr = new String[values.length];
 			for (int i = 0; i < values.length; i++) {
 				teamName[i] = values[i][0].toString();
-				teamAbbr[i] = values[i][1].toString();
+				teamAbbr[i] = values[i][0].toString();
 			}
 
 			setTeamsIcon(teamName, teamAbbr, season);
 		}
 	}
+
+	//	private void handleData(Object[][] data) {
+	//		for (int i = 0; i < data.length; i++) {
+	////			data[i][3] 
+	//		}
+	//	}
 
 	@Override
 	public void setTeamsTotalInfo(Object[][] values, String season) {
@@ -184,6 +195,7 @@ public class TeamsOverViewPanel extends OverviewPanel implements TeamsOverviewSe
 			}
 			group.switchTo(0);
 		}
+		iconPanel.validate();
 	}
 
 	private List<RowSorter.SortKey> totalSorter = Arrays.asList(

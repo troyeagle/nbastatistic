@@ -18,6 +18,7 @@ import njuse.ffff.ui.ver2.component.SwitchButtonGroup;
 import njuse.ffff.ui.ver2.component.TabBar;
 import njuse.ffff.ui.ver2.component.TableView;
 import njuse.ffff.uiservice.TeamDataService;
+import njuse.ffff.util.BasicPlayerInfo;
 
 public class TeamDetailPane extends PanelEx implements TeamDataService {
 
@@ -104,7 +105,7 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 					gamesTable.getSelectedSeason(), name);
 		});
 	}
-	
+
 	public void updateData() {
 		setTeam(name);
 	}
@@ -140,7 +141,7 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 
 		String[] playersName = new String[data.length];
 		for (int i = 0; i < playersName.length; i++) {
-			playersName[i] = data[i][1].toString();
+			playersName[i] = data[i][0].toString();
 		}
 		final int r = 2;
 		final int c = 5;
@@ -167,9 +168,10 @@ public class TeamDetailPane extends PanelEx implements TeamDataService {
 					player.setIconTextGap(10);
 					iconPage.add(player);
 
+					BasicPlayerInfo info = new BasicPlayerInfo(data[i][0].toString(),
+							data[i][1].toString());
 					player.addActionListener(e ->
-							UIEventManager.notify(UIEventType.SWITCH,
-									"球员详情:" + player.getName())
+							UIEventManager.notify(UIEventType.SWITCH, "球员详情:", info)
 							);
 				} else {
 					PanelEx p = new PanelEx();

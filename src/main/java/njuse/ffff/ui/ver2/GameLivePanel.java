@@ -6,8 +6,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -336,6 +334,7 @@ public class GameLivePanel extends PanelEx {
 	private boolean firstRun = true;
 	private boolean isUpdating;
 
+	@SuppressWarnings("unused")
 	private Timer initTimer() {
 		Timer t = new Timer(4000, e -> {
 			// 保证只有一个线程在更新(?
