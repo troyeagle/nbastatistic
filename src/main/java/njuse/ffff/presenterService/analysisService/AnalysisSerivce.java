@@ -2,6 +2,7 @@ package njuse.ffff.presenterService.analysisService;
 
 import java.util.ArrayList;
 
+import njuse.ffff.util.BasicPlayerInfo;
 import njuse.ffff.vo.DefendFactor;
 import njuse.ffff.vo.OffendFactor;
 import njuse.ffff.vo.PlayerSteady;
@@ -27,4 +28,7 @@ public interface AnalysisSerivce {
 	
 	//设置球员属性关联性分析  暂时木有用
 	public void getCorrelationAnalysis(String attribute1,String attribute2);
+	
+	//搜索在1980赛季以后打过篮球、并且包含关键字的球员
+	public BasicPlayerInfo[] searchAnalysisPlayer(String input);
 }

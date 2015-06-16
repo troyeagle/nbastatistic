@@ -10,6 +10,8 @@ import njuse.ffff.presenter.analysisController.playerAnalysis.PlayerOffendContro
 import njuse.ffff.presenter.analysisController.playerAnalysis.PlayerSteadyAnalysis;
 import njuse.ffff.presenter.analysisController.styleAnalysis.LeagueStyleAnalysis;
 import njuse.ffff.presenterService.analysisService.AnalysisSerivce;
+import njuse.ffff.sqlpo.PlayerInfo;
+import njuse.ffff.util.BasicPlayerInfo;
 import njuse.ffff.vo.DefendFactor;
 import njuse.ffff.vo.OffendFactor;
 import njuse.ffff.vo.PlayerSteady;
@@ -119,6 +121,27 @@ public class AnalysisController implements AnalysisSerivce{
 	@Override
 	public ArrayList<PlayerSteady> getPlayerSteadyAnalysis(String playerID) {
 		return playerSteadyAnalysis.playerSteady(playerID);
+	}
+	
+	public BasicPlayerInfo[] searchAnalysisPlayer(String input){
+		ArrayList<BasicPlayerInfo> listPlayers = new ArrayList<>();
+		input = input.toUpperCase();
+		List<PlayerInfo> data_player = dataReader.getPlayerInfoAll("");
+		for (PlayerInfo player : data_player) {
+			if (player.getPlName().toUpperCase().contains(input)) {
+				List<String> seasons = dataReader.selectSeasonsByPlayer(player.getIdPlayerInfo());
+				boolean isValid = false;
+				for(String s:seasons){
+					String[] temp = s.split("-");
+					if(Integer.parseInt(temp[0])>=1980){
+						isValid = true;
+					}
+				}
+				if(isValid)
+					listPlayers.add(new BasicPlayerInfo(player.getPlName(),player.getIdPlayerInfo()));
+			}
+		}
+		return listPlayers.toArray(new BasicPlayerInfo[0]);
 	}
 
 }
