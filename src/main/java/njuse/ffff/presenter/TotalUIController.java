@@ -154,7 +154,7 @@ public class TotalUIController implements TotalControlService{
 	 * 绑定数据层
 	 */
 	private void bindDataService() {
-		dataService = new DataReadController();
+//		dataService = new DataReadController();
 		dataR = new DataReader();
 		dataReader = dataR;
 	}
@@ -215,7 +215,7 @@ public class TotalUIController implements TotalControlService{
 	 * 初始化系统
 	 */
 	public void initSystem() {
-		dataR.initialize();
+//		dataR.initialize();
 		//计算所有赛季
 		initSeason();
 //		try {

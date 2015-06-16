@@ -204,7 +204,7 @@ public class TeamInfoController implements TeamInfoService{
 		}
 		Object[][] advancedData = new Object[valid_season.size()][];
 		for(int i=0;i<valid_season.size();i++){
-			TeamAverageAdv team = dataReader.getTeamAverageAdv(teamName, valid_season.get(i), null);
+			TeamAverageAdv team = dataReader.getTeamAverageAdv(teamName, valid_season.get(i));
 			Map<String,Object> map = team.generateMap();
 			advancedData[i] = new Object[]{
 					valid_season.get(i),		//赛季

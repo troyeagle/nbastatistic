@@ -104,7 +104,7 @@ public class TeamCompareController implements TeamCompareService{
 			}
 			Map<String,Object> map_avg = teamAvg.generateMap();
 			String name = String.valueOf(map_avg.get("name"));
-			TeamAverageAdv teamAdv = dataReader.getTeamAverageAdv(name, season, null);
+			TeamAverageAdv teamAdv = dataReader.getTeamAverageAdv(name, season);
 			if(teamAdv==null){
 				continue;
 			}

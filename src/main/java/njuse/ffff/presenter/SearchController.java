@@ -1,28 +1,29 @@
 package njuse.ffff.presenter;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-import njuse.ffff.dataservice.DataReaderService;
-import njuse.ffff.po.PlayerPO;
-import njuse.ffff.po.TeamPO;
+import njuse.ffff.dataservice.NewDataReaderService;
 import njuse.ffff.presenterService.SearchService;
+import njuse.ffff.sqlpo.PlayerInfo;
+import njuse.ffff.sqlpo.TeamInfo;
 import njuse.ffff.uiservice.SearchResultService;
-import njuse.ffff.util.Filter;
 
 public class SearchController implements SearchService {
-	private DataReaderService dataService;
+	private NewDataReaderService dataReader;
 	private static SearchController searchController = null;
 	private static TotalUIController totalController = null;
 
-	private static final Filter emptyFilter;
-
-	static {
-		emptyFilter = new Filter(new ArrayList<String>(), new ArrayList<String>());
-	}
+//	private static final Filter emptyFilter;
+//
+//	static {
+//		emptyFilter = new Filter(new ArrayList<String>(), new ArrayList<String>());
+//	}
 
 	private SearchController() {
 		totalController = TotalUIController.getInstance();
-		dataService = totalController.getDataReadController();
+		dataReader = totalController.getDataReader();
 	}
 
 	public static SearchController getInstance() {
@@ -45,10 +46,10 @@ public class SearchController implements SearchService {
 	public String[] searchPlayers(String input) {
 		input = input.toUpperCase();
 		ArrayList<String> playersName = new ArrayList<>();
-		ArrayList<PlayerPO> data_player = dataService.getPlayerInfoAll(emptyFilter);
-		for (PlayerPO player : data_player) {
-			if (player.getName().toUpperCase().contains(input)) {
-				playersName.add(player.getName());
+		List<PlayerInfo> data_player = dataReader.getPlayerInfoAll("");
+		for (PlayerInfo player : data_player) {
+			if (player.getPlName().toUpperCase().contains(input)) {
+				playersName.add(player.getPlName());
 			}
 		}
 		return playersName.toArray(new String[0]);
@@ -58,12 +59,13 @@ public class SearchController implements SearchService {
 		input = input.toUpperCase();
 		ArrayList<String> search_team = new ArrayList<>();
 		//获取所有球队信息
-		ArrayList<TeamPO> data_team = dataService.getTeamInfoAll(emptyFilter);
+		List<TeamInfo> data_team = dataReader.getTeamInfoAll();
 		//查找
-		for (TeamPO team : data_team) {
-			if (team.getName().toUpperCase().contains(input)
-					|| team.getAbbr().contains(input)) {
-				search_team.add(team.getName());
+		for (TeamInfo team : data_team) {
+			Map<String,Object> map = team.generateMap();
+			if (String.valueOf(map.get("team")).toUpperCase().contains(input)
+					|| String.valueOf(map.get("teamNames")).toUpperCase().contains(input)) {
+				search_team.add(String.valueOf(map.get("team")));
 			}
 		}
 		return search_team.toArray(new String[0]);
