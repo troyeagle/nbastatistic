@@ -111,11 +111,14 @@ public class DataReader implements NewDataReaderService {
 	public PlayerInfo getPlayerInfo(String name) {
 		Map<String, Object> filter = new HashMap<String, Object>();
 		filter.put("plName", name);
-
-		Map<String, Object> result = mapper.selectOne("playerinfo", null,
-				filter);
-		PlayerInfo p = new PlayerInfo(result);
-		return p;
+		List<Map<String,Object>> result = mapper.selectFree("* from playerinfo where plName = "+"'"+name+"'");
+//		Map<String, Object> result = mapper.selectOne("playerinfo", null,
+//				filter);
+		if(!result.isEmpty()){
+			PlayerInfo p = new PlayerInfo(result.get(0));
+			return p;
+		}
+		return null;
 	}
 
 	@Override
