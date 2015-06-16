@@ -6,6 +6,10 @@ public class PlayerSteady {
 	private double[] list_last;//上一赛季的数据
 	private double[] list_current;//本赛季的数据
 	
+	double avg_last;
+	
+	double avg_current;
+	
 	private double var;//总体方差
 	
 	private double s2;//本赛季样本方差
@@ -16,12 +20,15 @@ public class PlayerSteady {
 	
 	private String result;//检验结果
 
-	public PlayerSteady(String attribute,double[] list_last, double[] list_current, double var,
+	public PlayerSteady(String attribute,double[] list_last, double[] list_current,
+			double avg_last,double avg_current,double var,
 			double s2, double x2, double x2_001_n, String result) {
 		super();
 		this.attribute = attribute;
 		this.list_last = list_last;
 		this.list_current = list_current;
+		this.avg_last = avg_last;
+		this.avg_current = avg_current;
 		this.var = var;
 		this.s2 = s2;
 		X2 = x2;
@@ -39,6 +46,14 @@ public class PlayerSteady {
 
 	public double[] getList_current() {
 		return list_current;
+	}
+
+	public double getAvg_last() {
+		return avg_last;
+	}
+
+	public double getAvg_current() {
+		return avg_current;
 	}
 
 	public double getVar() {

@@ -250,7 +250,7 @@ public class TotalUIController implements TotalControlService{
 				String temp2 = String.valueOf(i+1);
 				StringBuffer bf = new StringBuffer(i+"-"+temp2.substring(2,temp2.length()));
 				seasonList[i-startSeason] = bf.toString();
-				if(i==endSeason-1){
+				if(i==endSeason){
 					currentSeason = bf.toString();
 				}
 			}

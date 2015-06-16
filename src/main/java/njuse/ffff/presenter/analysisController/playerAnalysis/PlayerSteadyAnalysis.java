@@ -149,8 +149,8 @@ public class PlayerSteadyAnalysis {
 				result = "球员比上赛季发挥波动性更大";
 			}
 		}
-		PlayerSteady steady = new PlayerSteady(attribute,list_standard, list_sample
-									, var_standard, S_sample, X2, X2_001_n, result);
+		PlayerSteady steady = new PlayerSteady(attribute,list_standard, list_sample,
+				calAverage(list_standard),calAverage(list_sample), var_standard, S_sample, X2, X2_001_n, result);
 		return steady;
 	}
 	
