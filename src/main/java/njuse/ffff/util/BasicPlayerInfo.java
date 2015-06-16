@@ -22,16 +22,20 @@ public class BasicPlayerInfo implements Comparable<BasicPlayerInfo> {
 
 	@Override
 	public String toString() {
+		return getName();
+	}
+
+	public String getID() {
+		return id;
+	}
+	
+	public String getName() {
 		String res;
 		if (rest.isEmpty())
 			res = lastName;
 		else
 			res = rest + " " + lastName;
 		return res;
-	}
-
-	public String getID() {
-		return id;
 	}
 
 	@Override
