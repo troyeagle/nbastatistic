@@ -231,12 +231,13 @@ public class TotalUIController implements TotalControlService{
 	
 	public void initSeason(){
 		List<TeamInfo> teamList = dataReader.getTeamInfoAll();
-		int startSeason = 0;
-		int endSeason = 3000;
+		int startSeason = 3000;
+		int endSeason = 0;
 		if(teamList!=null&&teamList.size()!=0){
 			for(int i=0;i<teamList.size();i++){
 				String seasons = String.valueOf(teamList.get(i).generateMap().get("seasons")).replace(" ", "");
-				String[] temp = seasons.split("[;；]")[1].split("to");
+				String[] list = seasons.split("[;；]");
+				String[] temp = list[list.length-1].split("to");
 				int start = Integer.parseInt(temp[0].split("-")[0]);
 				int end = Integer.parseInt(temp[1].split("-")[0]);
 				if(start<startSeason)
