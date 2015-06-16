@@ -14,6 +14,7 @@ import njuse.ffff.dataservice.NewDataReaderService;
 import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.sqlpo.MatchInfo;
 import njuse.ffff.sqlpo.PlayerInMatchFull;
+import njuse.ffff.util.DealDecimal;
 import njuse.ffff.util.TDistribution;
 
 public class LeagueStyleAnalysis {
@@ -114,7 +115,7 @@ public class LeagueStyleAnalysis {
 	}
 	
 	public String[] calculateCharactoristic2(String seasons){
-		int sampleAmount = 50;
+		int sampleAmount = 15;
 		String[] period = seasons.split("[-]");
 		int start = Integer.parseInt(period[0]);
 		int end = Integer.parseInt(period[1]);
@@ -179,7 +180,9 @@ public class LeagueStyleAnalysis {
 					score[i] += temp;
 //					score_sample.add(temp);
 				}
+				matches = null;
 			}
+			sample_season = null;
 		}
 		for(int index=0;index<sampleAmount;index++){
 			FGMade[index] = FGMade[index]/sample_size[index];
@@ -226,9 +229,9 @@ public class LeagueStyleAnalysis {
 			trust_up[i] = value_avg[i]+segment[i];
 			trust_down[i] = value_avg[i]-segment[i];
 			StringBuffer bf = new StringBuffer("( ");
-			bf.append(trust_up[i]);
+			bf.append(DealDecimal.formatChange(trust_up[i], 3));
 			bf.append(" , ");
-			bf.append(trust_down[i]);
+			bf.append(DealDecimal.formatChange(trust_down[i], 3));
 			bf.append(" )");
 			interval[i] = bf.toString();
 		}
@@ -363,7 +366,10 @@ public class LeagueStyleAnalysis {
 		for(int i=0;i<months.length;i++){
 			int month = months[i];
 			if(month==10){
-				days[i] = getDayOfMonth(start, month);
+				days[i] = getDayOfMonth(start, month)-startDay+1;
+			}
+			else if(month==4){
+				days[i] = days[i-1]+endDay;
 			}
 			else if(month>10){
 				days[i] = days[i-1]+getDayOfMonth(start, month);
@@ -373,7 +379,7 @@ public class LeagueStyleAnalysis {
 			}
 		}
 		for(int i=0;i<sampleAmount;i++){
-			int random = (int)Math.random()*days[days.length-1]+1;
+			int random = (int)(Math.random()*days[days.length-1]);
 			int month = 0;
 			int day = 0;
 			int year = start;
@@ -382,16 +388,41 @@ public class LeagueStyleAnalysis {
 					continue;
 				}
 				month = months[j];
-				day = random-months[j-1];
+				if(j==0){
+					day = startDay+random-1;
+				}
+				else{
+					day = random-days[j-1];
+				}
+				break;
 			}
 			if(month<7)
 				year = end;
 			Date date = formDate(year, month, day);
-			List<MatchInfo> matchs = dataReader.getMatchInPeriod(date, date);
-			if(matchs==null||matchs.size()==0){
-				i--;
-				continue;
+			month = months[0];
+			year = start;
+			random = random+2;
+			for(int j=0;j<days.length;j++){
+				if(random>days[j]){
+					continue;
+				}
+				month = months[j];
+				if(j==0){
+					day = startDay+random-1;
+				}
+				else{
+					day = random-days[j-1];
+				}
+				break;
 			}
+			if(month<7)
+				year = end;
+			Date date2 = formDate(year, month, day);
+			List<MatchInfo> matchs = dataReader.getMatchInPeriod(date, date2);
+//			if(matchs==null||matchs.size()==0){
+//				i--;
+//				continue;
+//			}
 			List<PlayerInMatchFull> matchList = new ArrayList<PlayerInMatchFull>();
 			for(MatchInfo m:matchs){
 				matchList.add(dataReader.getTeamStatSingle(m.getTeamA(), m.getDate()));
