@@ -30,11 +30,11 @@ public class PlayersOverViewPane extends OverviewPanel implements PlayersOvervie
 		super(avgTableHeader, totalTableHeader);
 
 		seasonList.addItemListener(e -> {
-			new Thread(() -> {
+//			new Thread(() -> {
 				UIEventManager.notify(UIEventType.BUSY);
 				controller.setPlayerCompareInfoForSeason(this, getSelectedSeason());
 				UIEventManager.notify(UIEventType.FINISH);
-			}).start();
+//			}).start();
 		});
 
 		avgTable.addMouseListener(new MouseAdapter() {

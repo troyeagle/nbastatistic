@@ -45,11 +45,11 @@ public class TeamsOverViewPanel extends OverviewPanel implements TeamsOverviewSe
 		super(avgTableHeader, totalTableHeader);
 
 		seasonList.addItemListener(e -> {
-			new Thread(() -> {
+//			new Thread(() -> {
 				UIEventManager.notify(UIEventType.BUSY);
 				controller.setTeamCompareInfoForSeason(this, getSelectedSeason());
 				UIEventManager.notify(UIEventType.FINISH);
-			}).start();
+//			}).start();
 		});
 
 		picView = new SwitchButton("球队一览", new ImageIcon("./img/btn/picview.png"));
