@@ -8,6 +8,7 @@ import java.util.Map;
 import njuse.ffff.dataservice.NewDataReaderService;
 import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.presenterService.hotEventService.HotEventService;
+import njuse.ffff.sqlpo.MatchInfo;
 import njuse.ffff.sqlpo.PlayerInMatchFull;
 import njuse.ffff.sqlpo.TeamAverage;
 import njuse.ffff.uiservice.SpecialViewService;
@@ -101,7 +102,7 @@ public class HotEventController implements HotEventService{
 		//投篮命中率
 		Object[][] player_fieldGoalRatio = formPlayerValuesForSeason("fieldGoalPercentage");
 		panel.setHotPlayerSeason("投篮命中率", player_fieldGoalRatio);
-		//三分命中率
+		//三分命中率fieldGoalPercentagethreePointerPercentagefreeThrowMade
 		Object[][] player_threePointerRatio = formPlayerValuesForSeason("threePointerPercentage");
 		panel.setHotPlayerSeason("三分命中率", player_threePointerRatio);
 		//罚球命中率
@@ -220,11 +221,63 @@ public class HotEventController implements HotEventService{
 //	}
 	
 	private Object[][] formPlayerValuesForDay(String condition){
-		Date a = totalController.getCurrentDay();
-		List<PlayerInMatchFull> list = dataReader.getLeadPlayerForDay(totalController.getCurrentDay(), condition);//dataService.getCurrentDate().getTime()
+		Date cur = totalController.getCurrentDay();
+		String[] parts = cur.toString().split("-");
+		int day = Integer.parseInt(parts[2]);
+		Date start = Date.valueOf(parts[0].concat("-").concat(parts[1]).concat("-").concat(String.valueOf(day-1)));
+		Date end = Date.valueOf(parts[0].concat("-").concat(parts[1]).concat("-").concat(String.valueOf(day+1)));
+		List<MatchInfo> matchList = dataReader.getMatchInPeriod(start, end);
+		List<PlayerInMatchFull> plist = new ArrayList<PlayerInMatchFull>();
+		for(MatchInfo match:matchList){
+			plist.addAll(dataReader.getPlayerInMatch(match.getIdmatchinfo()));
+		}
+		//排序
+		for(int i=0;i<plist.size()-1;i++){
+			for(int j=0;j<plist.size()-1;j++){
+				switch(condition){
+				case "points":
+					if(plist.get(j).getPoints()<plist.get(j+1).getPoints()){
+						PlayerInMatchFull temp = plist.get(j);
+						plist.set(j, plist.get(j+1));
+						plist.set(j+1, temp);
+					}
+					break;
+				case "rebound":
+					if(plist.get(j).getRebound()<plist.get(j+1).getRebound()){
+						PlayerInMatchFull temp = plist.get(j);
+						plist.set(j, plist.get(j+1));
+						plist.set(j+1, temp);
+					}
+					break;
+				case "assist":
+					if(plist.get(j).getAssist()<plist.get(j+1).getAssist()){
+						PlayerInMatchFull temp = plist.get(j);
+						plist.set(j, plist.get(j+1));
+						plist.set(j+1, temp);
+					}
+					break;
+				case "steal":
+					if(plist.get(j).getSteal()<plist.get(j+1).getSteal()){
+						PlayerInMatchFull temp = plist.get(j);
+						plist.set(j, plist.get(j+1));
+						plist.set(j+1, temp);
+					}
+					break;
+				case "block":
+					if(plist.get(j).getBlock()<plist.get(j+1).getBlock()){
+						PlayerInMatchFull temp = plist.get(j);
+						plist.set(j, plist.get(j+1));
+						plist.set(j+1, temp);
+					}
+					break;
+				}
+			}
+		}
+		
+//		List<PlayerInMatchFull> list = dataReader.getLeadPlayerForDay(totalController.getCurrentDay(), condition);//dataService.getCurrentDate().getTime()
 		Object[][] player_condition = new Object[5][];
-		for(int i=0;i<Math.min(5, list.size());i++){
-			PlayerInMatchFull player = list.get(i);
+		for(int i=0;i<Math.min(5, plist.size());i++){
+			PlayerInMatchFull player = plist.get(i);
 			Map<String,Object> map = player.generateBasicMap();
 			player_condition[i] = new Object[]{player.getName(),map.get("team"),map.get("position")
 					,map.get("condition")};
@@ -274,11 +327,24 @@ public class HotEventController implements HotEventService{
 //	}
 	
 	private Object[][] formPlayerValuesForSeason(String condition){
-		List<PlayerInMatchFull> list = dataReader.getLeadPlayerForSeason(totalController.getCurrentSeason().substring(2,7), condition);
+		List<PlayerInMatchFull> plist  = dataReader.getPlayersStatsAll(totalController.getCurrentSeason(), "per_game");
+		for(int i=0;i<plist.size()-1;i++){
+			for(int j=0;j<plist.size()-1;j++){
+				Map<String,Object> map1 = plist.get(j).generateBasicMap();
+				Map<String,Object> map2 = plist.get(j+1).generateBasicMap();
+				if(Double.parseDouble(String.valueOf(map1.get(condition)))<Double.parseDouble(String.valueOf(map2.get(condition)))){
+					PlayerInMatchFull temp = plist.get(j);
+					plist.set(j, plist.get(j+1));
+					plist.set(j+1, temp);
+				}
+			}
+		}
+			
+//		List<PlayerInMatchFull> list = dataReader.getLeadPlayerForSeason(totalController.getCurrentSeason().substring(2,7), condition);
 		Object[][] player_condition = new Object[5][];
 		int num = 0;
-		for(int i=0;i<Math.min(5, list.size());i++){
-			PlayerInMatchFull player = list.get(num);
+		for(int i=0;i<Math.min(5, plist.size());i++){
+			PlayerInMatchFull player = plist.get(num);
 			Map<String,Object> map = player.generateBasicMap();
 			if(Integer.parseInt(String.valueOf(map.get("gamesPlayed")))>=58){
 				switch(condition){
@@ -340,10 +406,23 @@ public class HotEventController implements HotEventService{
 //	}
 	
 	private Object[][] formTeamValuesForSeason(String condition){
-		List<TeamAverage> list = dataReader.getLeadTeamForSeason(totalController.getCurrentSeason().substring(2,7), condition);
+		List<TeamAverage> tlist = dataReader.getTeamAverages(totalController.getCurrentSeason());
+		for(int i=0;i<tlist.size()-1;i++){
+			for(int j=0;j<tlist.size()-1;j++){
+				Map<String,Object> map1 = tlist.get(j).generateMap();
+				Map<String,Object> map2 = tlist.get(j+1).generateMap();
+				if(Double.parseDouble(String.valueOf(map1.get(condition)))<Double.parseDouble(String.valueOf(map2.get(condition)))){
+					TeamAverage temp = tlist.get(j);
+					tlist.set(j, tlist.get(j+1));
+					tlist.set(j+1, temp);
+				}
+			}
+		}
+		
+//		List<TeamAverage> list = dataReader.getLeadTeamForSeason(totalController.getCurrentSeason().substring(2,7), condition);
 		Object[][] team_condition = new Object[5][];
-		for(int i=0;i<Math.min(5, list.size());i++){
-			TeamAverage team = list.get(i);
+		for(int i=0;i<Math.min(5, tlist.size());i++){
+			TeamAverage team = tlist.get(i);
 			Map<String,Object> map = team.generateMap();
 			switch(condition){
 			case "points":	//场均得分
