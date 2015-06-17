@@ -141,60 +141,99 @@ public class LeagueStyleAnalysis {
 //		ArrayList<Double> FTRatio_sample = new ArrayList<Double>();
 		double[] score = new double[sampleAmount];			//得分
 //		ArrayList<Double> score_sample = new ArrayList<Double>();
-		int[] sample_size = new int[sampleAmount];
+		int[][] sample_size = new int[sampleAmount][10];
 		for(int num=start;num<=end;num++){
 			Map<Integer,List<PlayerInMatchFull>> sample_season = sampling2(num,num+1,sampleAmount);
 			for(int i=0;i<sampleAmount;i++){
 				List<PlayerInMatchFull> matches = sample_season.get(i+1);
-				sample_size[i] += matches.size();
+				for(int j=0;j<10;j++)
+					sample_size[i][j] += matches.size();
 				for(PlayerInMatchFull match:matches){
 					Map<String, Object> map = match.generateBasicMap();
 					double temp = Double.parseDouble(String.valueOf(map.get("fieldGoalMade")));
-					FGMade[i] += temp;
+					if(temp==-1){
+						sample_size[i][0]--;
+					}else{
+						FGMade[i] += temp;
+					}
 //					FGMade_sample.add(temp);
 					temp = Double.parseDouble(String.valueOf(map.get("fieldGoalAttempted")));
-					FGAttempted[i] += temp;
+					if(temp==-1){
+						sample_size[i][1]--;
+					}else{
+						FGAttempted[i] += temp;
+					}
 //					FGAttempted_sample.add(temp);
 					temp = Double.parseDouble(String.valueOf(map.get("fieldGoalPercentage")));
-					FGRatio[i] += temp;
+					if(temp==-1){
+						sample_size[i][2]--;
+					}else{
+						FGRatio[i] += temp;
+					}
 //					FGRatio_sample.add(temp);
 					temp = Double.parseDouble(String.valueOf(map.get("threePointerMade")));
-					TPMade[i] += temp;
+					if(temp==-1){
+						sample_size[i][3]--;
+					}else{
+						TPMade[i] += temp;
+					}
 //					TPMade_sample.add(temp);
 					temp = Double.parseDouble(String.valueOf(map.get("threePointerAttempted")));
-					TPAttempted[i] += temp;
+					if(temp==-1){
+						sample_size[i][4]--;
+					}else{
+						TPAttempted[i] += temp;
+					}
 //					TPAttempted_sample.add(temp);
 					temp = Double.parseDouble(String.valueOf(map.get("threePointerPercentage")));
-					TPRatio[i] += temp;
+					if(temp==-1){
+						sample_size[i][5]--;
+					}else{
+						TPRatio[i] += temp;
+					}
 //					TPRatio_sample.add(temp);
 					temp = Double.parseDouble(String.valueOf(map.get("freeThrowMade")));
-					FTMade[i] += temp;
+					if(temp==-1){
+						sample_size[i][6]--;
+					}else{
+						FTMade[i] += temp;
+					}
 //					FTMade_sample.add(temp);
 					temp = Double.parseDouble(String.valueOf(map.get("freeThrowAttempted")));
-					FTAttempted[i] += temp;
+					if(temp==-1){
+						sample_size[i][7]--;
+					}else{
+						FTAttempted[i] += temp;
+					}
 //					FTAttempted_sample.add(temp);
 					temp = Double.parseDouble(String.valueOf(map.get("freeThrowRate")));
-					FTRatio[i] += temp;
+					if(temp==-1){
+						sample_size[i][8]--;
+					}else{
+						FTRatio[i] += temp;
+					}
 //					FTRatio_sample.add(temp);
 					temp = Double.parseDouble(String.valueOf(map.get("points")));
-					score[i] += temp;
+					if(temp==-1){
+						sample_size[i][9]--;
+					}else{
+						score[i] += temp;
+					}
 //					score_sample.add(temp);
 				}
-				matches = null;
 			}
-			sample_season = null;
 		}
 		for(int index=0;index<sampleAmount;index++){
-			FGMade[index] = FGMade[index]/sample_size[index];
-			FGAttempted[index] = FGAttempted[index]/sample_size[index];
-			FGRatio[index] = FGRatio[index]/sample_size[index];
-			TPMade[index] = TPMade[index]/sample_size[index];
-			TPAttempted[index] = TPAttempted[index]/sample_size[index];
-			TPRatio[index] = TPRatio[index]/sample_size[index];
-			FTMade[index] = FTMade[index]/sample_size[index];
-			FTAttempted[index] = FTAttempted[index]/sample_size[index];
-			FTRatio[index] = FTRatio[index]/sample_size[index];
-			score[index] = score[index]/sample_size[index];
+			FGMade[index] = FGMade[index]/sample_size[index][0];
+			FGAttempted[index] = FGAttempted[index]/sample_size[index][1];
+			FGRatio[index] = FGRatio[index]/sample_size[index][2];
+			TPMade[index] = TPMade[index]/sample_size[index][3];
+			TPAttempted[index] = TPAttempted[index]/sample_size[index][4];
+			TPRatio[index] = TPRatio[index]/sample_size[index][5];
+			FTMade[index] = FTMade[index]/sample_size[index][6];
+			FTAttempted[index] = FTAttempted[index]/sample_size[index][7];
+			FTRatio[index] = FTRatio[index]/sample_size[index][8];
+			score[index] = score[index]/sample_size[index][9];
 		}
 		value_avg[0] = calAverage(FGAttempted);
 		value_avg[1] = calAverage(FGMade);
@@ -224,7 +263,7 @@ public class LeagueStyleAnalysis {
 		String[] interval = new String[10];
 		
 		for(int i=0;i<10;i++){
-			segment[i] = ((value_var[i]*sampleAmount/(sampleAmount-1))/Math.sqrt(sampleAmount))
+			segment[i] = (Math.sqrt(value_var[i]*sampleAmount/(sampleAmount-1))/Math.sqrt(sampleAmount))
 													*TDistribution.getValue(sampleAmount-1, 0.005);
 			trust_up[i] = value_avg[i]+segment[i];
 			trust_down[i] = value_avg[i]-segment[i];
@@ -419,14 +458,20 @@ public class LeagueStyleAnalysis {
 				year = end;
 			Date date2 = formDate(year, month, day);
 			List<MatchInfo> matchs = dataReader.getMatchInPeriod(date, date2);
-//			if(matchs==null||matchs.size()==0){
-//				i--;
-//				continue;
-//			}
+			if(matchs==null||matchs.size()==0){
+				i--;
+				continue;
+			}
 			List<PlayerInMatchFull> matchList = new ArrayList<PlayerInMatchFull>();
 			for(MatchInfo m:matchs){
-				matchList.add(dataReader.getTeamStatSingle(m.getTeamA(), m.getDate()));
-				matchList.add(dataReader.getTeamStatSingle(m.getTeamB(), m.getDate()));
+				if(m.getTeamAStats()!=null){
+				matchList.add(m.getTeamAStats());
+				}
+				if(m.getTeamBStats()!=null){
+				matchList.add(m.getTeamBStats());
+				}
+//				matchList.add(dataReader.getTeamStatSingle(m.getTeamA(), m.getDate()));
+//				matchList.add(dataReader.getTeamStatSingle(m.getTeamB(), m.getDate()));
 			}
 			sample_matches.put(i+1, matchList);
 		}

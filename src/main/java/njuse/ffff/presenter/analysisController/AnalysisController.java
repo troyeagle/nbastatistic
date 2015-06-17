@@ -64,7 +64,7 @@ public class AnalysisController implements AnalysisSerivce{
 	
 	public String[] getStartSeason(){
 		ArrayList<String> seasons = new ArrayList<>();
-		for(int i=1980;i<=2014;i++){
+		for(int i=1981;i<=2014;i++){
 			StringBuffer bf = new StringBuffer(i+"-"+String.valueOf(i+1).substring(2,4));
 			seasons.add(bf.toString());
 		}
