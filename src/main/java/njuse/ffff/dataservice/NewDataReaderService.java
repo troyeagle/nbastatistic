@@ -42,10 +42,10 @@ public interface NewDataReaderService {
 	List<TeamAverage> getTeamAverages(String season);
 
 	/** 获得某球队某赛季比赛信息,对于PlayerInMatchFull不要感到奇怪。我的锅。 */
-	MatchInfo getTeamStatSingle(String idTeam, Date date);
+	PlayerInMatchFull getTeamStatSingle(String idTeam, Date date);
 
 	List<MatchInfo> getTeamStatBySeason(String idTeam, String season);
-
+	
 	List<MatchInfo> getMatchByPlayer(String idplayerinfo,String season);
 	/** 获得指定时间段内的比赛,都含 */
 	List<MatchInfo> getMatchInPeriod(Date start, Date end);

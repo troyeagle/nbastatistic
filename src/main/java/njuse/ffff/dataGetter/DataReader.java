@@ -191,7 +191,7 @@ public class DataReader implements NewDataReaderService {
 	}
 
 	@Override
-	public MatchInfo getTeamStatSingle(String idTeam, Date date) {
+	public PlayerInMatchFull getTeamStatSingle(String idTeam, Date date) {
 		// Map<String, Object> filter = new HashMap<String, Object>();
 		// filter.put("teamA", idTeam);
 		// filter.put("date", date);
@@ -218,23 +218,28 @@ public class DataReader implements NewDataReaderService {
 		// } else {
 		// return null;
 		// }
-		String dt = date.toString().replaceAll("-", "");
-		dt = "'" + dt + "%'";
-		idTeam = "'" + idTeam + "'";
+		 String dt = date.toString().replaceAll("-", "");
+		 dt = "'" + dt + "%'";
+		 idTeam = "'" + idTeam + "'";
+		// List<Map<String, Object>> result = mapper
+		// .selectFree("* from matchinfo where idmatchinfo in (select idmatchinfo from playermatchinfo where idmatchinfo like "
+		// + dt + " and team =" + idTeam + ")");
+		
+		// MatchInfo a = new MatchInfo(result.get(0));
+		// try {
+		// fullfil(a);
+		// } catch (Exception e) {
+		//
+		// }
+		//
+		// return a;
 		List<Map<String, Object>> result = mapper
-				.selectFree("* from matchinfo where idmatchinfo in (select idmatchinfo from playermatchinfo where idmatchinfo like "
-						+ dt + " and team =" + idTeam + ")");
-		if (result.isEmpty()) {
-			return null;
-		}
-		MatchInfo a = new MatchInfo(result.get(0));
-		try {
-			fullfil(a);
-		} catch (Exception e) {
-
-		}
-
-		return a;
+				.selectFree("* from playermatchinfo where idmatchinfo like "
+						+ dt + " and team =" + idTeam);
+		 if (result.isEmpty()) {
+			 return null;
+			 }
+		 return new PlayerInMatchFull(result.get(0));
 	}
 
 	private void fullfil(MatchInfo match) {

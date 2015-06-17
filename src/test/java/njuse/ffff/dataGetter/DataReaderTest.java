@@ -34,7 +34,7 @@ public class DataReaderTest {
 //		List<TeamAverage> teamAverages = serv.getTeamAverages("2014-15");
 //		List<TeamInfo> teamInfoAll = serv.getTeamInfoAll();
 		List<MatchInfo> teamStatBySeason = serv.getTeamStatBySeason("LAL", "14-15");
-		MatchInfo teamStatSingle = serv.getTeamStatSingle("LAL", Date.valueOf("2012-10-30"));
+		//MatchInfo teamStatSingle = serv.getTeamStatSingle("LAL", Date.valueOf("2012-10-30"));
 		System.out.println();
 	}
 	public static void main(String args[]){
