@@ -391,7 +391,14 @@ public class HotEventController implements HotEventService{
 //	}
 	
 	private Object[][] formTeamValuesForSeason(String condition){
-		List<TeamAverage> tlist = dataReader.getTeamAverages(totalController.getCurrentSeason());
+		List<TeamAverage> mlist = dataReader.getTeamAverages(totalController.getCurrentSeason());
+		List<TeamAverage> tlist = new ArrayList<TeamAverage>();
+		for(TeamAverage t:mlist){
+			String[] temp = String.valueOf(t.generateMap().get("attribute")).split(" ");
+			if(temp[1].equals("perGame")){
+				tlist.add(t);
+			}
+		}
 		for(int i=0;i<tlist.size()-1;i++){
 			for(int j=0;j<tlist.size()-i-1;j++){
 				Map<String,Object> map1 = tlist.get(j).generateMap();
