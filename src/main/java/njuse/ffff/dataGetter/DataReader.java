@@ -265,12 +265,18 @@ public class DataReader implements NewDataReaderService {
 				.selectFree("* from playermatchinfo where idmatchinfo = "
 						+ idmatchinfo + "and team = " + teamA
 						+ "and idplayerinfo is null");
-		match.setTeamAStats(new PlayerInMatchFull(astat.get(0)));
+		if(!astat.isEmpty()){
+			match.setTeamAStats(new PlayerInMatchFull(astat.get(0)));	
+		}
+		
 		List<Map<String, Object>> bstat = mapper
 				.selectFree("* from playermatchinfo where idmatchinfo = "
 						+ idmatchinfo + "and team = " + teamB
 						+ "and idplayerinfo is null");
-		match.setTeamBStats(new PlayerInMatchFull(bstat.get(0)));
+		if(!bstat.isEmpty()){
+			match.setTeamBStats(new PlayerInMatchFull(bstat.get(0)));
+		}
+		
 	}
 
 	public List<MatchInfo> getTeamStatBySeason(String idTeam, String season) {
@@ -321,6 +327,7 @@ public class DataReader implements NewDataReaderService {
 		List<MatchInfo> list = new ArrayList<MatchInfo>();
 		for (Map<String, Object> m : result) {
 			MatchInfo a = new MatchInfo(m);
+			
 			fullfil(a);
 			list.add(a);
 

@@ -18,7 +18,7 @@ public class DataReaderTest {
 //		List<PlayerInMatchFull> leadPlayerForDay = serv.getLeadPlayerForDay(Date.valueOf("2014-11-11"),"points");
 //		List<PlayerInMatchFull> leadPlayerForSeason = serv.getLeadPlayerForSeason("14-15", "points");
 //		List<TeamAverage> leadTeamForSeason = serv.getLeadTeamForSeason("14-15", "points");
-//		List<MatchInfo> matchInPeriod = serv.getMatchInPeriod(Date.valueOf("2014-11-11"), Date.valueOf("2014-11-30"));
+		List<MatchInfo> matchInPeriod = serv.getMatchInPeriod(Date.valueOf("2014-11-11"), Date.valueOf("2014-11-30"));
 		//PlayerInfo playerInfo = serv.getPlayerInfo("Kobe Bryant");
 //		List<PlayerInfo> playerInfoAll = serv.getPlayerInfoAll("playing");
 //		List<PlayerInMatchFull> playerInMatch = serv.getPlayerInMatch("198806070LAL");
@@ -33,7 +33,7 @@ public class DataReaderTest {
 //		TeamAverage teamAverage = serv.getTeamAverageSingle("LAL", "2014-15", "total");//不能加s，
 //		List<TeamAverage> teamAverages = serv.getTeamAverages("2014-15");
 //		List<TeamInfo> teamInfoAll = serv.getTeamInfoAll();
-		List<MatchInfo> teamStatBySeason = serv.getTeamStatBySeason("LAL", "14-15");
+//		List<MatchInfo> teamStatBySeason = serv.getTeamStatBySeason("LAL", "14-15");
 		//MatchInfo teamStatSingle = serv.getTeamStatSingle("LAL", Date.valueOf("2012-10-30"));
 		System.out.println();
 	}
