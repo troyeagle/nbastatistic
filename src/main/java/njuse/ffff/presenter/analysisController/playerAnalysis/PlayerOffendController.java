@@ -34,7 +34,7 @@ public class PlayerOffendController{
 	 */
 	public OffendFactor analyseOffend(String playerID,String season){
 		String position;
-		List<PlayerInMatchFull> playerList_pergame = dataReader.getPlayersStatsAll(season, "per_game");
+		List<PlayerInMatchFull> playerList_pergame = dataReader.getPlayersStatsAll(season, "perGame");
 		List<PlayerInMatchFull> playerList_36Minutes = dataReader.getPlayersStatsAll(season, "per_minute");
 		
 		PlayerInMatchFull player_pergame = dataReader.getPlayerStatsSingle(playerID, season, "per_game");

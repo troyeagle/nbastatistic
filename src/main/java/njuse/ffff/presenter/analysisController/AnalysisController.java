@@ -98,9 +98,11 @@ public class AnalysisController implements AnalysisSerivce{
 		List<String> seasons = dataReader.selectSeasonsByPlayer(playerID);
 		List<String> seasonList = new ArrayList<String>();
 		for(String s:seasons){
-			String[] season = s.split("[-]");
-			if(Integer.parseInt(season[0])>=1980){
-				seasonList.add(s);
+			if(!(s.contains("po"))){
+				String[] season = s.split("[-]");
+				if(Integer.parseInt(season[0])>=80||Integer.parseInt(season[0])<=15){
+					seasonList.add(s);
+				}
 			}
 		}
 		String[] seasonss = new String[seasonList.size()];
@@ -138,15 +140,15 @@ public class AnalysisController implements AnalysisSerivce{
 		List<PlayerInfo> data_player = dataReader.getPlayerInfoAll("");
 		for (PlayerInfo player : data_player) {
 			if (player.getPlName().toUpperCase().contains(input)) {
-				List<String> seasons = dataReader.selectSeasonsByPlayer(player.getIdPlayerInfo());
-				boolean isValid = false;
-				for(String s:seasons){
-					String[] temp = s.split("-");
-					if(Integer.parseInt(temp[0])>=1980){
-						isValid = true;
-					}
-				}
-				if(isValid)
+//				List<String> seasons = dataReader.selectSeasonsByPlayer(player.getIdPlayerInfo());
+//				boolean isValid = false;
+//				for(String s:seasons){
+//					String[] temp = s.split("-");
+//					if(Integer.parseInt(temp[0])>=1980){
+//						isValid = true;
+//					}
+//				}
+//				if(isValid)
 					listPlayers.add(new BasicPlayerInfo(player.getPlName(),player.getIdPlayerInfo()));
 			}
 		}

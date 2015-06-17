@@ -72,9 +72,9 @@ public class MainFrame extends JFrame {
 
 		viewPanel.setBorder(BorderFactory.createLineBorder(UIConfig.TitleBgColor, 1));
 
-		new Thread(() -> {
+//		new Thread(() -> {
 			viewPanel.add("主页", new MainPagePane());
-		}).start();
+//		}).start();
 		new Thread(() -> {
 			viewPanel.add("比赛直播", new GameLivePanel());
 		}).start();

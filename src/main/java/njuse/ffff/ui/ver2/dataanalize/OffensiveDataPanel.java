@@ -50,6 +50,7 @@ public class OffensiveDataPanel extends DataPanel {
 
 	@Override
 	protected void switchToPlayerData(BasicPlayerInfo info) {
+		playerInfo = info;
 		String id = info.getID();
 		String[] seasons = ans.getOffendInvolvedSeason(id);
 		setSeasons(seasons);

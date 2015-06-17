@@ -143,7 +143,7 @@ public abstract class DataPanel extends PanelEx {
 		((CardLayout) getLayout()).show(this, "data");
 	}
 
-	private BasicPlayerInfo playerInfo;
+	protected BasicPlayerInfo playerInfo;
 
 	public void setSeasons(String[] seasons) {
 		seasonList.removeAllItems();

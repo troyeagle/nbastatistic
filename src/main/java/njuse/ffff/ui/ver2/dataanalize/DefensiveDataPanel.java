@@ -44,6 +44,7 @@ public class DefensiveDataPanel extends DataPanel {
 	private AnalysisController ans;
 
 	protected void switchToPlayerData(BasicPlayerInfo info) {
+		playerInfo = info;
 		String id = info.getID();
 		String[] seasons = ans.getOffendInvolvedSeason(id);
 		setSeasons(seasons);
