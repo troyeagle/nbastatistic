@@ -224,7 +224,7 @@ public class GameLivePanel extends PanelEx {
 				timer.stop();
 			}
 		});
-		timer.start();
+//		timer.start();
 	}
 
 	private PanelEx createScorePanel() {
@@ -336,7 +336,6 @@ public class GameLivePanel extends PanelEx {
 	private boolean firstRun = true;
 	private boolean isUpdating;
 
-	@SuppressWarnings("unused")
 	private Timer initTimer() {
 		Timer t = new Timer(4000, e -> {
 			// 保证只有一个线程在更新(?

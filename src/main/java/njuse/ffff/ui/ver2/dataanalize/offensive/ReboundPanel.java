@@ -34,13 +34,16 @@ public class ReboundPanel extends PanelEx {
 	private LabelEx description;
 	private DefaultPieDataset dataset;
 
-	private int type;
+	private String majorType;
+	private String minorType;
 
 	public ReboundPanel(int type) {
 		super(new BorderLayout(20, 20));
 		setOpaque(false);
-		this.type = type;
+
 		header[0] = types[type] + "率";
+		majorType = "场均" + types[type];
+		minorType = "场均" + types[1 - type];
 
 		table = new TableView(null, header);
 		table.setPreferredSize(new Dimension(300, 60));
@@ -58,10 +61,9 @@ public class ReboundPanel extends PanelEx {
 		tadPanel.add(description);
 
 		dataset = new DefaultPieDataset();
-		dataset.setValue("场均" + types[1 - type], 1);
-		dataset.setValue("场均" + types[type], 1);
-
 		ChartPanel chart = createChart("场均" + types[type] + "比例", dataset);
+
+		setData(0.5, 1, 0.5);
 		add(chart);
 	}
 
@@ -83,11 +85,10 @@ public class ReboundPanel extends PanelEx {
 		plot.setLabelGenerator(new StandardPieSectionLabelGenerator(
 				"{0} {2}", NumberFormat.getNumberInstance(),
 				new DecimalFormat("#.#%")));
+		plot.setSectionPaint(majorType, UIConfig.TitleBgColor.brighter());
+		plot.setSectionPaint(minorType, UIConfig.ThemeColor.brighter());
 
-		plot.setSectionPaint("场均" + types[type], UIConfig.TitleBgColor.brighter());
-		plot.setSectionPaint("场均" + types[1 - type], UIConfig.ThemeColor.brighter());
-
-		plot.setExplodePercent("场均" + types[type], 0.2);
+		plot.setExplodePercent(majorType, 0.2);
 
 		ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setOpaque(false);
@@ -97,11 +98,17 @@ public class ReboundPanel extends PanelEx {
 	public void setData(double ratio, int rank, double avgRatio) {
 		Object[][] data = new Object[][] { { ratio, rank } };
 		table.setTable(data);
-		dataset.setValue(types[type], avgRatio);
-		dataset.setValue(types[1 - type], 1 - avgRatio);
+
+		dataset.setValue(majorType, avgRatio);
+		dataset.setValue(minorType, 1 - avgRatio);
 	}
 
 	public void setDescription(String text) {
+		if (text.length() > 20) {
+			text = text.substring(0, 20) + "<br>" + text.substring(20);
+		}
+		text = "<html>" + text + "</html>";
+
 		description.setText(text);
 	}
 }

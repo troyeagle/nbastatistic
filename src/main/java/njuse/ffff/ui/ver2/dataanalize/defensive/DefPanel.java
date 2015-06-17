@@ -37,11 +37,11 @@ public class DefPanel extends PanelEx {
 	}
 
 	public void setDWS(double dws) {
-		this.dws.setText(String.valueOf(dws));
+		this.dws.setText("防守贡献值：" + dws);
 	}
 
 	public void setRank(int rank) {
-		this.rank.setText(String.valueOf(rank));
+		this.rank.setText("联盟排名：　" + rank);
 	}
 
 	public void setDescription(String text) {

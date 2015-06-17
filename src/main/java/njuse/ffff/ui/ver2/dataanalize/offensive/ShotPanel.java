@@ -1,4 +1,4 @@
-	package njuse.ffff.ui.ver2.dataanalize.offensive;
+package njuse.ffff.ui.ver2.dataanalize.offensive;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -103,6 +103,11 @@ public class ShotPanel extends PanelEx {
 	}
 
 	public void setDescription(String text) {
+		if (text.length() > 20) {
+			text = text.substring(0, 20) + "<br>" + text.substring(20);
+		}
+		text = "<html>" + text + "</html>";
+
 		description.setText(text);
 	}
 
