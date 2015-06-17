@@ -70,23 +70,42 @@ public class MainFrame extends JFrame {
 		initTitleArea();
 		setTitle("主页");
 
-		playerPane = new PlayerDetailPane();
-		teamPane = new TeamDetailPane();
-		matchPane = new MatchViewPane();
-		searchResPane = new SearchResultPane();
-
 		viewPanel.setBorder(BorderFactory.createLineBorder(UIConfig.TitleBgColor, 1));
 
-		viewPanel.add("主页", new MainPagePane());
-		viewPanel.add("比赛直播", new GameLivePanel());
-		viewPanel.add("球队一览", new TeamsOverViewPanel());
-		viewPanel.add("球员一览", new PlayersOverViewPane());
-		viewPanel.add("球员筛选", new PlayerFilterPane());
-		viewPanel.add("搜索结果", searchResPane);
-		viewPanel.add("球员详情", playerPane);
-		viewPanel.add("球队详情", teamPane);
-		viewPanel.add("比赛详情", matchPane);
-		viewPanel.add("数据分析", new DataAnalizePanel());
+		new Thread(() -> {
+			viewPanel.add("主页", new MainPagePane());
+		}).start();
+		new Thread(() -> {
+			viewPanel.add("比赛直播", new GameLivePanel());
+		}).start();
+		new Thread(() -> {
+			viewPanel.add("球队一览", new TeamsOverViewPanel());
+		}).start();
+		new Thread(() -> {
+			viewPanel.add("球员一览", new PlayersOverViewPane());
+		}).start();
+//		new Thread(() -> {
+//			viewPanel.add("球员筛选", new PlayerFilterPane());
+//		}).start();
+		new Thread(() -> {
+			searchResPane = new SearchResultPane();
+			viewPanel.add("搜索结果", searchResPane);
+		}).start();
+		new Thread(() -> {
+			playerPane = new PlayerDetailPane();
+			viewPanel.add("球员详情", playerPane);
+		}).start();
+		new Thread(() -> {
+			teamPane = new TeamDetailPane();
+			viewPanel.add("球队详情", teamPane);
+		}).start();
+		new Thread(() -> {
+			matchPane = new MatchViewPane();
+			viewPanel.add("比赛详情", matchPane);
+		}).start();
+		new Thread(() -> {
+			viewPanel.add("数据分析", new DataAnalizePanel());
+		}).start();
 
 		add(viewPanel);
 
@@ -100,7 +119,7 @@ public class MainFrame extends JFrame {
 		titleBar.setOpaque(false);
 		titleBar.setTitle("NBA数据查询系统");
 
-		tabBar = new TabBar("主页", "比赛直播", "球队一览", "球员一览", "球员筛选", "数据分析");
+		tabBar = new TabBar("主页", "比赛直播", "球队一览", "球员一览", "数据分析");
 		tabBar.setOpaque(false);
 		tabBar.addSwitchListener(e -> {
 			String name = e.getSource().getName();

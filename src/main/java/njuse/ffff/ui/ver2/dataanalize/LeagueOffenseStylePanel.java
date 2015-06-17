@@ -61,10 +61,12 @@ public class LeagueOffenseStylePanel extends PanelEx {
 		seasonList.setForeground(Color.BLACK);
 		seasonList.addItemListener(e -> {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
-				String[] res = ans.getSelfLeagueAnalysis(e.getItem().toString());
-				for (int i = 0; i < res.length; i++) {
-					labels[i].setText(res[i]);
-				}
+				new Thread(() -> {
+					String[] res = ans.getSelfLeagueAnalysis(e.getItem().toString());
+					for (int i = 0; i < res.length; i++) {
+						labels[i].setText(res[i]);
+					}
+				}).start();
 			}
 		});
 

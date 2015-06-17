@@ -36,7 +36,7 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 	private static final String[][] headers = {
 			{ "球员名", "球队", "位置", "" },
 			{ "球员名", "球队", "位置", "" },
-			{ "球员名", "球队", "", "近5场提升率" },
+//			{ "球员名", "球队", "", "近5场提升率" },
 			{ "球队名", "联盟", "" }
 	};
 
@@ -46,7 +46,7 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 
 	private static final int HotToday = 0;
 	private static final int HotSeason = 1;
-	private static final int Progress = 2;
+	//	private static final int Progress = 2;
 	private static final int HotTeam = 2;
 
 	private SwitchButtonGroup[] hotGroup;
@@ -118,13 +118,17 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 	}
 
 	private void initData() {
+		HotEventController hec = HotEventController.getInstance();
 		new Thread(() -> {
-			HotEventController hec = HotEventController.getInstance();
 			hec.setBestPlayerForDayPanel(this);
+		}).start();
+		new Thread(() -> {
 			hec.setBestPlayerForSeasonPanel(this);
-//			hec.setProgressedPlayerPanel(this);
+		}).start();
+		new Thread(() -> {
 			hec.setBestTeamForSeasonPanel(this);
 		}).start();
+		//			hec.setProgressedPlayerPanel(this);
 	}
 
 	private void initListener() {
@@ -160,9 +164,9 @@ public class MainPagePane extends PanelEx implements SpecialViewService {
 
 	@Override
 	public void setProgressPlayer(String type, Object[][] data) {
-//		String[] header = headers[Progress].clone();
-//		header[2] = type;
-//		setTable(type, data, header, Progress);
+		//		String[] header = headers[Progress].clone();
+		//		header[2] = type;
+		//		setTable(type, data, header, Progress);
 	}
 
 	private void setTable(String type, Object[][] data, String[] header, int tableType) {

@@ -33,7 +33,7 @@ import org.json.JSONObject;
  */
 public class LiveTest {
 	static int eid = 0;
-	static String mid = "2015061409";
+	static String mid = "2015061605";
 	CloseableHttpClient httpClient = HttpClients.createDefault();
 	HttpGet getReSautoCast = new HttpGet(
 			"http://api.sports.sina.com.cn/pbp/?format=json&source=web&withhref=1&callback=mGetterGetReSautocast"

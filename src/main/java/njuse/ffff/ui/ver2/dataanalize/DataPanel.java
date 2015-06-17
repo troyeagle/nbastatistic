@@ -138,24 +138,25 @@ public abstract class DataPanel extends PanelEx {
 
 		Icon icon = ImageUtilsEx.getPlayerImg(name, ImageUtilsEx.L);
 		this.icon.setIcon(icon);
-		// TODO
 
 		tabbar.switchTo(0);
 		((CardLayout) getLayout()).show(this, "data");
 	}
 
 	private BasicPlayerInfo playerInfo;
+
 	public void setSeasons(String[] seasons) {
 		seasonList.removeAllItems();
 		for (String season : seasons)
 			seasonList.addItem(season);
-		seasonList.setSelectedIndex(0);
+		if (seasons.length > 0)
+			seasonList.setSelectedIndex(0);
 	}
-	
+
 	public String getSelectedSeason() {
 		return (String) seasonList.getSelectedItem();
 	}
-	
+
 	public BasicPlayerInfo getPlayerInfo() {
 		return playerInfo;
 	}

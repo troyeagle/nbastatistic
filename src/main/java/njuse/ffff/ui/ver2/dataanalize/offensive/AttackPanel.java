@@ -26,6 +26,7 @@ public class AttackPanel extends PanelEx {
 
 		description = new LabelEx("description");
 		description.setFont(UIConfig.ContentFont);
+		description.setVerticalAlignment(LabelEx.BOTTOM);
 		description.setForeground(Color.BLACK);
 
 		PanelEx panel = new PanelEx(new BorderLayout());

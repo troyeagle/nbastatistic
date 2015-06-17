@@ -6,6 +6,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -209,20 +211,20 @@ public class GameLivePanel extends PanelEx {
 		}
 
 		// 刷新
-//		Timer timer = initTimer();
-//		addComponentListener(new ComponentAdapter() {
-//			@Override
-//			public void componentShown(ComponentEvent e) {
-//				if (!timer.isRunning())
-//					timer.start();
-//			}
-//
-//			@Override
-//			public void componentHidden(ComponentEvent e) {
-//				timer.stop();
-//			}
-//		});
-//		timer.start();
+		Timer timer = initTimer();
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+				if (!timer.isRunning())
+					timer.start();
+			}
+
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				timer.stop();
+			}
+		});
+		timer.start();
 	}
 
 	private PanelEx createScorePanel() {

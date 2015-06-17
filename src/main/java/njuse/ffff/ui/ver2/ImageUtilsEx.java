@@ -30,8 +30,10 @@ public class ImageUtilsEx extends ImageUtils {
 
 		ImageIcon nullImg = new ImageIcon("img/no_image.png");
 		imageMap.put(NULL + ORIGIN, nullImg);
+		imageMap.put(NULL + XL, zoom(nullImg, XL));
 		imageMap.put(NULL + L, zoom(nullImg, L));
 		imageMap.put(NULL + M, zoom(nullImg, M));
+		imageMap.put(NULL + MS, zoom(nullImg, MS));
 		imageMap.put(NULL + S, zoom(nullImg, S));
 
 		nullImg = new ImageIcon("img/no_image_action.png");

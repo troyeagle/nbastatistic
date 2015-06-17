@@ -26,16 +26,16 @@ public class OffensiveDataPanel extends DataPanel {
 		super("命中率", "得分分布", "前场篮板", "传球意识", "进攻贡献");
 
 		accPanel = new AccPanel();
-		shotPanel = new ShotPanel();
-		reboundPanel = new ReboundPanel(ReboundPanel.OFFENSIVE);
-		passPanel = new PassPanel();
-		attackPanel = new AttackPanel();
-
 		dataPanel.add("命中率", accPanel);
+		shotPanel = new ShotPanel();
 		dataPanel.add("得分分布", shotPanel);
+		reboundPanel = new ReboundPanel(ReboundPanel.OFFENSIVE);
 		dataPanel.add("前场篮板", reboundPanel);
+		passPanel = new PassPanel();
 		dataPanel.add("传球意识", passPanel);
+		attackPanel = new AttackPanel();
 		dataPanel.add("进攻贡献", attackPanel);
+
 
 		ans = AnalysisController.getInstance();
 

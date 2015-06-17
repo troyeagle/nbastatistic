@@ -24,13 +24,13 @@ public class StabilityPage extends PanelEx {
 	public StabilityPage(String type) {
 		super(new GridLayout(6, 1));
 		setOpaque(false);
-		setBorder(BorderFactory.createEmptyBorder(40, 80, 40, 80));
+		setBorder(BorderFactory.createEmptyBorder(40, 60, 40, 60));
 
 		LabelEx label = createLabel("上赛季");
 		label.setFont(UIConfig.TitleFont);
 		add(label);
 
-		PanelEx grid = new PanelEx(new GridLayout(1, 2, 40, 0));
+		PanelEx grid = new PanelEx(new GridLayout(1, 2, 20, 0));
 		grid.setOpaque(false);
 		add(grid);
 

@@ -30,6 +30,7 @@ public class DefPanel extends PanelEx {
 
 		description = new LabelEx("description");
 		description.setFont(UIConfig.ContentFont);
+		description.setVerticalAlignment(LabelEx.BOTTOM);
 		description.setForeground(Color.BLACK);
 
 		add(description);

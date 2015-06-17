@@ -37,13 +37,14 @@ public class AccPanel extends PanelEx {
 
 		description = new LabelEx("description");
 		description.setFont(UIConfig.ContentFont);
+		description.setVerticalAlignment(LabelEx.BOTTOM);
 		description.setForeground(Color.BLACK);
 
 		PanelEx panel = new PanelEx(new BorderLayout());
 		panel.setOpaque(false);
 		add(panel);
 
-		panel.add(description, BorderLayout.NORTH);
+		panel.add(description);
 	}
 
 	public void setData(Object[][] data) {

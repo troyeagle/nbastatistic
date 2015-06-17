@@ -16,7 +16,9 @@ public class TeamProfilePane extends PanelEx implements TeamProfileService {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final String[] labelsName = { "位置", "联盟", "副联盟", "主场", "创建时间" };
+	private static final String[] labelsName = {
+			"位置", "参加赛季", "季后赛参加次数", "获得冠军数", ""
+	};
 
 	private LabelEx teamIcon;
 
@@ -81,7 +83,7 @@ public class TeamProfilePane extends PanelEx implements TeamProfileService {
 	@Override
 	public void setProfile(String name, String abbr, String location, String league,
 			String subleague, String homeCourt, String foundYear) {
-		ImageIcon icon = ImageUtilsEx.getTeamIcon(abbr, ImageUtilsEx.XL);
+		ImageIcon icon = ImageUtilsEx.getTeamIcon(name, ImageUtilsEx.XL);
 		teamIcon.setIcon(icon);
 
 		nameLabel.setText(name);

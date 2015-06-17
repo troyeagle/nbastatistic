@@ -71,7 +71,7 @@ public class GameLogPanel extends PanelEx {
 				existed = true;
 			}
 		}
-		if (!existed) {
+		if (!existed && seasons.length > 0) {
 			seasonList.setSelectedIndex(0);
 		}
 	}

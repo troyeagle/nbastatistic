@@ -1,4 +1,4 @@
-package njuse.ffff.ui.ver2.dataanalize.offensive;
+	package njuse.ffff.ui.ver2.dataanalize.offensive;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -53,13 +53,13 @@ public class ShotPanel extends PanelEx {
 		tablePanel.add(table);
 
 		PanelEx chartPanel = new PanelEx(new GridLayout(1, 2, 40, 40));
-		chartPanel.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 40));
+		chartPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 40));
 		chartPanel.setOpaque(false);
 		add(chartPanel);
 
 		description = new LabelEx("description");
 		description.setFont(UIConfig.ContentFont);
-		description.setVerticalAlignment(LabelEx.TOP);
+		description.setVerticalAlignment(LabelEx.BOTTOM);
 		description.setForeground(Color.BLACK);
 		chartPanel.add(description);
 
