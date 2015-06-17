@@ -218,13 +218,13 @@ public class DataReader implements NewDataReaderService {
 		// } else {
 		// return null;
 		// }
-		 String dt = date.toString().replaceAll("-", "");
-		 dt = "'" + dt + "%'";
-		 idTeam = "'" + idTeam + "'";
+		String dt = date.toString().replaceAll("-", "");
+		dt = "'" + dt + "%'";
+		idTeam = "'" + idTeam + "'";
 		// List<Map<String, Object>> result = mapper
 		// .selectFree("* from matchinfo where idmatchinfo in (select idmatchinfo from playermatchinfo where idmatchinfo like "
 		// + dt + " and team =" + idTeam + ")");
-		
+
 		// MatchInfo a = new MatchInfo(result.get(0));
 		// try {
 		// fullfil(a);
@@ -236,10 +236,10 @@ public class DataReader implements NewDataReaderService {
 		List<Map<String, Object>> result = mapper
 				.selectFree("* from playermatchinfo where idmatchinfo like "
 						+ dt + " and team =" + idTeam);
-		 if (result.isEmpty()) {
-			 return null;
-			 }
-		 return new PlayerInMatchFull(result.get(0));
+		if (result.isEmpty()) {
+			return null;
+		}
+		return new PlayerInMatchFull(result.get(0));
 	}
 
 	private void fullfil(MatchInfo match) {
@@ -265,18 +265,18 @@ public class DataReader implements NewDataReaderService {
 				.selectFree("* from playermatchinfo where idmatchinfo = "
 						+ idmatchinfo + "and team = " + teamA
 						+ "and idplayerinfo is null");
-		if(!astat.isEmpty()){
-			match.setTeamAStats(new PlayerInMatchFull(astat.get(0)));	
+		if (!astat.isEmpty()) {
+			match.setTeamAStats(new PlayerInMatchFull(astat.get(0)));
 		}
-		
+
 		List<Map<String, Object>> bstat = mapper
 				.selectFree("* from playermatchinfo where idmatchinfo = "
 						+ idmatchinfo + "and team = " + teamB
 						+ "and idplayerinfo is null");
-		if(!bstat.isEmpty()){
+		if (!bstat.isEmpty()) {
 			match.setTeamBStats(new PlayerInMatchFull(bstat.get(0)));
 		}
-		
+
 	}
 
 	public List<MatchInfo> getTeamStatBySeason(String idTeam, String season) {
@@ -327,7 +327,7 @@ public class DataReader implements NewDataReaderService {
 		List<MatchInfo> list = new ArrayList<MatchInfo>();
 		for (Map<String, Object> m : result) {
 			MatchInfo a = new MatchInfo(m);
-			
+
 			fullfil(a);
 			list.add(a);
 
@@ -446,8 +446,8 @@ public class DataReader implements NewDataReaderService {
 	@Override
 	public List<MatchInfo> getMatchByPlayer(String idplayerinfo, String season) {
 		List<Map<String, Object>> result = mapper
-				.selectFree("* from matchinfo where season = '" + season
-						+ "' and idplayerinfo ='" + idplayerinfo + "'");
+				.selectFree("* from matchinfo where matchinfo in(select matchinfo from playermatchinfo where season = '"
+						+ season + "' and idplayerinfo ='" + idplayerinfo + "')");
 		List<MatchInfo> list = new ArrayList<MatchInfo>();
 		for (Map<String, Object> m : result) {
 			MatchInfo a = new MatchInfo(m);
