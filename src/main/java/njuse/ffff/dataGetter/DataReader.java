@@ -187,7 +187,7 @@ public class DataReader implements NewDataReaderService {
 	}
 
 	@Override
-	public MatchInfo getTeamStatSingle(String idTeam, Date date) {
+	public PlayerInMatchFull getTeamStatSingle(String idTeam, Date date) {
 //		Map<String, Object> filter = new HashMap<String, Object>();
 //		filter.put("teamA", idTeam);
 //		filter.put("date", date);
@@ -217,13 +217,14 @@ public class DataReader implements NewDataReaderService {
 		String dt = date.toString().replaceAll("-", "");
 		dt = "'"+dt+"%'";
 		idTeam = "'"+idTeam+"'";
-		List<Map<String, Object>> result=mapper.selectFree("* from matchinfo where idmatchinfo like "+dt +" and team ="+idTeam);
+		List<Map<String, Object>> result=mapper.selectFree("* from playerstatinfo where idmatchinfo like "+dt +" and team ="+idTeam
+				+" and idplayerinfo is null");
 		if(result.isEmpty()){
 			return null;
 		}
-		MatchInfo a = new MatchInfo(result.get(0));
-		fullfil(a);
-		return new MatchInfo(result.get(0));
+//		MatchInfo a = new MatchInfo(result.get(0));
+//		fullfil(a);
+		return new PlayerInMatchFull(result.get(0));
 	}
 
 	private void fullfil(MatchInfo match) {
@@ -286,7 +287,10 @@ public class DataReader implements NewDataReaderService {
 				null, "date >" + st + "AND date<" + ed);
 		List<MatchInfo> list = new ArrayList<MatchInfo>();
 		for (Map<String, Object> m : result) {
-			list.add(new MatchInfo(m));
+			MatchInfo a = new MatchInfo(m);
+			fullfil(a);
+			list.add(a);
+			
 		}
 		return list;
 	}
