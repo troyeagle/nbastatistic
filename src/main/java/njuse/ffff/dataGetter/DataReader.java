@@ -187,7 +187,7 @@ public class DataReader implements NewDataReaderService {
 	}
 
 	@Override
-	public PlayerInMatchFull getTeamStatSingle(String idTeam, Date date) {
+	public MatchInfo getTeamStatSingle(String idTeam, Date date) {
 //		Map<String, Object> filter = new HashMap<String, Object>();
 //		filter.put("teamA", idTeam);
 //		filter.put("date", date);
@@ -217,11 +217,36 @@ public class DataReader implements NewDataReaderService {
 		String dt = date.toString().replaceAll("-", "");
 		dt = "'"+dt+"%'";
 		idTeam = "'"+idTeam+"'";
-		List<Map<String, Object>> result=mapper.selectFree("* from playermatchinfo where idmatchinfo like "+dt +" and team ="+idTeam);
+		List<Map<String, Object>> result=mapper.selectFree("* from matchinfo where idmatchinfo like "+dt +" and team ="+idTeam);
 		if(result.isEmpty()){
 			return null;
 		}
-		return new PlayerInMatchFull(result.get(0));
+		MatchInfo a = new MatchInfo(result.get(0));
+		fullfil(a);
+		return new MatchInfo(result.get(0));
+	}
+
+	private void fullfil(MatchInfo match) {
+		String idmatchinfo = "'"+match.getIdmatchinfo()+"'";
+		String teamA= "'"+match.getTeamA()+"'";
+		String teamB = "'"+match.getTeamB()+"'";
+		
+		List<Map<String,Object>> resultA = mapper.selectFree("* from playermatchinfo where idmathinfo = "+idmatchinfo
+				+"and team = "+teamA +"and idplayerinfo is not null");
+		for(Map<String,Object> m:resultA){
+			match.getPlayersA().add(new PlayerInMatchFull(m));
+		}
+		List<Map<String,Object>> resultB = mapper.selectFree("* from playermatchinfo where idmathinfo = "+idmatchinfo
+				+"and team = "+teamA +"and idplayerinfo is not null");
+		for(Map<String,Object> m:resultB){
+			match.getPlayersB().add(new PlayerInMatchFull(m));
+		}
+		List<Map<String,Object>> astat = mapper.selectFree("* from playermatchinfo where idmathinfo = "+idmatchinfo
+				+"and team = "+teamA +"and idplayerinfo is null");
+		match.setTeamAStats(new PlayerInMatchFull(astat.get(0)));
+		List<Map<String,Object>> bstat = mapper.selectFree("* from playermatchinfo where idmathinfo = "+idmatchinfo
+				+"and team = "+teamB +"and idplayerinfo is null");
+		match.setTeamBStats(new PlayerInMatchFull(bstat.get(0)));
 	}
 
 	public List<PlayerInMatchFull> getTeamStatBySeason(String idTeam,
