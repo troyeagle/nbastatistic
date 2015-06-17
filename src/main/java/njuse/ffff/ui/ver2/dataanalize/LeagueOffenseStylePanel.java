@@ -2,6 +2,7 @@ package njuse.ffff.ui.ver2.dataanalize;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
 
 import javax.swing.BorderFactory;
@@ -11,7 +12,6 @@ import njuse.ffff.presenter.analysisController.AnalysisController;
 import njuse.ffff.ui.component.LabelEx;
 import njuse.ffff.ui.component.PanelEx;
 import njuse.ffff.ui.ver2.UIConfig;
-import njuse.ffff.ui.ver2.component.TableView;
 
 public class LeagueOffenseStylePanel extends PanelEx {
 	private static final long serialVersionUID = 1L;
@@ -21,17 +21,37 @@ public class LeagueOffenseStylePanel extends PanelEx {
 
 	private JComboBox<String> seasonList;
 
-	private TableView table;
+	private LabelEx[] labels;
 
 	private AnalysisController ans;
 
 	public LeagueOffenseStylePanel() {
-		super(new BorderLayout(20, 20));
+		super(new BorderLayout(80, 80));
 		setOpaque(false);
+		setBorder(BorderFactory.createEmptyBorder(80, 80, 80, 80));
+
+		PanelEx dataPanel = new PanelEx(new GridLayout(5, 2, 20, 20));
+		dataPanel.setOpaque(false);
+		add(dataPanel);
 
 		ans = AnalysisController.getInstance();
+		labels = new LabelEx[header.length];
+		for (int i = 0; i < header.length; i++) {
+			PanelEx panel = new PanelEx(new GridLayout(1, 2));
+			panel.setOpaque(false);
+			LabelEx label = new LabelEx(header[i]);
+			label.setFont(UIConfig.ContentFont);
+			label.setForeground(Color.BLACK);
+			panel.add(label);
 
-		setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0));
+			labels[i] = new LabelEx("data");
+			labels[i].setFont(UIConfig.ContentFont);
+			labels[i].setForeground(Color.BLACK);
+			panel.add(labels[i]);
+
+			dataPanel.add(panel);
+		}
+
 		LabelEx season = new LabelEx("开始赛季：");
 		season.setFont(UIConfig.TitleFont);
 		season.setForeground(Color.BLACK);
@@ -42,15 +62,11 @@ public class LeagueOffenseStylePanel extends PanelEx {
 		seasonList.addItemListener(e -> {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
 				String[] res = ans.getSelfLeagueAnalysis(e.getItem().toString());
-				Object[][] values = new Object[1][res.length];
 				for (int i = 0; i < res.length; i++) {
-					values[0][i] = res[i];
+					labels[i].setText(res[i]);
 				}
-				table.setTable(values);
 			}
 		});
-		table = new TableView(null, header);
-		add(table);
 
 		PanelEx seasonPanel = new PanelEx();
 		seasonPanel.setOpaque(false);
@@ -63,8 +79,5 @@ public class LeagueOffenseStylePanel extends PanelEx {
 		seasonList.setSelectedIndex(0);
 		add(seasonPanel, BorderLayout.NORTH);
 
-		//		new Thread(() -> {
-		//			table.setTable(ans.getDefaultLeagueAnalysis());
-		//		}).start();
 	}
 }
