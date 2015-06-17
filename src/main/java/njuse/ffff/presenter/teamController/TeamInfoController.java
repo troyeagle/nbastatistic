@@ -9,7 +9,7 @@ import java.util.Map;
 import njuse.ffff.dataservice.NewDataReaderService;
 import njuse.ffff.presenter.TotalUIController;
 import njuse.ffff.presenterService.teamService.TeamInfoService;
-import njuse.ffff.sqlpo.PlayerInMatchFull;
+import njuse.ffff.sqlpo.MatchInfo;
 import njuse.ffff.sqlpo.PlayerInfo;
 import njuse.ffff.sqlpo.TeamAverage;
 import njuse.ffff.sqlpo.TeamAverageAdv;
@@ -64,13 +64,14 @@ public class TeamInfoController implements TeamInfoService{
 	public String[] getInvolvedSeason(String teamName){
 		TeamInfo teamInfo = dataReader.getTeamInfo(teamName);
 		String seasons = String.valueOf(teamInfo.generateMap().get("seasons")).replace(" ", "");
-		String[] temp = seasons.split("[;；]")[1].split("to");
+		String[] list = seasons.split("[;；]");
+		String[] temp = list[list.length-1].split("to");
 		int start = Integer.parseInt(temp[0].split("-")[0]);
 		int end = Integer.parseInt(temp[1].split("-")[0]);
-		seasonList = new String[end-start];
-		for(int i=start;i<=end-1;i++){
-			String temp2 = String.valueOf(start+1);
-			StringBuffer bf = new StringBuffer(start+"-"+temp2.substring(2,temp2.length()));
+		seasonList = new String[end-start+1];
+		for(int i=start;i<=end;i++){
+			String temp2 = String.valueOf(i+1);
+			StringBuffer bf = new StringBuffer(i+"-"+temp2.substring(2,temp2.length()));
 			seasonList[i-start] = bf.toString();
 		}
 		return seasonList;
@@ -80,13 +81,14 @@ public class TeamInfoController implements TeamInfoService{
 	 * 设置球队简介界面
 	 */
 	public void setTeamProfilePanel(TeamProfileService panel, String teamName) {
+		seasonList = getInvolvedSeason(teamName);
 		//获取指定球队的信息
 		TeamInfo teamInfo = dataReader.getTeamInfo(teamName);
 		Map<String,Object> map = teamInfo.generateMap();
 		//设置球队简介
-		panel.setProfile(teamName, String.valueOf(map.get("teamNames")), String.valueOf(map.get("location"))
-						, String.valueOf(map.get("teamNames")), ""
-						, "", "");
+		panel.setProfile(teamName, "", String.valueOf(map.get("location"))
+						, String.valueOf(map.get("seasons")), String.valueOf(map.get("playOffs"))
+						, String.valueOf(map.get("championships")),String.valueOf(map.get("record")));
 		teamProfile = teamName;
 		totalController.setTeamProfileService(panel);
 	}
@@ -221,14 +223,16 @@ public class TeamInfoController implements TeamInfoService{
 	 * 设置球队参与的比赛
 	 */
 	public void setTeamGameLog(TeamDataService panel, String season, String teamName) {
-		List<PlayerInMatchFull> matchList = dataReader.getTeamStatBySeason(teamName, season.substring(2,season.length()));
+		if(season==null)
+			season = seasonList[seasonList.length-1];
+		List<MatchInfo> matchList = dataReader.getTeamStatBySeason(teamName, season);//.substring(2,season.length())
 //		String[] properties = {"比赛日期","比赛对阵"};
 		if(matchList!=null&&matchList.size()>0){
 			//比赛排序
 			for(int i=0;i<matchList.size()-1;i++){
 				for(int j=0;j<matchList.size()-i-1;j++){
 					if(matchList.get(j).getDate().before(matchList.get(j+1).getDate())){
-						PlayerInMatchFull temp = matchList.get(j);
+						MatchInfo temp = matchList.get(j);
 						matchList.set(j, matchList.get(j+1));
 						matchList.set(j+1, temp);
 					}
@@ -237,14 +241,14 @@ public class TeamInfoController implements TeamInfoService{
 			//设置数据
 			Object[][] values = new Object[matchList.size()][];
 			for(int i=0;i<matchList.size();i++){
-				PlayerInMatchFull match = matchList.get(i);
+				MatchInfo match = matchList.get(i);
 				Calendar date = new GregorianCalendar();
 				date.setTime(match.getDate());
 				int year = date.get(Calendar.YEAR);//减去差值
 				int month = date.get(Calendar.MONTH)+1;
 				int day = date.get(Calendar.DAY_OF_MONTH);
 				StringBuffer dateBuffer = new StringBuffer(year+"-"+month+"-"+day);
-				StringBuffer participentsBuffer = new StringBuffer(match.getTeam()+"  VS  "+match.getAttribute());
+				StringBuffer participentsBuffer = new StringBuffer(match.getTeamA()+"  VS  "+match.getTeamB());
 				values[i] = new Object[]{dateBuffer.toString(),participentsBuffer.toString()};
 			}
 			panel.setGameLog(values, null);
