@@ -33,8 +33,15 @@ public class PlayerOffendController{
 	 * 进攻分析   只分析1980年以后的
 	 */
 	public OffendFactor analyseOffend(String playerID,String season){
+		String temp[] = season.split("-");
+		if(Integer.parseInt(temp[0])<20){
+			season = "20".concat(season);
+		}
+		else{
+			season = "19".concat(season);
+		}
 		String position;
-		List<PlayerInMatchFull> playerList_pergame = dataReader.getPlayersStatsAll(season, "perGame");
+		List<PlayerInMatchFull> playerList_pergame = dataReader.getPlayersStatsAll(season, "per_game");
 		List<PlayerInMatchFull> playerList_36Minutes = dataReader.getPlayersStatsAll(season, "per_minute");
 		
 		PlayerInMatchFull player_pergame = dataReader.getPlayerStatsSingle(playerID, season, "per_game");
@@ -69,7 +76,8 @@ public class PlayerOffendController{
 			}
 			
 			//
-			double[] FGA_PercentByDistance = new double[]{//5
+			double[] FGA_PercentByDistance = new double[]{//6
+					Double.parseDouble(String.valueOf(map_shoot.get("FGtwoPOfFGA"))),
 					Double.parseDouble(String.valueOf(map_shoot.get("FGtwoPOfFGA0_3"))),
 					Double.parseDouble(String.valueOf(map_shoot.get("FGtwoPOfFGA3_10"))),
 					Double.parseDouble(String.valueOf(map_shoot.get("FGtwoPOfFGA10_16"))),
@@ -99,27 +107,43 @@ public class PlayerOffendController{
 			double ORB_Ratio = Double.parseDouble(String.valueOf(map_adv.get("offensiveReboundRatio")));
 			double ORBperGame_Percentage = Double.parseDouble(String.valueOf(map_avg.get("offensiveRebound")))
 					/Double.parseDouble(String.valueOf(map_avg.get("rebound")));
+			StringBuffer analysisOfORB = new StringBuffer();
 			int ORB_rank = 1;
-			for(PlayerInMatchFull p:playerList_pergame){
-				if(ORB_Ratio<p.getOffensiveReboundRatio()){
-					ORB_rank++;
+			if(ORB_Ratio==-1){
+				ORB_rank = -1;
+			}
+			else{
+				for(PlayerInMatchFull p:playerList_pergame){
+					if(ORB_Ratio<p.getOffensiveReboundRatio()){
+						ORB_rank++;
+					}
+				}
+				if(ORB_rank<=30){
+					analysisOfORB.append("擅长拼抢前场篮板。");
 				}
 			}
-			StringBuffer analysisOfORB = new StringBuffer();
-			if(ORB_rank<=30){
-				analysisOfORB.append("擅长拼抢前场篮板。");
-			}
+			
+			
 			
 			//
 			double assistRatio = Double.parseDouble(String.valueOf(map_adv.get("assistRatio")));
 			int assistRatio_rank = 1;
 			double assistperGame = Double.parseDouble(String.valueOf(map_avg.get("assist")));
 			double assistperGame_league = 0;
+			if(assistRatio==-1){
+				assistRatio_rank = -1;
+			}
+			else{
+				for(PlayerInMatchFull p:playerList_pergame){
+					if(assistRatio<p.getAssistRatio()){
+						assistRatio_rank++;
+					}
+				}
+			}
 			int gamePlayed_league = 0;
 			for(PlayerInMatchFull p:playerList_pergame){
-				if(assistRatio<p.getAssistRatio()){
-					assistRatio_rank++;
-				}
+				if(p.getAssist()<0)
+					continue;
 				gamePlayed_league += p.getGamesPlayed();
 				assistperGame_league+=p.getAssist()*p.getGamesPlayed();
 			}
@@ -127,39 +151,59 @@ public class PlayerOffendController{
 			
 			double assistper36Minutes = Double.parseDouble(String.valueOf(map_avg_36.get("assist")));
 			double assistper36Minutes_league = 0;
+			StringBuffer analysisOfAssist = new StringBuffer();
 			int assistper36Minutes_rank = 1;
 			gamePlayed_league = 0;
-			for(PlayerInMatchFull p:playerList_36Minutes){
-				if(assistper36Minutes<p.getAssist()){
-					assistper36Minutes_rank++;
+			if(assistper36Minutes==-1){
+				assistper36Minutes_rank = -1;
+			}
+			else{
+				for(PlayerInMatchFull p:playerList_36Minutes){
+					if(assistper36Minutes<p.getAssist()){
+						assistper36Minutes_rank++;
+					}
 				}
+				if(assistper36Minutes_rank<=30){
+					analysisOfAssist.append("传球意识较佳。");
+				}
+			}
+			for(PlayerInMatchFull p:playerList_36Minutes){
+				if(p.getAssist()<0)
+					continue;
 				gamePlayed_league += p.getGamesPlayed();
 				assistper36Minutes_league+=p.getAssist()*p.getGamesPlayed();
 			}
 			assistper36Minutes_league/=gamePlayed_league;
 			
-			StringBuffer analysisOfAssist = new StringBuffer();
-			if(assistper36Minutes_rank<=30){
-				analysisOfAssist.append("传球意识较佳。");
-			}
+			
 			
 			//
 			double trueShootingPercentage = Double.parseDouble(String.valueOf(map_adv.get("trueShootingPercentage")));
 			int TSPercentage_rank = 1;
 			double OWS = Double.parseDouble(String.valueOf(map_adv.get("ows")));
 			int OWS_rank = 1;
-			for(PlayerInMatchFull p:playerList_pergame){
-				if(trueShootingPercentage<p.getTrueShootingPercentage()){
-					TSPercentage_rank++;
-				}
-				if(OWS<p.getOws()){
-					OWS_rank++;
-				}
-			}
 			StringBuffer analysisOfFG_Choice= new StringBuffer();
-			if(TSPercentage_rank<=30&&OWS_rank<=30){
-				analysisOfFG_Choice.append("进攻高效。");
+			if(trueShootingPercentage==-1){
+				TSPercentage_rank = -1;
 			}
+			else if(OWS==-1){
+				OWS_rank = -1;
+			}
+			else{
+				for(PlayerInMatchFull p:playerList_pergame){
+					if(trueShootingPercentage<p.getTrueShootingPercentage()){
+						TSPercentage_rank++;
+					}
+					if(OWS<p.getOws()){
+						OWS_rank++;
+					}
+				}
+				if(TSPercentage_rank<=30&&OWS_rank<=30){
+					analysisOfFG_Choice.append("进攻高效。");
+				}
+			}
+			
+			
 			
 			OffendFactor playerOffend = new OffendFactor(playerID, season,position,
 					FG_RatioByDistance, analysisOfFG_Ratio.toString()

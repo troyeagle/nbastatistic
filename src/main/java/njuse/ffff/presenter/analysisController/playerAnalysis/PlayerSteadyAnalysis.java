@@ -5,6 +5,7 @@ import java.util.List;
 
 import njuse.ffff.dataservice.NewDataReaderService;
 import njuse.ffff.presenter.TotalUIController;
+import njuse.ffff.sqlpo.MatchInfo;
 import njuse.ffff.sqlpo.PlayerInMatchFull;
 import njuse.ffff.util.X2Distribution;
 import njuse.ffff.vo.PlayerSteady;
@@ -35,6 +36,9 @@ public class PlayerSteadyAnalysis {
 		int year = Integer.parseInt(years[0])-1;
 		StringBuffer bf = new StringBuffer(year+"-"+String.valueOf(year+1).substring(2,4));
 		String lastSeason = bf.toString();
+//		List<MatchInfo> playerMatches = dataReader.getMatchByPlayer(playerID, lastSeason);
+//		for()
+//		ArrayList<PlayerInMatchFull> playersA = playerMatches
 		List<PlayerInMatchFull> playerStats_last = dataReader.getPlayerStats(playerID, lastSeason);
 		if(playerStats_last==null||playerStats_last.size()==0){
 			return playerSteadys;

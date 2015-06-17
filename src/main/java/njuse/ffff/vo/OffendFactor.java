@@ -30,7 +30,7 @@ public class OffendFactor {
 	 * 二、出手分布
 	 */
 	private String[] titleOfFGA_Percentage = new String[]{"0-3","3-10","10-16","16 <3","3P"};
-	private double[] FGA_PercentageByDistance = new double[5];//出手分布的命中率
+	private double[] FGA_PercentageByDistance = new double[6];//出手分布的命中率
 	private String analysisOfFGA_Percentage = new String();
 	//内线出手比例高的外线球员（50%）：偏爱突破
 	//内线出手比例低的内线球员（30%以下）：大个子投手
