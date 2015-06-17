@@ -146,6 +146,8 @@ public class PlayerInfoController implements PlayerInfoService{
 					String.valueOf(map.get("plWeight")), String.valueOf(map.get("plBirth")),
 					String.valueOf(map.get("")), experience, String.valueOf(map.get("plHighSchool")),
 					String.valueOf(map.get("team"))/**,playerID*/);//TODO
+			List<String> ss = dataReader.selectSeasonsByPlayer(playerInfo.getIdPlayerInfo());
+			seasonList = ss.toArray(new String[0]);
 		}	
 		else{
 			PlayerInAverage data = dataService.getPlayerAverage(playerName, emptyFilter);
